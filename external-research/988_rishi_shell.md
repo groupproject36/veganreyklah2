@@ -65,7 +65,7 @@ ifelse { s6-test "${base}" = "${ours}" }
 
 Read it and the virtues are clear: no word-splitting, no resident interpreter, every substitution explicit, the sequence exactly what it says. This is the no-surprise execution we want.
 
-But read it again for what is *missing*. There is no running tally — no clean way to count *matched* and *diverged* across the loop, because each pass of `forx` execs forward into a fresh chain and keeps no mutable accumulator. There is no single final verdict, no overall exit code that reflects "any divergence at all," without resorting to a counter file on disk. And comparing two multi-line outputs through environment variables strains against env size limits. execline shines at *do this, then this, then this*; it strains at *gather, count, and judge*. That strain is the lesson, not a flaw.
+Yet read it again for what is *missing*. There is no running tally — no clean way to count *matched* and *diverged* across the loop, because each pass of `forx` execs forward into a fresh chain and keeps no mutable accumulator. There is no single final verdict, no overall exit code that reflects "any divergence at all," without resorting to a counter file on disk. And comparing two multi-line outputs through environment variables strains against env size limits. execline shines at *do this, then this, then this*; it strains at *gather, count, and judge*. That strain is the lesson, not a flaw.
 
 ### In Rye — typed and owned, yet heavy
 
@@ -83,7 +83,7 @@ for (corpus) |prog| {
 assert(matched + diverged == corpus.len); // every program accounted for
 ```
 
-Here the tally is honest, the loop is bounded, the invariant is asserted, the comparison is exact. This is the safety we want. But it is *heavy*: spawning, capturing, allocation, and error handling are all spelled out, because a systems language is built to spell them out. For a program that runs for a microsecond on a server, that weight is right. For a glue script, it is a wall to climb each time.
+Here the tally is honest, the loop is bounded, the invariant is asserted, the comparison is exact. This is the safety we want. Yet it is *heavy*: spawning, capturing, allocation, and error handling are all spelled out, because a systems language is built to spell them out. For a program that runs for a microsecond on a server, that weight is right. For a glue script, it is a wall to climb each time.
 
 ### In Rishi — the sweet spot
 

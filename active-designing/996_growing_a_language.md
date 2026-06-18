@@ -67,7 +67,7 @@ The answer follows from the same truth that lets the languages share values: **o
   - **Silo** — declarative purity, the discipline of what may be deferred, naming by content. *Describe, do not command.*
   - **Rishi** — typed pipelines, process results as structured values, assertions used as gates, terseness that never costs safety, honesty about effects and their order.
   - **The orchestration language** — surprise-free sequencing, no lingering interpreter, bounds on every chain.
-  - **Mantra** — not a syntax but a data language: the laws its weave must keep, the merge that always completes, the honest annotation of a conflict. Its supplement is about invariants rather than grammar.
+  - **Mantra** — a data language rather than a syntax: the laws its weave must keep, the merge that always completes, the honest annotation of a conflict. Its supplement is about invariants rather than grammar.
 - **The modules written in Rye** — Tally, Caravan, Aurora, Pond — do not need supplements of their own. They are Rye programs, so they live by Rye's supplement and the root above it.
 
 Two disciplines keep this from becoming bureaucracy. A supplement is **born only when its language is mature enough to have earned distinct idioms** — we do not raise empty scaffolding ahead of the work (that would be debt, and we keep none). And a supplement **travels with its language**, kept close to the code it governs, so the rule and the ruled are never far apart. Because the family shares one value model and one ethos, the root carries the weight, and each supplement stays small — exactly as a healthy family resembles itself while each member keeps a face of their own.
