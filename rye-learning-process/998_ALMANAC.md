@@ -3,8 +3,8 @@
 *A growing reference of how Rye and its Zig 0.16.0 toolchain actually work — each entry earned by running code, recorded so the next builder need not rediscover it.*
 
 **Language:** EN
-**Version:** `20260617.194312` (Rye chronological stamp)
-**Last updated:** 2026-06-17
+**Version:** `20260618.043112` (Rye chronological stamp)
+**Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`); code in TAME Style (`../external-research/996_TAME_STYLE.md`)
 **Status:** Living
 
@@ -23,6 +23,30 @@ Read it as an almanac: practical, accumulated, seasonal. It grows as Rye grows.
 Rye's first version is honest about what it is: a thin front-end over the Zig 0.16.0 toolchain. A `.rye` file is Zig source for now, since the language has yet to diverge, so every capability the toolchain offers is Rye's by construction.
 
 The one wrinkle we met immediately: the toolchain's front-end reads only the `.zig` extension. `zig run file.rye` answers `error: unrecognized file extension`. So the `rye` command bridges — it copies the `.rye` source to an adjacent `.zig` file, hands that to the compiler, and clears the bridge away afterward so the tree stays tidy. A single-file run needs nothing more.
+
+Since then, Rye has taken its first steps away from the toolchain: it owns its standard library, and it counts its versions in its own way. The three entries that follow record how.
+
+---
+
+## Owning the Standard Library with `--zig-lib-dir`
+
+A language earns its own standard library by hosting it. The compiler decides what `@import("std")` means by reading its **library directory**, and the flag `--zig-lib-dir <path>` lets us choose that directory. So Rye keeps its own at `rye/lib/`: the `std/` there is a copy of the toolchain's std we are free to tend, while the rest of the directory — `compiler_rt`, `libc`, the C headers, and the kindred runtime pieces — are relative symlinks back to the pinned toolchain, since we have no wish to change those yet. The `std` copy is about 18 MB; the symlinked remainder would have been some 230 MB, so linking rather than copying keeps the repository lean while still presenting the compiler a complete library tree.
+
+The `rye` command passes `--zig-lib-dir rye/lib` on every run, and **insists** on it: before compiling, it confirms `rye/lib/std/std.zig` is present and refuses, loudly, to fall back to the backend's std. A wrong or missing path stops the run rather than quietly compiling against someone else's library. That insistence is the whole assurance — the proof that our std is in force lives in the path the compiler is handed — which is why `std` itself can stay a faithful, unmarked copy of Zig 0.16.0 that we diverge from one deliberate change at a time.
+
+---
+
+## The Version Lives in the Compiler, Not std
+
+We learned this the honest way: there is no `std.version` in Zig. A language's version is a property of its *compiler*, surfaced through the compiler-generated `@import("builtin")` module as `builtin.zig_version` — a `std.SemanticVersion` with `major`, `minor`, and `patch`. Reaching for a hand-written `std.version` would both diverge our std needlessly and misplace the value, so we use the real mechanism instead, and a `.rye` program reads `builtin.zig_version` to learn the backend it stands upon.
+
+Rye's own version lives where a distribution's version belongs — in the `rye` command — and it is **chronological**, our first deliberate divergence from Zig's semantic scheme. We also give the pinned backend a Rye-clock reading drawn from its real commit time (`20260413.181917` UTC for Zig 0.16.0), so `rye version` can show both truths at once without ever overwriting the backend's own.
+
+---
+
+## Finding the Library Beside the Binary
+
+For `rye run` to point the compiler at `rye/lib`, the command must locate that directory at runtime. Zig 0.16.0 offers no `std.fs.selfExePath` — the I/O refactor moved such things — so we read the running binary's path from `/proc/self/exe` with `std.Io.Dir.readLinkAbsolute(io, "/proc/self/exe", &buf)`, take its directory with `std.fs.path.dirname`, and apply a hard-coded *relative* template, `../lib`. Because the template resolves against the binary's real location, it holds no matter where the repository is cloned; an explicit `RYE_LIB` environment variable overrides it on a host without `/proc`. A small `comptime` assertion keeps the template honest — non-empty, and relative, never an absolute path baked in.
 
 ---
 
@@ -124,6 +148,7 @@ A few paths we have left lit for later, each a deliberate choice rather than an 
 - **A `build.rye` story.** Zig builds projects through a `build.zig` script; Rye will want its own `build.rye`, bridged the same way single files are today.
 - **A bounded read.** The command reads a source file with an unlimited size; a future version can bound it, in keeping with putting a limit on everything.
 - **Many-file programs.** The single-file bridge serves the first version; multi-file `.rye` projects, with their imports, are a thread to pick up next.
+- **Pond.** The `ai-jail` sandbox we work inside is a Rust project; re-growing it as a gentle, TAME-style enclosure in Rye — Pond — is a thread we mean to follow once the language stands on more of its own.
 
 ---
 
