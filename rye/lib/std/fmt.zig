@@ -325,6 +325,10 @@ pub fn parseIntWithGenericCharacter(
     buf: []const Character,
     base: u8,
 ) ParseIntError!Result {
+    // Precondition: a base is either 0 (detect it from the "0x"/"0o"/"0b" prefix)
+    // or a true radix in 2...36. Anything else is the caller's mistake, named
+    // here rather than left to misparse in silence.
+    assert(base == 0 or (base >= 2 and base <= 36));
     if (buf.len == 0) return error.InvalidCharacter;
     if (buf[0] == '+') return parseIntWithSign(Result, Character, buf[1..], base, .pos);
     if (buf[0] == '-') return parseIntWithSign(Result, Character, buf[1..], base, .neg);

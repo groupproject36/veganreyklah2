@@ -119,7 +119,9 @@ It is the gentlest kind of divergence, and the kind we mean to make a habit of. 
 
 From there the substance accretes as a series, each pass recorded in the strengthening-compiler stack. The next stamp, `20260618.072512`, marks the deeper work the SHA3 pass pointed toward: we strengthened the Keccak sponge the hash rests on — its `absorb`, `pad`, and `squeeze` — with the same stated invariants, kept at O(1) boundaries so the hot path stays lean, and gave our `std` the `maybe` helper, the dual of `assert`, to document the space that legitimately varies (`strengthening-compiler/9997_keccak_sponge.md`). It too is pure accretion: every digest is unchanged.
 
-These stamps endure together, exactly as accretion asks: `20260617.033512` when we chose the scheme, `20260617.213112` when the scheme became the first divergence, `20260618.070012` when our `std` first diverged in substance, and `20260618.072512` as that work reached deeper. None is erased; each marks a moment our library became a little more our own.
+The series then widened from the crypto core to the everyday. At `20260618.193812` we strengthened the standard-library functions our own tools lean on — `mem.trim`, `mem.eql`, `mem.findScalar`, and `fmt.parseInt`: the slicing, comparing, searching, and parsing the `rye` CLI and the Rishi shell call on every run. Each gained a stated invariant — a postcondition that a result stays within its input, a precondition that a base is a true radix, a `maybe` that names where lengths legitimately vary — with the hot vectorized search core left lean on purpose (`strengthening-compiler/9996_stdlib_call_paths.md`). A new corpus program exercises all four, and the parity gate stays green.
+
+These stamps endure together, exactly as accretion asks: `20260617.033512` when we chose the scheme, `20260617.213112` when the scheme became the first divergence, `20260618.070012` when our `std` first diverged in substance, `20260618.072512` as that work reached deeper, and `20260618.193812` as it widened to the functions our tools call each day. None is erased; each marks a moment our library became a little more our own.
 
 ---
 

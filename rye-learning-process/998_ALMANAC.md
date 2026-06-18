@@ -167,6 +167,23 @@ The move swaps the directory entry for a fresh inode; the still-running build ke
 
 ---
 
+## Strengthening the Functions We Call
+
+The strengthening-compiler began at the crypto core — SHA3-512, then the Keccak sponge beneath it. This pass (`20260618.193812`) turned to the everyday: the standard-library functions the `rye` CLI and the Rishi shell call on every run. We traced our own call graph and found a small, load-bearing cluster — and a clean example of *functions that call other functions*, since our scalar searches reach `findScalarPos` through thin wrappers.
+
+Four functions, each a different kind of TAME invariant:
+
+- **`std.mem.trim`** — a *postcondition*: the two cursors close inward and never cross, so the result is a contiguous sub-slice of the input (`begin <= end <= slice.len`). Rishi trims on nearly every line.
+- **`std.mem.findScalar`** (which `indexOfScalar` aliases) — a *postcondition at the cold wrapper*: a found index lands in range and truly points at the value (`i < slice.len`, `slice[i] == value`). Stated in the wrapper, not in `findScalarPos`'s hot vectorized loop, so the data plane stays lean — the control/data-plane economy from the TigerBeetle reading.
+- **`std.mem.eql`** — a *`maybe`*, the dual of assert: equal and unequal lengths are both expected, so we name the variable space rather than constrain it.
+- **`std.fmt.parseInt`** — a *precondition*: a base is `0` (detect the prefix) or a true radix in 2…36; anything else is the caller's mistake, named at the door.
+
+The discipline held: each change adds what the code *says*, never what it *does*. A new corpus program, `rye/tests/call_paths_test.rye`, exercises all four across found/not-found, equal/unequal, all-stripped trims, and several bases; the parity gate (`tools/parity.sh`) runs it against the baseline and the strengthened `std` and stays green. And because `rye run` builds in Debug, the assertions are *live* when we run Rishi — every `.rish` script now checks these invariants as it goes. The full study is `strengthening-compiler/9996_stdlib_call_paths.md`.
+
+One deferral, named on purpose: `indexOfScalarPos` is a direct alias to the hot `findScalarPos`, so giving *it* a postcondition means touching the hot core. That waits for a pass that strengthens hot paths behind a `verify` flag — checks too costly for the data plane, compiled in only when asked for.
+
+---
+
 ## Open Threads
 
 A few paths we have left lit for later, each a deliberate choice rather than an oversight:

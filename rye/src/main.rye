@@ -41,13 +41,15 @@ const std = @import("std");
 /// Rye names its versions on a clock while the backend keeps its honest semantic
 /// version, reported through `builtin.zig_version`. From there Rye accretes,
 /// nothing removed and only added, along two strands. Divergences in *substance*
-/// strengthen Rye's own `std` — each additive and parity-identical, recorded in
-/// the strengthening-compiler stack: the SHA3-512 wrappers at 20260618.070012
-/// (9998), the deeper Keccak sponge at 20260618.072512 (9997). Accretions in
-/// *capability* grow the tool itself: this stamp adds the `build` command, and
-/// with it Aurora's first freestanding RISC-V seed — a hart that wakes in an
-/// emulator, speaks one line, and halts. The backend stays honestly 0.16.0.
-const rye_version = "20260618.191412";
+/// strengthen Rye's own `std`, each additive and parity-identical, recorded in
+/// the strengthening-compiler stack: the SHA3-512 wrappers (20260618.070012,
+/// 9998), the Keccak sponge (20260618.072512, 9997), and this stamp — the std
+/// functions our own tools call, `mem.trim`, `mem.eql`, `mem.findScalar`, and
+/// `fmt.parseInt`, given postconditions, a precondition, and a `maybe` (9996).
+/// Accretions in *capability* grow the tool itself: the `build` command, and
+/// with it Aurora's first freestanding RISC-V seed, arrived at 20260618.191412.
+/// The backend stays honestly 0.16.0 throughout.
+const rye_version = "20260618.193812";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";

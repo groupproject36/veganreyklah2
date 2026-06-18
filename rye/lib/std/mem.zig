@@ -2,6 +2,7 @@ const std = @import("std.zig");
 const builtin = @import("builtin");
 const debug = std.debug;
 const assert = debug.assert;
+const maybe = debug.maybe;
 const math = std.math;
 const mem = @This();
 const testing = std.testing;
@@ -730,6 +731,10 @@ const use_vectors_for_comparison = use_vectors and !builtin.fuzz;
 /// Returns true if and only if the slices have the same length and all elements
 /// compare true using equality operator.
 pub fn eql(comptime T: type, a: []const T, b: []const T) bool {
+    // The dual of assert: equal and unequal lengths are both expected here.
+    // `eql` answers the question of equality rather than requiring it in advance,
+    // so we name the variable space rather than constrain it.
+    maybe(a.len == b.len);
     if (!@inComptime() and @sizeOf(T) != 0 and std.meta.hasUniqueRepresentation(T) and
         use_vectors_for_comparison)
     {
@@ -1204,6 +1209,10 @@ pub fn trim(comptime T: type, slice: []const T, values_to_strip: []const T) []co
     var end: usize = slice.len;
     while (begin < end and findScalar(T, values_to_strip, slice[begin]) != null) : (begin += 1) {}
     while (end > begin and findScalar(T, values_to_strip, slice[end - 1]) != null) : (end -= 1) {}
+    // Postcondition: the two cursors close inward and never cross, so the result
+    // is a contiguous sub-slice of the input — never longer, never out of bounds.
+    assert(begin <= end);
+    assert(end <= slice.len);
     return slice[begin..end];
 }
 
@@ -1217,7 +1226,15 @@ pub const indexOfScalar = findScalar;
 
 /// Linear search for the index of a scalar value inside a slice.
 pub fn findScalar(comptime T: type, slice: []const T, value: T) ?usize {
-    return findScalarPos(T, slice, 0, value);
+    const result = findScalarPos(T, slice, 0, value);
+    // Postcondition, stated at this cold wrapper so the hot vectorized core in
+    // `findScalarPos` stays lean (data-plane economy): a found index lands inside
+    // the slice and truly points at the value we sought.
+    if (result) |i| {
+        assert(i < slice.len);
+        assert(slice[i] == value);
+    }
+    return result;
 }
 
 /// Deprecated in favor of `findScalarLast`.

@@ -20,7 +20,7 @@ RYE_LIB="$REPO/rye/lib"                          # our std, strengthened in plac
 CORPUS_DIR="$REPO/rye/tests"
 
 # The programs we already trust. Add to this list as the corpus grows.
-corpus=(sha3_512_test.rye sha3_boundary_test.rye version_test.rye)
+corpus=(sha3_512_test.rye sha3_boundary_test.rye version_test.rye call_paths_test.rye)
 
 [ -x "$ZIG" ] || { echo "no toolchain at $ZIG (set RYE_ZIG)"; exit 1; }
 
