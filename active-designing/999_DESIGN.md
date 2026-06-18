@@ -41,16 +41,17 @@ Ideas flow one way across the boundary: a concept learned in external research, 
 
 ## The Counting-Down Convention
 
-Like the external-research stack, this folder counts **down**. This foundation claims `999`. The next design document takes `998`, the one after `997`, and so the sequence descends. Sort the folder alphabetically — the default nearly everywhere — and the smallest number rises to the top, so the newest design greets the reader first while the foundation holds at the base.
+Like the external-research stack, this folder counts **down**, and two near-foundation layers anchor the base. This foundation claims `999`. Just above it, `998` holds the **standing strategy** — the living charter that says how we take the next step and why, the document a reader should meet right after the foundation itself. Design documents proper begin at `997` and descend from there, so that sorting the folder alphabetically — the default nearly everywhere — lifts the newest design to the top while the strategy and the foundation hold steady at the base.
 
 ```
 active-designing/
-  997_<next-design>.md     <- most recent, sorts first
-  998_recommended_architecture.md
-  999_DESIGN.md            <- this foundation, sorts last
+  996_<next-design>.md            <- most recent design, sorts first
+  997_recommended_architecture.md <- the first design brief
+  998_strengthening_strategy.md   <- the standing strategy that guides the work
+  999_DESIGN.md                   <- this foundation, sorts last
 ```
 
-To add a design, take the next number down from the lowest present, name the file for its subject, write it self-contained in Radiant Style, and keep faith with the quarantine principle: our own names, and RISC-V, and nothing else.
+To add a design, take the next number down from the lowest present, name the file for its subject, write it self-contained in Radiant Style, and keep faith with the quarantine principle: our own names, and RISC-V, and nothing else. The strategy at `998` is revised in place as our thinking matures; the foundation at `999` rarely moves at all.
 
 ---
 

@@ -1,4 +1,4 @@
-# 998 · The Recommended Path for Six Names
+# 997 · The Recommended Path for Six Names
 
 *A clean-room architecture brief for our six modules — TAME, Rye, Silo, Tally, Caravan, and Aurora — reasoning the recommended design path for each from first principles. The one fixed external is RISC-V, the open instruction set our hardware world rests upon.*
 
