@@ -34,7 +34,7 @@ Four threads point one direction, and a fifth — Curtis's — ties them.
 
 **Arvo's marks** give the typing. Clay is "a typed filesystem," and a mark "specifies such a type for its files" while also defining conversions and a way to *validate data sent between agents or over the network* ([Clay marks](https://docs.urbit.org/urbit-os/kernel/clay/marks)). A mark can `vale` — "clam" — a raw noun into its declared type, asserting validity before the value is trusted. This is type-safe deserialization as a first-class idea.
 
-**TigerBeetle's zero-copy** goal closes the loop: if a payload's bytes already *are* the typed value, validated in place, then there is nothing to marshal — the message is read where it lands.
+**TigerBeetle's zero-copy** goal closes the loop: if a payload's bytes already *are* the typed value, validated in place, then there is nothing to marshal — the message is read where it lands. TigerBeetle hones this for its own financial, debit-and-credit ledger; we keep the discipline and free it from that one domain, so it serves *any* typed value — general-purpose, in the way Nock is a substrate for any computation rather than one purpose's.
 
 And **Curtis's essay** is the thread that binds them, distilled to its essences and freed of its Martian costume:
 
