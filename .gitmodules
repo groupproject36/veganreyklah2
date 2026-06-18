@@ -1,0 +1,15 @@
+[submodule "gratitude/sixos"]
+	path = gratitude/sixos
+	url = https://codeberg.org/amjoseph/sixos.git
+[submodule "gratitude/infuse.nix"]
+	path = gratitude/infuse.nix
+	url = https://codeberg.org/amjoseph/infuse.nix.git
+[submodule "gratitude/manyana"]
+	path = gratitude/manyana
+	url = https://github.com/bramcohen/manyana.git
+[submodule "gratitude/ai-jail"]
+	path = gratitude/ai-jail
+	url = https://github.com/akitaonrails/ai-jail
+[submodule "gratitude/zig"]
+	path = gratitude/zig
+	url = https://codeberg.org/ziglang/zig.git

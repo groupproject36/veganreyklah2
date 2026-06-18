@@ -1,0 +1,39 @@
+# This repository lives inside a sandboxed home directory that also holds the
+# editor, its unpacked AppImage, downloaded tools, personal files, and
+# credentials (including .ssh). To keep every one of those out safely and by
+# default, we ignore everything at the repository root, then allow back in only
+# the project's own directories and files. When we add a new top-level project
+# directory, we list it here too.
+
+/*
+
+# --- The project ------------------------------------------------------------
+!/.gitignore
+!/.gitmodules
+!/context/
+!/external-research/
+!/active-designing/
+!/rye/
+!/rye-learning-process/
+!/gratitude/
+
+# --- Re-ignore fetched dependencies and build artifacts inside the project --
+# The Zig toolchain is large and fetched, not authored (the binary alone is
+# ~165MB, past GitHub's 100MB limit). The rye binary and caches are built.
+/rye/bin/
+*.rye.zig
+.zig-cache/
+zig-cache/
+.DS_Store
+
+# --- Local key material — never tracked -------------------------------------
+# The allow-list above already excludes anything outside the project, but we
+# say it explicitly: a sandbox GnuPG home and any loose key files live at the
+# repo root and stay out of history. These are root-anchored so they never
+# touch crypto test fixtures inside rye/lib/std.
+/.gnupg-rye/
+/.gnupg/
+/*.asc
+/*.gpg
+/*.sec
+/*.key
