@@ -34,13 +34,14 @@ say "the year is ${year}"
 
 ## Build and Run
 
-Rishi is implemented in Rye and built against Rye's own standard library, so the
-language we are growing and the language we build it in are one and the same:
+Rishi is written in Rye (`src/main.rye`) and built by Rye itself — `rye build` —
+against Rye's own standard library, so the language we are growing, the language
+we write it in, and the language that builds it are one and the same:
 
 ```sh
 mkdir -p rishi/bin
-vendor/zig-toolchain/zig build-exe rishi/src/main.zig \
-  -femit-bin=rishi/bin/rishi --zig-lib-dir rye/lib
+export RYE_ZIG="$PWD/vendor/zig-toolchain/zig"   # the toolchain Rye builds with
+rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
 
 rishi/bin/rishi version
 rishi/bin/rishi run rishi/tests/hello.rish

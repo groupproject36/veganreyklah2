@@ -136,7 +136,7 @@ Because Rye v1 is the toolchain under a new name, this is not an approximation o
 Two paths, both confirmed:
 
 - **The toolchain.** We fetched the official prebuilt Zig 0.16.0 release, verified its SHA-256 against the published sum before trusting a byte, and keep it at `vendor/zig-toolchain`. Verifying the artifact before use is the safe habit, and it cost nothing.
-- **The build.** `zig build-exe rye/src/main.zig -femit-bin=rye/bin/rye` produces the `rye` command directly. With the toolchain on hand, `rye run rye/tests/sha3_512_test.rye` compiles and runs the test, printing the digest and confirming parity.
+- **The build.** The `rye` command is itself a Rye program (`rye/src/main.rye`), so Rye builds itself: `rye/bootstrap.sh` for the cold start, then `rye build` to self-host thereafter (see *Rye Builds Rye* below for the one wrinkle). With the toolchain on hand, `rye run rye/tests/sha3_512_test.rye` compiles and runs the test, printing the digest and confirming parity.
 
 ---
 
@@ -153,11 +153,25 @@ The whole thing is one command, `aurora/run-seed.sh`, and it dogfoods Rye end to
 
 ---
 
+## Rye Builds Rye
+
+We moved the `rye` and `rishi` commands from `.zig` source to `.rye`, so the programs we author are written in our own language. The standard library under `rye/lib/std` keeps the `.zig` name on purpose — that is the layout the compiler looks for when we point it there with `--zig-lib-dir`, the toolchain's library rather than our prose. The line stays clean: `.rye` is what we write, `.zig` is the library the toolchain reads.
+
+With the source in Rye, Rye builds itself: `rye build src/main.rye`. There is one wrinkle worth keeping. A program's own file cannot be overwritten while it runs — the kernel guards the text of a live process, and a direct write returns `ETXTBSY` ("file busy"). So Rye writes the new binary beside the old and moves it into place:
+
+```sh
+rye build src/main.rye -femit-bin=bin/rye.next && mv -f bin/rye.next bin/rye
+```
+
+The move swaps the directory entry for a fresh inode; the still-running build keeps the old inode until it exits, and the next invocation is the new one. The cold start, `bootstrap.sh`, sidesteps this entirely by invoking the toolchain directly rather than running `rye` to build `rye`. Building anything *other* than the running binary — Rishi, Aurora's seed — meets no such wrinkle, and `rye build rishi/src/main.rye` is exactly how Rishi is built today: a Rye program, built by Rye.
+
+---
+
 ## Open Threads
 
 A few paths we have left lit for later, each a deliberate choice rather than an oversight:
 
-- **Self-hosting the `rye` command.** For now it is a small Zig program. As Rye finds its own shape, the command can be written in Rye itself — the natural end state.
+- **Self-hosting the `rye` command.** The command is now written in Rye (`rye/src/main.rye`) and built by `rye build`, so the *build* is self-hosted. The deeper end state remains ahead: Rye compiling Rye, rather than bridging to the Zig toolchain beneath. We walk toward it as the language grows its own shape.
 - **A `build.rye` story.** `rye build` now compiles a single `.rye` file to a binary, freestanding targets included. Zig builds *whole projects* through a `build.zig` script; Rye will want its own `build.rye` for many-file programs, bridged the same way single files are today.
 - **A bounded read.** The command reads a source file with an unlimited size; a future version can bound it, in keeping with putting a limit on everything.
 - **Many-file programs.** The single-file bridge serves the first version; multi-file `.rye` projects, with their imports, are a thread to pick up next.

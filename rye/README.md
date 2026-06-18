@@ -29,11 +29,12 @@ The first place we aimed `rye build` was bare metal. It compiled a freestanding 
 ```
 rye/
   README.md                 <- this introduction
+  bootstrap.sh              <- cold-start build, before a `rye` binary exists
   lib/                      <- Rye's library directory (passed via --zig-lib-dir)
     std/                    <- our std: a copy of Zig 0.16.0's, under our care
     (others)                <- relative symlinks back to the pinned toolchain
   src/
-    main.zig                <- the `rye` command, written in TAME Style
+    main.rye                <- the `rye` command, itself a Rye program (TAME Style)
   tests/
     sha3_512_test.rye       <- proves SHA3-512 parity with Zig 0.16.0
     version_test.rye        <- shows the backend version via builtin.zig_version
@@ -51,6 +52,8 @@ A language is not wholly its own until it owns its standard library. Rye does. T
 
 The command **insists** on it. Before compiling, it confirms our library sits at the expected path and refuses to run against anything else, so a successful `rye run` is, by construction, a run against Rye's own standard library. The assurance lives in the path, not in any marker written into the code — which lets `std` stay a faithful copy that we diverge from deliberately, a clean diff at a time.
 
+A note on names, while we are here. The programs we author carry the `.rye` extension — `src/main.rye`, the tests, Aurora's seed. The standard library under `lib/std` keeps the `.zig` extension, because that is the name the compiler looks for when we point it at the library; it is the toolchain's layout, not our prose. So the line stays clean: `.rye` is what we write, `.zig` is the library the toolchain reads.
+
 ---
 
 ## How Rye Counts Time
@@ -65,16 +68,22 @@ Rye carries this all the way down. The backend keeps its own honest semantic ver
 
 Rye stands on the prebuilt Zig 0.16.0 toolchain kept at `../vendor/zig-toolchain`, fetched from the official release and verified against its published checksum before we trusted a byte of it.
 
-Build the `rye` command — pointed at Rye's own standard library, so the command dogfoods the `std` it ships:
+Because the `rye` command is itself a Rye program (`src/main.rye`), Rye builds itself. The first build is the cold start, before any `rye` binary exists — `bootstrap.sh` bridges the source the way `rye build` does and hands it to the toolchain, pointed at Rye's own `std`:
 
 ```sh
-../vendor/zig-toolchain/zig build-exe src/main.zig -femit-bin=bin/rye --zig-lib-dir lib
+./bootstrap.sh
 ```
 
-Point `rye` at its backend and run the SHA3-512 test; the command finds `lib/` beside its own binary, so `.rye` programs compile against Rye's `std` automatically:
+From then on, Rye rebuilds itself with its own `build` verb, self-hosting the build and dogfooding the `std` it ships. We write the new binary beside the old one and move it into place, because a program's file cannot be overwritten while it runs — the move swaps the directory entry instead, and the running process keeps the old copy until it exits:
 
 ```sh
 export RYE_ZIG="$PWD/../vendor/zig-toolchain/zig"
+./bin/rye build src/main.rye -femit-bin=bin/rye.next && mv -f bin/rye.next bin/rye
+```
+
+Run the SHA3-512 test; the command finds `lib/` beside its own binary, so `.rye` programs compile against Rye's `std` automatically:
+
+```sh
 ./bin/rye run tests/sha3_512_test.rye
 ```
 

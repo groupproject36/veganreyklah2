@@ -7,6 +7,14 @@
 //! Zig 0.16.0 offers — including SHA3-512 in the standard crypto library — is
 //! Rye's too, by construction.
 //!
+//! The `rye` command is itself a Rye program — this file, `src/main.rye` — so
+//! Rye is, from here, written in Rye. Once a first `rye` binary exists, Rye
+//! builds itself with `rye build`; `bootstrap.sh` is the cold start before one
+//! does. The programs we author carry the `.rye` name; the standard library
+//! under `lib/std` keeps the `.zig` name the compiler looks for when we point it
+//! there with `--zig-lib-dir`. The line is clean: `.rye` is what we write, `.zig`
+//! is the library layout the toolchain reads.
+//!
 //! Commands:
 //!   rye version            Print the Rye version and its toolchain backend.
 //!   rye run <file.rye>     Compile and run a single .rye source file.
