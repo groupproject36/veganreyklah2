@@ -34,7 +34,7 @@ Learn, from three living systems and one boot project, how to carry *values betw
 7. Move makes every asset an object with a unique id and clear ownership, declares a transaction's inputs up front so honest work runs in parallel, and verifies bytecode before it runs. How much of that — declared effects, resource safety, verify-before-run — is simply TAME wearing other words?
 
 **Nostr (NIPs, Primal, Damus) — adapt the essences, critically.**
-8. Nostr is three parts: keys, signed events, relays. An event is content-addressed (its id is a SHA-256 of its fields) and signed (Schnorr/secp256k1); relays store and forward but cannot alter. What is the smallest honest version of this we could speak natively, in one value model, across Rye, Silo, Rishi, and Mantra?
+8. Nostr is three parts: keys, signed events, relays. An event is content-addressed (its id is a SHA-256 of its fields) and signed (Schnorr/secp256k1); relays store and forward yet cannot alter. What is the smallest honest version of this we could speak natively, in one value model, across Rye, Silo, Rishi, and Mantra?
 9. Relays are simple WebSocket servers; Primal's caching service curates their firehose into feeds; Damus signs and verifies on the edge. Where is Nostr genuinely simple, and where has ease (npub UX, relay discovery, spam, encryption bolted on as NIP-04/44/59) been mistaken for simplicity?
 
 **The social layer — simple, and true to the values.**

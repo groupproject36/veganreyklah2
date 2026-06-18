@@ -27,7 +27,7 @@ Urbit answered the identity half beautifully: there, your identity, your address
 
 Three moves, together, dissolve the sprawl.
 
-**One seed, many keys.** The keys differ by *curve*: SSH, GPG, and Sui all speak **ed25519**; Nostr speaks **secp256k1** (the Schnorr signatures of `984`). No single key can be both curves at once — the mathematics forbid it. Yet a single **seed** can deterministically derive both: an ed25519 key for SSH, GPG, and Sui, and a secp256k1 key for Nostr, each a separate key bound to its purpose, all grown from one root. So unity comes not from *reusing* one key everywhere — which would be unsafe and would link what should stay separate — but from *deriving* every key from one seed. One backup, one recovery, many keys, cleanly separated. Separation is the safety; the shared root is the unity.
+**One seed, many keys.** The keys differ by *curve*: SSH, GPG, and Sui all speak **ed25519**; Nostr speaks **secp256k1** (the Schnorr signatures of `984`). No single key can be both curves at once — the mathematics forbid it. Yet a single **seed** can deterministically derive both: an ed25519 key for SSH, GPG, and Sui, and a secp256k1 key for Nostr, each a separate key bound to its purpose, all grown from one root. So unity comes from *deriving* every key from one seed, rather than from *reusing* one key everywhere — which would be unsafe, and would link what should stay separate. One backup, one recovery, many keys, cleanly separated. Separation is the safety; the shared root is the unity.
 
 **The address space is the key tree.** If a person's primary identity is a *galaxy*, and their stars and planets are sub-identities, then the address space need not be a registry bolted beside the keys — it can simply *be* the derivation tree. A galaxy key derives its stars; a star key derives its planets; each node derives the per-system keys it needs. Identity, address, and key become three names for one thing, exactly as Urbit taught — and the whole tree recovers from the one galaxy seed.
 
@@ -65,7 +65,7 @@ The numbers are not arbitrary; they are the Vedic vargas, and they say what each
 - A star's **twelve planets are its d12** — the *dwadasamsa*, which speaks to **inheritance — inherited traits, talents, and support**. So the planets are what one carries forward and is carried by: customers and employees, children and grandparents, side projects and artist names, nonprofits, public-benefit startups, open-source works.
 - Together, a galaxy's **five times twelve is its d60** — the *shastiamsa*, "degree-halves," which speaks to **prosperity and the appeal of one's personal qualities**, the thing that draws fame and fortune. A galaxy's sixty is the full flowering of who they are among others.
 
-And the cosmology names the admins gently: a universe's steward is a **Manu** — as Svayambhuva Manu was made by Brahma to bring forth a lineage — who, in an Aurora-like but networked way, creates a Sui contract and chooses its twelve galaxies, the way **Aditi** birthed the **twelve Adityas**. Where information must cross between universes, it crosses by **bridging and alliance between admins** — signed, content-addressed messages (`982`) passing between namespaces — rather than through any single chain. No universe contains the world; they federate.
+And the cosmology names the admins gently: a universe's steward is a **Manu** — as Svayambhuva Manu was made by Brahma to bring forth a lineage — who, in an Aurora-like yet networked way, creates a Sui contract and chooses its twelve galaxies, the way **Aditi** birthed the **twelve Adityas**. Where information must cross between universes, it crosses by **bridging and alliance between admins** — signed, content-addressed messages (`982`) passing between namespaces — rather than through any single chain. No universe contains the world; they federate.
 
 ### Naming the network
 
@@ -91,7 +91,7 @@ One line must stay bright, in the spirit of how `982` kept shape and safety apar
 
 ## Longer Horizon
 
-Further out, a person logs into Rye OS once, as their galaxy, and is — without another step — reachable over SSH, trusted by GPG, present on Sui, and speaking on Nostr, every key grown from the one root they keep. Their five stars and sixty planets are not rows in a database but a living picture of their circle and their works, each a sub-identity they can hand out and revoke. And their galaxy federates with others by bridge and alliance, across universes stewarded by Manus who convene but never command. One identity, many keys, a sky with meaning — owned by the person, ruled by no one.
+Further out, a person logs into Rye OS once, as their galaxy, and is — without another step — reachable over SSH, trusted by GPG, present on Sui, and speaking on Nostr, every key grown from the one root they keep. Their five stars and sixty planets are not rows in a database but a living picture of their circle and their works, each a sub-identity they can hand out and revoke. And their galaxy federates with others by bridge and alliance, across universes stewarded by Manus who convene yet never command. One identity, many keys, a sky with meaning — owned by the person, ruled by no one.
 
 ## Conclusion
 

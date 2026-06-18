@@ -18,7 +18,7 @@ pub fn main() void {
         std.mem.trim(u8, "   ", " "),
     });
 
-    // mem.eql: equal, unequal length, equal length but unequal content.
+    // mem.eql: equal, unequal length, equal length yet unequal content.
     std.debug.print("eql {} {} {}\n", .{
         std.mem.eql(u8, "abc", "abc"),
         std.mem.eql(u8, "abc", "abcd"),

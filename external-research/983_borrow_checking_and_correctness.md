@@ -85,7 +85,7 @@ This is not optimism as decoration. It is where the leverage actually lives. An 
 
 ## Longer Horizon
 
-Further out is a Rye in which a use-after-free, a data race, a dangling reference, a leaked resource are not bugs we are good at finding but shapes the language will not let us write — all on memory that stays static and bounded, all proven before the program runs, all on open hardware. A language you trust the way you trust a well-made tool: not because it is watched closely, but because it was made correctly. That trust is the quiet luxury the borrow checker's idea offers, and the reason it is worth the patient, staged work to earn it.
+Further out is a Rye in which a use-after-free, a data race, a dangling reference, a leaked resource are shapes the language will not let us write, rather than bugs we are good at finding — all on memory that stays static and bounded, all proven before the program runs, all on open hardware. A language you trust the way you trust a well-made tool — sound because it was made correctly, rather than safe because it is watched closely. That trust is the quiet luxury the borrow checker's idea offers, and the reason it is worth the patient, staged work to earn it.
 
 ## Conclusion
 
