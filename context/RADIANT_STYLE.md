@@ -1,7 +1,7 @@
 # Radiant Style
  
 **Language:** EN
-**Last updated:** 2026-05-15
+**Last updated:** 2026-06-18
  
 **Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear — whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
  
@@ -32,6 +32,21 @@ State what exists, what we do, what we build. Lead with capability and presence 
  
 ---
  
+## The Vocabulary of Correctness
+
+We speak of building soundly, rather than of fixing what broke. The words we choose shape where our attention goes, so we point it forward — toward correctness, preparation, and prevention — rather than backward, toward errors and rescue.
+
+- We **prepare for challenges**, rather than put out fires.
+- We pursue **correctness**, rather than debugging.
+- We **prevent** and **rule out** whole classes of error, rather than fix them one at a time after the fact.
+- We **prove** and **state** what must hold, rather than hunt for what went wrong.
+
+This is no denial of difficulty; hard problems stay hard. It is a choice of where to stand. The strongest engineering, like the warmest writing, leads with what will be true and builds so that it stays true — invariants named up front, error classes designed away. When a fault does arrive, we meet it plainly, learn from it, and fold the lesson back into the design as a new thing made impossible. The reactive word ("debug," "firefight," "patch") names the smallest, latest, most expensive part of the work; the affirmative word ("prepare," "prove," "prevent") names where the leverage truly lives.
+
+The engineering side of this stance lives in TAME Style, under *Correctness, Not Firefighting*.
+
+---
+
 ## Active Voice
  
 Use active voice as the default. Active constructions are shorter, warmer, and easier to follow when spoken aloud.
@@ -71,6 +86,10 @@ A quick lookup for preferred swaps. These are tendencies, not rigid rules — co
 | clear | not confusing |
 | simple | not complex |
 | available | not restricted |
+| prepare for | put out fires for |
+| correctness | debugging |
+| prevent / rule out | fix after the fact |
+| prove | hunt for bugs |
  
 Add to this table as the project grows. Keeping it short and specific is more useful than making it exhaustive.
  

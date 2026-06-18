@@ -3,7 +3,7 @@
 *The coding style for Rye — safety, performance, and developer experience, in that order.*
 
 **Language:** EN
-**Version:** `20260618.071612` (Rye chronological stamp)
+**Version:** `20260618.204012` (Rye chronological stamp)
 **Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -36,6 +36,16 @@ Style runs deeper than readability. Readability is table stakes — the floor, r
 > We pursue understanding first, and style follows it home. Where the understanding is full, the style is already there.
 
 So we pursue understanding, and let style follow from it.
+
+## Correctness, Not Firefighting
+
+We build so that whole classes of error cannot occur, rather than building quickly and standing ready to chase them. This is the quiet center of TAME Style, and it orders everything else.
+
+Assertions, sized types, bounds on every loop and buffer, and — as Rye grows — borrow-checking-style guarantees over Tally's regions (see `983_borrow_checking_and_correctness.md`) are all one move: state what must be true up front, and let the compiler and the runtime make the untrue unrepresentable. An assertion is not a trap we hope to spring; it is a promise we keep, checked. The strengthening compiler works the same way — it states a function's invariants and proves, through the parity gate, that stating them changed nothing the code does.
+
+So we measure our work by whether a fault can occur at all, rather than by how fast we resolve one. We prepare for challenges — we name the invariant, prove the property, design the error class away — rather than brace to put out fires. The cheapest fault is the one the design made impossible; the next cheapest is the one an assertion stops loudly, near its cause, the moment it tries to be born. When a fault does slip through, we meet it calmly, learn from it, and fold the lesson back as a new thing made impossible — so the system grows more correct with every surprise, rather than merely more patched.
+
+This is also how we speak of the work, in keeping with Radiant Style: the language of correctness, preparation, and prevention, rather than of debugging and rescue (see *The Vocabulary of Correctness* in `../context/RADIANT_STYLE.md`). The words point our care to where the leverage lives — early, in the design, rather than late, in the chase.
 
 ## On Simplicity and Elegance
 
