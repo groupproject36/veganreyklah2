@@ -25,10 +25,13 @@
 const std = @import("std");
 
 /// Rye's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
-/// larger. Adopting this scheme in place of Zig's semantic versioning is Rye's
-/// first deliberate divergence: the backend keeps its own semantic version,
-/// reported honestly through `builtin.zig_version`, while this names *Rye*.
-const rye_version = "20260617.213112";
+/// larger. Two divergences from Zig live in this scheme. The first was the
+/// scheme itself, stamped 20260617.213112: Rye names its versions on a clock,
+/// while the backend keeps its honest semantic version, reported through
+/// `builtin.zig_version`. This stamp marks the first divergence in *substance*
+/// — a TAME strengthening of SHA3-512 in Rye's own `std` (see
+/// external-research/990): additive, parity-identical, the digest unchanged.
+const rye_version = "20260618.070012";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";

@@ -70,8 +70,16 @@ pub fn Keccak(comptime f: u11, comptime output_bits: u11, comptime default_delim
         }
 
         /// Hash a slice of bytes.
+        ///
+        /// TAME strengthening (additive — the digest is unchanged in every
+        /// build): the sponge invariants we lean on are named where we lean on
+        /// them, so a fault stops loudly, near its cause. `assert` compiles out
+        /// of a release build, so this guards correctness without costing the
+        /// shipped code anything.
         pub fn hash(bytes: []const u8, out: *[digest_length]u8, options: Options) void {
             var st = Self.init(options);
+            // A fresh sponge has absorbed nothing: the cursor begins at zero.
+            assert(st.st.offset == 0);
             st.update(bytes);
             st.final(out);
         }
@@ -79,11 +87,17 @@ pub fn Keccak(comptime f: u11, comptime output_bits: u11, comptime default_delim
         /// Absorb a slice of bytes into the state.
         pub fn update(self: *Self, bytes: []const u8) void {
             self.st.absorb(bytes);
+            // After absorbing, the cursor rests within one block — at or below
+            // the rate boundary, never past it. The buffer is exactly one block
+            // wide, so this bound keeps every later slice in range.
+            assert(self.st.offset <= block_length);
         }
 
         /// Return the hash of the absorbed bytes.
         pub fn final(self: *Self, out: *[digest_length]u8) void {
             self.st.pad();
+            // pad closes the message and leaves a clean block boundary.
+            assert(self.st.offset == 0);
             self.st.squeeze(out[0..]);
         }
     };

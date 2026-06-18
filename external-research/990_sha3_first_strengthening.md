@@ -1,0 +1,174 @@
+# 990 · The Hash That Names Everything — SHA3-512 in Our `std`, and a TAME Strengthening
+
+*Where the utilities roadmap and Mantra meet is a single function: the SHA3-512 our standard library already carries. This piece confirms it runs, shows the exact code our first test leaned on, and applies our first deliberate strengthening in substance — surrounding that function with TAME's stated invariants while keeping every digit of its output identical.*
+
+**Language:** EN
+**Version:** `20260618.060512` (Rye chronological stamp)
+**Last updated:** 2026-06-18
+**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Lens:** TAME Style (`996_TAME_STYLE.md`); systems lineage honored in `997_SYSTEM.md`
+**Builds on:** `998_MANTRA.md`, `991_useful_utilities.md`, `992_recommended_architecture.md`
+**Status:** Applied to `rye/lib/std/crypto/sha3.zig` — parity and boundary sweep confirmed
+
+---
+
+## The Thread We Are Drawing
+
+Three of our pieces lean, quietly, on the same small thing. Mantra names every line and every state by the hash of its content. Silo names every build by the hash of its inputs. Pond's allow-lists and Caravan's identities rest on content-addressing too. Beneath all of them sits one function — a hash — and the promise it makes: that a name means one thing, for as long as the work endures.
+
+This document follows that thread to its root. It answers a handful of questions we have been carrying: what `991`'s utilities roadmap concluded about crypto, how that meets Mantra's recommendation in `998`, whether our first tests and our first versioning divergence are truly done, what the standard-library SHA3-512 function actually is, and whether we should strengthen it in the TAME way. The answer to that last question is yes — and the why is worth saying carefully.
+
+---
+
+## Where 991 and 998 Meet: the Hash
+
+`998_MANTRA.md` makes one choice deliberately, because all of content-addressing rests upon it: the hash that gives each line and each state its name. Mantra recommends **SHA3-512** — its larger digest carries roughly twice the collision resistance of a 256-bit hash, and its sponge construction stands clear of the length-extension surprise that shadows the SHA2 family. Safety leads, in the order we keep, and for a name meant to hold unique forever, safety means making a collision vanishingly unlikely.
+
+`991_useful_utilities.md` reaches the same point from the other side. Surveying crypto to vendor, it lands on monocypher as the right-sized, permissively licensed reference for the signing and hashing primitives Mantra and Tally lean on — and then notes, plainly, that *for the SHA3 family Mantra recommends, our `std` already carries Zig's implementation, so monocypher complements rather than supplies it.*
+
+So the two documents meet at a single, happy conclusion: **the hash Mantra needs is already in our hand, in our standard library, today.** We do not need to vendor it, build it, or wait for it. It ships inside the `std` we own. The roadmap's job for SHA3 is therefore not acquisition but stewardship — to hold this function well, and one day to make it more thoroughly ours.
+
+---
+
+## What We Already Hold
+
+Two things are finished, and we confirmed both before writing this.
+
+**The first versioning divergence is live.** Asking the compiler its name returns our chronological stamp, with the backend's truth kept honest beside it:
+
+```
+rye 20260617.213112  (chronological: YYYYMMDD.HHMMSS, later is larger)
+backend: zig 0.16.0  (Rye clock: 20260413.181917; live value via builtin.zig_version)
+```
+
+**The SHA3-512 test passes.** Run through the `rye` CLI — which loads our standard library by path, so the cryptography in force is demonstrably *ours* — it produces the digest we verified independently:
+
+```
+SHA3-512("Rye") = c692f0476279e6b867ee66c6701c119106a38f46881da52d733ac2b0cd092e96
+                  30249106dba551524678e70cea61686016926bdc984a191d055b329f2336763f
+rye: SHA3-512 parity with Zig 0.16.0 confirmed.
+```
+
+The test's method is itself in the TAME spirit: it renders the digest as hex with an explicit, bounded loop rather than a volatile formatting call, and it closes with an assertion of the positive space — the digest matches, exactly. From `rye/tests/sha3_512_test.rye`:
+
+```zig
+// Assert the positive space we expect: the digest matches exactly.
+std.debug.assert(actual_hex.len == expected_hex.len);
+std.debug.assert(std.mem.eql(u8, &actual_hex, expected_hex));
+```
+
+This is the foundation we strengthen from: a function that works, proven to work, loaded from a library we own.
+
+---
+
+## The Function Itself
+
+The test reaches `std.crypto.hash.sha3.Sha3_512`, which is one line of configuration over a generic Keccak sponge. From `rye/lib/std/crypto/sha3.zig`:
+
+```zig
+pub const Sha3_512 = Keccak(1600, 512, 0x06, 24);
+```
+
+The generic already opens with a compile-time assertion — a guard that no invalid hash can even be constructed:
+
+```zig
+pub fn Keccak(comptime f: u11, comptime output_bits: u11, comptime default_delim: u8, comptime rounds: u5) type {
+    comptime assert(output_bits > 0 and output_bits * 2 < f and output_bits % 8 == 0); // invalid output length
+```
+
+And the three methods our test used are small and clear:
+
+```zig
+/// Hash a slice of bytes.
+pub fn hash(bytes: []const u8, out: *[digest_length]u8, options: Options) void {
+    var st = Self.init(options);
+    st.update(bytes);
+    st.final(out);
+}
+
+/// Absorb a slice of bytes into the state.
+pub fn update(self: *Self, bytes: []const u8) void {
+    self.st.absorb(bytes);
+}
+
+/// Return the hash of the absorbed bytes.
+pub fn final(self: *Self, out: *[digest_length]u8) void {
+    self.st.pad();
+    self.st.squeeze(out[0..]);
+}
+```
+
+Underneath, the real work lives in the sponge state at `rye/lib/std/crypto/keccak_p.zig`, which keeps one quiet invariant above all others: a cursor named `offset` that always rests inside a single block — in the range `[0, rate]`, sitting *at* the boundary only when a full block waits to be consumed, and never beyond it. The absorb loop maintains this faithfully, and the state machine even carries a Debug-mode guard, a `TransitionTracker`, that refuses to permute with input still pending. The TAME temper is already present here, in seed form. Our strengthening simply makes the central invariant explicit, and states it where we depend on it.
+
+---
+
+## The Strengthening, Applied
+
+The question was whether we could harden this function in the TAME way without changing what it computes. We can, and now have — confined to the file we named, `rye/lib/std/crypto/sha3.zig`. The key is that **assertions are checks, not behavior**. In a release build they compile out; in a debug or test build they stand watch. The digest of `"Rye"` stays `c692…763f`, byte for byte, in every build. What changed is only how loudly the function defends its own invariants.
+
+We stated the sponge's central rule at the three wrapper boundaries, each body otherwise unchanged:
+
+```zig
+/// Hash a slice of bytes. (TAME strengthening: the sponge invariants we lean
+/// on are named where we lean on them, so a fault stops loudly, near its cause.)
+pub fn hash(bytes: []const u8, out: *[digest_length]u8, options: Options) void {
+    var st = Self.init(options);
+    // A fresh sponge has absorbed nothing: the cursor begins at zero.
+    assert(st.st.offset == 0);
+    st.update(bytes);
+    st.final(out);
+}
+
+pub fn update(self: *Self, bytes: []const u8) void {
+    self.st.absorb(bytes);
+    // After absorbing, the cursor rests within one block — at or below the
+    // rate boundary, never past it. The buffer is exactly one block wide, so
+    // this bound keeps every later slice in range.
+    assert(self.st.offset <= block_length);
+}
+
+pub fn final(self: *Self, out: *[digest_length]u8) void {
+    self.st.pad();
+    // pad closes the message and leaves a clean block boundary.
+    assert(self.st.offset == 0);
+    self.st.squeeze(out[0..]);
+}
+```
+
+Three TAME habits show here, each drawn from `996_TAME_STYLE.md`. We **assert the positive space** — what must be true — rather than only guarding against the bad. We place the checks in **layers**, at each wrapper boundary, so a fault has more than one place to be caught. And every assertion **says why** in a sentence, so a future reader learns the sponge's discipline by reading the checks that keep it. None of this touches the permutation, the padding, or the squeeze. The algorithm is exactly Keccak; the surroundings are exactly TAME.
+
+**A lesson from applying it.** The first draft of this proposal asserted, after absorbing, that the cursor lands *strictly* below the rate — `offset < rate`. Tracing the absorb loop carefully showed otherwise: a single input that exactly fills one block leaves the cursor resting *at* the boundary, `offset == rate`, with the block buffered but not yet permuted. So the true bound is `offset <= rate`. A test that only hashed `"Rye"` — three bytes — would never have revealed the difference, since three sits far below the rate of seventy-two. We confirmed the corrected bound directly, sweeping inputs of length 0, 71, 72, 143, 144, and beyond — the multiples of 72 being exactly the cases that rest the cursor on the boundary — and every one passed with the assertions live. Reasoning found the off-by-one; the boundary sweep proved the fix. This is the discipline the strengthening is for, turned for a moment on itself.
+
+**What we confirmed.** With the assertions live in a debug build, the digest of `"Rye"` remained `c692…763f`, identical to the baseline; the empty-string known answer held; and the boundary sweep passed without a single assertion firing. Same inputs, same output — now with the invariants stated aloud. The sweep lives on as a regression test, `rye/tests/sha3_boundary_test.rye`, so the boundary stays guarded as the library grows.
+
+---
+
+## Why This Is a Good Idea
+
+This one function sits beneath the identity of nearly everything we are building. Mantra names every line of source by it. Silo names every build by it. Content-addressing, the instinct we have traced through every layer, is only ever as trustworthy as the hash that performs it. Were this function to return a wrong digest silently — through a future edit, a porting slip, a subtle change to the sponge — two different contents could come to share one name. The whole promise of content-addressing would quietly break, and nothing would announce it. A single assertion turns that silent, far-reaching corruption into a loud, local stop, caught at the line where the invariant first failed rather than a thousand commits later in a confused merge.
+
+Safety leads, and here safety costs nothing we value. Performance, the second TAME value, is untouched: the assertions vanish in the release build that ships. Developer joy, the third, is served: the invariants, once written, teach every reader exactly how the sponge keeps itself honest, so the function becomes a small lesson instead of a closed box.
+
+And the change is pure **accretion**, in Rich Hickey's sense, honored at the level of a function's contract. Same inputs, same output, forever — we add what the function *says*, never what it *does*. We do not break a single caller, because no caller can tell the difference except by being wrong.
+
+---
+
+## The First Divergence in Substance
+
+Our first divergence from Zig was a divergence in *naming*: Rye counts its versions chronologically while the backend keeps its honest semantic version. That was the right first step — small, visible, and entirely additive.
+
+A TAME-strengthened `std.crypto` is a fitting first divergence in *substance*, and this is it. It shows exactly how we mean to diverge as the languages part ways: not by rewriting algorithms we have no reason to distrust, and not by breaking the contracts our code relies on, but by surrounding proven work with the discipline of stated invariants — safety first, output preserved, every change a sentence that says why. Because the `rye` CLI loads our standard library by path, this file is genuinely ours to tend. The test proves we load our own copy; this is the first deliberate edit that makes our copy *say more* than the baseline while *computing the same*. Rye marks the moment on its own clock: the version advances to `20260618.070012`, while the backend stays honestly `0.16.0` (the scheme is recorded in `../context/specs/rye-versioning-style.md`).
+
+We made the change small on purpose, holding it to the three wrapper boundaries in `sha3.zig` and leaving the deeper sponge in `keccak_p.zig` exactly as it stands — a natural next step, to be taken the same careful way when we choose to. The whole move stays in the open stack, where we study and compare; carrying the broader strengthening into the disciplined design space will go slowly, with the digest fixed by test, the assertions reviewed line by line, and the parity confirmed again on the far side. The hash that names everything deserves nothing less.
+
+---
+
+## Sources and Gratitude
+
+- **`998_MANTRA.md`** — the recommendation of SHA3-512 for content-addressed naming, and the reasoning of safety-first collision resistance that this piece carries down to the function.
+- **`991_useful_utilities.md`** — the conclusion that our `std` already supplies the SHA3 family, so monocypher complements rather than provides it.
+- **Zig 0.16.0's `std.crypto`** — the Keccak sponge, its compile-time guard, and the `TransitionTracker` whose Debug-mode discipline shows the TAME temper was already present in seed. We build on it with gratitude, and only state aloud, additively, the invariants it already keeps.
+
+---
+
+*May the name we give a thing mean that thing alone. May the function beneath our histories stay true, and say so plainly. And may our first strengthening be the shape of every strengthening to come — additive, gentle, and loud only when something is truly wrong.*
