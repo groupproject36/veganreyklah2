@@ -1,6 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 const assert = std.debug.assert;
+const maybe = std.debug.maybe;
 const math = std.math;
 const mem = std.mem;
 const native_endian = builtin.cpu.arch.endian();
@@ -260,6 +261,14 @@ pub fn State(comptime f: u11, comptime capacity: u11, comptime rounds: u5) type 
 
         /// Absorb a slice of bytes into the sponge.
         pub fn absorb(self: *Self, bytes: []const u8) void {
+            // Precondition, and postcondition via defer (so it holds on the
+            // early return too): the cursor rests within one block. This O(1)
+            // bound guards every later copy into the rate-sized buffer; we keep
+            // it at the boundary, not inside the loop, to leave the hot path lean.
+            assert(self.offset <= rate);
+            defer assert(self.offset <= rate);
+            // On entry the buffer may be empty or already partly full.
+            maybe(self.offset == 0);
             self.transition.to(.absorb);
             var i: usize = 0;
             if (self.offset > 0) {
@@ -315,6 +324,11 @@ pub fn State(comptime f: u11, comptime capacity: u11, comptime rounds: u5) type 
 
         /// Mark the end of the input.
         pub fn pad(self: *Self) void {
+            // Precondition: the cursor rests within one block, so buf[0..offset]
+            // is in bounds.
+            assert(self.offset <= rate);
+            // A full pending block is one case pad closes; a partial one another.
+            maybe(self.offset == rate);
             self.transition.to(.absorb);
             self.st.addBytes(self.buf[0..self.offset]);
             if (self.offset == rate) {
@@ -326,11 +340,19 @@ pub fn State(comptime f: u11, comptime capacity: u11, comptime rounds: u5) type 
             self.st.permuteR(rounds);
             self.offset = 0;
             self.transition.to(.updated);
+            // Postcondition: pad closes the message on a clean block boundary.
+            assert(self.offset == 0);
         }
 
         /// Squeeze a slice of bytes from the sponge.
         /// The function can be called multiple times.
         pub fn squeeze(self: *Self, out: []u8) void {
+            // Precondition, and postcondition via defer (covering the early
+            // return): the cursor stays within one block.
+            assert(self.offset <= rate);
+            defer assert(self.offset <= rate);
+            // On entry the cursor may sit at the boundary, partway, or at zero.
+            maybe(self.offset == rate);
             self.transition.to(.squeeze);
             var i: usize = 0;
             if (self.offset == rate) {

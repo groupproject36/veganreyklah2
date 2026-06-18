@@ -1,6 +1,7 @@
 const builtin = @import("builtin");
 const std = @import("std");
 const assert = std.debug.assert;
+const maybe = std.debug.maybe;
 const math = std.math;
 const mem = std.mem;
 
@@ -91,6 +92,10 @@ pub fn Keccak(comptime f: u11, comptime output_bits: u11, comptime default_delim
             // the rate boundary, never past it. The buffer is exactly one block
             // wide, so this bound keeps every later slice in range.
             assert(self.st.offset <= block_length);
+            // A whole-block input lands the cursor exactly on the boundary; a
+            // partial one leaves it short. Both are expected — the very lesson
+            // that made this bound `<=` rather than `<`.
+            maybe(self.st.offset == block_length);
         }
 
         /// Return the hash of the absorbed bytes.

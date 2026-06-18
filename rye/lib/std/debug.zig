@@ -420,6 +420,18 @@ pub fn assert(ok: bool) void {
     if (!ok) unreachable; // assertion failure
 }
 
+/// `maybe` is the dual of `assert`: it states that a condition is *legitimately*
+/// sometimes true and sometimes false. Where `assert` names the positive space
+/// that must always hold, `maybe` names the variable space we expect to vary, so
+/// the negative case is documented rather than merely absent. It does nothing at
+/// runtime — `ok or !ok` is always true — and stands as living documentation a
+/// reviewer can trust and a coverage tool could one day check. (A TAME Style
+/// idiom; see external-research/996_TAME_STYLE.md.)
+pub fn maybe(ok: bool) void {
+    @disableInstrumentation();
+    assert(ok or !ok);
+}
+
 /// Invokes detectable illegal behavior when the provided slice is not mapped
 /// or lacks read permissions.
 pub fn assertReadable(slice: []const volatile u8) void {

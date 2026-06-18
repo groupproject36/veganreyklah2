@@ -25,13 +25,15 @@
 const std = @import("std");
 
 /// Rye's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
-/// larger. Two divergences from Zig live in this scheme. The first was the
-/// scheme itself, stamped 20260617.213112: Rye names its versions on a clock,
-/// while the backend keeps its honest semantic version, reported through
-/// `builtin.zig_version`. This stamp marks the first divergence in *substance*
-/// — a TAME strengthening of SHA3-512 in Rye's own `std` (see
-/// strengthening-compiler/9998_sha3_512.md): additive, parity-identical, unchanged.
-const rye_version = "20260618.070012";
+/// larger. The scheme itself was the first divergence from Zig (20260617.213112):
+/// Rye names its versions on a clock while the backend keeps its honest semantic
+/// version, reported through `builtin.zig_version`. Divergences in *substance*
+/// then accrete, each an additive, parity-identical strengthening of Rye's own
+/// `std`, recorded in the strengthening-compiler stack. This stamp marks the
+/// deeper Keccak sponge strengthening and the new `std.debug.maybe` helper
+/// (strengthening-compiler/9997); the SHA3-512 wrappers came first at
+/// 20260618.070012 (9998). The backend stays honestly 0.16.0 throughout.
+const rye_version = "20260618.072512";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";

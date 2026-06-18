@@ -105,19 +105,21 @@ We carry the scheme all the way down. The backend keeps its own honest semantic 
 
 ---
 
-## The Second Divergence — in Substance
+## Divergence in Substance
 
-The first divergence was a divergence in *naming*. The second, stamped
+The first divergence was a divergence in *naming*. The next, stamped
 
 ```
 20260618.070012
 ```
 
-is the first divergence in *substance*: a deliberate edit to Rye's own standard library. We strengthened the SHA3-512 hash — the function that will give Mantra's lines and Silo's builds their enduring, content-addressed names — by stating its sponge invariants as TAME assertions, named where we lean on them so a fault would stop loudly and near its cause. The full study is `strengthening-compiler/9998_sha3_512.md`.
+was the first divergence in *substance*: a deliberate edit to Rye's own standard library. We strengthened the SHA3-512 hash — the function that will give Mantra's lines and Silo's builds their enduring, content-addressed names — by stating its sponge invariants as TAME assertions, named where we lean on them so a fault would stop loudly and near its cause. The full study is `strengthening-compiler/9998_sha3_512.md`.
 
 It is the gentlest kind of divergence, and the kind we mean to make a habit of. The change is pure accretion at the level of the function's contract: we added what the code *says*, never what it *does*. The digest of any input is byte-for-byte what it was on the Zig 0.16.0 baseline — confirmed by a parity test and a sweep across the block-boundary lengths — and the assertions compile out of a release build, so nothing the shipped code pays for changed. The backend remains `0.16.0`, honest through `builtin.zig_version`; only Rye's own clock advances, because only Rye's own library did.
 
-All three stamps endure together, exactly as accretion asks: `20260617.033512` when we chose the scheme, `20260617.213112` when the scheme became the first divergence, and now `20260618.070012` as our `std` begins — carefully, additively — to become wholly ours.
+From there the substance accretes as a series, each pass recorded in the strengthening-compiler stack. The next stamp, `20260618.072512`, marks the deeper work the SHA3 pass pointed toward: we strengthened the Keccak sponge the hash rests on — its `absorb`, `pad`, and `squeeze` — with the same stated invariants, kept at O(1) boundaries so the hot path stays lean, and gave our `std` the `maybe` helper, the dual of `assert`, to document the space that legitimately varies (`strengthening-compiler/9997_keccak_sponge.md`). It too is pure accretion: every digest is unchanged.
+
+These stamps endure together, exactly as accretion asks: `20260617.033512` when we chose the scheme, `20260617.213112` when the scheme became the first divergence, `20260618.070012` when our `std` first diverged in substance, and `20260618.072512` as that work reached deeper. None is erased; each marks a moment our library became a little more our own.
 
 ---
 
