@@ -37,10 +37,10 @@ SHA256:i2QMVhaiuHiVE+87zHWrxjpF742kyX77LQ4iCe5SuCU
 SHA256:2nVRCdyzWhT2XWk0vS9lWt8VJumFS1rDZBD9lrRlgWE
 ```
 
-**OpenPGP · signing** signs commits, tags, and messages, so each one carries Kaeden's name with cryptographic weight.
+**OpenPGP · signing** is Kaeden's master identity key — the root of trust, for signing tags and messages and certifying keys. It was rotated on 2026-06-18 (the prior master `FE10 7566 …` was retired), and now carries an ASCII-only name. Day-to-day commit signing is delegated to the sandbox key below. Public form: `keys/gpg_signing_06462132.pub.asc`.
 
 ```
-FE10 7566 D9E2 793D AFD9 FF2A B078 5BAB 4DBF C172
+0646 2132 D3E6 3B83 4F97 6E03 A81D 720B 9235 FA7A
 ```
 
 **OpenPGP · sandbox signing** is a dedicated, revocable key the automated agent signs with from inside the ai-jail sandbox, so commits made there carry Kaeden's name without the master key ever entering the sandbox. Its public form rests at `keys/rye_signing_DBF853.pub.asc`.
