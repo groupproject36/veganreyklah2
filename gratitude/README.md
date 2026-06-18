@@ -1,7 +1,7 @@
 # Gratitude
 
 **Language:** EN
-**Last updated:** 2026-06-17
+**Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -16,6 +16,8 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
 
 - **`TIGER_STYLE.md`** — TigerBeetle's coding style guide. Safety, performance, and developer experience, woven into a discipline we admire. Our radiant adaptation lives at `../external-research/996_TAME_STYLE.md`, and the gratitude bridge that records its lineage lives at `../external-research/997_SYSTEM.md`.
   - Source: <https://raw.githubusercontent.com/tigerbeetle/tigerbeetle/refs/heads/main/docs/TIGER_STYLE.md>
+- **`tigerbeetle/`** — TigerBeetle's full source, the financial database whose Tiger Style we adapted into TAME Style. We keep the code close to study how its principles live in practice, especially its assertions: the `maybe` dual of `assert`, the precondition blocks gathered at each function's door, and the control-plane / data-plane economy that decides when an expensive check earns a `verify` gate. Those three habits are folded into `../external-research/996_TAME_STYLE.md`, and the discipline of carrying such craft into Rye's own `std` is recorded in `../strengthening-compiler/9999_STRENGTHENING.md`. Cloned whole and unmodified (rev `59f2b99`), Apache-2.0.
+  - Source: <https://github.com/tigerbeetle/tigerbeetle>
 - **`Spec_ulation.md`** — Rich Hickey's 2016 talk on change, versioning, and the commitment to never take something away. It shapes how Rye names its versions, recorded in `../context/specs/rye-versioning-style.md`.
   - Source: <https://raw.githubusercontent.com/matthiasn/talk-transcripts/refs/heads/master/Hickey_Rich/Spec_ulation.md>
 - **`LanguageSystem.md`** — Rich Hickey's 2012 talk on the language of the system: how systems are ensembles of programs that flow values to one another, with enduring names, simple services, and the systems failure model held as the normal case. It shapes how we think about boots, kernels, and networks, honored in `../external-research/997_SYSTEM.md` and voiced directly in `../external-research/993_aurora_boot_riscv.md`.

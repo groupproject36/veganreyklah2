@@ -16,3 +16,6 @@
 [submodule "gratitude/libqrencode"]
 	path = gratitude/libqrencode
 	url = https://github.com/fukuchi/libqrencode
+[submodule "gratitude/tigerbeetle"]
+	path = gratitude/tigerbeetle
+	url = https://github.com/tigerbeetle/tigerbeetle

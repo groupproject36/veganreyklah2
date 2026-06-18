@@ -3,9 +3,10 @@
 *The coding style for Rye — safety, performance, and developer experience, in that order.*
 
 **Language:** EN
-**Version:** `20260617.195512` (Rye chronological stamp)
-**Last updated:** 2026-06-17
+**Version:** `20260618.071612` (Rye chronological stamp)
+**Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Voice:** Reya 2
 **Status:** Living
 
 ---
@@ -78,6 +79,12 @@ These safety rules will change how you write code, for good. Here is how we live
 - **Assert the relationships of compile-time constants**, as a sanity check and as living documentation of subtle invariants and type sizes. Compile-time assertions are wonderfully powerful: they verify the design's integrity before the program ever runs.
 - **The golden rule: assert the _positive space_ you expect, and assert the _negative space_ you reject.** The boundary between valid and invalid is exactly where the interesting bugs gather. For the same reason, tests cover that boundary exhaustively — valid data, invalid data, and valid data as it crosses into invalid.
 - Assertions support human understanding rather than replacing it. A fuzzer reveals the presence of bugs, leaving their absence unproven. So we build a precise mental model first, encode that understanding as assertions, write the code and comments to justify the model to a reviewer, and let the simulator stand as the final line of defense.
+
+**Three habits we sharpened by reading closely.** Studying how a database built on these very principles writes its assertions in practice — TigerBeetle, in Zig — gave us three refinements worth keeping. We record them here with gratitude: the craft learned by example, the application made our own.
+
+- **Mark the variable space with `maybe`, the dual of `assert`.** Where `assert` names what must always hold, `maybe(condition)` names what is *legitimately* sometimes true and sometimes false. It reads as documentation today — a statement a reviewer can trust, and one a coverage tool could one day check — and it completes the golden rule: assert the positive space, reject the negative space, and mark with `maybe` the space that genuinely varies. A single line defines it: `fn maybe(ok: bool) void { assert(ok or !ok); }`.
+- **Open a function with its preconditions.** Gather a function's argument and state checks into a small block at its very entrance, so a reader meets the rules the function depends on before meeting the work it does. The shape grows familiar and scannable: the door states plainly what must hold to pass through it.
+- **Spend assertions where they are free, and gate them where they are dear.** Assertions are a safety budget we spend deliberately. In the control plane — coordination code that batching already makes cheap — assert without hesitation; it is fine to spend O(n) time checking an O(1) result, because the path is rare. In the data plane — the hot inner loops — assert the O(1) precondition unconditionally before an O(n) loop, yet guard a costly per-iteration check behind a compile-time `verify` flag, so the thorough version runs in tests and simulation while the shipped path stays lean. Never spend an O(n) assertion on an O(1) computation. This is how dense safety and a fast path live together — the same line between control plane and data plane we draw for performance, now drawn for assertions too.
 
 **Allocate all memory at startup.** After initialization, Rye programs allocate nothing dynamically — no new allocations, no free-and-reallocate. This keeps behavior predictable, keeps performance steady, and closes the door on use-after-free. As a happy second-order effect, designing for all memory upfront tends to produce simpler, faster systems that are easier to reason about.
 

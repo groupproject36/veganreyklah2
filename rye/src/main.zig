@@ -30,7 +30,7 @@ const std = @import("std");
 /// while the backend keeps its honest semantic version, reported through
 /// `builtin.zig_version`. This stamp marks the first divergence in *substance*
 /// — a TAME strengthening of SHA3-512 in Rye's own `std` (see
-/// external-research/990): additive, parity-identical, the digest unchanged.
+/// strengthening-compiler/9998_sha3_512.md): additive, parity-identical, unchanged.
 const rye_version = "20260618.070012";
 
 /// The Zig toolchain version this first Rye stands upon.

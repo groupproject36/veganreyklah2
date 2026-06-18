@@ -113,7 +113,7 @@ The first divergence was a divergence in *naming*. The second, stamped
 20260618.070012
 ```
 
-is the first divergence in *substance*: a deliberate edit to Rye's own standard library. We strengthened the SHA3-512 hash — the function that will give Mantra's lines and Silo's builds their enduring, content-addressed names — by stating its sponge invariants as TAME assertions, named where we lean on them so a fault would stop loudly and near its cause. The full study is `external-research/990`.
+is the first divergence in *substance*: a deliberate edit to Rye's own standard library. We strengthened the SHA3-512 hash — the function that will give Mantra's lines and Silo's builds their enduring, content-addressed names — by stating its sponge invariants as TAME assertions, named where we lean on them so a fault would stop loudly and near its cause. The full study is `strengthening-compiler/9998_sha3_512.md`.
 
 It is the gentlest kind of divergence, and the kind we mean to make a habit of. The change is pure accretion at the level of the function's contract: we added what the code *says*, never what it *does*. The digest of any input is byte-for-byte what it was on the Zig 0.16.0 baseline — confirmed by a parity test and a sweep across the block-boundary lengths — and the assertions compile out of a release build, so nothing the shipped code pays for changed. The backend remains `0.16.0`, honest through `builtin.zig_version`; only Rye's own clock advances, because only Rye's own library did.
 

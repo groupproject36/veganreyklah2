@@ -19,6 +19,7 @@
 !/rye-learning-process/
 !/gratitude/
 !/tools/
+!/strengthening-compiler/
 
 # --- Re-ignore fetched dependencies and build artifacts inside the project --
 # The Zig toolchain is large and fetched, not authored (the binary alone is
