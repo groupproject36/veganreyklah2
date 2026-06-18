@@ -38,6 +38,19 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
 - **`ai-jail/`** — Fabio Akita's sandbox wrapper for AI coding agents. It layers Linux's own isolation primitives — `bwrap` namespaces, Landlock filesystem rules, seccomp syscall filtering, and resource limits — so an agent reaches only the paths you allow. It is the very sandbox we work inside, and it seeds **Pond**, our gentle TAME Rye reimplementation, explored in `../external-research/991_useful_utilities.md`. Cloned whole and unmodified, GPLv3.
   - Source: <https://github.com/akitaonrails/ai-jail>
 
+### The networking and social study (`985`, `984`)
+
+- **`urbit/`** — the Urbit project's clean-slate personal server. We study its networking above all: **Ames**, an encrypted-by-default peer-to-peer protocol where identity and address are one and the same, every packet sealed with AES-256-SIV under a Curve25519 Diffie–Hellman key; and **Jael**, the vane that keeps the keys (private keys held, peers' public keys, life and rift). Their essences — encryption at identity, and a clean continuity-breach failure — are adapted and weighed in `../external-research/985_encrypted_networking_riscv.md`. Cloned shallow (depth 1), MIT.
+  - Source: <https://github.com/urbit/urbit>
+- **`sui/`** — Mysten Labs' Sui. We study two things: **Mysticeti**, a Byzantine consensus that commits an *uncertified* DAG in three message delays by reading the graph's own shape; and **Move**, an object-centric language that declares a transaction's effects up front and verifies bytecode before it runs. Their essences — order by structure, verify before you trust — inform `../external-research/985_...` and `../external-research/984_...`. Cloned shallow (depth 1), Apache-2.0.
+  - Source: <https://github.com/MystenLabs/sui>
+- **`nips/`** — the Nostr Implementation Possibilities, the technical heart of Nostr: signed, content-addressed events; simple store-and-forward relays; identity as a keypair. They anchor our reading of a simple, owned social layer in `../external-research/984_devotional_social_layer.md`. Cloned whole; openly published for anyone to implement.
+  - Source: <https://github.com/nostr-protocol/nips>
+- **`primal/`** — PrimalHQ's caching service for Nostr (the archived original; development continues at `primal-server`). It connects to relays, gathers their events in real time, and serves them to clients as curated feeds over a WebSocket cache API — a working study in curation-by-service, weighed in `../external-research/984_...`. Cloned shallow (depth 1), MIT.
+  - Source: <https://github.com/PrimalHQ/primal-caching-service>
+- **`damus/`** — the damus-io community's Nostr client for iOS and macOS, signing and verifying at the edge across many NIPs. It shows the protocol lived from the user's side, honored in `../external-research/984_...`. Cloned shallow (depth 1), GPL-3.0.
+  - Source: <https://github.com/damus-io/damus>
+
 ---
 
 *May we remember where the good ideas came from. May we carry them forward with care. May our thanks live in how well we use what we were given.*

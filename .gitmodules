@@ -19,3 +19,18 @@
 [submodule "gratitude/tigerbeetle"]
 	path = gratitude/tigerbeetle
 	url = https://github.com/tigerbeetle/tigerbeetle
+[submodule "gratitude/nips"]
+	path = gratitude/nips
+	url = https://github.com/nostr-protocol/nips
+[submodule "gratitude/damus"]
+	path = gratitude/damus
+	url = https://github.com/damus-io/damus
+[submodule "gratitude/primal"]
+	path = gratitude/primal
+	url = https://github.com/PrimalHQ/primal-caching-service
+[submodule "gratitude/urbit"]
+	path = gratitude/urbit
+	url = https://github.com/urbit/urbit
+[submodule "gratitude/sui"]
+	path = gratitude/sui
+	url = https://github.com/MystenLabs/sui
