@@ -56,6 +56,12 @@ proven, one careful step at a time — and each shares Rye's value model, so a
 value made in a Rye program and a value carried through a Rishi pipeline are the
 same value.
 
+Two north stars guide that growth. `tests/hello.rish` is what runs today;
+`examples/pond.rish` is where we are headed — an illustrative sketch of Rishi
+composing a sandbox policy as a value and opening a **Pond** enclosure over
+Caravan's isolation and Tally's bounded gardens. The reasoning lives in
+`../external-research/987_pond_foundation.md`.
+
 A note on the horizon: this version speaks through the same channel our test
 programs use, so its output sits beside theirs. Routing `say` to standard output
 in its own right is a small, early refinement on the way.
