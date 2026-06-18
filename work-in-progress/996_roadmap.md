@@ -3,7 +3,7 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260618.191412` (Rye chronological stamp)
+**Version:** `20260618.194012` (Rye chronological stamp)
 **Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -83,11 +83,11 @@ So the trunk advances and the branch is planted together: we teach Rye to emit a
 
 ---
 
-## The Step Just Taken, and the Next
+## The Steps Just Taken, and the Next
 
-The shared seed is planted. `rye build` now emits a freestanding RISC-V binary, and `aurora/run-seed.sh` wakes it on `qemu-system-riscv64`: a hart comes up at the base of RAM, gives itself a stack, speaks one asserted line, and powers the machine down cleanly (exit 0). Rye's RISC-V cohesion and Aurora's first living stage arrived together, as one step, stamped `20260618.191412` — the seed and its story in `../aurora/`.
+Three steps are taken, each grown from the last. **Rye builds a freestanding RISC-V binary** and wakes it on `qemu-system-riscv64` (`aurora/run.sh`): a hart comes up at the base of RAM, gives itself a stack, speaks one asserted line, and powers down cleanly — Rye's RISC-V cohesion and Aurora's first living stage in one move (`20260618.191412`). **Rye is now written in Rye**: the `rye` and `rishi` sources carry the `.rye` name, Rye builds itself, and Rishi is built by `rye build`. And the seed has grown its **first relay** (`aurora/run.sh relay`): a boot as a flow of named values, where one stage reads the machine's identity, the next proves an invariant of it and speaks it, and the last rests — each handoff a tail call, each stage asserted.
 
-The next step grows from it: a **second asserted stage** — the seed reads a register or a device, proves the value it finds, and hands off — turning one line of output into the first true relay. Rishi's own next feature, list values toward `parity.rish`, continues in parallel.
+The next step grows from the relay: a stage that hands the next a value *it chose* — a real decision, not only a reading — the seed of a boot that selects what runs next. Rishi's own next feature, list values toward `parity.rish`, continues in parallel.
 
 ---
 

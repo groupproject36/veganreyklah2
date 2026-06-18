@@ -7,7 +7,7 @@
 //! operating system sits beneath it and no standard library above it — only
 //! Rye's own toolchain, aimed at bare metal, and an emulator to wake in.
 //!
-//! Build and run it with `../run-seed.sh`, which calls `rye build` to emit the
+//! Build and run it with `../run.sh`, which calls `rye build` to emit the
 //! freestanding ELF and `qemu-system-riscv64 -machine virt` to wake it. The
 //! fuller vision of Aurora lives in
 //! `../../external-research/993_aurora_boot_riscv.md`, read forward through
