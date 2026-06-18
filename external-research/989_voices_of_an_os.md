@@ -1,6 +1,6 @@
-# 989 · One Language or Many? Rye, the Shell, and the Voices of an OS
+# 989 · One Language or More? Rye, the Shell, and the Voices of an OS
 
-*Should Rye also be the scripting and shell language of our future OS, or should the shell have its own language — a more TAME execline, or something in the spirit of Zig, Haskell, or Nix/Silo? And where does Mantra, our version control, sit among them? The question rests on a hidden assumption: that "the shell" is one thing. It is not. An OS speaks several languages, held together by one memory, and the art is to make them a coherent family rather than one language stretched thin or a babel of strangers.*
+*Should our future OS speak in one language or more? Should Rye also be its shell and scripting language, or should the shell have its own — a more TAME execline, or something in the spirit of Zig, Haskell, or Nix/Silo? And where does Mantra, our version control, sit among them? The question rests on a hidden assumption: that "the shell" is one thing. It is not. An OS speaks several languages, held together by one memory, and the art is to make them a coherent family rather than one language stretched thin or a babel of strangers.*
 
 **Language:** EN
 **Version:** `20260618.150112` (Rye chronological stamp)
@@ -16,7 +16,7 @@
 
 We are building Rye as a systems language, and an operating system, Caravan, to run on it. A natural thrift suggests itself: if we already have Rye, why design a second language for the shell? Let the language that writes the programs also write the scripts. Against that thrift stands an old instinct from Unix and Plan 9 — that the shell wants a language of its own — and the question of which spirit that language should carry: the no-surprise chain-loading of execline, the explicit comptime of Zig, the typed composition of Haskell, or the declarative laziness of Nix and our own Silo. And once a family of them exists, a further question presses: where does Mantra, our version control, sit among them?
 
-We will answer it all, but first we have to take the question apart, because it hides a false premise.
+One language, or more? We will answer it, but first we have to take the question apart, because it hides a false premise.
 
 ---
 
