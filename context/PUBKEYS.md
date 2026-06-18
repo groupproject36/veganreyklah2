@@ -1,12 +1,12 @@
 # Public Keys
 
 **Language:** EN
-**Last updated:** 2026-06-16
+**Last updated:** 2026-06-18
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
 
-This file holds the public face of Kaeden's developer identity: three fingerprints anyone can use to confirm that a commit, a push, or a signed message truly comes from Kaeden. Each string here travels freely — printed on a card, pinned to a profile, read aloud at a key-signing. The matching private keys stay close, resting safely on Kaeden's own machines, while this file keeps only their public counterparts.
+This file holds the public face of Kaeden's developer identity: four fingerprints anyone can use to confirm that a commit, a push, or a signed message truly comes from Kaeden. Each string here travels freely — printed on a card, pinned to a profile, read aloud at a key-signing. The matching private keys stay close: three rest safely on Kaeden's own machines, and one dedicated signing key lives in the project's sandbox keyring so the automated agent can sign commits from inside ai-jail. This file keeps only their public counterparts.
 
 Keep this file current. When a key rotates, record the new fingerprint here and date the change, so the canonical record and the keys out in the world stay in agreement.
 
@@ -23,7 +23,7 @@ These keys belong to **Kaeden Reyklah**.
 
 ## The Keys
 
-All three keys use the ed25519 family — two SSH keys for the forges, one OpenPGP key for signing. Each fingerprint below stands ready for checking against its source.
+All keys use the ed25519 family — two SSH keys for the forges, and two OpenPGP keys for signing: Kaeden's master, and a dedicated sandbox key the automated agent signs with. Each fingerprint below stands ready for checking against its source.
 
 **Codeberg · SSH** authenticates pushes and pulls on Codeberg, where the `xwb122m` work lives.
 
@@ -41,6 +41,12 @@ SHA256:2nVRCdyzWhT2XWk0vS9lWt8VJumFS1rDZBD9lrRlgWE
 
 ```
 FE10 7566 D9E2 793D AFD9 FF2A B078 5BAB 4DBF C172
+```
+
+**OpenPGP · sandbox signing** is a dedicated, revocable key the automated agent signs with from inside the ai-jail sandbox, so commits made there carry Kaeden's name without the master key ever entering the sandbox. Its public form rests at `keys/rye_signing_DBF853.pub.asc`.
+
+```
+DBF8 5343 7A93 7B4E 36B9 3611 D949 807A C26B 2B99
 ```
 
 ---
