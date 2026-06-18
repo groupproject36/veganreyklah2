@@ -18,6 +18,7 @@
 !/rye/
 !/rye-learning-process/
 !/gratitude/
+!/tools/
 
 # --- Re-ignore fetched dependencies and build artifacts inside the project --
 # The Zig toolchain is large and fetched, not authored (the binary alone is
@@ -27,6 +28,13 @@
 .zig-cache/
 zig-cache/
 .DS_Store
+
+# --- tools/ : ship the template, withhold the personal fill-in --------------
+# The committed key-card.conf.example is the template anyone copies; the real
+# key-card.conf holds one person's details and stays local. tools/.build holds
+# the qrencode binary we compile on demand from the vendored source.
+/tools/key-card.conf
+/tools/.build/
 
 # --- Local key material — never tracked -------------------------------------
 # The allow-list above already excludes anything outside the project, but we

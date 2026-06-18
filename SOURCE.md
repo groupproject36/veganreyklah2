@@ -98,13 +98,30 @@ The private half never leaves your keeping. The public half travels freely.
 
 ## Step 4 — Fingerprints as Art (Fira Code QR Codes)
 
-A fingerprint is meant to be shared and checked. It is also, quietly, beautiful — and your AI agent can render it as art. Once Cursor is set up (Step 5), ask the agent, in plain words:
+A fingerprint is meant to be shared and checked. It is also, quietly, beautiful — so this repository carries a small tool that turns yours into a card: three QR codes — SSH for Codeberg, SSH for GitHub, and your OpenPGP signing key — gathered under your name in the typeface that loves code, rendered once tall and once wide.
 
-> "Turn my SSH and GPG fingerprints into QR code images, styled in Fira Code, one **portrait** and one **landscape**, for social media and my personal archive."
+The tool reads your details from a config file, so it works for anyone. Copy the template, fill in your own values, and run it:
 
-You will get clean, scannable images — one tall, one wide — that carry your keys' fingerprints in a typeface that loves code. Pin them to a profile, print them, keep them. They prove your identity to anyone who scans, and they look like you mean it.
+```bash
+cp tools/key-card.conf.example tools/key-card.conf   # then edit with your details
+./tools/make-key-card.sh
+```
 
-This repository carries a finished example to model yours on: `keys_firacode_veganreyklah2_landscape.png` and `keys_firacode_veganreyklah2_portrait.png` gather three public-key fingerprints — SSH for Codeberg, SSH for GitHub, and the OpenPGP signing key — into a single Fira Code card. Fingerprints are public by design, so these images are safe to share anywhere.
+Your `tools/key-card.conf` holds only **public** information — your name, your forge handle, your email, and the three fingerprints you already gathered in Steps 2 and 3. Even so, it stays out of git (the committed `.example` is the only version tracked), so the repository ships the template and you keep the fill-in. To read your fingerprints back at any time:
+
+```bash
+ssh-keygen -lf ~/.ssh/id_ed25519_codeberg.pub    # the SHA256:... line
+ssh-keygen -lf ~/.ssh/id_ed25519_github.pub
+gpg --fingerprint you@example.com                 # the spaced 40-hex string
+```
+
+The script builds its QR encoder from source on first run — `qrencode`, vendored as a submodule at `gratitude/libqrencode` and compiled into the gitignored `tools/.build/` — then composes the card with ImageMagick. It needs `gcc`, `libpng-dev`, `pkg-config`, ImageMagick, and the Fira Code font present; on Debian or Ubuntu, `sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode` covers them. The result is two images at the repository root, `keys_firacode_<yourhandle>_landscape.png` and `…_portrait.png`, in the warm `#FF7F00` on `#444400` palette. Pin them to a profile, print them, keep them: they prove your identity to anyone who scans, and they look like you mean it.
+
+This repository carries a finished pair to model yours on — `keys_firacode_veganreyklah2_landscape.png` and its portrait twin. Fingerprints are public by design, so these images are safe to share anywhere.
+
+If Cursor is already set up (Step 5), you can simply ask the agent to do all of this for you — *"fill in my key-card config and render my Fira Code cards"* — and it will, entirely from inside the sandbox.
+
+> A note on the horizon: both halves of this tool lean on others' work we are grateful for — `libqrencode` for the codes, ImageMagick for the composition. In time, both are candidates to be re-grown in Rye, our own language, the same way **Pond** re-grows the sandbox.
 
 ---
 
