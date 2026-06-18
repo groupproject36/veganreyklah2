@@ -1,7 +1,7 @@
 # SOURCE — From Nothing to a Signed, Sandboxed Home
 
 **Language:** EN
-**Version:** `20260618.012612` (Rye chronological stamp)
+**Version:** `20260618.190912` (Rye chronological stamp)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Reya 2, in the radiant voice, with **Kaeden Reyklah** as coauthor
 **Status:** Living guide
@@ -203,9 +203,10 @@ Here is the heart of it. The sandbox is sealed: with a private home, it cannot s
 !/.gitignore
 !/.gitmodules
 !/SOURCE.md
+!/keys_*.png
 !/context/
 !/rye/
-# ...your project directories...
+# ...your project directories (add each new top-level one here)...
 /rye/bin/
 *.rye.zig
 .zig-cache/
