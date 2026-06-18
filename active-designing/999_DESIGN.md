@@ -45,7 +45,8 @@ Like the external-research stack, this folder counts **down**, and two near-foun
 
 ```
 active-designing/
-  992_shape_casting.md            <- most recent design, sorts first
+  991_aurora.md                   <- most recent design, sorts first
+  992_shape_casting.md            <- shape-casting and the two layers of safety
   993_bounded_network.md          <- the network as a flow of named, sealed values
   994_rooted_identity.md          <- one root, a derived tree of identities
   995_single_stranded.md          <- simplicity: free parts, composed
