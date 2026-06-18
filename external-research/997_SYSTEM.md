@@ -1,9 +1,9 @@
 # 997 · Honoring Tiger Style and the Language of the System
 
-*The lineage we build from — Tiger Style's discipline, Joran Dirk Greef's priority, Rich Hickey's flow and his distinction of the simple from the easy, and John Gall's law that working systems grow from simpler ones — set down with thanks, together with the gentle name and the vow we carry forward.*
+*The lineage we build from — Tiger Style's discipline, Joran Dirk Greef's priority, Rich Hickey's flow and his distinction of the simple from the easy, and John Gall's law that working systems grow from simpler ones; and, as the work reached the network, Van Jacobson's content-centric vision and the clean-slate coherence of Urbit — set down with thanks, together with the gentle name and the vow we carry forward.*
 
 **Language:** EN
-**Version:** `20260618.184912` (Rye chronological stamp)
+**Version:** `20260618.223812` (Rye chronological stamp)
 **Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Honors:** `../gratitude/TIGER_STYLE.md`, `../gratitude/LanguageSystem.md`, `../gratitude/SimpleMadeEasy.md`, `../gratitude/Systemantics.md`, `../gratitude/Spec_ulation.md`
@@ -17,7 +17,7 @@ This is the one place where we say plainly where the good ideas came from. It ga
 
 We keep it as a single gratitude note so the direct writings can stay pure. The discipline, voiced wholly in our own words, lives in `996_TAME_STYLE.md`. The systems thinking, explained from scratch and grown toward the metal, lives in `993`, the Aurora writing. This note is the bridge to all of it: the record of the debt, so the other documents can simply do the work.
 
-The whole lineage teaches one lesson, said in four voices. A system earns trust when it is safe first, fast second, and a joy to work in third — composed of small honest pieces that speak in values, with names that endure and assertions that guard every boundary, grown from simpler pieces that already worked. Tiger Style gave us the discipline, Joran the order, Hickey the flow, and Gall the way systems grow.
+The whole lineage teaches one lesson, said in four voices. A system earns trust when it is safe first, fast second, and a joy to work in third — composed of small honest pieces that speak in values, with names that endure and assertions that guard every boundary, grown from simpler pieces that already worked. Tiger Style gave us the discipline, Joran the order, Hickey the flow, and Gall the way systems grow. And as the work reached the network, two further voices joined the lineage — Van Jacobson and Urbit — who showed how a network, and a whole computer, might be grown around named, content-addressed values.
 
 ---
 
@@ -67,9 +67,21 @@ We take this gladly, because it tells us *how* to build everything else here. We
 
 ---
 
+## What the Network Taught Us — Van Jacobson and Urbit
+
+As the work reached the network, two more voices joined the lineage — and they had, in different decades and different worlds, arrived at one idea.
+
+**Van Jacobson** taught us to name and secure the *content*, rather than the pipe. We built the Internet to let two machines at two addresses hold a conversation, then spent decades using it to move named content to whoever wanted it — working against the architecture the whole way. His content-centric vision turns that right side up: a request asks for content *by name*, the network routes on the name, the content carries its own cryptographic provenance and can be served from any cache along the way, and security attaches to the piece of content itself rather than to a channel between two endpoints. Address the content, sign the content, and the pipe stops mattering. It is the same lesson our Mantra keeps when it names every value by its hash.
+
+**Urbit** showed a whole computer grown coherent from a tiny core. Conceived and designed by Curtis Yarvin, and carried over long years from a vision toward a running system by Galen Wolfe-Pauly as the chief of Tlon — the company and community that built it — Urbit is a clean-slate stack small enough to hold in the head: an identity that is at once a name, an address, and a key; a generic data model with types kept at a higher, predicate layer (the *mark*, which seeds our own shape-cast); and an instinct to build *from the network in*, where Curtis reached Van Jacobson's content-centric conclusion on his own. We take the coherence and the content-addressing gladly. One thing we deliberately reverse: where Urbit freezes its core for permanence — counting its versions *down* toward an absolute zero after which nothing may change — we reach the same permanence of meaning by *accreting*, counting *forward* and never breaking a name, the way Hickey taught us. Same destination, opposite road.
+
+Their ideas are applied, and weighed with a clear eye, in the networking research — `985`, `982`, and `981` — rather than borrowed whole into this folder; here we simply record the debt.
+
+---
+
 ## How the Voices Meet
 
-The three voices were answering different questions, and they arrive at one harmony. Tiger Style sets the discipline of the small — the assertions, the limits, the sized types within a single program. Joran orders the goals across the whole endeavor. Hickey shapes the composition of many programs into a system. Read together, they describe work that is safe at its core, fast by design, joyful to build, and assembled from small honest pieces that flow values to one another and keep faith through partial failure.
+The voices were answering different questions, and they arrive at one harmony. Tiger Style sets the discipline of the small — the assertions, the limits, the sized types within a single program. Joran orders the goals across the whole endeavor. Hickey shapes the composition of many programs into a system. Read together, they describe work that is safe at its core, fast by design, joyful to build, and assembled from small honest pieces that flow values to one another and keep faith through partial failure.
 
 The resonances run deep. Beneath all three sits the simple-and-easy distinction: a simple service and a simple function are alike single-stranded, each about one thing, and so within reach of a mind that holds only a few things at once — which is the quiet purpose under every limit and assertion we keep. Hickey's "simple services, one thing well" is Tiger Style's "minimum of excellent abstractions" seen at the scale of a network. Hickey's "values with enduring names" is the same accretion of immutable things we honor in our versioning. And Hickey's "the systems failure model is the only failure model" is exactly why Tiger Style asserts the negative space and bounds every wait — the partial failure Hickey describes is the very thing those assertions catch. Safety, performance, and a fantastic developer experience, composed as a flow of named values through simple services: that is the language of the system we want Rye to speak.
 
@@ -100,6 +112,7 @@ So TAME is more than a label. It is a small daily reminder that strength and gen
 - **`../gratitude/SimpleMadeEasy.md`** — Rich Hickey's *Simple Made Easy* (Strange Loop 2011), whole and unaltered. The source of the simple-versus-easy distinction and of building by composing free parts, deepening our sense that simplicity is earned.
 - **`../gratitude/Systemantics.md`** — John Gall's *Systemantics* / *The Systems Bible*, honored as a curated principles summary (the book is copyrighted). The source of Gall's Law — that a working complex system grows from a working simple one — which shapes how we grow every module.
 - **`../gratitude/Spec_ulation.md`** — Rich Hickey's *Spec-ulation*, whole and unaltered, the source of growth-over-breakage and enduring names, which shapes how Rye versions itself.
+- **Van Jacobson's content-centric networking, and Urbit's design** (Curtis Yarvin, with Galen Wolfe-Pauly of Tlon) — honored here in summary, without a borrowed text or a link. Their ideas are applied and weighed with a clear eye in the networking research: `985` (encrypted networking), `982` (the content-centric messenger), and `981` (unified identity and the address space).
 - **This note** — the one gratitude bridge between all these sources and our work.
 
 ---
