@@ -1,12 +1,12 @@
 # 997 · Honoring Tiger Style and the Language of the System
 
-*The lineage we build from — Tiger Style's discipline, Joran Dirk Greef's priority, and Rich Hickey's flow — set down with thanks, together with the gentle name and the vow we carry forward.*
+*The lineage we build from — Tiger Style's discipline, Joran Dirk Greef's priority, and Rich Hickey's flow and his distinction of the simple from the easy — set down with thanks, together with the gentle name and the vow we carry forward.*
 
 **Language:** EN
-**Version:** `20260617.195412` (Rye chronological stamp)
-**Last updated:** 2026-06-17
+**Version:** `20260618.182312` (Rye chronological stamp)
+**Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Honors:** `../gratitude/TIGER_STYLE.md`, `../gratitude/LanguageSystem.md`, `../gratitude/Spec_ulation.md`
+**Honors:** `../gratitude/TIGER_STYLE.md`, `../gratitude/LanguageSystem.md`, `../gratitude/SimpleMadeEasy.md`, `../gratitude/Spec_ulation.md`
 **Status:** Gratitude
 
 ---
@@ -49,11 +49,21 @@ Hickey also names what we still lack: a good way to express, at the system level
 
 ---
 
+## The Simple and the Easy
+
+Hickey gave another talk, *Simple Made Easy*, that names a distinction we lean on everywhere — and it belongs here because it sits beneath all the rest. **Simple and easy are different things, measured on different axes.** *Simple* is about how a thing is made: whether its parts stand free, each about one thing — single-stranded, of one fold — or whether they are braided through one another. *Easy* is about how near a thing lies: how familiar it feels, how quickly we can reach for it, how well it fits the skills already in our hands. A thing can be easy and tangled, or simple and unfamiliar; one rarely decides the other.
+
+We build by **composing** — laying free parts side by side, so any one can be drawn out, understood, and changed on its own. Hickey gives the opposite a revived old word, *complecting*, for braiding parts together; we keep the lesson and choose the gentler image, leading with what we want rather than what we shun: threads kept free, set beside one another, each still its own. The reason is humane and practical at once — a person holds only a few things in mind at a time, so parts that stand free stay within reach of understanding, while braided ones soon pass beyond it.
+
+So we choose the simple over the merely easy, even when the easy lies closer to hand, because what stands free can be reasoned about, and what can be reasoned about can be trusted, changed, and trusted again. Simplicity is a choice, asking for care and a steady eye; it is the hardest revision rather than the first attempt — exactly what Tiger Style means in treating simplicity as something earned. And its reward is the one every builder longs for: the freedom to change course, because the pieces stay clear enough to rethink.
+
+---
+
 ## How the Voices Meet
 
 The three voices were answering different questions, and they arrive at one harmony. Tiger Style sets the discipline of the small — the assertions, the limits, the sized types within a single program. Joran orders the goals across the whole endeavor. Hickey shapes the composition of many programs into a system. Read together, they describe work that is safe at its core, fast by design, joyful to build, and assembled from small honest pieces that flow values to one another and keep faith through partial failure.
 
-The resonances run deep. Hickey's "simple services, one thing well" is Tiger Style's "minimum of excellent abstractions" seen at the scale of a network. Hickey's "values with enduring names" is the same accretion of immutable things we honor in our versioning. And Hickey's "the systems failure model is the only failure model" is exactly why Tiger Style asserts the negative space and bounds every wait — the partial failure Hickey describes is the very thing those assertions catch. Safety, performance, and a fantastic developer experience, composed as a flow of named values through simple services: that is the language of the system we want Rye to speak.
+The resonances run deep. Beneath all three sits the simple-and-easy distinction: a simple service and a simple function are alike single-stranded, each about one thing, and so within reach of a mind that holds only a few things at once — which is the quiet purpose under every limit and assertion we keep. Hickey's "simple services, one thing well" is Tiger Style's "minimum of excellent abstractions" seen at the scale of a network. Hickey's "values with enduring names" is the same accretion of immutable things we honor in our versioning. And Hickey's "the systems failure model is the only failure model" is exactly why Tiger Style asserts the negative space and bounds every wait — the partial failure Hickey describes is the very thing those assertions catch. Safety, performance, and a fantastic developer experience, composed as a flow of named values through simple services: that is the language of the system we want Rye to speak.
 
 ---
 
@@ -79,6 +89,7 @@ So TAME is more than a label. It is a small daily reminder that strength and gen
 
 - **`../gratitude/TIGER_STYLE.md`** — TigerBeetle's Tiger Style, whole and unaltered, where the priority order and the safety discipline are stated. Voiced directly, in our own words, in `996_TAME_STYLE.md`.
 - **`../gratitude/LanguageSystem.md`** — Rich Hickey's *The Language of the System* (Clojure/conj 2012), whole and unaltered. The source of the flow model, values-with-names, the systems failure model, and simple services. Explained directly in `993`, the Aurora writing.
+- **`../gratitude/SimpleMadeEasy.md`** — Rich Hickey's *Simple Made Easy* (Strange Loop 2011), whole and unaltered. The source of the simple-versus-easy distinction and of building by composing free parts, deepening our sense that simplicity is earned.
 - **`../gratitude/Spec_ulation.md`** — Rich Hickey's *Spec-ulation*, whole and unaltered, the source of growth-over-breakage and enduring names, which shapes how Rye versions itself.
 - **This note** — the one gratitude bridge between all these sources and our work.
 
