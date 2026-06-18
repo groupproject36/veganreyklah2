@@ -1,7 +1,7 @@
 # 999 · The Active-Designing Stack
 
 **Language:** EN
-**Last updated:** 2026-06-17
+**Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -19,7 +19,7 @@ This file, `999_DESIGN.md`, is the foundation stone. It rests at the bottom of t
 
 One rule governs everything here, and it is the reason this folder stands apart: **active-designing names only what is ours, and one fixed external.**
 
-The names we may use are our own chosen modules — **TAME, Aurora, Rye, Silo, Tally, Caravan**, and any future names we coin — together with **RISC-V**, the open instruction set we build upon and treat as solid ground. No other project, product, language, or person is named here. Not the systems that inspired us, not the tools we admire, not even the languages our work descends from. Those belong elsewhere.
+The names we may use are our own chosen modules — **TAME, Aurora, Rye, Silo, Tally, Caravan, Mantra, Pond, Rishi, Setu**, and any future names we coin — together with **RISC-V**, the open instruction set we build upon and treat as solid ground. No other project, product, language, or person is named here. Not the systems that inspired us, not the tools we admire, not even the languages our work descends from. Those belong elsewhere.
 
 This is quarantine as a kindness to clarity. Outside ideas enter only as **concepts**, stripped of their origin and weighed on their own merits — a region of memory, a content-addressed store, a supervision tree, a lawful combinator. By refusing the borrowed name, we force ourselves to understand the idea well enough to restate it plainly, and we keep our design space free of any genealogy that might quietly smuggle in assumptions we never chose. What grows here grows on its own roots.
 
@@ -45,7 +45,10 @@ Like the external-research stack, this folder counts **down**, and two near-foun
 
 ```
 active-designing/
-  995_single_stranded.md          <- most recent design, sorts first
+  992_shape_casting.md            <- most recent design, sorts first
+  993_bounded_network.md          <- the network as a flow of named, sealed values
+  994_rooted_identity.md          <- one root, a derived tree of identities
+  995_single_stranded.md          <- simplicity: free parts, composed
   996_growing_a_language.md       <- how we grow a language
   997_recommended_architecture.md <- the first design brief
   998_strengthening_strategy.md   <- the standing strategy that guides the work
@@ -56,4 +59,4 @@ To add a design, take the next number down from the lowest present, name the fil
 
 ---
 
-*May this room stay clean. May every idea that enters earn its place on its own merit, undivided from where it came. May our six names — and the ones still to come — grow here on their own roots, safe and swift and a joy, woven into the open grain of the machine we build upon.*
+*May this room stay clean. May every idea that enters earn its place on its own merit, undivided from where it came. May our names — and the ones still to come — grow here on their own roots, safe and swift and a joy, woven into the open grain of the machine we build upon.*
