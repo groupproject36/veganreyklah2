@@ -1,0 +1,72 @@
+# parity-selftest.rish — prove the parity gate turns RED on a real divergence.
+#
+# This is parity-selftest.sh reborn in Rishi.
+#
+# A gate we have never seen fail is a gate we cannot yet trust. So here we build
+# a deliberately TAMPERED std — SHA3's domain-separation byte changed (0x06 →
+# 0x07), which alters every SHA3 digest — and confirm that the sha3_512 corpus
+# test produces different output against it. If the tamper slips through with
+# identical output, this script fails loudly: the gate would be blind.
+#
+# Nothing real is touched. The tampered std is a full copy of rye/lib with
+# exactly one file replaced. The copy lives in rishi/bin/selftest-shadow (an
+# untracked directory) and is rebuilt fresh on every run.
+#
+# Current limitation: std copy uses `cp -r` rather than symlinks, so it is
+# slower than the sh version. Once Rishi gains list-dir and write-file, a
+# native implementation will replace the cp -r and the sh -c sed redirect.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/parity-selftest.rish
+
+let zig       = "vendor/zig-toolchain/zig"
+let baseline  = "vendor/zig-toolchain/lib"
+let rye_lib   = "rye/lib"
+let shadow    = "rishi/bin/selftest-shadow"
+let work      = "rishi/bin/selftest-work"
+let prog_src  = "rye/tests/sha3_512_test.rye"
+let prog_zig  = "${work}/sha3_512_test.zig"
+
+say "parity-selftest: building tampered shadow std…"
+
+# Clean and rebuild the shadow: a full copy of rye/lib with sha3.zig tampered.
+# We use cp -r (not symlinks) because Rishi does not yet have list-dir.
+let clean = run ["rm" "-rf" shadow]
+assert clean.ok else "could not remove old shadow"
+let copy = run ["cp" "-r" rye_lib shadow]
+assert copy.ok else "could not copy rye/lib to shadow"
+
+# Overwrite sha3.zig: flip the SHA3 domain-separation byte (0x06 → 0x07). This
+# changes every SHA3 digest while leaving the structure identical, so the code
+# compiles normally but produces different results. We shell out for the redirect
+# because Rishi does not yet have write-file.
+let tamper = run ["sh" "-c" "sed 's/0x06, 24/0x07, 24/g' ${rye_lib}/std/crypto/sha3.zig > ${shadow}/std/crypto/sha3.zig"]
+assert tamper.ok else "could not write tampered sha3.zig"
+
+# Guard: the tamper must actually change the file. cmp -s returns 0 when files
+# are identical; we assert it returned non-zero (files differ).
+let same_check = run ["cmp" "-s" "${rye_lib}/std/crypto/sha3.zig" "${shadow}/std/crypto/sha3.zig"]
+assert same_check.ok == false else "tamper was a no-op — sha3.zig may have changed shape; selftest is INCONCLUSIVE"
+
+# Stage the test program.
+let mk = run ["mkdir" "-p" work]
+assert mk.ok else "could not create work directory"
+let stage = run ["cp" prog_src prog_zig]
+assert stage.ok else "could not stage test program"
+
+say "parity-selftest: running sha3_512_test against baseline and tampered std…"
+
+# Run the corpus test against the baseline and the tampered std.
+let base_run = run [zig "run" prog_zig "--zig-lib-dir" baseline]
+let tamp_run = run [zig "run" prog_zig "--zig-lib-dir" shadow]
+
+let base_view = "${base_run.code}|${base_run.out}${base_run.err}"
+let tamp_view = "${tamp_run.code}|${tamp_run.out}${tamp_run.err}"
+
+say "baseline : ${base_run.out}"
+say "tampered : ${tamp_run.out}"
+say "---"
+
+assert base_view != tamp_view else "tampered std produced identical output — the gate is blind. Fix before trusting it."
+say "GREEN: the gate turns RED on a real divergence — the tamper was caught."
+say "       A passing parity run therefore means something."

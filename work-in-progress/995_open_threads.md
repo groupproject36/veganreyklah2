@@ -3,7 +3,7 @@
 *A fresh snapshot, taken after the four-pass strengthening frontier sealed, after Mantra's first seed planted, and after `init.arena` became `init.garden` across Rye's entire vocabulary. Names the new threads that opened tonight and carries forward the still-open ones.*
 
 **Language:** EN
-**Version:** `20260619.205112` (Rye chronological stamp)
+**Version:** `20260619.211012` (Rye chronological stamp)
 **Last updated:** 2026-06-19
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -32,6 +32,7 @@
 - **Four strengthening passes (9994–9991) — tied off.** SHA3-256, mem diff, fs boundary, Dir.iterate. Corpus at 14, all green.
 - **Mantra seed (9990) — tied off.** Weave, LCS diff, SHA3-256 store, `init / add / status`. First running history.
 - **`init.arena` → `init.garden` — tied off.** TAME vocabulary in the public API; all callers updated.
+- **`parity-selftest.rish` — tied off.** The gate proves RED in Rishi too. Uses `cp -r` and `sh -c` as temporary stand-ins until `list-dir` and `write-file` land.
 
 ## Threads Still Open
 
@@ -46,7 +47,7 @@
 
 **Near — shell:**
 - **Rishi file I/O builtins** — `read-file`, `write-file`, `list-dir` behind OS-boundary wrappers. The Pond GUI needs file access from the shell.
-- **sh → rish parity question** — which `tools/` shell scripts can Rishi replace today, and where does Rishi still fall short? Does our parity concept extend to sh/zsh → rish behavioral equivalence? (opened 2026-06-19 20:02)
+- **`additive-gate.rish`** — the last gate-trio member to migrate. Needs Rishi stream processing (for-each-line over `git diff` output). Until then `additive-gate.sh` remains the backstop. Strategy: **rish-first, sh-fallback** — write the `.rish` version once Rishi has the capability; leave the `.sh` as a documented fallback for environments where Rishi isn't built.
 
 **Horizon 2 milestone:**
 - **Pond GUI on x86_64 AMD** — Rishi REPL + live Mantra version control of `~/veganreyklah2` in a Brushstroke window (`../expanding-prompts/10009`).
