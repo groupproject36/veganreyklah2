@@ -12,7 +12,9 @@
 //! arithmetic (`+`, `-`, `*`, `/`) with correct operator precedence;
 //! parenthesized expressions `(expr)` for grouping; and file I/O with
 //! `read-file` (returns file contents as a string), `write-file` (writes a
-//! value to a path), and `list-dir` (returns entry names as a list of strings).
+//! value to a path), and `list-dir` (returns entry names as a list of strings);
+//! `lines` to split a string into a list by newline; and `starts-with` to check
+//! whether a string begins with a given prefix.
 //! It is the seed from which the language grows toward `parity.rish` and,
 //! further, `pond.rish` (see active-designing/996_growing_a_language.md).
 //!
@@ -28,7 +30,7 @@ const std = @import("std");
 
 /// Rishi's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
 /// larger, the same clock Rye keeps. This is Rishi's founding stamp.
-const rishi_version = "20260619.221912";
+const rishi_version = "20260619.231512";
 
 /// A Rishi value. The kinds — string, integer, boolean, list, record — are the
 /// seed of a model shared with Rye so a value can cross between them without a seam.
@@ -236,6 +238,8 @@ const EvalError = error{
     FilePathNeedsString,
     ReadFileFailed,
     ListDirFailed,
+    LinesNeedsString,
+    StartsWithNeedsString,
     TooManyBindings,
     StringTooLong,
     UnterminatedInterpolation,
@@ -259,6 +263,10 @@ fn evalExpr(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: []c
     if (std.mem.startsWith(u8, trimmed, "list-dir ")) {
         return doListDir(allocator, io, env, trimmed[9..]);
     }
+    // `lines <expr>` splits a string by newline into a list of strings.
+    if (std.mem.startsWith(u8, trimmed, "lines ")) {
+        return doLines(allocator, io, env, trimmed[6..]);
+    }
     // `map <list> as <name>: <expr>` transforms each element; `where … ` keeps the
     // elements whose predicate holds. Checked before the operators below, so a
     // comparison in the body stays part of the body.
@@ -267,6 +275,20 @@ fn evalExpr(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: []c
     }
     if (std.mem.startsWith(u8, trimmed, "where ")) {
         return doPipeline(allocator, io, env, trimmed[6..], .filter);
+    }
+    // `<string> starts-with <prefix>` checks whether a string begins with a prefix.
+    if (findWordOp(text, " starts-with ")) |idx| {
+        const haystack = try evalExpr(allocator, io, env, text[0..idx]);
+        const needle = try evalExpr(allocator, io, env, text[idx + 13 ..]);
+        const str = switch (haystack) {
+            .string => |s| s,
+            else => return error.StartsWithNeedsString,
+        };
+        const prefix = switch (needle) {
+            .string => |s| s,
+            else => return error.StartsWithNeedsString,
+        };
+        return .{ .boolean = std.mem.startsWith(u8, str, prefix) };
     }
     // `<list> contains <value>` asks membership, yielding a boolean.
     if (findWordOp(text, " contains ")) |idx| {
@@ -304,9 +326,9 @@ fn findLastArithAdd(text: []const u8) ?usize {
             in_quote = !in_quote;
         } else if (in_quote) {
             // inside a string: ignore all structure
-        } else if (c == '[' or c == '{' or c == '(') {
+        } else if (c == '[' or c == '{' or c == '(' or c == '(') {
             depth += 1;
-        } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
+        } else if ((c == ']' or c == '}' or c == ')' or c == ')') and depth > 0) {
             depth -= 1;
         } else if (depth == 0 and (c == '+' or c == '-')) {
             // Binary only when the trimmed left side is non-empty and ends
@@ -332,9 +354,9 @@ fn findLastArithMul(text: []const u8) ?usize {
         if (c == '"') {
             in_quote = !in_quote;
         } else if (in_quote) {
-        } else if (c == '[' or c == '{' or c == '(') {
+        } else if (c == '[' or c == '{' or c == '(' or c == '(') {
             depth += 1;
-        } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
+        } else if ((c == ']' or c == '}' or c == ')' or c == ')') and depth > 0) {
             depth -= 1;
         } else if (depth == 0 and (c == '*' or c == '/')) {
             result = i;
@@ -501,6 +523,33 @@ fn doWriteFile(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: 
     const z_path = std.fmt.allocPrint(allocator, "{s}", .{path}) catch return error.OutOfMemory;
     const dir = std.Io.Dir.cwd();
     dir.writeFile(io, .{ .sub_path = z_path, .data = sb.bytes[0..sb.len] }) catch return error.WriteFileFailed;
+}
+
+/// `lines <expr>` splits a string by newline into a list of strings. Used for
+/// processing multi-line output from `run` or `read-file` — each line becomes
+/// an element. The list is allocated from the garden; no fixed-size stack buffer.
+fn doLines(allocator: std.mem.Allocator, io: std.Io, env: *const Env, arg: []const u8) EvalError!Value {
+    const value = try evalExpr(allocator, io, env, arg);
+    const text = switch (value) {
+        .string => |s| s,
+        else => return error.LinesNeedsString,
+    };
+    // Count lines first, then allocate exactly.
+    var count: usize = 0;
+    var counter = std.mem.splitScalar(u8, text, '\n');
+    while (counter.next() != null) count += 1;
+    const items = allocator.alloc(Value, count) catch return error.OutOfMemory;
+    // postcondition: items has exactly count slots
+    std.debug.assert(items.len == count);
+    var it = std.mem.splitScalar(u8, text, '\n');
+    var i: usize = 0;
+    while (it.next()) |line| {
+        items[i] = .{ .string = line };
+        i += 1;
+    }
+    // postcondition: filled exactly count items
+    std.debug.assert(i == count);
+    return .{ .list = items };
 }
 
 /// `map <list> as <name>: <expr>` evaluates <expr> for each element with <name>
@@ -722,9 +771,9 @@ const TokenIter = struct {
                 in_quote = !in_quote;
             } else if (in_quote) {
                 // within a string: ignore structure
-            } else if (c == '[' or c == '{') {
+            } else if (c == '[' or c == '{' or c == '(') {
                 depth += 1;
-            } else if ((c == ']' or c == '}') and depth > 0) {
+            } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
                 depth -= 1;
             } else if (depth == 0 and (c == ' ' or c == '\t')) {
                 break;
@@ -768,9 +817,9 @@ fn findTopLevel(text: []const u8, target: u8) ?usize {
             in_quote = !in_quote;
         } else if (in_quote) {
             // within a string: ignore structure
-        } else if (c == '[' or c == '{') {
+        } else if (c == '[' or c == '{' or c == '(') {
             depth += 1;
-        } else if ((c == ']' or c == '}') and depth > 0) {
+        } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
             depth -= 1;
         } else if (c == target and depth == 0) {
             return i;
@@ -797,9 +846,9 @@ const TopLevelSplit = struct {
                 in_quote = !in_quote;
             } else if (in_quote) {
                 // within a string: ignore structure
-            } else if (c == '[' or c == '{') {
+            } else if (c == '[' or c == '{' or c == '(') {
                 depth += 1;
-            } else if ((c == ']' or c == '}') and depth > 0) {
+            } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
                 depth -= 1;
             } else if (c == self.delim and depth == 0) {
                 const token = self.text[start..self.i];
@@ -826,9 +875,9 @@ fn findComparison(text: []const u8) ?Comparison {
             in_quote = !in_quote;
         } else if (in_quote) {
             // within a string: ignore structure
-        } else if (c == '[' or c == '{') {
+        } else if (c == '[' or c == '{' or c == '(') {
             depth += 1;
-        } else if ((c == ']' or c == '}') and depth > 0) {
+        } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
             depth -= 1;
         } else if (depth == 0 and c == '=' and text[i + 1] == '=') {
             return .{ .op = .eq, .left = text[0..i], .right = text[i + 2 ..] };
@@ -923,9 +972,9 @@ fn findWordOp(text: []const u8, word: []const u8) ?usize {
             in_quote = !in_quote;
         } else if (in_quote) {
             // within a string: ignore structure
-        } else if (c == '[' or c == '{') {
+        } else if (c == '[' or c == '{' or c == '(') {
             depth += 1;
-        } else if ((c == ']' or c == '}') and depth > 0) {
+        } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
             depth -= 1;
         } else if (depth == 0 and std.mem.startsWith(u8, text[i..], word)) {
             return i;
