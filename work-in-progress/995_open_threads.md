@@ -38,6 +38,7 @@
 - **Brix minimum — tied off.** `.brix` at repo root: name, version, 9 tracked bricks. `mantra brix` prints; `mantra init` reads. Mantra knows the project. (Silo is now the store layer; Brix is the composing language.)
 - **Mantra for the repo (seed) — tied off.** Commit-chain model, `mantra add` (no args) walks `.brix`, `mantra log` follows the chain. 9/9 bricks wove on first run. Multi-file manifest is the next growth pass.
 - **Rishi file I/O builtins — tied off.** `read-file`, `write-file`, `list-dir` landed. Round-trip test in `rishi/tests/file_io.rish`, all green. Parity gate 15/15 GREEN.
+- **Caravan seed — tied off.** One parent, one child, restart on fall. 3 planned failures, 3 restarts, child succeeds on the fourth spawn. 5 assertions confirmed GREEN (`caravan/seed.rye`).
 
 ## Threads Still Open
 
@@ -56,10 +57,10 @@
 
 **Ongoing — strengthen and grow:**
 - **Continue the strengthening series** — the next `std` surfaces our tools lean on, each through the gate trio.
-- **Caravan seed** — one parent, one child, restart on fall, asserted (`../active-designing/987`).
+- **Caravan seed + Tally** — the child runs inside a bounded garden; the parent controls the garden. Grows the seed toward multi-child and chain-loading (`../active-designing/984`).
 - **Close reading** — packet format, commit rule, relay protocols from `gratitude/` before Comlink's format hardens.
 - **Aurora's deciding stage** — a relay stage that hands the next a value it chose.
-- **Caravan kernel design** — microkernel vs monolith; conclusion and actionable design decision (`../external-research/976`).
+- **Caravan kernel design** — decided: microkernel. Quarantined in `../active-designing/984`. Research in `../external-research/976`.
 - **`pond.rish`** — the enclosure as a value; awaits Caravan isolation and Tally bounds.
 - **The owner-key PKI** — rotation, revocation, and recovery.
 - **The verify-flag hot path** — data-plane postconditions behind a `verify` flag (`../strengthening-compiler/9996`).
