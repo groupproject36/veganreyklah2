@@ -4,9 +4,10 @@
 //! safety, a sibling of Rye that shares its value model. This first version is
 //! honest about how small it is. It reads a `.rish` script and runs it
 //! directly, supporting line comments; `let` bindings of strings, integers,
-//! booleans, and lists; `say` with `${name}` interpolation; comparison with `==`
-//! and `!=`; list membership with `contains`; and `assert` as a gate that stops
-//! the script and says why when a fact does not hold. It is the seed from which
+//! booleans, lists, and records; `say` with `${...}` interpolation; comparison
+//! with `==` and `!=`; list membership with `contains`; field access with
+//! `record.field`; and `assert` as a gate that stops the script and says why when
+//! a fact does not hold. It is the seed from which
 //! the language grows toward `parity.rish`, the program that will name its first
 //! real purpose (see active-designing/996_growing_a_language.md).
 //!
@@ -22,16 +23,20 @@ const std = @import("std");
 
 /// Rishi's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
 /// larger, the same clock Rye keeps. This is Rishi's founding stamp.
-const rishi_version = "20260619.044912";
+const rishi_version = "20260619.050712";
 
 /// A Rishi value. The first two kinds — a string and an integer — are the seed
 /// of a model that will grow to lists, records, and process results, shared
 /// with Rye so a value can cross between them without a seam.
+/// One field of a record: a name and the value bound to it.
+const Field = struct { name: []const u8, value: Value };
+
 const Value = union(enum) {
     string: []const u8,
     int: i64,
     boolean: bool,
     list: []const Value,
+    record: []const Field,
 
     fn write(self: Value) void {
         switch (self) {
@@ -45,6 +50,15 @@ const Value = union(enum) {
                     item.write();
                 }
                 std.debug.print("]", .{});
+            },
+            .record => |fields| {
+                std.debug.print("{{", .{});
+                for (fields, 0..) |f, idx| {
+                    if (idx != 0) std.debug.print(", ", .{});
+                    std.debug.print("{s}: ", .{f.name});
+                    f.value.write();
+                }
+                std.debug.print("}}", .{});
             },
         }
     }
@@ -171,7 +185,7 @@ fn evalStatement(allocator: std.mem.Allocator, env: *Env, line: []const u8) !voi
         if (name.len == 0) return error.LetNeedsName;
         try env.bind(name, try evalExpr(allocator, env, valstr));
     } else if (std.mem.startsWith(u8, line, "say ")) {
-        try doSay(env, std.mem.trim(u8, line[4..], " \t"));
+        try doSay(allocator, env, std.mem.trim(u8, line[4..], " \t"));
     } else if (std.mem.startsWith(u8, line, "assert ")) {
         try doAssert(allocator, env, std.mem.trim(u8, line[7..], " \t"));
     } else {
@@ -187,6 +201,10 @@ const EvalError = error{
     UndefinedName,
     ContainsNeedsList,
     ListTooLong,
+    RecordTooLong,
+    FieldNeedsColon,
+    NoSuchField,
+    NotARecord,
     OutOfMemory,
 };
 
@@ -229,12 +247,41 @@ fn evalOperand(allocator: std.mem.Allocator, env: *const Env, raw: []const u8) E
     if (s.len >= 2 and s[0] == '[' and s[s.len - 1] == ']') {
         return parseList(allocator, env, s[1 .. s.len - 1]);
     }
+    if (s.len >= 2 and s[0] == '{' and s[s.len - 1] == '}') {
+        return parseRecord(allocator, env, s[1 .. s.len - 1]);
+    }
     if (std.mem.eql(u8, s, "true")) return .{ .boolean = true };
     if (std.mem.eql(u8, s, "false")) return .{ .boolean = false };
     if (std.fmt.parseInt(i64, s, 10)) |x| {
         return .{ .int = x };
     } else |_| {}
+    // `base.field.field…` reads a field from a record, one step at a time.
+    if (findTopLevel(s, '.')) |dot| {
+        var value = try evalOperand(allocator, env, s[0..dot]);
+        var rest = s[dot + 1 ..];
+        while (true) {
+            const next_dot = findTopLevel(rest, '.');
+            const field = std.mem.trim(u8, if (next_dot) |nd| rest[0..nd] else rest, " \t");
+            const fields = switch (value) {
+                .record => |r| r,
+                else => return error.NotARecord,
+            };
+            value = findField(fields, field) orelse return error.NoSuchField;
+            if (next_dot) |nd| rest = rest[nd + 1 ..] else break;
+        }
+        return value;
+    }
     return env.lookup(s) orelse error.UndefinedName;
+}
+
+/// Find a value among a record's fields by name, most-recent-wins on a duplicate.
+fn findField(fields: []const Field, name: []const u8) ?Value {
+    var i = fields.len;
+    while (i > 0) {
+        i -= 1;
+        if (std.mem.eql(u8, fields[i].name, name)) return fields[i].value;
+    }
+    return null;
 }
 
 /// Parse a list literal's interior — space-separated operands, with spaces inside
@@ -264,15 +311,101 @@ const TokenIter = struct {
         if (self.i >= self.text.len) return null;
         const start = self.i;
         var in_quote = false;
+        var depth: usize = 0;
         while (self.i < self.text.len) : (self.i += 1) {
             const c = self.text[self.i];
             if (c == '"') {
                 in_quote = !in_quote;
-            } else if (!in_quote and (c == ' ' or c == '\t')) {
+            } else if (in_quote) {
+                // within a string: ignore structure
+            } else if (c == '[' or c == '{') {
+                depth += 1;
+            } else if ((c == ']' or c == '}') and depth > 0) {
+                depth -= 1;
+            } else if (depth == 0 and (c == ' ' or c == '\t')) {
                 break;
             }
         }
         return self.text[start..self.i];
+    }
+};
+
+/// Parse a record literal's interior — comma-separated `name: value` fields, with
+/// commas and colons inside nested lists, records, or strings kept whole. The
+/// field count is bounded, so a runaway literal meets a clear edge.
+fn parseRecord(allocator: std.mem.Allocator, env: *const Env, inner: []const u8) EvalError!Value {
+    var buffer: [256]Field = undefined;
+    var count: usize = 0;
+    var it = TopLevelSplit{ .text = inner, .delim = ',' };
+    while (it.next()) |field_text| {
+        const ft = std.mem.trim(u8, field_text, " \t");
+        if (ft.len == 0) continue; // tolerate a trailing comma or a blank field
+        const colon = findTopLevel(ft, ':') orelse return error.FieldNeedsColon;
+        const name = std.mem.trim(u8, ft[0..colon], " \t");
+        const valtext = std.mem.trim(u8, ft[colon + 1 ..], " \t");
+        if (name.len == 0) return error.FieldNeedsColon;
+        if (count == buffer.len) return error.RecordTooLong;
+        buffer[count] = .{ .name = name, .value = try evalExpr(allocator, env, valtext) };
+        count += 1;
+    }
+    const fields = try allocator.dupe(Field, buffer[0..count]);
+    return .{ .record = fields };
+}
+
+/// Find a character at the top level — outside any quoted string and outside any
+/// nested `[]` or `{}` — or report its absence.
+fn findTopLevel(text: []const u8, target: u8) ?usize {
+    var in_quote = false;
+    var depth: usize = 0;
+    var i: usize = 0;
+    while (i < text.len) : (i += 1) {
+        const c = text[i];
+        if (c == '"') {
+            in_quote = !in_quote;
+        } else if (in_quote) {
+            // within a string: ignore structure
+        } else if (c == '[' or c == '{') {
+            depth += 1;
+        } else if ((c == ']' or c == '}') and depth > 0) {
+            depth -= 1;
+        } else if (c == target and depth == 0) {
+            return i;
+        }
+    }
+    return null;
+}
+
+/// Split a string on a delimiter at the top level, treating quoted strings and
+/// nested `[]`/`{}` as opaque. Each call returns the next field, or null at the end.
+const TopLevelSplit = struct {
+    text: []const u8,
+    delim: u8,
+    i: usize = 0,
+
+    fn next(self: *TopLevelSplit) ?[]const u8 {
+        if (self.i > self.text.len) return null;
+        const start = self.i;
+        var in_quote = false;
+        var depth: usize = 0;
+        while (self.i < self.text.len) : (self.i += 1) {
+            const c = self.text[self.i];
+            if (c == '"') {
+                in_quote = !in_quote;
+            } else if (in_quote) {
+                // within a string: ignore structure
+            } else if (c == '[' or c == '{') {
+                depth += 1;
+            } else if ((c == ']' or c == '}') and depth > 0) {
+                depth -= 1;
+            } else if (c == self.delim and depth == 0) {
+                const token = self.text[start..self.i];
+                self.i += 1;
+                return token;
+            }
+        }
+        const token = self.text[start..self.text.len];
+        self.i = self.text.len + 1;
+        return token;
     }
 };
 
@@ -281,13 +414,21 @@ const Comparison = struct { op: enum { eq, ne }, left: []const u8, right: []cons
 /// Find a top-level `==` or `!=`, skipping anything inside a quoted string.
 fn findComparison(text: []const u8) ?Comparison {
     var in_quote = false;
+    var depth: usize = 0;
     var i: usize = 0;
     while (i + 1 < text.len) : (i += 1) {
-        if (text[i] == '"') {
+        const c = text[i];
+        if (c == '"') {
             in_quote = !in_quote;
-        } else if (!in_quote and text[i] == '=' and text[i + 1] == '=') {
+        } else if (in_quote) {
+            // within a string: ignore structure
+        } else if (c == '[' or c == '{') {
+            depth += 1;
+        } else if ((c == ']' or c == '}') and depth > 0) {
+            depth -= 1;
+        } else if (depth == 0 and c == '=' and text[i + 1] == '=') {
             return .{ .op = .eq, .left = text[0..i], .right = text[i + 2 ..] };
-        } else if (!in_quote and text[i] == '!' and text[i + 1] == '=') {
+        } else if (depth == 0 and c == '!' and text[i + 1] == '=') {
             return .{ .op = .ne, .left = text[0..i], .right = text[i + 2 ..] };
         }
     }
@@ -314,6 +455,10 @@ fn valuesEqual(a: Value, b: Value) bool {
             .list => |y| listsEqual(x, y),
             else => false,
         },
+        .record => |x| return switch (b) {
+            .record => |y| recordsEqual(x, y),
+            else => false,
+        },
     }
 }
 
@@ -322,6 +467,17 @@ fn listsEqual(x: []const Value, y: []const Value) bool {
     if (x.len != y.len) return false;
     for (x, y) |xi, yi| {
         if (!valuesEqual(xi, yi)) return false;
+    }
+    return true;
+}
+
+/// Two records are equal when they hold the same fields and values; order need not
+/// match, so `{a: 1, b: 2}` equals `{b: 2, a: 1}`.
+fn recordsEqual(x: []const Field, y: []const Field) bool {
+    if (x.len != y.len) return false;
+    for (x) |fx| {
+        const fy = findField(y, fx.name) orelse return false;
+        if (!valuesEqual(fx.value, fy)) return false;
     }
     return true;
 }
@@ -355,11 +511,19 @@ fn doAssert(allocator: std.mem.Allocator, env: *const Env, arg: []const u8) !voi
 /// so the same word inside `"text"` stays part of the text.
 fn findWordOp(text: []const u8, word: []const u8) ?usize {
     var in_quote = false;
+    var depth: usize = 0;
     var i: usize = 0;
     while (i + word.len <= text.len) : (i += 1) {
-        if (text[i] == '"') {
+        const c = text[i];
+        if (c == '"') {
             in_quote = !in_quote;
-        } else if (!in_quote and std.mem.startsWith(u8, text[i..], word)) {
+        } else if (in_quote) {
+            // within a string: ignore structure
+        } else if (c == '[' or c == '{') {
+            depth += 1;
+        } else if ((c == ']' or c == '}') and depth > 0) {
+            depth -= 1;
+        } else if (depth == 0 and std.mem.startsWith(u8, text[i..], word)) {
             return i;
         }
     }
@@ -368,15 +532,15 @@ fn findWordOp(text: []const u8, word: []const u8) ?usize {
 
 /// `say` writes a string literal — interpolating `${name}` as it goes — or the
 /// value bound to a bare name, then a newline.
-fn doSay(env: *const Env, arg: []const u8) !void {
+fn doSay(allocator: std.mem.Allocator, env: *const Env, arg: []const u8) !void {
     if (arg.len >= 2 and arg[0] == '"' and arg[arg.len - 1] == '"') {
         const inner = arg[1 .. arg.len - 1];
         var i: usize = 0;
         while (i < inner.len) {
             if (i + 1 < inner.len and inner[i] == '$' and inner[i + 1] == '{') {
                 const close = std.mem.indexOfScalarPos(u8, inner, i + 2, '}') orelse return error.UnterminatedInterpolation;
-                const name = inner[i + 2 .. close];
-                const value = env.lookup(name) orelse return error.UndefinedName;
+                const expr = inner[i + 2 .. close];
+                const value = try evalOperand(allocator, env, expr);
                 value.write();
                 i = close + 1;
             } else {
@@ -390,7 +554,7 @@ fn doSay(env: *const Env, arg: []const u8) !void {
         }
         std.debug.print("\n", .{});
     } else if (arg.len > 0) {
-        const value = env.lookup(arg) orelse return error.UndefinedName;
+        const value = try evalOperand(allocator, env, arg);
         value.write();
         std.debug.print("\n", .{});
     } else {
