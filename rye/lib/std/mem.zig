@@ -241,6 +241,8 @@ test "Allocator alloc and remap with zero-bit type" {
 /// If the slices overlap, dest.ptr must be <= src.ptr.
 /// This function is deprecated; use @memmove instead.
 pub fn copyForwards(comptime T: type, dest: []T, source: []const T) void {
+    // Precondition: dest must have room for every element of source.
+    assert(dest.len >= source.len);
     for (dest[0..source.len], source) |*d, s| d.* = s;
 }
 
@@ -1434,7 +1436,11 @@ pub const indexOf = find;
 /// Uses Boyer-Moore-Horspool algorithm on large inputs; linear search on small inputs.
 /// Returns null if needle is not found.
 pub fn find(comptime T: type, haystack: []const T, needle: []const T) ?usize {
-    return findPos(T, haystack, 0, needle);
+    const result = findPos(T, haystack, 0, needle);
+    // Postcondition, stated at this cold wrapper so findPos's hot core stays lean
+    // (data-plane economy): a found index is in-range and the needle fits there.
+    if (result) |i| assert(i + needle.len <= haystack.len);
+    return result;
 }
 
 /// Deprecated in favor of `findLastLinear`.
@@ -3189,6 +3195,10 @@ pub fn WindowIterator(comptime T: type) type {
 /// Returns true if haystack starts with needle.
 /// Time complexity: O(needle.len)
 pub fn startsWith(comptime T: type, haystack: []const T, needle: []const T) bool {
+    // A zero-length needle always matches; a needle longer than the haystack never matches.
+    // Both are valid and expected — state the variable space rather than constraining it.
+    maybe(needle.len == 0);
+    maybe(needle.len > haystack.len);
     return if (needle.len > haystack.len) false else eql(T, haystack[0..needle.len], needle);
 }
 
@@ -3200,6 +3210,10 @@ test startsWith {
 /// Returns true if haystack ends with needle.
 /// Time complexity: O(needle.len)
 pub fn endsWith(comptime T: type, haystack: []const T, needle: []const T) bool {
+    // A zero-length needle always matches; a needle longer than the haystack never matches.
+    // Both are valid and expected — state the variable space rather than constraining it.
+    maybe(needle.len == 0);
+    maybe(needle.len > haystack.len);
     return if (needle.len > haystack.len) false else eql(T, haystack[haystack.len - needle.len ..], needle);
 }
 
@@ -3417,6 +3431,10 @@ pub fn SplitIterator(comptime T: type, comptime delimiter_type: DelimiterType) t
                 self.index = null;
                 break :blk self.buffer.len;
             };
+            // Postcondition: every field returned is a valid sub-slice of the buffer.
+            // start advances monotonically; end is always a delimiter position or buffer.len.
+            assert(start <= end);
+            assert(end <= self.buffer.len);
             return self.buffer[start..end];
         }
 

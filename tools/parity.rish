@@ -15,7 +15,7 @@ let work = "rishi/bin/parity-work"
 let baseline = "vendor/zig-toolchain/lib"
 let ryelib = "rye/lib"
 
-let corpus = ["sha3_256_test" "sha3_256_boundary_test" "sha3_512_test" "sha3_boundary_test" "version_test" "call_paths_test" "ed25519_sign_test" "x25519_agree_test" "aead_seal_test" "sealed_message_test"]
+let corpus = ["mem_diff_test" "sha3_256_test" "sha3_256_boundary_test" "sha3_512_test" "sha3_boundary_test" "version_test" "call_paths_test" "ed25519_sign_test" "x25519_agree_test" "aead_seal_test" "sealed_message_test"]
 
 say "parity gate: checking ${corpus}"
 
