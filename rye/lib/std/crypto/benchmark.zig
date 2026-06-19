@@ -498,7 +498,7 @@ fn mode(comptime x: comptime_int) comptime_int {
 
 pub fn main(init: std.process.Init) !void {
     const io = init.io;
-    const arena = init.arena.allocator();
+    const arena = init.garden.allocator();
 
     // Size of buffer is about size of printed message.
     var stdout_buffer: [0x100]u8 = undefined;

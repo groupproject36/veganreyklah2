@@ -3,7 +3,7 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260619.170712` (Rye chronological stamp)
+**Version:** `20260619.205112` (Rye chronological stamp)
 **Last updated:** 2026-06-19
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -27,10 +27,13 @@ These are the simple systems that run today. Everything ahead grows from them.
 - **A sealed datagram crosses between two harts** — Alice seals on hart 0; Bob, on hart 1, reads the raw bytes off a shared-memory wire, shape-casts them, verifies the attestation, confirms the content-name, derives the shared secret from his own key, and opens it. The content-name matches the hosted test byte-for-byte: the move that turns the whole networking arc into something that runs, running.
 - **The strengthening series is live** — SHA3-512, the Keccak sponge beneath it, and the everyday `std` our own tools lean on (`mem.trim`, `mem.eql`, `mem.findScalar`, `fmt.parseInt`), each given stated invariants and each parity-green, recorded in the strengthening-compiler stack.
 - **The crypto foundation is proven, primitive by primitive** — the content hash (SHA3-512, strengthened), signing (Ed25519), key agreement (X25519), and the authenticated seal (AEAD: ChaCha20-Poly1305) all run in Rye's own std, hosted and freestanding alike, and stand parity-green: the foundation the network and identity rest on (`../strengthening-compiler/9995`).
-- **The gate trio runs** — `parity.sh` (behavior identical to baseline), `parity-selftest.sh` (the gate turns red on a real divergence), `additive-gate.sh` (a pass changed only assertions and words). Strengthening is safe by construction; the corpus now carries eight programs, all green, and the gate is written in portable shell so it runs anywhere.
+- **The gate trio runs** — `parity.sh` (behavior identical to baseline), `parity-selftest.sh` (the gate turns red on a real divergence), `additive-gate.sh` (a pass changed only assertions and words). Strengthening is safe by construction; the gate runs in both portable shell and in Rishi (`tools/parity.rish`), and the corpus now carries fourteen programs, all green.
 - **Rishi runs** — a shell interpreter in Rye with comments; `let` of strings, integers, booleans, lists, and records; string interpolation that composes a value into text (`"${a}/${b}"`); `say`; `==`/`!=` comparison; list membership with `contains`; field access with `record.field`; running a command with `run` (its result a record of `out`, `err`, `code`, `ok`); transforming and filtering lists with `map` and `where`; and `assert` as a gate that exits non-zero with its reason. Built by `rye build`.
 - **Rishi gained arithmetic and a real stdout** — integer `+`/`-`/`×`/`÷` with correct operator precedence via two-layer recursive descent, parenthesized grouping, and `say` rebound from stderr to stdout. Nine arithmetic assertions in `rishi/tests/arithmetic.rish`, all green. The shell can now compute, compose, and speak.
 - **The parity gate runs in Rishi** — `tools/parity.rish` is `parity.sh` reborn in our own shell: it maps the corpus through `run` against the baseline and strengthened std, compares the two lists of outputs as one value, and asserts the verdict. Proven GREEN across the corpus and RED on an injected divergence — so the shell Rye grew now guards Rye's own becoming.
+- **The strengthening frontier (9994–9991) is sealed** — SHA3-256 (content-naming primitive), mem diff primitives (`copyForwards`, `startsWith`, `endsWith`, `find`, `splitScalar`), `std.Io.Dir` filesystem boundary assertions, and `Dir.iterate` name invariants and exhaustion state — all four through the gate, corpus at 14, all green.
+- **Mantra seed runs** — the smallest version-control that runs: a Weave holds the full history of a text file as Lines with stable positions and generation-parity presence; `computeDiff` finds the minimal LCS edit; the store content-names every weave state by its SHA3-256 digest. `mantra init / add / status` confirmed end-to-end. Pure LCS test joins the corpus (`../strengthening-compiler/9990`).
+- **`init.garden` replaces `init.arena` in Rye's vocabulary** — `std.process.Init.garden` is Rye's name for the season allocator: allocate freely within the session, clear whole on exit. The TAME vocabulary (`garden`) now lives in the public API; `arena` recedes to an implementation detail inside `start.zig`. Rishi, Rye, Mantra, and all benchmark callers updated.
 
 ---
 
@@ -44,10 +47,12 @@ Each is a thing that runs on its own, added by degrees, behind the gates.
 - [ ] **Close reading of cloned sources** — packet format, commit rule, relay protocols from what we vendored in `gratitude/`, with actionable notes for Comlink before the wire format hardens (`995`, `10007`).
 - [ ] **Aurora's deciding stage** — a relay stage that hands the next a value *it chose*, not only one it read: the seed of a boot that selects what runs next.
 - [x] **Grew Rishi to `parity.rish`** — shipped one proven feature at a time: `==`/`!=`, `assert`, lists, `contains`, records with field access, `run`, `map`/`where`, and string interpolation — and then the gate itself (Horizon 2 below, reached early). `tools/parity.rish` runs GREEN, and RED on a real divergence.
-- [ ] **Strengthening passes 9994–9991** — four ordered passes Mantra's seed depends on: SHA3-256 (9994), mem diff primitives — `mem.copy`, `mem.startsWith`, `mem.endsWith`, `mem.indexOf`, `mem.split` (9993), `std.fs` boundary assertions (9992), and `Dir.iterate` (9991). Each through the gate trio before the next begins.
+- [x] **Strengthening passes 9994–9991** — SHA3-256 (9994), mem diff primitives (9993), `std.Io.Dir` boundary assertions (9992), `Dir.iterate` (9991). All four through the gate, corpus at 14, all green.
+- [x] **Mantra seed** — Weave, LCS diff, SHA3-256 store, `init / add / status`. Runs end-to-end; pure LCS test in corpus (`../strengthening-compiler/9990`).
+- [ ] **Tally v1 — named gardens** — grow `tally/seed.rye` into `tally/gardens.rye`: a `Gardens` struct holding named `Region` values, `gardens.get(name)`, `gardens.clear(name)`, `gardens.clear_all()`. Three named gardens for the stack: `blob`, `diff`, `frame`. Mantra for the repo uses the `blob` garden for read buffers.
+- [ ] **Mantra for `~/veganreyklah2`** — grow the seed into multi-file weave: manifest HEAD names all files, `mantra add` without an argument walks the source paths, `mantra log` follows the HEAD chain. Depends on Tally v1 gardens.
 - [ ] **River and Ghostty into `gratitude/`** — clone both display-layer references before Brushstroke's native backend hardens; actionable reading for the OS-boundary wrapping discipline (`../active-designing/985`).
-- [ ] **Rishi file I/O builtins** — `open`, `read`, `write`, `close` at minimum, behind the OS-boundary wrappers (`../active-designing/985`). Both Mantra and Brushstroke need shell-level file access.
-- [ ] **Mantra seed** — the smallest weave: two text buffers in, one always-succeeding merge out, content-named by SHA3-256. Depends on the 9994–9991 strengthening passes and Rishi file I/O.
+- [ ] **Rishi file I/O builtins** — `read-file`, `write-file`, `list-dir` behind OS-boundary wrappers. Brushstroke and the Pond GUI need shell-level file access (`../active-designing/985`).
 - [ ] **Brushstroke seed** — one native window on x86_64 AMD, one static frame drawn via the display layer protocol, libghostty thin costume for the text area. Depends on River and Ghostty in `gratitude/` and the OS interface wrappers (`../active-designing/985`, `../active-designing/986`).
 - [ ] **Continue the strengthening series** — the next `std` surfaces our tools depend on, each through the gate trio, each recorded in the strengthening-compiler stack.
 
@@ -64,7 +69,7 @@ Each milestone here is *made of* the working systems above.
 - [ ] **Tally v1** — made of: the process-garden pattern Rye already uses, grown into a named, bounded region allocator with asserted edges.
 - [ ] **Caravan v1** — made of: the simplest working supervision (one parent that never dies, one child, restart on fall), grown toward a small tree and chain-loaded startup.
 - [ ] **Pond v1** — made of: Caravan v1's isolation **composed with** Tally v1's bounds — one allow-listed path, one resource bound, opened from a policy that is a value (`pond.rish`).
-- [ ] **Mantra for `~/veganreyklah2`** — made of: Mantra seed grown into Rishi shell commands that track a real weave of our development repository; content-named, always-succeeding merge live in the shell.
+- [ ] **Mantra for `~/veganreyklah2`** — made of: Mantra seed grown into multi-file weave tracking the full repository; content-named HEAD chain, `mantra log`, integration tested in a Rishi script.
 - [ ] **Silo minimum** — made of: one `.silo` record descriptor readable by Rishi, describing a simple system reproducibly. The first floor toward Silo v1.
 - [ ] **Pond GUI — Rishi REPL + Mantra in a Brushstroke window** — made of: Brushstroke seed + Mantra seed + Rishi file I/O, composing into a single native x86_64 window with a Rishi text area and live Mantra version control of the repository (`../expanding-prompts/10009`, `../active-designing/986`).
 
@@ -100,21 +105,23 @@ The far ends. Each is named with the simpler working systems it is composed of, 
 
 Two things ran today that had not run before. Rishi gained integer arithmetic and a real stdout; Tally's first seed ran with 13 asserted invariants, all green. The design arc then caught up with and outpaced those new parts: four research and design documents landed in one session — POSIX at the door (`../external-research/977`), the full living desktop stack (`../external-research/978`), a quarantined native system interface brief (`../active-designing/985`), and a quarantined living desktop brief (`../active-designing/986`) — together with an expanded ordered plan (`../expanding-prompts/10009`) and a mapped strengthening frontier (passes 9994–9991).
 
-The near goal is now concrete and named: **a Pond GUI running a Rishi REPL and live Mantra version control of `~/veganreyklah2`, in a native Brushstroke window on x86_64 AMD.** The dependency stack is charted six layers deep — from the existing foundation through strengthening passes, Tally v1, Mantra seed, Silo descriptor, Brushstroke seed, Mantra for the repo, and the Pond GUI milestone. The Aurora RISC-V arc continues in parallel on its own horizon; x86_64 is now the active build target where Pond, Brushstroke, and Rishi converge.
+The near goal is concrete and named: **a Pond GUI running a Rishi REPL and live Mantra version control of `~/veganreyklah2`, in a native Brushstroke window on x86_64 AMD.** The dependency stack runs six layers deep — from today's foundation through Tally v1 gardens, Mantra for the repo, Silo descriptor, Brushstroke seed, and the Pond GUI milestone. The Aurora RISC-V arc continues in parallel on its own horizon; x86_64 is the active build target where Pond, Brushstroke, and Rishi converge.
 
 ### What to Build Next, and Why
 
-Four strengthening passes — SHA3-256, mem diff primitives, `std.fs` boundary assertions, `Dir.iterate` — stand between today's foundation and Mantra's seed. Run them first, each through the gate trio. Then River and Ghostty into `gratitude/`, the display-layer references Brushstroke's native backend reads from (clone these manually — the paths are `gratitude/river` and `gratitude/ghostty`). Then Rishi file I/O builtins, Mantra seed, and Brushstroke seed — the three seeds that compose into the Pond GUI. See `../expanding-prompts/10009` and `../active-designing/986`.
+The four strengthening passes and the Mantra seed are done. Tally v1 (named gardens) comes next — the memory floor Mantra for the repo uses for its read buffers. Then Mantra grows from one-file to full-repository weave. Then River and Ghostty into `gratitude/`, Rishi file I/O builtins, Brushstroke seed, and the Pond GUI. See `../expanding-prompts/10009` and `../active-designing/986`.
 
 ---
 
 ## The Steps Just Taken
 
-Two small things ran that changed what was possible. **Rishi gained integer arithmetic** — `+`/`-`/`×`/`÷` with correct operator precedence via two-layer recursive descent, parenthesized grouping, and `say` rebound to stdout. Nine arithmetic assertions in `rishi/tests/arithmetic.rish`, all green. **Tally seed ran** — one `Region` struct, bump allocate, clear whole, 13 hosted `debug.assert` calls, all green in `tally/seed.rye`. Both were Horizon 1 items; Tally seed is now closed.
+The strengthening frontier sealed, and the first running Mantra planted.
 
-Alongside them, a new design arc opened in full. `POSIX at the door` (`977`) studied whether POSIX compliance is TAME style, read River and Ghostty as living demonstrations, and concluded: TAME-compatible, not TAME-native — the boundary wrapper is the move. `The living desktop stack` (`978`) mapped the full dependency chain toward a Pond GUI on x86_64 AMD, named Brushstroke as a web-browser-compatible face of Pond, and broadened Pond's purpose to the native desktop application framework. Both were quarantined into the clean room as `985` (native system interface) and `986` (living desktop). An expanded ordered plan — `10009` — names the eight implementation steps from today's foundation to the Pond GUI milestone.
+**Four strengthening passes** completed in sequence: SHA3-256 (9994) — Keccak at the 136-byte block width, the content-naming primitive Mantra uses; mem diff primitives (9993) — `copyForwards`, `startsWith`, `endsWith`, `find`, `splitScalar`; `std.Io.Dir` filesystem boundary (9992) — non-empty path, OS-limit path, non-empty read buffer, asserted at every public surface; `Dir.iterate` (9991) — name invariants and exhaustion-state postconditions. All four through the gate; corpus grew from 8 to 13, all green.
 
-The next reach is the four strengthening passes, then the three seeds.
+**Mantra seed** (9990) planted: one file, three commands. A Weave holds the full history of a text stream as Lines with stable positions and generation-parity presence. `computeDiff` finds the minimal LCS edit. The store content-names every weave state by its SHA3-256 digest. `mantra init / add / status` confirmed end-to-end; pure LCS test joined the corpus (14/14 GREEN).
+
+**`init.garden` replaced `init.arena`** across Rye's std and all callers. The season allocator now carries TAME vocabulary in the public API; `arena` recedes to an implementation detail. A parity gate caught the one test that referenced `init.garden` against the baseline — the vocabulary is Rye's own, and the gate is honest about it.
 
 ---
 

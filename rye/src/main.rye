@@ -78,7 +78,7 @@ comptime {
 pub fn main(init: std.process.Init) !u8 {
     // Allocate from the process arena — a single garden the runtime clears whole
     // on exit. A short-lived command needs no finer bookkeeping than that.
-    const arena = init.arena.allocator();
+    const arena = init.garden.allocator();
     const args = try init.minimal.args.toSlice(arena);
     if (args.len < 2) {
         printUsage();
@@ -134,7 +134,7 @@ fn bridgeToZig(
     zig_subcommand: []const u8,
     label: []const u8,
 ) !u8 {
-    const arena = init.arena.allocator();
+    const arena = init.garden.allocator();
     const io = init.io;
 
     if (args.len < 3) {

@@ -31,8 +31,10 @@ pub const Init = struct {
     /// `Init` is a superset of `Minimal`; the latter is included here.
     minimal: Minimal,
     /// Permanent storage for the entire process, cleaned automatically on
-    /// exit. Threadsafe.
-    arena: *std.heap.ArenaAllocator,
+    /// exit. Threadsafe. Named `garden` in Rye's vocabulary — the season
+    /// allocator Tally models: allocate freely within the season, clear whole
+    /// on exit. Upstream Zig calls this `arena`.
+    garden: *std.heap.ArenaAllocator,
     /// A default-selected general purpose allocator for temporary heap
     /// allocations. Debug mode will set up leak checking if possible.
     /// Threadsafe.

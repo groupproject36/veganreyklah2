@@ -130,20 +130,20 @@ fn computeDiff(
 
 // ---- Test body ----------------------------------------------------------
 
-pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
+pub fn main() void {
+    const allocator = std.heap.page_allocator;
 
     // 1. Empty weave.
     var w = Weave.empty();
-    const empty_view = try w.current(allocator);
+    const empty_view = w.current(allocator) catch unreachable;
     std.debug.assert(empty_view.len == 0);
     std.debug.assert(w.next_pos == 0);
 
     // 2. Apply first diff: insert "a", "b", "c".
     const ins_abc: []const []const u8 = &.{ "a", "b", "c" };
     const del_none: []const u32 = &.{};
-    try w.apply(allocator, .{ .inserts = ins_abc, .deletes = del_none });
-    const view_abc = try w.current(allocator);
+    w.apply(allocator, .{ .inserts = ins_abc, .deletes = del_none }) catch unreachable;
+    const view_abc = w.current(allocator) catch unreachable;
     std.debug.assert(view_abc.len == 3);
     std.debug.assert(std.mem.eql(u8, view_abc[0].text, "a"));
     std.debug.assert(std.mem.eql(u8, view_abc[1].text, "b"));
@@ -156,8 +156,8 @@ pub fn main(init: std.process.Init) !u8 {
     // 3. Apply second diff: delete pos 1 ("b"), insert "d".
     const ins_d: []const []const u8 = &.{"d"};
     const del_b: []const u32 = &.{1};
-    try w.apply(allocator, .{ .inserts = ins_d, .deletes = del_b });
-    const view_acd = try w.current(allocator);
+    w.apply(allocator, .{ .inserts = ins_d, .deletes = del_b }) catch unreachable;
+    const view_acd = w.current(allocator) catch unreachable;
     std.debug.assert(view_acd.len == 3);
     std.debug.assert(std.mem.eql(u8, view_acd[0].text, "a")); // pos 0
     std.debug.assert(std.mem.eql(u8, view_acd[1].text, "c")); // pos 2
@@ -169,34 +169,29 @@ pub fn main(init: std.process.Init) !u8 {
 
     // 4. LCS diff: old=["a","b","c"]  new=["a","c","d"]
     //    LCS = ["a","c"] → delete pos 1 (b), insert "d".
-    const old_abc = try w.current(allocator);
     // Reset to just a, b, c for this scenario.
     var w2 = Weave.empty();
-    try w2.apply(allocator, .{ .inserts = ins_abc, .deletes = del_none });
-    const old2 = try w2.current(allocator);
+    w2.apply(allocator, .{ .inserts = ins_abc, .deletes = del_none }) catch unreachable;
+    const old2 = w2.current(allocator) catch unreachable;
     const new_acd: []const []const u8 = &.{ "a", "c", "d" };
-    const d = try computeDiff(allocator, old2, new_acd);
+    const d = computeDiff(allocator, old2, new_acd) catch unreachable;
     std.debug.assert(d.deletes.len == 1);  // "b" (pos 1) is deleted
     std.debug.assert(d.deletes[0] == 1);
     std.debug.assert(d.inserts.len == 1);  // "d" is new
     std.debug.assert(std.mem.eql(u8, d.inserts[0], "d"));
     // Verify applying the diff produces the expected view.
-    try w2.apply(allocator, d);
-    const result = try w2.current(allocator);
+    w2.apply(allocator, d) catch unreachable;
+    const result = w2.current(allocator) catch unreachable;
     std.debug.assert(result.len == 3);
     std.debug.assert(std.mem.eql(u8, result[0].text, "a"));
     std.debug.assert(std.mem.eql(u8, result[1].text, "c"));
     std.debug.assert(std.mem.eql(u8, result[2].text, "d"));
 
     // 5. Idempotent: diff of unchanged text produces an empty diff.
-    const view_after = try w2.current(allocator);
-    const d_noop = try computeDiff(allocator, view_after, new_acd);
+    const view_after = w2.current(allocator) catch unreachable;
+    const d_noop = computeDiff(allocator, view_after, new_acd) catch unreachable;
     std.debug.assert(d_noop.inserts.len == 0);
     std.debug.assert(d_noop.deletes.len == 0);
 
-    // Silence unused variable warning.
-    _ = old_abc;
-
     std.debug.print("rye: Mantra weave assertions confirmed (Weave, Diff, LCS, idempotent).\n", .{});
-    return 0;
 }

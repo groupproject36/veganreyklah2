@@ -1,9 +1,9 @@
-# 995 · Open Threads — After Arithmetic, Tally Seed, and the Living Desktop Arc
+# 995 · Open Threads — After Mantra Seed, the Garden Rename, and the sh→rish Question
 
-*A fresh snapshot, taken after Rishi gained arithmetic and a real stdout, after Tally's first seed ran with 13 asserted invariants, and after a new design arc opened the path to a native Pond GUI on x86_64 AMD. It carries forward the still-open threads from the sealed-wire and shell-gate turns, ties off what now runs, and names the new threads that opened today.*
+*A fresh snapshot, taken after the four-pass strengthening frontier sealed, after Mantra's first seed planted, and after `init.arena` became `init.garden` across Rye's entire vocabulary. Names the new threads that opened tonight and carries forward the still-open ones.*
 
 **Language:** EN
-**Version:** `20260619.170712` (Rye chronological stamp)
+**Version:** `20260619.205112` (Rye chronological stamp)
 **Last updated:** 2026-06-19
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,45 +12,54 @@
 
 ## What Just Landed
 
-- **The crypto foundation, whole.** The authenticated seal (AEAD: ChaCha20-Poly1305) joined the content hash (SHA3-512), signing (Ed25519), and key agreement (X25519) — every primitive in Rye's own std, parity-green, hosted and freestanding alike.
-- **A sealed message on the bare hart.** `aurora/src/sealed.rye` composes all four primitives freestanding: Alice seals to Bob, Bob verifies and opens, with no OS beneath. The content-name matches the hosted test byte-for-byte.
-- **A sealed datagram across the wire between two harts.** `aurora/src/wire.rye` proves the smallest wire — two harts, a shared-memory mailbox, a memory fence — and `posted.rye` carries a whole sealed datagram across it: hart 0 seals, hart 1 shape-casts the raw bytes and opens, trusting only its own secret and what arrived.
-- **The network module is named.** Comlink — the keeper's choice from Setu, Doota, Akasha, and Comlink (`../external-research/981`).
-- **The shell grew toward a gate.** Rishi gained `==`/`!=`, `assert` (with an optional `else`), list values, and `contains` — each with a passing test and a failing one (`../rishi/tests/checks.rish`, `lists.rish`).
-- **The gate trio is portable, and the corpus is eight.** All green, runnable anywhere in plain POSIX shell.
-- **`parity.rish` runs in our own shell.** Records, `run`, `map`/`where`, and string interpolation composed into the full differential-parity gate — proven GREEN and RED (`../tools/parity.rish`).
-- **Rishi gained arithmetic and a real stdout.** Integer `+`/`-`/`×`/`÷` with correct operator precedence, parenthesized grouping, `say` rebound to stdout. Nine arithmetic assertions in `rishi/tests/arithmetic.rish`, all green.
-- **Tally seed runs.** One `Region` struct over a caller-provided backing slice; bump allocate, clear whole, 13 hosted `debug.assert` calls, all green (`tally/seed.rye`). The first bounded garden in Rye.
-- **Dual-editor setup committed.** `CLAUDE.md`, `.claude/rules/`, and `tools/` example files in place; Zed and Claude Code share one project with thin editor-specific rule files pointing to `context/`.
-- **A new design arc in four documents.** `977` (POSIX at the door — TAME-compatible, not TAME-native), `978` (the living desktop stack — Pond as native desktop framework, Brushstroke as its display surface), `985` (native system interface, quarantined clean room), `986` (the living desktop, quarantined clean room). Ordered plan `10009` names the eight implementation steps.
+- **The crypto foundation, whole.** AEAD joined SHA3-512, Ed25519, and X25519 — every primitive parity-green, hosted and freestanding.
+- **A sealed datagram across two harts.** `aurora/src/posted.rye`: hart 0 seals, hart 1 shape-casts and opens over a shared-memory mailbox.
+- **`parity.rish` runs in our own shell.** The differential-parity gate in Rishi — proven GREEN and RED. The child keeps watch over the parent.
+- **Rishi gained arithmetic and a real stdout.** `+`/`-`/`×`/`÷`, correct precedence, `say` on stdout.
+- **Tally seed runs.** One `Region`, bump allocate, clear whole, 13 asserted invariants all green (`tally/seed.rye`).
+- **Dual-editor setup committed.** `CLAUDE.md`, `.claude/rules/`, `tools/` examples; Zed and Claude Code share one project.
+- **Design arc in four documents.** `977`, `978`, `985`, `986` — POSIX at the door, the living desktop stack, quarantined clean-room briefs. Ordered plan `10009`.
+- **The strengthening frontier (9994–9991) sealed.** SHA3-256, mem diff primitives, `std.Io.Dir` boundary, `Dir.iterate` — all four through the gate, corpus grew 8 → 13, all green.
+- **Mantra seed runs** (pass 9990). Weave, LCS diff, SHA3-256 store, `init / add / status`. Corpus at 14. The first living history in Rye.
+- **`init.garden` replaces `init.arena`.** Rye's public API now uses TAME vocabulary throughout. `std.process.Init.garden` is the season allocator — allocate freely, clear on exit. The parity gate confirmed the rename is visible only in Rye's std (as intended): the weave test was updated to `page_allocator` so both stds produce identical output.
 
 ## Threads Now Closed
 
-- **The encrypted-datagram seed — tied off.** "Two harts, two owner keys, one authenticated, content-named datagram, verified in place" was the open thread; it now runs (`posted.rye`). The seed is done; what remains is its next size — a real device.
-- **Rishi reached `parity.rish` — tied off.** Comparison, assertion, lists, membership, records, `run`, `map`/`where`, and string interpolation all landed, and the parity gate now runs in Rishi (`../tools/parity.rish`), proven GREEN and RED — the child keeping watch over the parent.
+- **The encrypted-datagram seed — tied off.** `posted.rye` runs; what remains is the real device.
+- **Rishi reached `parity.rish` — tied off.** The gate runs in our own shell, GREEN and RED.
 - **The network's name — tied off.** Comlink.
-- **Tally seed — tied off.** One bounded `Region`, bump allocate, clear whole, 13 asserted invariants, all green. The seed runs; Tally v1 awaits.
+- **Tally seed — tied off.** One `Region`, 13 invariants, all green. Grows toward Tally v1.
+- **Four strengthening passes (9994–9991) — tied off.** SHA3-256, mem diff, fs boundary, Dir.iterate. Corpus at 14, all green.
+- **Mantra seed (9990) — tied off.** Weave, LCS diff, SHA3-256 store, `init / add / status`. First running history.
+- **`init.arena` → `init.garden` — tied off.** TAME vocabulary in the public API; all callers updated.
 
 ## Threads Still Open
 
-- **Two parallel near threads** (plus close reading):
-  - **Device wire** — sealed datagram over emulated `virtio-net` between two machines; Comlink's next rung.
-  - **Caravan seed** — hosted supervision: one parent that never dies, one child, restart on fall, asserted.
-  - **Close reading** — packet format, commit rule, relay protocols from `gratitude/` clones, before Comlink's format hardens.
-- **Four strengthening passes** — the floor Mantra's seed needs: SHA3-256 (9994), mem diff primitives (9993), `std.fs` boundary assertions (9992), `Dir.iterate` (9991). Each through the gate trio.
-- **River and Ghostty into `gratitude/`** — clone both display-layer references before Brushstroke's native backend hardens (`../active-designing/985`). Requires manual `git clone` into `gratitude/river` and `gratitude/ghostty`.
-- **Rishi file I/O builtins** — `open`, `read`, `write`, `close` behind OS-boundary wrappers. Both Mantra and Brushstroke need file access from the shell.
-- **Mantra seed** — the smallest weave: two buffers in, one always-succeeding merge out, content-named by SHA3-256. Depends on the four strengthening passes.
-- **Brushstroke seed** — one native x86_64 window, one static frame, libghostty thin costume for the text area (`../active-designing/985`, `../active-designing/986`). Depends on River and Ghostty in `gratitude/`.
-- **Pond GUI on x86_64 AMD** — the Horizon 2 milestone: a Rishi REPL + live Mantra version control of `~/veganreyklah2` in a native Brushstroke window (`../expanding-prompts/10009`, `../active-designing/986`).
-- **Caravan kernel design — microkernel vs monolith** — open question: is a seL4/Redox-style microkernel design safer and worth the performance cost, or can a TAME monolith achieve the same safety at higher speed? (`../external-research/976`, forthcoming).
-- **`pond.rish`, the enclosure as a value.** Records and interpolation now let a sandbox policy be written as a value; the enclosure it opens still awaits Caravan's isolation and Tally's bounds.
-- **Aurora's deciding stage.** A relay stage that hands the next a value *it chose* — a real decision, not only a reading (`aurora/`, the roadmap).
-- **The owner-key PKI.** Rotation, revocation, and recovery when a key is lost or stolen. The QR key-cards and master-key rotation in `SOURCE.md` are the first thread, not the whole answer.
-- **Curation by structure, not by engine.** The smallest honest ranking for the social layer — chronology, explicit follows, a web of trust — that needs no hidden model (`984`).
-- **Spam without a central filter.** A web of trust among keys plus Tally-bounded, perhaps Pond-enclosed relays. Untested.
-- **The unbuilt modules — seeds first.** Silo and Mantra remain designs at full scale; Mantra seed is now explicit Horizon 1 work. Caravan seed is in progress alongside the device wire.
-- **The verify-flag hot path.** `indexOfScalarPos` and other data-plane functions await postconditions compiled in only behind a `verify` flag (`../strengthening-compiler/9996`).
+**Near — three parallel Horizon 1 threads:**
+- **Tally v1 — named gardens** — grow `tally/seed.rye` into `tally/gardens.rye`: `Gardens` struct, three named regions (`blob`, `diff`, `frame`), asserted edges. The memory floor Mantra for the repo uses.
+- **Mantra for `~/veganreyklah2`** — grow the seed into multi-file weave: manifest HEAD, `mantra add` without args walks source paths, `mantra log` follows the HEAD chain. Depends on Tally v1.
+- **Device wire** — sealed datagram over emulated `virtio-net` between two QEMU machines; Comlink's next rung.
+
+**Near — display layer:**
+- **River and Ghostty into `gratitude/`** — clone before Brushstroke's native backend hardens. Manual `git clone` into `gratitude/river` and `gratitude/ghostty`.
+- **Brushstroke seed** — one native x86_64 window, one static frame, thin Wayland/Vulkan backend (`../active-designing/985`, `../active-designing/986`). Depends on River and Ghostty.
+
+**Near — shell:**
+- **Rishi file I/O builtins** — `read-file`, `write-file`, `list-dir` behind OS-boundary wrappers. The Pond GUI needs file access from the shell.
+- **sh → rish parity question** — which `tools/` shell scripts can Rishi replace today, and where does Rishi still fall short? Does our parity concept extend to sh/zsh → rish behavioral equivalence? (opened 2026-06-19 20:02)
+
+**Horizon 2 milestone:**
+- **Pond GUI on x86_64 AMD** — Rishi REPL + live Mantra version control of `~/veganreyklah2` in a Brushstroke window (`../expanding-prompts/10009`).
+
+**Ongoing — strengthen and grow:**
+- **Continue the strengthening series** — the next `std` surfaces our tools lean on, each through the gate trio.
+- **Caravan seed** — one parent, one child, restart on fall, asserted (`../active-designing/987`).
+- **Close reading** — packet format, commit rule, relay protocols from `gratitude/` before Comlink's format hardens.
+- **Aurora's deciding stage** — a relay stage that hands the next a value it chose.
+- **Caravan kernel design** — microkernel vs monolith; conclusion and actionable design decision (`../external-research/976`).
+- **`pond.rish`** — the enclosure as a value; awaits Caravan isolation and Tally bounds.
+- **The owner-key PKI** — rotation, revocation, and recovery.
+- **The verify-flag hot path** — data-plane postconditions behind a `verify` flag (`../strengthening-compiler/9996`).
 
 ## The Through-Line
 

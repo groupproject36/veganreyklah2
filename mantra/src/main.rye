@@ -347,7 +347,7 @@ fn loadWeave(allocator: std.mem.Allocator, store: *const Store, io: std.Io) !Wea
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
+    const allocator = init.garden.allocator();
     const io = init.io;
     const args = try init.minimal.args.toSlice(allocator);
 

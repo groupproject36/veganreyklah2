@@ -739,7 +739,7 @@ inline fn callMain(args: std.process.Args.Vector, environ: std.process.Environ.B
             .args = .{ .vector = args },
             .environ = .{ .block = environ },
         },
-        .arena = &arena_allocator,
+        .garden = &arena_allocator,
         .gpa = gpa,
         .io = threaded.io(),
         .environ_map = &environ_map,
