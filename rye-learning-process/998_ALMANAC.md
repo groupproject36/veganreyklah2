@@ -192,7 +192,20 @@ The reason it works is that the cryptography is *pure*: it computes over fixed-s
 
 This is the quiet unlock for the encrypted datagram. The cryptography our network leans on does not wait for an operating system; it runs the moment a hart wakes. Aurora's bare-metal reach and Mantra's content-addressing meet here, on the first stage that does real cryptographic work with nothing beneath it.
 
-And the whole sealed message followed, exactly as the reasoning promised. `aurora/src/sealed.rye` composes key agreement (X25519), the seal (AEAD), the content-name (SHA3-512), and the attestation (Ed25519) on the bare hart, and opens the message — every primitive freestanding, every one pure. The proof is in the name: the content-name it computes is *byte-for-byte the same* as the hosted `sealed_message_test`. One value model, hosted or freestanding — the same sealed message either way. The only thing now between us and an encrypted datagram between two harts is the wire to carry it.
+And the whole sealed message followed, exactly as the reasoning promised. `aurora/src/sealed.rye` composes key agreement (X25519), the seal (AEAD), the content-name (SHA3-512), and the attestation (Ed25519) on the bare hart, and opens the message — every primitive freestanding, every one pure. The proof is in the name: the content-name it computes is *byte-for-byte the same* as the hosted `sealed_message_test`. One value model, hosted or freestanding — the same sealed message either way. The one thing left between us and an encrypted datagram between two harts was the wire to carry it — and that wire now runs.
+
+---
+
+## Two Harts, One Wire
+
+A sealed datagram is a value; carrying it *between* harts needs a wire. The smallest wire that works is two harts sharing RAM, so that came first. QEMU's `-machine virt` wakes as many harts as `-smp` asks for, and with `-bios none -kernel`, *every* hart enters at the same `_start`. A few lessons made the two-hart stages (`aurora/src/wire.rye`, `aurora/src/posted.rye`) run cleanly:
+
+- **Each hart needs its own stack.** Since all harts share one `_start`, the entry reads `mhartid` and subtracts a per-hart step from the stack pointer (`sp = base - hartid * 64 KiB`), so no two harts trample one stack. The same `mhartid` then routes each hart to its role — sender or receiver — through one argument passed to `kmain`.
+- **A flag and a fence make a mailbox.** The sender writes a buffer in shared RAM, then a `fence` (a full RISC-V memory fence), then raises a ready flag; the receiver spins on the flag, then a `fence`, then reads the buffer. The fence on each side keeps the order honest across harts: published before flagged, flagged before read. The flag and buffer are `volatile`, so the spin re-reads memory rather than a cached register.
+- **One hart powers down, after the other has read.** The machine's test finisher powers off the *whole* machine, so the receiver writes it only once it has the value; the sender rests in a `wfi` loop rather than halting, lest it cut the wire mid-message.
+- **Zig 0.16 clobbers are a struct.** Inline-asm clobbers moved from a string (`::: "memory"`) to a struct (`::: .{ .memory = true }`); the older spelling no longer compiles.
+
+On that wire, `posted.rye` carries a whole sealed datagram: hart 0 seals and serializes it into the mailbox; hart 1 reads the raw bytes, *shape-casts* them (a datagram shorter than its header or longer than the wire is refused at the edge), and opens it — trusting only its own secret and the sender's public key off the wire, reconstructed with `Ed25519.PublicKey.fromBytes`, `Ed25519.Signature.fromBytes`, and `X25519.publicKeyFromEd25519`. The content-name matches the hosted test once more. The next wire is a real device between two machines, where Setu fully begins.
 
 ---
 

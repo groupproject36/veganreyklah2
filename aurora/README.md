@@ -1,8 +1,8 @@
 # Aurora — the dawn a machine wakes into
 
-**Version:** `20260619.034612` (Rye chronological stamp)
+**Version:** `20260619.035412` (Rye chronological stamp)
 **Style:** Radiant prose (see `../context/RADIANT_STYLE.md`); code in TAME Style (`../external-research/996_TAME_STYLE.md`)
-**Status:** Seed, relay, content-named hart, and a sealed datagram — small, runnable, and growing
+**Status:** Seed, relay, content-named hart, sealed datagram, the wire, and a sealed datagram posted across it — small, runnable, and growing
 
 ---
 
@@ -50,16 +50,31 @@ The relay carried a value; this stage proves the boot can *name* one — with cr
 
 The named hart proved the hash runs freestanding; this proves the *whole sealed message* does. In `src/sealed.rye`, one bare-metal hart plays both sides of a conversation: Alice seals a message to Bob — key agreement (X25519, from their Ed25519 identities), the seal (AEAD), the content-name (SHA3-512), the attestation (Ed25519) — and Bob verifies the attestation, checks the name against the bytes, derives the same secret, and opens it. The opened message is spoken over the console, with no operating system beneath any of it.
 
-The quiet proof hides in the content-name: it is *byte-for-byte the same* on the bare hart as in the hosted test (`../rye/tests/sealed_message_test.rye`). One value model, hosted or freestanding — the same sealed message either way. All that remains for an encrypted datagram *between* two harts is the wire to carry it.
+The quiet proof hides in the content-name: it is *byte-for-byte the same* on the bare hart as in the hosted test (`../rye/tests/sealed_message_test.rye`). One value model, hosted or freestanding — the same sealed message either way. All that remained for an encrypted datagram *between* two harts was the wire to carry it.
+
+## The Fifth Stage — the Wire
+
+The sealed stage left one thing for a datagram to travel *between* harts: a wire. Following Gall's Law, the smallest wire that works comes first — so this stage proves two harts can pass *any* value before they pass a sealed one. In `src/wire.rye`, the machine wakes with two harts (`-smp 2`). Each gives itself its own stack; hart 0 writes a message into a mailbox in shared RAM and raises a ready flag; hart 1 waits on the flag, reads the message, and speaks it. A memory fence on each side keeps the order honest: the buffer is published before the flag, and read only after it. This is the wire at its most elemental — shared memory and a flag, the mailbox a sealed datagram will ride.
+
+## The Sixth Stage — a Sealed Datagram, Posted
+
+The wire carries a value; the sealed hart sealed and opened one. This stage unites them. In `src/posted.rye`, the machine wakes with two harts again. Hart 0 (Alice) seals a message to hart 1 (Bob) — key agreement, the seal, the content-name, the attestation — serializes the whole datagram into the shared-memory wire, and raises the flag. Hart 1 reads the raw bytes off the wire and, before trusting any of them, *shape-casts* them: a datagram shorter than its header or longer than the wire is refused at the edge (`../active-designing/992_shape_casting.md`). Only then does Bob verify the attestation, confirm the content-name binds the bytes, derive the shared secret from *his own secret and Alice's public key off the wire*, and open the seal.
+
+This is a sealed value crossing the wire between two harts — the smallest honest seed of Setu (`../active-designing/993_bounded_network.md`; `../external-research/982`, `/985`). The wire here is shared memory between two harts; the next wire is a device between two machines.
 
 ## Build and Run
 
 ```sh
-aurora/run.sh          # the seed (the default stage)
-aurora/run.sh relay    # the second stage: the first relay
-aurora/run.sh named    # the third stage: content-naming, with crypto, on the bare hart
-aurora/run.sh sealed   # the fourth stage: a whole sealed message, sealed and opened on bare metal
+aurora/run.sh                 # the seed (the default stage)
+aurora/run.sh relay           # the second stage: the first relay
+aurora/run.sh named           # the third stage: content-naming, with crypto, on the bare hart
+aurora/run.sh sealed          # the fourth stage: a whole sealed message, sealed and opened on bare metal
+RYE_SMP=2 aurora/run.sh wire   # the fifth stage: two harts pass a value across shared memory
+RYE_SMP=2 aurora/run.sh posted # the sixth stage: a sealed datagram posted across the wire between two harts
 ```
+
+`RYE_SMP` chooses how many harts the machine wakes with (it defaults to one); the
+two-hart stages need `RYE_SMP=2`.
 
 `run.sh` asks `rye build` to emit a freestanding RISC-V ELF for the chosen stage
 — Rye building its own bare-metal artifact, against its own standard library —
@@ -96,6 +111,23 @@ Aurora: a sealed datagram, opened on the bare hart.
   name = ef825a25550a090da510a46461178d73...
 ```
 
+the wire passes a value between two harts across shared memory:
+
+```
+Aurora wire: hart 1 received from hart 0, across shared memory:
+  "a word from hart zero"
+```
+
+and the posted stage carries a whole sealed datagram across that wire — Bob
+opening, on his own hart, what Alice sealed on hers:
+
+```
+Aurora posted: hart 1 opened a sealed datagram from hart 0.
+  attestation verified, content-name matches.
+  opened = Meet me where the rye grows.
+  name = ef825a25550a090da510a46461178d73...
+```
+
 All end with a clean exit (status 0), because the last stage writes the
 machine's test finisher to power itself down. The script uses the vendored Zig
 0.16.0 toolchain beside the project, so it needs no extra setup; an emulator
@@ -111,20 +143,22 @@ aurora/
     relay.rye        <- the second stage: a value flows across asserted stages
     named.rye        <- the third stage: SHA3 content-naming, with crypto, on bare metal
     sealed.rye       <- the fourth stage: a whole sealed message, freestanding
+    wire.rye         <- the fifth stage: two harts pass a value across shared memory
+    posted.rye       <- the sixth stage: a sealed datagram posted across the wire
   layout.ld          <- where a stage lives in memory (RAM base, _start first)
-  run.sh             <- build a stage with rye, wake it in qemu (default: seed)
+  run.sh             <- build a stage with rye, wake it in qemu (RYE_SMP for harts)
   .build/            <- the emitted ELFs (built on demand, untracked)
 ```
 
 ## How It Grows
 
-Each stage grew from the one before, never bolted on — and the sealed datagram
-now runs whole on the bare hart. The clear next step is the **wire**: carrying a
-sealed datagram from one hart to another, the true encrypted datagram between two
-machines, where Setu begins. In parallel: a stage that hands the next a value *it
-chose*; and, as the other modules ripen, Tally's bounded gardens for the boot's
-own memory, Caravan's hand on what runs next, and Silo describing the stages as
-values. The roadmap that holds these steps lives in `../work-in-progress/996_roadmap.md`.
+Each stage grew from the one before, never bolted on — and a sealed datagram now
+crosses the wire between two harts. That wire is shared memory; the next wire is a
+real device (an emulated `virtio-net` to start) carrying a sealed datagram between
+two *machines*, where Setu fully begins. In parallel: a stage that hands the next a
+value *it chose*; and, as the other modules ripen, Tally's bounded gardens for the
+boot's own memory, Caravan's hand on what runs next, and Silo describing the stages
+as values. The roadmap that holds these steps lives in `../work-in-progress/996_roadmap.md`.
 
 ---
 

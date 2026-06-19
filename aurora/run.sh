@@ -44,7 +44,7 @@ echo "waking '${stage}' in qemu-system-riscv64 (machine virt) ..."
 echo "----"
 status=0
 timeout 10 qemu-system-riscv64 -machine virt -bios none -nographic \
-    -kernel "$elf" || status=$?
+    -smp "${RYE_SMP:-1}" -kernel "$elf" || status=$?
 echo "----"
 echo "qemu exited with status $status (0 means the hart asked the machine to rest)"
 exit "$status"
