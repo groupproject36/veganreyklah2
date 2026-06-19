@@ -9,8 +9,10 @@
 //! `record.field`; running a command with `run`, whose result is a record;
 //! transforming and filtering lists with `map` and `where`; `assert` as a gate
 //! that stops the script and says why when a fact does not hold; integer
-//! arithmetic (`+`, `-`, `*`, `/`) with correct operator precedence; and
-//! parenthesized expressions `(expr)` for grouping.
+//! arithmetic (`+`, `-`, `*`, `/`) with correct operator precedence;
+//! parenthesized expressions `(expr)` for grouping; and file I/O with
+//! `read-file` (returns file contents as a string), `write-file` (writes a
+//! value to a path), and `list-dir` (returns entry names as a list of strings).
 //! It is the seed from which the language grows toward `parity.rish` and,
 //! further, `pond.rish` (see active-designing/996_growing_a_language.md).
 //!
@@ -26,7 +28,7 @@ const std = @import("std");
 
 /// Rishi's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
 /// larger, the same clock Rye keeps. This is Rishi's founding stamp.
-const rishi_version = "20260619.090912";
+const rishi_version = "20260619.221912";
 
 /// A Rishi value. The kinds — string, integer, boolean, list, record — are the
 /// seed of a model shared with Rye so a value can cross between them without a seam.
@@ -198,6 +200,8 @@ fn evalStatement(allocator: std.mem.Allocator, io: std.Io, env: *Env, line: []co
         try doSay(allocator, io, env, std.mem.trim(u8, line[4..], " \t"));
     } else if (std.mem.startsWith(u8, line, "assert ")) {
         try doAssert(allocator, io, env, std.mem.trim(u8, line[7..], " \t"));
+    } else if (std.mem.startsWith(u8, line, "write-file ")) {
+        try doWriteFile(allocator, io, env, std.mem.trim(u8, line[11..], " \t"));
     } else {
         return error.UnknownStatement;
     }
@@ -226,6 +230,9 @@ const EvalError = error{
     WhereNeedsBool,
     ArithNeedsInt,
     DivisionByZero,
+    FilePathNeedsString,
+    ReadFileFailed,
+    ListDirFailed,
     TooManyBindings,
     StringTooLong,
     UnterminatedInterpolation,
@@ -241,6 +248,13 @@ fn evalExpr(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: []c
     const trimmed = std.mem.trim(u8, text, " \t");
     if (std.mem.startsWith(u8, trimmed, "run ")) {
         return doRun(allocator, io, env, trimmed[4..]);
+    }
+    // File I/O expressions — each evaluates a path and returns a value.
+    if (std.mem.startsWith(u8, trimmed, "read-file ")) {
+        return doReadFile(allocator, io, env, trimmed[10..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "list-dir ")) {
+        return doListDir(allocator, io, env, trimmed[9..]);
     }
     // `map <list> as <name>: <expr>` transforms each element; `where … ` keeps the
     // elements whose predicate holds. Checked before the operators below, so a
@@ -399,6 +413,73 @@ fn doRun(allocator: std.mem.Allocator, io: std.Io, env: *const Env, argv_text: [
     fields[2] = .{ .name = "code", .value = .{ .int = code } };
     fields[3] = .{ .name = "ok", .value = .{ .boolean = code == 0 } };
     return .{ .record = fields };
+}
+
+/// `read-file <path-expr>` reads a file and returns its contents as a string.
+/// The path is evaluated to a string; the file is read from the current working
+/// directory. A file that cannot be read stops the script with ReadFileFailed.
+fn doReadFile(allocator: std.mem.Allocator, io: std.Io, env: *const Env, arg: []const u8) EvalError!Value {
+    const path_value = try evalExpr(allocator, io, env, arg);
+    const path = switch (path_value) {
+        .string => |s| s,
+        else => return error.FilePathNeedsString,
+    };
+    // invariant: path is sentinel-terminated for the OS boundary
+    const z_path = std.fmt.allocPrint(allocator, "{s}", .{path}) catch return error.OutOfMemory;
+    const dir = std.Io.Dir.cwd();
+    const content = dir.readFileAlloc(io, z_path, allocator, .unlimited) catch return error.ReadFileFailed;
+    return .{ .string = content };
+}
+
+/// `list-dir <path-expr>` lists all entries in a directory and returns their
+/// names as a list of strings. The path is evaluated to a string; the directory
+/// is opened from the current working directory. Entry count is bounded at 256.
+fn doListDir(allocator: std.mem.Allocator, io: std.Io, env: *const Env, arg: []const u8) EvalError!Value {
+    const path_value = try evalExpr(allocator, io, env, arg);
+    const path = switch (path_value) {
+        .string => |s| s,
+        else => return error.FilePathNeedsString,
+    };
+    const z_path = std.fmt.allocPrint(allocator, "{s}", .{path}) catch return error.OutOfMemory;
+    const cwd = std.Io.Dir.cwd();
+    const dir = cwd.openDir(io, z_path, .{ .iterate = true }) catch return error.ListDirFailed;
+    var it = dir.iterate();
+    // invariant: at most 256 entries — bounded to prevent runaway iteration
+    var names: [256]Value = undefined;
+    var count: usize = 0;
+    while (true) {
+        const maybe_entry = it.next(io) catch return error.ListDirFailed;
+        const entry = maybe_entry orelse break;
+        if (count == names.len) return error.ListTooLong;
+        names[count] = .{ .string = allocator.dupe(u8, entry.name) catch return error.OutOfMemory };
+        count += 1;
+    }
+    return .{ .list = allocator.dupe(Value, names[0..count]) catch return error.OutOfMemory };
+}
+
+/// `write-file <path-expr> <value-expr>` writes a value to a file. The first
+/// operand is the path (a string); the rest is the content expression. The value
+/// is rendered to text (the same rendering `say` uses) and written to the file,
+/// creating or truncating it.
+fn doWriteFile(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: []const u8) !void {
+    // First operand is the path; everything after is the content expression.
+    var tok = TokenIter{ .text = rest };
+    const path_token = tok.next() orelse return error.WriteFileNeedsPath;
+    const path_value = try evalOperand(allocator, io, env, path_token);
+    const path = switch (path_value) {
+        .string => |s| s,
+        else => return error.FilePathNeedsString,
+    };
+    const content_text = std.mem.trim(u8, rest[tok.i..], " \t");
+    if (content_text.len == 0) return error.WriteFileNeedsContent;
+    const content_value = try evalExpr(allocator, io, env, content_text);
+    // Render the value to a byte buffer.
+    var sb = StrBuf{};
+    try sb.appendValue(content_value);
+    // invariant: path is sentinel-terminated for the OS boundary
+    const z_path = std.fmt.allocPrint(allocator, "{s}", .{path}) catch return error.OutOfMemory;
+    const dir = std.Io.Dir.cwd();
+    dir.writeFile(io, .{ .sub_path = z_path, .data = sb.bytes[0..sb.len] }) catch return error.WriteFileFailed;
 }
 
 /// `map <list> as <name>: <expr>` evaluates <expr> for each element with <name>

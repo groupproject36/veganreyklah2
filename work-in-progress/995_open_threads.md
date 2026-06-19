@@ -22,6 +22,7 @@
 - **The strengthening frontier (9994–9991) sealed.** SHA3-256, mem diff primitives, `std.Io.Dir` boundary, `Dir.iterate` — all four through the gate, corpus grew 8 → 13, all green.
 - **Mantra seed runs** (pass 9990). Weave, LCS diff, SHA3-256 store, `init / add / status`. Corpus at 14. The first living history in Rye.
 - **`init.garden` replaces `init.arena`.** Rye's public API now uses TAME vocabulary throughout. `std.process.Init.garden` is the season allocator — allocate freely, clear on exit. The parity gate confirmed the rename is visible only in Rye's std (as intended): the weave test was updated to `page_allocator` so both stds produce identical output.
+- **Rishi file I/O builtins.** `read-file`, `write-file`, `list-dir` — each behind the OS boundary. Round-trip test in `rishi/tests/file_io.rish`, all assertions green.
 
 ## Threads Now Closed
 
@@ -35,11 +36,12 @@
 - **`parity-selftest.rish` — tied off.** The gate proves RED in Rishi too. Uses `cp -r` and `sh -c` as temporary stand-ins until `list-dir` and `write-file` land.
 - **Tally v1 — named gardens — tied off.** `tally/gardens.rye`: `Gardens`, three named regions, `add/get/clearOne/clearAll/totalRemaining`, 15/15 parity GREEN (`strengthening-compiler/9989`).
 - **Brix minimum — tied off.** `.brix` at repo root: name, version, 9 tracked bricks. `mantra brix` prints; `mantra init` reads. Mantra knows the project. (Silo is now the store layer; Brix is the composing language.)
+- **Mantra for the repo (seed) — tied off.** Commit-chain model, `mantra add` (no args) walks `.brix`, `mantra log` follows the chain. 9/9 bricks wove on first run. Multi-file manifest is the next growth pass.
+- **Rishi file I/O builtins — tied off.** `read-file`, `write-file`, `list-dir` landed. Round-trip test in `rishi/tests/file_io.rish`, all green. Parity gate 15/15 GREEN.
 
 ## Threads Still Open
 
 **Near — Horizon 1 threads:**
-- **Mantra for `~/veganreyklah2`** — tied off (seed). Commit-chain model (parent reference), `mantra add` (no args) walks `.brix` file list, `mantra log` follows the HEAD chain. 9/9 bricks wove on first run. Multi-file manifest (each file a separate weave; manifest commits reference them) is the next growth pass.
 - **Device wire** — sealed datagram over emulated `virtio-net` between two QEMU machines; Comlink's next rung.
 
 **Near — display layer:**
@@ -47,7 +49,6 @@
 - **Brushstroke seed** — one native x86_64 window, one static frame, thin Wayland/Vulkan backend (`../active-designing/985`, `../active-designing/986`). Depends on River and Ghostty.
 
 **Near — shell:**
-- **Rishi file I/O builtins** — `read-file`, `write-file`, `list-dir` behind OS-boundary wrappers. The Pond GUI needs file access from the shell.
 - **`additive-gate.rish`** — the last gate-trio member to migrate. Needs Rishi stream processing (for-each-line over `git diff` output). Until then `additive-gate.sh` remains the backstop. Strategy: **rish-first, sh-fallback** — write the `.rish` version once Rishi has the capability; leave the `.sh` as a documented fallback for environments where Rishi isn't built.
 
 **Horizon 2 milestone:**
