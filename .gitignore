@@ -11,6 +11,7 @@
 !/.gitignore
 !/.gitmodules
 !/SOURCE.md
+!/.silo
 !/keys_*.png
 !/context/
 !/external-research/

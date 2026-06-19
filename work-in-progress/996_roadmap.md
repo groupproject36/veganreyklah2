@@ -3,7 +3,7 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260619.211012` (Rye chronological stamp)
+**Version:** `20260619.212312` (Rye chronological stamp)
 **Last updated:** 2026-06-19
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -49,7 +49,7 @@ Each is a thing that runs on its own, added by degrees, behind the gates.
 - [x] **Grew Rishi to `parity.rish`** — shipped one proven feature at a time: `==`/`!=`, `assert`, lists, `contains`, records with field access, `run`, `map`/`where`, and string interpolation — and then the gate itself (Horizon 2 below, reached early). `tools/parity.rish` runs GREEN, and RED on a real divergence.
 - [x] **Strengthening passes 9994–9991** — SHA3-256 (9994), mem diff primitives (9993), `std.Io.Dir` boundary assertions (9992), `Dir.iterate` (9991). All four through the gate, corpus at 14, all green.
 - [x] **Mantra seed** — Weave, LCS diff, SHA3-256 store, `init / add / status`. Runs end-to-end; pure LCS test in corpus (`../strengthening-compiler/9990`).
-- [ ] **Tally v1 — named gardens** — grow `tally/seed.rye` into `tally/gardens.rye`: a `Gardens` struct holding named `Region` values, `gardens.get(name)`, `gardens.clear(name)`, `gardens.clear_all()`. Three named gardens for the stack: `blob`, `diff`, `frame`. Mantra for the repo uses the `blob` garden for read buffers.
+- [x] **Tally v1 — named gardens** — `tally/gardens.rye`: `Gardens` struct holding named `Region` values, `add/get/clearOne/clearAll/totalRemaining`. Three named gardens for the stack: `blob`, `diff`, `frame`. Corpus grows to 15/15 GREEN (`../strengthening-compiler/9989`).
 - [ ] **Mantra for `~/veganreyklah2`** — grow the seed into multi-file weave: manifest HEAD names all files, `mantra add` without an argument walks the source paths, `mantra log` follows the HEAD chain. Depends on Tally v1 gardens.
 - [ ] **River and Ghostty into `gratitude/`** — clone both display-layer references before Brushstroke's native backend hardens; actionable reading for the OS-boundary wrapping discipline (`../active-designing/985`).
 - [ ] **Rishi file I/O builtins** — `read-file`, `write-file`, `list-dir` behind OS-boundary wrappers. Brushstroke, the Pond GUI, and `parity-selftest.rish` (native implementation) need file access from the shell (`../active-designing/985`).
@@ -71,7 +71,7 @@ Each milestone here is *made of* the working systems above.
 - [ ] **Caravan v1** — made of: the simplest working supervision (one parent that never dies, one child, restart on fall), grown toward a small tree and chain-loaded startup.
 - [ ] **Pond v1** — made of: Caravan v1's isolation **composed with** Tally v1's bounds — one allow-listed path, one resource bound, opened from a policy that is a value (`pond.rish`).
 - [ ] **Mantra for `~/veganreyklah2`** — made of: Mantra seed grown into multi-file weave tracking the full repository; content-named HEAD chain, `mantra log`, integration tested in a Rishi script.
-- [ ] **Silo minimum** — made of: one `.silo` record descriptor readable by Rishi, describing a simple system reproducibly. The first floor toward Silo v1.
+- [x] **Silo minimum** — `.silo` at the repo root: `name`, `version`, and `file` entries for the 9 tracked sources. Mantra reads it at startup — `mantra silo` prints the descriptor; `mantra init` reports the project name and file count. The first floor toward Silo v1.
 - [ ] **Pond GUI — Rishi REPL + Mantra in a Brushstroke window** — made of: Brushstroke seed + Mantra seed + Rishi file I/O, composing into a single native x86_64 window with a Rishi text area and live Mantra version control of the repository (`../expanding-prompts/10009`, `../active-designing/986`).
 
 ---
@@ -110,19 +110,23 @@ The near goal is concrete and named: **a Pond GUI running a Rishi REPL and live 
 
 ### What to Build Next, and Why
 
-The four strengthening passes and the Mantra seed are done. Tally v1 (named gardens) comes next — the memory floor Mantra for the repo uses for its read buffers. Then Mantra grows from one-file to full-repository weave. Then River and Ghostty into `gratitude/`, Rishi file I/O builtins, Brushstroke seed, and the Pond GUI. See `../expanding-prompts/10009` and `../active-designing/986`.
+Tally v1 and the Silo minimum are done. Mantra grows next: a commit-chain model (parent reference), `mantra add` without args walks the `.silo` file list, `mantra log` follows the HEAD chain. Then Rishi file I/O builtins (`read-file`, `write-file`, `list-dir`), Brushstroke seed, and the Pond GUI. See `../expanding-prompts/10009` and `../active-designing/986`.
 
 ---
 
 ## The Steps Just Taken
 
-The strengthening frontier sealed, and the first running Mantra planted.
+The strengthening frontier sealed, Mantra planted, Tally named, and the project descriptor landed.
 
-**Four strengthening passes** completed in sequence: SHA3-256 (9994) — Keccak at the 136-byte block width, the content-naming primitive Mantra uses; mem diff primitives (9993) — `copyForwards`, `startsWith`, `endsWith`, `find`, `splitScalar`; `std.Io.Dir` filesystem boundary (9992) — non-empty path, OS-limit path, non-empty read buffer, asserted at every public surface; `Dir.iterate` (9991) — name invariants and exhaustion-state postconditions. All four through the gate; corpus grew from 8 to 13, all green.
+**Four strengthening passes** (9994–9991): SHA3-256, mem diff primitives, `std.Io.Dir` boundary, `Dir.iterate`. Corpus 8 → 13, all green.
 
-**Mantra seed** (9990) planted: one file, three commands. A Weave holds the full history of a text stream as Lines with stable positions and generation-parity presence. `computeDiff` finds the minimal LCS edit. The store content-names every weave state by its SHA3-256 digest. `mantra init / add / status` confirmed end-to-end; pure LCS test joined the corpus (14/14 GREEN).
+**Mantra seed** (9990): one file, three commands — `init / add / status`. Weave, LCS diff, SHA3-256 store. Corpus 14/14 GREEN.
 
-**`init.garden` replaced `init.arena`** across Rye's std and all callers. The season allocator now carries TAME vocabulary in the public API; `arena` recedes to an implementation detail. A parity gate caught the one test that referenced `init.garden` against the baseline — the vocabulary is Rye's own, and the gate is honest about it.
+**`init.garden` replaced `init.arena`** across Rye's std and all callers. TAME vocabulary in the public API.
+
+**Tally v1 — named gardens** (9989): `tally/gardens.rye` — `Gardens` struct, `blob/diff/frame`, `add/get/clearOne/clearAll`, 15/15 parity GREEN.
+
+**Silo minimum**: `.silo` at the repo root names the project and 9 tracked source files. `mantra silo` prints the descriptor; `mantra init` reads it. Mantra knows the project.
 
 ---
 

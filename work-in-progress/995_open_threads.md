@@ -3,7 +3,7 @@
 *A fresh snapshot, taken after the four-pass strengthening frontier sealed, after Mantra's first seed planted, and after `init.arena` became `init.garden` across Rye's entire vocabulary. Names the new threads that opened tonight and carries forward the still-open ones.*
 
 **Language:** EN
-**Version:** `20260619.211012` (Rye chronological stamp)
+**Version:** `20260619.212312` (Rye chronological stamp)
 **Last updated:** 2026-06-19
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -33,12 +33,13 @@
 - **Mantra seed (9990) — tied off.** Weave, LCS diff, SHA3-256 store, `init / add / status`. First running history.
 - **`init.arena` → `init.garden` — tied off.** TAME vocabulary in the public API; all callers updated.
 - **`parity-selftest.rish` — tied off.** The gate proves RED in Rishi too. Uses `cp -r` and `sh -c` as temporary stand-ins until `list-dir` and `write-file` land.
+- **Tally v1 — named gardens — tied off.** `tally/gardens.rye`: `Gardens`, three named regions, `add/get/clearOne/clearAll/totalRemaining`, 15/15 parity GREEN (`strengthening-compiler/9989`).
+- **Silo minimum — tied off.** `.silo` at repo root: name, version, 9 tracked files. `mantra silo` prints; `mantra init` reads. Mantra knows the project.
 
 ## Threads Still Open
 
-**Near — three parallel Horizon 1 threads:**
-- **Tally v1 — named gardens** — grow `tally/seed.rye` into `tally/gardens.rye`: `Gardens` struct, three named regions (`blob`, `diff`, `frame`), asserted edges. The memory floor Mantra for the repo uses.
-- **Mantra for `~/veganreyklah2`** — grow the seed into multi-file weave: manifest HEAD, `mantra add` without args walks source paths, `mantra log` follows the HEAD chain. Depends on Tally v1.
+**Near — Horizon 1 threads:**
+- **Mantra for `~/veganreyklah2`** — grow the seed into multi-file weave: commit-chain model (parent reference), `mantra add` (no args) walks `.silo` file list, `mantra log` follows the HEAD chain. Tally v1 and Silo minimum are both done; this is next.
 - **Device wire** — sealed datagram over emulated `virtio-net` between two QEMU machines; Comlink's next rung.
 
 **Near — display layer:**

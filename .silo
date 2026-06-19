@@ -1,0 +1,33 @@
+# .silo — veganreyklah2
+# Project descriptor: name, version, and the source files Mantra tracks.
+# Format: one key-value pair per line, space-separated. Lines starting with
+# '#' are comments; blank lines are ignored.
+#
+# Keys:
+#   name     — the project name (one value)
+#   version  — descriptor version (Rye chronological stamp)
+#   file     — one tracked source file (multiple, in order)
+
+name veganreyklah2
+version 20260619.212312
+
+# Rye compiler
+file rye/src/main.rye
+
+# Rishi shell
+file rishi/src/main.rye
+
+# Tally memory model
+file tally/seed.rye
+file tally/gardens.rye
+
+# Mantra version control
+file mantra/src/main.rye
+
+# Gate trio
+file tools/parity.sh
+file tools/parity.rish
+
+# Living documentation
+file work-in-progress/995_open_threads.md
+file work-in-progress/996_roadmap.md

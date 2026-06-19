@@ -28,7 +28,7 @@ const std  = @import("std");
 const Dir  = std.Io.Dir;
 const Sha3 = std.crypto.hash.sha3.Sha3_256;
 
-const mantra_version = "20260619.200512";
+const mantra_version = "20260619.212312";
 
 // =========================================================================
 // § Weave — the data model
@@ -335,6 +335,57 @@ fn deserializeWeave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
     return w;
 }
 
+// =========================================================================
+// § Silo — .silo project descriptor
+// =========================================================================
+//
+// A .silo descriptor names a project and the source files Mantra tracks.
+// Format: one key-value pair per line, space-separated. Lines starting with
+// '#' are comments; blank lines are ignored.
+//
+//   name     — the project name (one value)
+//   version  — descriptor version (Rye chronological stamp)
+//   file     — one tracked source file (multiple allowed, in order)
+
+const SiloConfig = struct {
+    name:    []const u8,
+    version: []const u8,
+    files:   []const []const u8,
+};
+
+/// Read and parse .silo from `dir`. Returns null if .silo is absent.
+fn readSilo(allocator: std.mem.Allocator, io: std.Io, dir: Dir) !?SiloConfig {
+    var buf: [8192]u8 = undefined;
+    const content = dir.readFile(io, ".silo", &buf) catch |err| {
+        if (err == error.FileNotFound) return null;
+        return err;
+    };
+    var name_val:    []const u8 = "";
+    var version_val: []const u8 = "";
+    var files = std.ArrayListUnmanaged([]const u8).empty;
+    var lines_it = std.mem.splitScalar(u8, content, '\n');
+    while (lines_it.next()) |line| {
+        const trimmed = std.mem.trim(u8, line, " \t\r");
+        if (trimmed.len == 0 or trimmed[0] == '#') continue;
+        const sep = std.mem.indexOfScalar(u8, trimmed, ' ') orelse continue;
+        const key = trimmed[0..sep];
+        const val = std.mem.trim(u8, trimmed[sep..], " \t");
+        if (std.mem.eql(u8, key, "name")) {
+            name_val = try allocator.dupe(u8, val);
+        } else if (std.mem.eql(u8, key, "version")) {
+            version_val = try allocator.dupe(u8, val);
+        } else if (std.mem.eql(u8, key, "file")) {
+            std.debug.assert(val.len > 0);
+            try files.append(allocator, try allocator.dupe(u8, val));
+        }
+    }
+    return SiloConfig{
+        .name    = name_val,
+        .version = version_val,
+        .files   = try files.toOwnedSlice(allocator),
+    };
+}
+
 fn loadWeave(allocator: std.mem.Allocator, store: *const Store, io: std.Io) !Weave {
     const head_name = try store.readHead(allocator, io);
     if (head_name == null) return Weave.empty();
@@ -355,7 +406,9 @@ pub fn main(init: std.process.Init) !u8 {
 
     const cmd = args[1];
     if (std.mem.eql(u8, cmd, "init")) {
-        return cmdInit(io);
+        return cmdInit(allocator, io);
+    } else if (std.mem.eql(u8, cmd, "silo")) {
+        return cmdSilo(allocator, io);
     } else if (std.mem.eql(u8, cmd, "add")) {
         if (args.len < 3) {
             std.debug.print("mantra: add requires a file path\n", .{});
@@ -384,6 +437,7 @@ fn printUsage() void {
         \\
         \\usage:
         \\  mantra init           create .mantra/ in the current directory
+        \\  mantra silo           print the .silo project descriptor
         \\  mantra add <file>     weave the file's current text into the history
         \\  mantra status <file>  show what has changed since the last weave
         \\  mantra version        print the Mantra version
@@ -391,13 +445,32 @@ fn printUsage() void {
     , .{});
 }
 
-fn cmdInit(io: std.Io) !u8 {
+fn cmdInit(allocator: std.mem.Allocator, io: std.Io) !u8 {
     var store = Store.open(io, Dir.cwd()) catch |err| {
         std.debug.print("mantra init: could not create .mantra/: {}\n", .{err});
         return 1;
     };
     _ = &store;
-    std.debug.print("mantra: initialized .mantra/ in the current directory.\n", .{});
+    const maybe_silo = try readSilo(allocator, io, Dir.cwd());
+    if (maybe_silo) |s| {
+        std.debug.print("mantra: initialized .mantra/ — project '{s}' ({d} tracked file(s)).\n", .{
+            s.name, s.files.len,
+        });
+    } else {
+        std.debug.print("mantra: initialized .mantra/ in the current directory.\n", .{});
+    }
+    return 0;
+}
+
+fn cmdSilo(allocator: std.mem.Allocator, io: std.Io) !u8 {
+    const maybe_silo = try readSilo(allocator, io, Dir.cwd());
+    if (maybe_silo == null) {
+        std.debug.print("mantra: no .silo found in the current directory.\n", .{});
+        return 1;
+    }
+    const s = maybe_silo.?;
+    std.debug.print("silo: {s}  version {s}  ({d} file(s))\n", .{ s.name, s.version, s.files.len });
+    for (s.files) |f| std.debug.print("  file {s}\n", .{f});
     return 0;
 }
 
