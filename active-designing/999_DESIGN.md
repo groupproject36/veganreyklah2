@@ -45,7 +45,8 @@ Like the external-research stack, this folder counts **down**, and two near-foun
 
 ```
 active-designing/
-  986_living_desktop.md              <- Pond + Brushstroke + Rishi + Mantra: the native desktop (most recent, sorts first)
+  985_native_system_interface.md     <- TAME at the OS boundary: wrappers, display, compositor (most recent, sorts first)
+  986_living_desktop.md              <- Pond + Brushstroke + Rishi + Mantra: the native desktop
   987_the_first_seeds.md             <- Caravan + Tally seeds, close reading
   988_brushstroke.md                 <- the surface that draws itself from values
   989_the_faithful_hand.md           <- the design of Rishi, the shell
