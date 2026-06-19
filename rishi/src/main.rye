@@ -3,11 +3,12 @@
 //! Rishi is the shell of the Rye ecosystem: terse for the hand, typed for
 //! safety, a sibling of Rye that shares its value model. This first version is
 //! honest about how small it is. It reads a `.rish` script and runs it
-//! directly, supporting line comments; `let` bindings of strings, integers, and
-//! booleans; `say` with `${name}` interpolation; comparison with `==` and `!=`;
-//! and `assert` as a gate that stops the script and says why when a fact does not
-//! hold. It is the seed from which the language grows toward `parity.rish`, the
-//! program that will name its first real purpose (see active-designing/996_growing_a_language.md).
+//! directly, supporting line comments; `let` bindings of strings, integers,
+//! booleans, and lists; `say` with `${name}` interpolation; comparison with `==`
+//! and `!=`; list membership with `contains`; and `assert` as a gate that stops
+//! the script and says why when a fact does not hold. It is the seed from which
+//! the language grows toward `parity.rish`, the program that will name its first
+//! real purpose (see active-designing/996_growing_a_language.md).
 //!
 //! Rishi is implemented in Rye and built against Rye's own standard library, so
 //! the language we are growing and the language we build it in are one and the
@@ -21,7 +22,7 @@ const std = @import("std");
 
 /// Rishi's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
 /// larger, the same clock Rye keeps. This is Rishi's founding stamp.
-const rishi_version = "20260619.043612";
+const rishi_version = "20260619.044912";
 
 /// A Rishi value. The first two kinds — a string and an integer — are the seed
 /// of a model that will grow to lists, records, and process results, shared
@@ -30,12 +31,21 @@ const Value = union(enum) {
     string: []const u8,
     int: i64,
     boolean: bool,
+    list: []const Value,
 
     fn write(self: Value) void {
         switch (self) {
             .string => |s| std.debug.print("{s}", .{s}),
             .int => |x| std.debug.print("{d}", .{x}),
             .boolean => |b| std.debug.print("{s}", .{if (b) "true" else "false"}),
+            .list => |items| {
+                std.debug.print("[", .{});
+                for (items, 0..) |item, idx| {
+                    if (idx != 0) std.debug.print(" ", .{});
+                    item.write();
+                }
+                std.debug.print("]", .{});
+            },
         }
     }
 };
@@ -125,13 +135,13 @@ fn runFile(init: std.process.Init, args: []const [:0]const u8) !u8 {
         return 1;
     };
 
-    return interpret(source);
+    return interpret(arena, source);
 }
 
 /// Run a Rishi script, line by line. Returns 0 when the whole script runs, or 1
 /// at the first line that does not make sense — named with its line number, so
 /// the trouble is easy to find.
-fn interpret(source: []const u8) u8 {
+fn interpret(allocator: std.mem.Allocator, source: []const u8) u8 {
     var env = Env{};
     var line_no: usize = 0;
     var lines = std.mem.splitScalar(u8, source, '\n');
@@ -139,7 +149,7 @@ fn interpret(source: []const u8) u8 {
         line_no += 1;
         const line = std.mem.trim(u8, raw, " \t\r");
         if (line.len == 0 or line[0] == '#') continue;
-        evalStatement(&env, line) catch |err| {
+        evalStatement(allocator, &env, line) catch |err| {
             if (err == error.AssertionFailed) {
                 // doAssert already named the broken fact; add where it broke.
                 std.debug.print("  at line {d}: {s}\n", .{ line_no, line });
@@ -152,43 +162,72 @@ fn interpret(source: []const u8) u8 {
     return 0;
 }
 
-fn evalStatement(env: *Env, line: []const u8) !void {
+fn evalStatement(allocator: std.mem.Allocator, env: *Env, line: []const u8) !void {
     if (std.mem.startsWith(u8, line, "let ")) {
         const rest = std.mem.trim(u8, line[4..], " \t");
         const eq = std.mem.indexOfScalar(u8, rest, '=') orelse return error.LetNeedsEquals;
         const name = std.mem.trim(u8, rest[0..eq], " \t");
         const valstr = std.mem.trim(u8, rest[eq + 1 ..], " \t");
         if (name.len == 0) return error.LetNeedsName;
-        try env.bind(name, try evalExpr(env, valstr));
+        try env.bind(name, try evalExpr(allocator, env, valstr));
     } else if (std.mem.startsWith(u8, line, "say ")) {
         try doSay(env, std.mem.trim(u8, line[4..], " \t"));
     } else if (std.mem.startsWith(u8, line, "assert ")) {
-        try doAssert(env, std.mem.trim(u8, line[7..], " \t"));
+        try doAssert(allocator, env, std.mem.trim(u8, line[7..], " \t"));
     } else {
         return error.UnknownStatement;
     }
 }
 
-/// Evaluate an expression: a single operand, or two operands compared with `==`
-/// or `!=`, which yields a boolean. The comparison is found outside any quoted
-/// string, so a `==` woven into `"text"` stays text.
-fn evalExpr(env: *const Env, text: []const u8) !Value {
+/// The errors the evaluator can raise. Named explicitly so evalOperand and
+/// parseList may call each other — a list holds values, and a value may be a
+/// list — without the compiler chasing an inferred error set around in a circle.
+const EvalError = error{
+    ExpectedValue,
+    UndefinedName,
+    ContainsNeedsList,
+    ListTooLong,
+    OutOfMemory,
+};
+
+/// Evaluate an expression: an operand, two operands compared with `==`/`!=`, or a
+/// `<list> contains <value>` membership test — each comparison yielding a boolean.
+/// An operator is found outside any quoted string, so one woven into `"text"`
+/// stays text.
+fn evalExpr(allocator: std.mem.Allocator, env: *const Env, text: []const u8) EvalError!Value {
+    // `<list> contains <value>` asks membership, yielding a boolean.
+    if (findWordOp(text, " contains ")) |idx| {
+        const haystack = try evalExpr(allocator, env, text[0..idx]);
+        const needle = try evalExpr(allocator, env, text[idx + 10 ..]);
+        const items = switch (haystack) {
+            .list => |l| l,
+            else => return error.ContainsNeedsList,
+        };
+        for (items) |item| {
+            if (valuesEqual(item, needle)) return .{ .boolean = true };
+        }
+        return .{ .boolean = false };
+    }
+    // `a == b` / `a != b` compare, yielding a boolean.
     if (findComparison(text)) |cmp| {
-        const left = try evalOperand(env, cmp.left);
-        const right = try evalOperand(env, cmp.right);
+        const left = try evalOperand(allocator, env, cmp.left);
+        const right = try evalOperand(allocator, env, cmp.right);
         const equal = valuesEqual(left, right);
         return .{ .boolean = if (cmp.op == .ne) !equal else equal };
     }
-    return evalOperand(env, text);
+    return evalOperand(allocator, env, text);
 }
 
 /// Evaluate one operand: a double-quoted string, a boolean, a base-ten integer,
 /// or a bare name that refers to an earlier binding.
-fn evalOperand(env: *const Env, raw: []const u8) !Value {
+fn evalOperand(allocator: std.mem.Allocator, env: *const Env, raw: []const u8) EvalError!Value {
     const s = std.mem.trim(u8, raw, " \t");
     if (s.len == 0) return error.ExpectedValue;
     if (s.len >= 2 and s[0] == '"' and s[s.len - 1] == '"') {
         return .{ .string = s[1 .. s.len - 1] };
+    }
+    if (s.len >= 2 and s[0] == '[' and s[s.len - 1] == ']') {
+        return parseList(allocator, env, s[1 .. s.len - 1]);
     }
     if (std.mem.eql(u8, s, "true")) return .{ .boolean = true };
     if (std.mem.eql(u8, s, "false")) return .{ .boolean = false };
@@ -197,6 +236,45 @@ fn evalOperand(env: *const Env, raw: []const u8) !Value {
     } else |_| {}
     return env.lookup(s) orelse error.UndefinedName;
 }
+
+/// Parse a list literal's interior — space-separated operands, with spaces inside
+/// a quoted element kept whole. The element count is bounded, so a runaway literal
+/// meets a clear edge rather than eating memory without end.
+fn parseList(allocator: std.mem.Allocator, env: *const Env, inner: []const u8) EvalError!Value {
+    var buffer: [256]Value = undefined;
+    var count: usize = 0;
+    var it = TokenIter{ .text = inner };
+    while (it.next()) |token| {
+        if (count == buffer.len) return error.ListTooLong;
+        buffer[count] = try evalOperand(allocator, env, token);
+        count += 1;
+    }
+    const items = try allocator.dupe(Value, buffer[0..count]);
+    return .{ .list = items };
+}
+
+/// Walk space-separated tokens, treating a quoted string as one token even when
+/// it holds spaces of its own.
+const TokenIter = struct {
+    text: []const u8,
+    i: usize = 0,
+
+    fn next(self: *TokenIter) ?[]const u8 {
+        while (self.i < self.text.len and (self.text[self.i] == ' ' or self.text[self.i] == '\t')) self.i += 1;
+        if (self.i >= self.text.len) return null;
+        const start = self.i;
+        var in_quote = false;
+        while (self.i < self.text.len) : (self.i += 1) {
+            const c = self.text[self.i];
+            if (c == '"') {
+                in_quote = !in_quote;
+            } else if (!in_quote and (c == ' ' or c == '\t')) {
+                break;
+            }
+        }
+        return self.text[start..self.i];
+    }
+};
 
 const Comparison = struct { op: enum { eq, ne }, left: []const u8, right: []const u8 };
 
@@ -232,16 +310,29 @@ fn valuesEqual(a: Value, b: Value) bool {
             .boolean => |y| x == y,
             else => false,
         },
+        .list => |x| return switch (b) {
+            .list => |y| listsEqual(x, y),
+            else => false,
+        },
     }
+}
+
+/// Two lists are equal when they have the same length and equal elements in order.
+fn listsEqual(x: []const Value, y: []const Value) bool {
+    if (x.len != y.len) return false;
+    for (x, y) |xi, yi| {
+        if (!valuesEqual(xi, yi)) return false;
+    }
+    return true;
 }
 
 /// `assert <expr>` makes a fact a gate: when the expression is a false boolean,
 /// the script stops and says why. An optional `else "message"` gives the reason
 /// to show; without it, the condition itself stands as the reason.
-fn doAssert(env: *const Env, arg: []const u8) !void {
+fn doAssert(allocator: std.mem.Allocator, env: *const Env, arg: []const u8) !void {
     var condition = arg;
     var message: ?[]const u8 = null;
-    if (findElse(arg)) |idx| {
+    if (findWordOp(arg, " else ")) |idx| {
         condition = std.mem.trim(u8, arg[0..idx], " \t");
         const tail = std.mem.trim(u8, arg[idx + 6 ..], " \t");
         message = if (tail.len >= 2 and tail[0] == '"' and tail[tail.len - 1] == '"')
@@ -249,7 +340,7 @@ fn doAssert(env: *const Env, arg: []const u8) !void {
         else
             tail;
     }
-    const value = try evalExpr(env, condition);
+    const value = try evalExpr(allocator, env, condition);
     const holds = switch (value) {
         .boolean => |b| b,
         else => return error.AssertNeedsCondition,
@@ -260,15 +351,15 @@ fn doAssert(env: *const Env, arg: []const u8) !void {
     }
 }
 
-/// Find ` else ` outside any quoted string, so an `else` inside a message stays
-/// part of the message.
-fn findElse(text: []const u8) ?usize {
+/// Find a word-operator like ` else ` or ` contains ` outside any quoted string,
+/// so the same word inside `"text"` stays part of the text.
+fn findWordOp(text: []const u8, word: []const u8) ?usize {
     var in_quote = false;
     var i: usize = 0;
-    while (i + 6 <= text.len) : (i += 1) {
+    while (i + word.len <= text.len) : (i += 1) {
         if (text[i] == '"') {
             in_quote = !in_quote;
-        } else if (!in_quote and std.mem.startsWith(u8, text[i..], " else ")) {
+        } else if (!in_quote and std.mem.startsWith(u8, text[i..], word)) {
             return i;
         }
     }
