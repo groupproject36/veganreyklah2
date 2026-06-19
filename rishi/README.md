@@ -1,6 +1,6 @@
 # Rishi — the shell of the Rye ecosystem
 
-**Version:** `20260619.060512` (chronological; later is larger)
+**Version:** `20260619.063712` (chronological; later is larger)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** First version — small, runnable, and growing
 
@@ -31,6 +31,9 @@ supporting:
   `name: value` fields. Read a field with `r.a`, nested with `r.inner.y`. `say r`
   shows `{a: 1, b: x, inner: {y: 2}}`, and two records are equal when they hold the
   same fields and values, in any order.
+- **String interpolation** — any quoted string with a `${expr}` hole composes a new
+  value: `"${dir}/${name}.zig"` builds a path, `"${n} items"` weaves an integer into
+  text. The same `${…}` that `say` speaks now builds string values everywhere.
 - **Comparison** — `a == b` and `a != b` yield a boolean; unlike kinds simply
   differ. The operator is found outside any quoted string, so `==` inside `"text"`
   stays text.
@@ -75,25 +78,25 @@ rishi/bin/rishi run rishi/tests/lists.rish    # lists, contains, and equality
 rishi/bin/rishi run rishi/tests/records.rish  # records, field access, and equality
 rishi/bin/rishi run rishi/tests/run.rish      # running commands, results as records
 rishi/bin/rishi run rishi/tests/map_where.rish # transforming and filtering lists
+rishi/bin/rishi run rishi/tests/strings.rish  # composing strings by interpolation
 ```
 
-`tests/checks.rish` shows the comparison-and-assert pieces, `tests/lists.rish` the
-list-and-membership ones, `tests/records.rish` the records and field paths,
-`tests/run.rish` a command run and read as a record, and `tests/map_where.rish` a
-list transformed and filtered — each a run of facts that all hold. A false `assert`
-instead stops the script, names the broken fact, and exits non-zero: the gate
-behavior `parity.rish` will lean on.
+Each test is a run of facts that all hold — comparison and `assert`, lists and
+membership, records and field paths, a command run as a record, a list transformed
+and filtered, a string composed. A false `assert` instead stops the script, names
+the broken fact, and exits non-zero: the gate behavior `parity.rish` leans on.
 
 ## How It Grows
 
-The first version is the seed; the destination is `parity.rish`, our parity gate
-written in Rishi. Every piece it asks for is now in hand — the **list** that holds
-a corpus, the **`run`** that executes a program and returns a record, the `==` that
-compares (lists element by element), the **`map`** and **`where`** that walk and
-filter, and the **`assert`** that gates. The next step is `parity.rish` itself: the
-gate rewritten in our own shell, the child keeping watch over the parent. Each piece
-shares Rye's value model, so a value made in a Rye program and a value carried
-through a Rishi pipeline are the same value.
+The first version was the seed; the destination was `parity.rish`, our parity gate
+written in Rishi — and it now **runs** (`../tools/parity.rish`). With lists, `run`
+(records), `==` over lists, `map`/`where`, `assert`, and string interpolation all in
+hand, the whole gate becomes one clear flow: a corpus mapped through `run` against
+the baseline std and the strengthened one, the two lists of outputs compared as a
+single value, and one `assert` for the verdict. It turns GREEN when behavior matches
+and RED when it diverges — proven both ways. The shell that Rye grew now guards Rye's
+own becoming, which is the finest dogfooding there is: the child keeping watch over
+the parent.
 
 Two north stars guide that growth. `tests/hello.rish` is what runs today;
 `examples/pond.rish` is where we are headed — an illustrative sketch of Rishi

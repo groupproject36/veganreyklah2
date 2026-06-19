@@ -4,9 +4,10 @@
 //! safety, a sibling of Rye that shares its value model. This first version is
 //! honest about how small it is. It reads a `.rish` script and runs it
 //! directly, supporting line comments; `let` bindings of strings, integers,
-//! booleans, lists, and records; `say` with `${...}` interpolation; comparison
-//! with `==` and `!=`; list membership with `contains`; field access with
-//! `record.field`; running a command with `run`, whose result is a record;
+//! booleans, lists, and records; string interpolation, where `"${expr}"` composes
+//! a value into text; `say`; comparison with `==` and `!=`; list membership with
+//! `contains`; field access with `record.field`; running a command with `run`,
+//! whose result is a record;
 //! transforming and filtering lists with `map` and `where`; and `assert` as a
 //! gate that stops the script and says why when a fact does not hold. It is the
 //! seed from which
@@ -25,7 +26,7 @@ const std = @import("std");
 
 /// Rishi's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
 /// larger, the same clock Rye keeps. This is Rishi's founding stamp.
-const rishi_version = "20260619.060512";
+const rishi_version = "20260619.063712";
 
 /// A Rishi value. The first two kinds — a string and an integer — are the seed
 /// of a model that will grow to lists, records, and process results, shared
@@ -217,6 +218,8 @@ const EvalError = error{
     PipelineNeedsList,
     WhereNeedsBool,
     TooManyBindings,
+    StringTooLong,
+    UnterminatedInterpolation,
     OutOfMemory,
 };
 
@@ -351,7 +354,10 @@ fn evalOperand(allocator: std.mem.Allocator, io: std.Io, env: *const Env, raw: [
     const s = std.mem.trim(u8, raw, " \t");
     if (s.len == 0) return error.ExpectedValue;
     if (s.len >= 2 and s[0] == '"' and s[s.len - 1] == '"') {
-        return .{ .string = s[1 .. s.len - 1] };
+        const inner = s[1 .. s.len - 1];
+        // A string with a `${…}` hole composes a new value; a plain one is itself.
+        if (std.mem.indexOf(u8, inner, "${")) |_| return interpolate(allocator, io, env, inner);
+        return .{ .string = inner };
     }
     if (s.len >= 2 and s[0] == '[' and s[s.len - 1] == ']') {
         return parseList(allocator, io, env, s[1 .. s.len - 1]);
@@ -391,6 +397,73 @@ fn findField(fields: []const Field, name: []const u8) ?Value {
         if (std.mem.eql(u8, fields[i].name, name)) return fields[i].value;
     }
     return null;
+}
+
+/// A bounded buffer for composing a string by interpolation. Bounded on purpose:
+/// a runaway composition meets a clear edge rather than growing without end.
+const StrBuf = struct {
+    bytes: [4096]u8 = undefined,
+    len: usize = 0,
+
+    fn append(self: *StrBuf, text: []const u8) EvalError!void {
+        if (self.len + text.len > self.bytes.len) return error.StringTooLong;
+        @memcpy(self.bytes[self.len .. self.len + text.len], text);
+        self.len += text.len;
+    }
+
+    /// Render a value into the buffer — the same shapes `write` speaks to the console.
+    fn appendValue(self: *StrBuf, value: Value) EvalError!void {
+        switch (value) {
+            .string => |s| try self.append(s),
+            .int => |x| {
+                var digits: [24]u8 = undefined;
+                const written = std.fmt.bufPrint(&digits, "{d}", .{x}) catch return error.StringTooLong;
+                try self.append(written);
+            },
+            .boolean => |b| try self.append(if (b) "true" else "false"),
+            .list => |items| {
+                try self.append("[");
+                for (items, 0..) |item, idx| {
+                    if (idx != 0) try self.append(" ");
+                    try self.appendValue(item);
+                }
+                try self.append("]");
+            },
+            .record => |fields| {
+                try self.append("{");
+                for (fields, 0..) |f, idx| {
+                    if (idx != 0) try self.append(", ");
+                    try self.append(f.name);
+                    try self.append(": ");
+                    try self.appendValue(f.value);
+                }
+                try self.append("}");
+            },
+        }
+    }
+};
+
+/// Compose a string from a literal woven with `${expr}` holes, each hole the
+/// rendered value of its expression. This is how a value becomes part of a larger
+/// string — a path, an argument, a sentence.
+fn interpolate(allocator: std.mem.Allocator, io: std.Io, env: *const Env, inner: []const u8) EvalError!Value {
+    var sb = StrBuf{};
+    var i: usize = 0;
+    while (i < inner.len) {
+        if (i + 1 < inner.len and inner[i] == '$' and inner[i + 1] == '{') {
+            const close = std.mem.indexOfScalarPos(u8, inner, i + 2, '}') orelse return error.UnterminatedInterpolation;
+            const expr = std.mem.trim(u8, inner[i + 2 .. close], " \t");
+            try sb.appendValue(try evalOperand(allocator, io, env, expr));
+            i = close + 1;
+        } else {
+            // Copy the literal run up to the next '$' (or the end); a lone '$' steps once.
+            const next = std.mem.indexOfScalarPos(u8, inner, i, '$') orelse inner.len;
+            const stop = if (next > i) next else i + 1;
+            try sb.append(inner[i..stop]);
+            i = stop;
+        }
+    }
+    return .{ .string = try allocator.dupe(u8, sb.bytes[0..sb.len]) };
 }
 
 /// Parse a list literal's interior — space-separated operands, with spaces inside
@@ -642,31 +715,10 @@ fn findWordOp(text: []const u8, word: []const u8) ?usize {
 /// `say` writes a string literal — interpolating `${name}` as it goes — or the
 /// value bound to a bare name, then a newline.
 fn doSay(allocator: std.mem.Allocator, io: std.Io, env: *const Env, arg: []const u8) !void {
-    if (arg.len >= 2 and arg[0] == '"' and arg[arg.len - 1] == '"') {
-        const inner = arg[1 .. arg.len - 1];
-        var i: usize = 0;
-        while (i < inner.len) {
-            if (i + 1 < inner.len and inner[i] == '$' and inner[i + 1] == '{') {
-                const close = std.mem.indexOfScalarPos(u8, inner, i + 2, '}') orelse return error.UnterminatedInterpolation;
-                const expr = inner[i + 2 .. close];
-                const value = try evalOperand(allocator, io, env, expr);
-                value.write();
-                i = close + 1;
-            } else {
-                // Print the literal run up to the next '$' (or the end). The
-                // single-character step keeps a lone '$' moving forward.
-                const next = std.mem.indexOfScalarPos(u8, inner, i, '$') orelse inner.len;
-                const stop = if (next > i) next else i + 1;
-                std.debug.print("{s}", .{inner[i..stop]});
-                i = stop;
-            }
-        }
-        std.debug.print("\n", .{});
-    } else if (arg.len > 0) {
-        const value = try evalOperand(allocator, io, env, arg);
-        value.write();
-        std.debug.print("\n", .{});
-    } else {
-        return error.SayNeedsArgument;
-    }
+    if (arg.len == 0) return error.SayNeedsArgument;
+    // Any operand will do — a quoted string (interpolated when it carries `${…}`),
+    // a name, a field path, or a literal. Speak its value, then a newline.
+    const value = try evalOperand(allocator, io, env, arg);
+    value.write();
+    std.debug.print("\n", .{});
 }
