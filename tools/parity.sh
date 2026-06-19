@@ -21,7 +21,7 @@ CORPUS_DIR="$REPO/rye/tests"
 
 # The programs we already trust. A space-separated list; add to it as the
 # corpus grows with every pass and every test.
-corpus="sha3_512_test.rye sha3_boundary_test.rye version_test.rye call_paths_test.rye ed25519_sign_test.rye x25519_agree_test.rye aead_seal_test.rye"
+corpus="sha3_512_test.rye sha3_boundary_test.rye version_test.rye call_paths_test.rye ed25519_sign_test.rye x25519_agree_test.rye aead_seal_test.rye sealed_message_test.rye"
 
 [ -x "$ZIG" ] || { echo "no toolchain at $ZIG (set RYE_ZIG)"; exit 1; }
 
