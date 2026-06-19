@@ -3,7 +3,7 @@
 *A fresh snapshot, taken after the cryptographic foundation became a sealed datagram crossing between two harts, and after the shell grew comparison, assertion, lists, and membership. It carries forward the still-open threads of the networking-and-social turn it grew from, and ties off the ones that now run.*
 
 **Language:** EN
-**Version:** `20260619.050712` (Rye chronological stamp)
+**Version:** `20260619.054612` (Rye chronological stamp)
 **Last updated:** 2026-06-19
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -28,7 +28,7 @@
 ## Threads Still Open
 
 - **The wire as a real device.** The two-hart wire is shared memory; carrying a sealed datagram over an emulated `virtio-net` between two machines is the next networking climb — a device driver and two instances, where Comlink fully begins.
-- **Rishi toward `parity.rish`.** Next: records → a structured `run` → `map`/`where`. Records is the immediate step, and it also unlocks `pond.rish`.
+- **Rishi toward `parity.rish`.** Records and a structured `run` both landed; one piece remains — `map`/`where`, to walk and filter a pipeline — and then `parity.rish` itself. (Records also unlocks `pond.rish`.)
 - **Aurora's deciding stage.** A relay stage that hands the next a value *it chose* — a real decision, not only a reading (`aurora/`, the roadmap).
 - **The owner-key PKI.** Rotation, revocation, and recovery when a key is lost or stolen. The QR key-cards and master-key rotation in `SOURCE.md` are the first thread, not the whole answer.
 - **Curation by structure, not by engine.** The smallest honest ranking for the social layer — chronology, explicit follows, a web of trust — that needs no hidden model (`984`).
