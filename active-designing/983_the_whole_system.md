@@ -79,7 +79,7 @@ Silo is Brix's substrate: the content-addressed storage that makes a Brix build 
 
 ### Mantra — The Version Control
 
-Mantra holds every line ever written. The weave data structure carries the full history of a file: each line with a stable position, a generation count, and a presence flag. The weave never shrinks; it only accretes. Merges always succeed — two states produce one deterministic result by the structure's own law.
+Mantra holds every line ever written. The weave data structure — inherited from the CRDT weave model — carries the full history of a file: each line with a stable position, a generation count, and a presence flag. The weave never shrinks; it only accretes. Merges always succeed — two states produce one deterministic result by the structure's own law. Commutativity and associativity hold: `merge(A, B)` and `merge(B, A)` converge to the same state, and three branches merged in any order arrive at the same result.
 
 A commit-chain model links weave snapshots: each commit blob names its parent and the weave state, both by content hash. `mantra add` weaves new content; `mantra log` walks the chain; `mantra status` shows what changed. The `.brix` descriptor names the tracked files; `mantra add` without arguments walks them all.
 

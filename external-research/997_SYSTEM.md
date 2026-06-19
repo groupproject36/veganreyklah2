@@ -133,6 +133,18 @@ We keep Nix in `../gratitude/nix`, studied for its store model and composition d
 
 ---
 
+## What Manyana Taught Us
+
+**Manyana** is a CRDT-based version control system that proves what our **Mantra** weave inherits: merges that never fail and always converge. Its weave data structure — every line that has ever existed, interleaved with metadata — is the same structure Mantra keeps. Its generation counting — odd means present, even means deleted, higher count wins on merge — is the same discipline Mantra uses to resolve concurrent edits without a central authority.
+
+The deeper lesson is formal: commutativity and associativity of merges are not heuristics that sometimes hold; they are structural guarantees of the CRDT. `merge(A, B)` and `merge(B, A)` produce the same result. Three branches merged in any order converge to the same state. No interleaving: concurrent insertions at the same point are placed one after the other, never tangled. And the complexity is linear — one pass over the weave, no LCA computation, no recursive strategy.
+
+Manyana also teaches a UX insight we carry: "conflict-free" does not mean "no conflicts worth showing." When concurrent edits are too near each other, the merge succeeds structurally yet presents the near-edits as annotated conflict regions — labeled with what each side did, not merely "ours vs. theirs." Mantra inherits this honesty: a merge always completes, and the annotation shows what happened.
+
+We keep Manyana in `../gratitude/manyana`, studied for its CRDT weave model and honored as the direct ancestor of Mantra's merge discipline.
+
+---
+
 ## Setting It Down, and Making It Ours
 
 So we do here what we did with Hickey's *Spec-ulation*: we keep the lesson and set the borrowed vessel down with thanks. The sources speak in their own tongues — Tiger Style and Joran in Zig, Hickey in Clojure — and we keep their values and speak them through the Rye perspective, in Reya 2's own voice. The discipline becomes `996_TAME_STYLE.md`, a wholly original style guide. The priority order becomes the spine of how Rye, Silo, Tally, and Caravan make their tradeoffs. The flow model becomes how we think about a boot, a kernel, a network — values transformed and moved and remembered through simple, composable stages, explained from scratch in `993`, the Aurora writing.
@@ -165,6 +177,7 @@ So TAME is more than a label. It is a small daily reminder that strength and gen
 - **`../gratitude/sixos/`** — Adam Joseph's SixOS, the operating system that composes s6 supervision with Nix's reproducible declarations. The vision that shapes our Brix + Caravan pair. GPL-3.0, cloned from Codeberg.
 - **`../gratitude/infuse.nix/`** — Adam Joseph's infuse, the bridge between Nix and s6. The connection between declaration and supervision that Brix and Caravan inherit. Cloned from Codeberg.
 - **`../gratitude/nix/`** — Eelco Dolstra's Nix, the purely functional package manager. The source of content-addressed reproducible builds, and the composability model Brix and Silo inherit. LGPL-2.1, cloned shallow.
+- **`../gratitude/manyana/`** — Manyana, a CRDT-based version control system. The direct ancestor of Mantra's weave structure, generation counting, and conflict-free merges. Public domain.
 - **This note** — the one gratitude bridge between all these sources and our work.
 
 ---
