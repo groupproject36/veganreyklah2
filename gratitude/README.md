@@ -1,7 +1,7 @@
 # Gratitude
 
 **Language:** EN
-**Last updated:** 2026-06-18
+**Last updated:** 2026-06-19
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -50,6 +50,11 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
   - Source: <https://github.com/PrimalHQ/primal-caching-service>
 - **`damus/`** — the damus-io community's Nostr client for iOS and macOS, signing and verifying at the edge across many NIPs. It shows the protocol lived from the user's side, honored in `../external-research/984_...`. Cloned shallow (depth 1), GPL-3.0.
   - Source: <https://github.com/damus-io/damus>
+
+### The interface and documentation study (`980`)
+
+- **`dvui/`** — David Vanderson's DVUI, an immediate-mode GUI toolkit for Zig: an interface redrawn from values every frame, with a backend abstraction that decouples drawing from platform, and — the part we study most — a **Web backend** that compiles to `wasm32-freestanding` and renders through WebGL with a small JavaScript bridge, so a whole GUI runs in the browser. Its essences — immediate mode, and one interface drawn to many backends — seed **Brushstroke**, our own TAME Rye drawn surface, explored in `../external-research/980_brushstroke_and_the_docs_surface.md`. Cloned shallow (depth 1, rev `134905d`), MIT.
+  - Source: <https://github.com/david-vanderson/dvui>
 
 ---
 

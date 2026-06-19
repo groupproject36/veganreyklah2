@@ -34,3 +34,6 @@
 [submodule "gratitude/sui"]
 	path = gratitude/sui
 	url = https://github.com/MystenLabs/sui
+[submodule "gratitude/dvui"]
+	path = gratitude/dvui
+	url = https://github.com/david-vanderson/dvui
