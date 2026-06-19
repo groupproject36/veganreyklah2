@@ -1,8 +1,8 @@
 # Aurora — the dawn a machine wakes into
 
-**Version:** `20260618.194012` (Rye chronological stamp)
+**Version:** `20260619.033812` (Rye chronological stamp)
 **Style:** Radiant prose (see `../context/RADIANT_STYLE.md`); code in TAME Style (`../external-research/996_TAME_STYLE.md`)
-**Status:** First seed and first relay — small, runnable, and growing
+**Status:** First seed, a relay, and a content-named hart — small, runnable, and growing
 
 ---
 
@@ -42,11 +42,16 @@ tail call, and a value travels with it: the boot-as-flow-of-named-values idea
 size. It reads real registers (`mhartid`, `misa`), proves what it must, and hands
 off — the shape every later stage will take.
 
+## The Third Stage — Naming on the Bare Hart
+
+The relay carried a value; this stage proves the boot can *name* one — with cryptography, on the bare metal. In `src/named.rye`, a freestanding hart hashes a message with SHA3-512, the very function we strengthened first, and speaks the content-name over the console. There is no operating system beneath the hash and no allocator either; the strengthened `std` crypto runs on the bare hart exactly as it does in a hosted test. This is where Aurora's bare-metal reach meets Mantra's content-addressing — and the proof that unlocks the rest: if the hash runs freestanding, so will the key agreement, the seal, and the signature that compose an encrypted, content-named datagram (`../external-research/985`, `/982`).
+
 ## Build and Run
 
 ```sh
 aurora/run.sh          # the seed (the default stage)
 aurora/run.sh relay    # the second stage: the first relay
+aurora/run.sh named    # the third stage: content-naming, with crypto, on the bare hart
 ```
 
 `run.sh` asks `rye build` to emit a freestanding RISC-V ELF for the chosen stage
@@ -66,7 +71,15 @@ Aurora relay:
   stage 3 -> resting.
 ```
 
-Both end with a clean exit (status 0), because the last stage writes the
+and the named stage proves the strengthened SHA3 runs with no OS beneath it:
+
+```
+Aurora: content-named on the bare hart.
+  message = named on the bare hart
+  name = 9c9f6b69ba766938dda360b25638dc54...
+```
+
+All end with a clean exit (status 0), because the last stage writes the
 machine's test finisher to power itself down. The script uses the vendored Zig
 0.16.0 toolchain beside the project, so it needs no extra setup; an emulator
 (`qemu-system-riscv64`) is the one thing it expects to find.
@@ -79,6 +92,7 @@ aurora/
   src/
     seed.rye         <- the first seed: a hart wakes, speaks, and halts
     relay.rye        <- the second stage: a value flows across asserted stages
+    named.rye        <- the third stage: SHA3 content-naming, with crypto, on bare metal
   layout.ld          <- where a stage lives in memory (RAM base, _start first)
   run.sh             <- build a stage with rye, wake it in qemu (default: seed)
   .build/            <- the emitted ELFs (built on demand, untracked)
@@ -86,14 +100,14 @@ aurora/
 
 ## How It Grows
 
-The seed is the simple system that works, and the relay is the first grown from
-it, never bolted on. The near steps from here: a stage that hands the next a
-value *it chose* — a real decision, not only a reading; then, as the other
-modules ripen, Tally's bounded gardens for the boot's own memory, Caravan's hand
-on what runs next, and Silo describing the stages as values rather than code.
-Mantra will give each stage an enduring, content-addressed name, so a boot can
-say exactly what it ran. The roadmap that holds these steps lives in
-`../work-in-progress/996_roadmap.md`.
+The seed, the relay, and the named hart each grew from the one before, never
+bolted on. Now that the crypto runs freestanding, the near steps are clear: grow
+the named hart into the full **sealed datagram** — key agreement, the seal, and
+the signature composed on the bare metal as they already are in a hosted test —
+and, in parallel, a stage that hands the next a value *it chose*. Then, as the
+other modules ripen, Tally's bounded gardens for the boot's own memory, Caravan's
+hand on what runs next, and Silo describing the stages as values. The roadmap
+that holds these steps lives in `../work-in-progress/996_roadmap.md`.
 
 ---
 

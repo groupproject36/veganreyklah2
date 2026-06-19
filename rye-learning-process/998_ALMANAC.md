@@ -184,6 +184,16 @@ One deferral, named on purpose: `indexOfScalarPos` is a direct alias to the hot 
 
 ---
 
+## Crypto on the Bare Hart
+
+We wondered whether our standard-library cryptography would run *freestanding* — on a bare-metal RISC-V hart, with no operating system, no allocator, and no `std.debug.print` beneath it. It does. `aurora/src/named.rye` is a freestanding hart that names a message by its SHA3-512 content hash — the very function we strengthened first, assertions and all — and speaks the name over the `virt` UART before powering down. Built by `rye build` for `riscv64-freestanding-none` and run in QEMU, it produced the digest exactly as a hosted test does.
+
+The reason it works is that the cryptography is *pure*: it computes over fixed-size arrays, allocates nothing, and performs no I/O. Our strengthening kept it that way — `assert` and `maybe` compile to `unreachable` and to nothing, neither of which needs an OS. So the hash, and by the same reasoning the key agreement, the seal, and the signature, all run on the bare hart as readily as in a hosted program.
+
+This is the quiet unlock for the encrypted datagram. The cryptography our network leans on does not wait for an operating system; it runs the moment a hart wakes. Aurora's bare-metal reach and Mantra's content-addressing meet here, on the first stage that does real cryptographic work with nothing beneath it.
+
+---
+
 ## Open Threads
 
 A few paths we have left lit for later, each a deliberate choice rather than an oversight:
