@@ -1,0 +1,31 @@
+# enclosure.conf — paths and handle for tools/launch-cursor.sh and launch-zed.sh.
+#
+# Copy to tools/enclosure.conf and fill in YOUR values. The real enclosure.conf
+# is gitignored; only this .example is committed, so SOURCE.md and the spec
+# work for anyone who clones the repo.
+#
+# See: context/specs/enclosure-editors.md
+
+HANDLE="youruser"                          # forge handle; labels state dirs mentally
+REPO="$HOME/yourrepo"                      # absolute path to the project root
+
+# Editor binaries (adjust after install)
+CURSOR_APPRUN="$REPO/squashfs-root/AppRun" # from: ./Cursor-*.AppImage --appimage-extract
+ZED_BIN="zed"                              # optional hint; script also checks ~/.local/bin/zed
+# ZED_APP="$HOME/.local/zed.app"           # optional; used if ZED_BIN is unset
+
+# Project-local state (kept inside ai-jail's durable tree)
+CURSOR_STATE="$REPO/.cursor-state"
+ZED_STATE="$REPO/.zed-state"
+
+# ai-jail flags (space-separated; default matches SOURCE.md)
+AIJAIL_FLAGS="--private-home --no-docker"
+# AIJAIL_BIN="/home/youruser/.local/bin/ai-jail"  # optional; avoids ./ai-jail source dir on PATH
+
+# Zed on GNOME Wayland needs GPU passthrough (/dev/dri). Cursor can stay false.
+USE_GPU=true
+
+# Anthropic API key for Zed's Claude Agent — copy and fill in (gitignored):
+#   cp tools/secrets.env.example tools/secrets.env
+# launch-zed.sh sources tools/secrets.env automatically.
+# Or export in your shell before launch (does not persist across terminals).

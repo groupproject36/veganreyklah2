@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# launch-cursor.sh — start Cursor (AppImage) inside ai-jail with project-local state.
+#
+#   cp tools/launch-cursor.sh.example tools/launch-cursor.sh
+#   cp tools/enclosure.conf.example tools/enclosure.conf   # fill in
+#   ./Cursor-*.AppImage --appimage-extract                # once → squashfs-root/
+#   ./tools/launch-cursor.sh
+#
+# See: context/specs/enclosure-editors.md and SOURCE.md Step 9.
+
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+CONF="${ENCLOSURE_CONF:-$REPO_ROOT/tools/enclosure.conf}"
+
+[ -f "$CONF" ] || {
+  echo "No config at $CONF — copy tools/enclosure.conf.example and fill it in."
+  exit 1
+}
+
+# shellcheck source=/dev/null
+source "$CONF"
+
+: "${REPO:?set REPO in enclosure.conf}"
+: "${CURSOR_APPRUN:?set CURSOR_APPRUN in enclosure.conf}"
+: "${CURSOR_STATE:?set CURSOR_STATE in enclosure.conf}"
+: "${AIJAIL_FLAGS:?set AIJAIL_FLAGS in enclosure.conf}"
+
+resolve_aijail() {
+  local c
+  if [ -n "${AIJAIL_BIN:-}" ] && [ -f "$AIJAIL_BIN" ] && [ -x "$AIJAIL_BIN" ]; then
+    echo "$AIJAIL_BIN"
+    return 0
+  fi
+  if c="$(command -v ai-jail 2>/dev/null)" && [ -f "$c" ] && [ -x "$c" ]; then
+    echo "$c"
+    return 0
+  fi
+  for c in \
+    "$REPO/gratitude/ai-jail/target/release/ai-jail" \
+    "$HOME/.local/bin/ai-jail" \
+    /usr/local/bin/ai-jail \
+    /usr/bin/ai-jail; do
+    if [ -x "$c" ]; then
+      echo "$c"
+      return 0
+    fi
+  done
+  return 1
+}
+
+if ! AIJAIL_ABS="$(resolve_aijail)"; then
+  cat <<'EOF' >&2
+ai-jail not found.
+
+Install:
+  cargo install ai-jail
+  # or: nix profile install github:akitaonrails/ai-jail
+
+If a source directory named ai-jail sits in your PATH, set AIJAIL_BIN in tools/enclosure.conf.
+EOF
+  exit 1
+fi
+
+[ -x "$CURSOR_APPRUN" ] || {
+  echo "Cursor AppRun not found at $CURSOR_APPRUN"
+  echo "Extract once: ./Cursor-*.AppImage --appimage-extract"
+  exit 1
+}
+
+mkdir -p "$CURSOR_STATE/user-data" "$CURSOR_STATE/extensions"
+
+GPU_ARGS=()
+if [ "${USE_GPU:-false}" = true ]; then
+  GPU_ARGS=(--gpu)
+fi
+
+# shellcheck disable=SC2086
+exec "$AIJAIL_ABS" $AIJAIL_FLAGS "${GPU_ARGS[@]}" -- \
+  "$CURSOR_APPRUN" --no-sandbox \
+  --user-data-dir="$CURSOR_STATE/user-data" \
+  --extensions-dir="$CURSOR_STATE/extensions" \
+  "$REPO"

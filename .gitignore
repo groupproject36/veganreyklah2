@@ -23,15 +23,19 @@
 !/work-in-progress/
 !/rishi/
 !/aurora/
+!/tally/
 !/expanding-prompts/
 !/session-logs/
 !/.cursor/
+!/CLAUDE.md
+!/.claude/
 
 # --- Re-ignore fetched dependencies and build artifacts inside the project --
 # The Zig toolchain is large and fetched, not authored (the binary alone is
 # ~165MB, past GitHub's 100MB limit). The rye binary and caches are built.
 /rye/bin/
 /rishi/bin/
+/tally/bin/
 /aurora/.build/
 *.rye.zig
 .zig-cache/
@@ -43,7 +47,15 @@ zig-cache/
 # key-card.conf holds one person's details and stays local. tools/.build holds
 # the qrencode binary we compile on demand from the vendored source.
 /tools/key-card.conf
+/tools/enclosure.conf
+/tools/secrets.env
+/tools/launch-cursor.sh
+/tools/launch-zed.sh
 /tools/.build/
+
+# --- Editor state inside the project (ai-jail durable ground) ---------------
+/.cursor-state/
+/.zed-state/
 
 # --- Local key material — never tracked -------------------------------------
 # The allow-list above already excludes anything outside the project, but we

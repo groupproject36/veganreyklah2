@@ -145,6 +145,8 @@ Install ai-jail (it uses `bwrap` on Linux):
 cargo install ai-jail            # or build from source; see github.com/akitaonrails/ai-jail
 ```
 
+> **Host OS:** we recommend the **latest stable NixOS** for new setups — bubblewrap and ai-jail install cleanly via nixpkgs or the project's Nix flake (`nix profile install github:akitaonrails/ai-jail`). This guide still documents **Ubuntu 24.04 LTS** first while our own hosts are **in transition**; see `context/specs/enclosure-editors.md` for the NixOS map and dual-editor templates.
+
 Cursor ships as an AppImage; unpack it once so the sandbox can launch it:
 
 ```bash
@@ -267,6 +269,32 @@ ai-jail --private-home --no-docker -- ./squashfs-root/AppRun --no-sandbox \
 ```
 
 `--no-sandbox` here disables Chromium's own sandbox, which cannot nest inside `bwrap`; the real boundary is ai-jail's namespaces plus Landlock and seccomp. The display passes through so the window appears; everything else stays sealed.
+
+For a **copy-and-fill** launch (your username, your paths), use the templates in `tools/`:
+
+```bash
+cp tools/enclosure.conf.example tools/enclosure.conf   # edit HANDLE, REPO, binary paths
+cp tools/launch-cursor.sh.example tools/launch-cursor.sh
+chmod +x tools/launch-cursor.sh
+./tools/launch-cursor.sh
+```
+
+---
+
+## Step 9b — A Second Editor (Zed + Claude, alongside Cursor)
+
+You can run **Zed** in its own ai-jail enclosure while **Cursor** stays open — on the host or in a second sandbox — sharing the same repository. Each editor keeps **separate state** under `.zed-state/` and `.cursor-state/` so settings and agent credentials do not collide.
+
+Zed's **Claude Agent** bills through **Anthropic's API** (export `ANTHROPIC_API_KEY` before launch, or use `/login` in a Claude thread). That is independent of Cursor's subscription.
+
+```bash
+cp tools/launch-zed.sh.example tools/launch-zed.sh
+chmod +x tools/launch-zed.sh
+export ANTHROPIC_API_KEY="sk-ant-..."    # your Anthropic console key
+./tools/launch-zed.sh
+```
+
+On **GNOME Wayland** (Ubuntu 24.04), ai-jail passes the display through; set **`USE_GPU=true`** in `tools/enclosure.conf` so Zed can reach `/dev/dri` (Vulkan/WebGPU). Without it, Zed may print `Landlock: fully enforced` and exit with no window. Full concurrency models, troubleshooting, and NixOS notes live in **`context/specs/enclosure-editors.md`**.
 
 ---
 

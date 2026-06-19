@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(export RYE_ZIG=\"$PWD/vendor/zig-toolchain/zig\")",
+      "Bash(rye/bin/rye build:*)",
+      "Bash(for t:*)",
+      "Bash(do echo:*)",
+      "Bash(rishi/bin/rishi run:*)",
+      "Bash(done)",
+      "Bash(python3:*)",
+      "Bash(grep -v \"^[[:space:]]*$\")",
+      "Bash(git add:*)"
+    ]
+  }
+}
