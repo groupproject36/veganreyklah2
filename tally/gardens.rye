@@ -1,0 +1,245 @@
+//! tally/gardens.rye — Tally v1: named gardens.
+//!
+//! A Gardens holds a fixed set of named Regions. Each Region is a bounded
+//! garden with a stated edge: bump-allocate within, fail past, clear whole in
+//! one gesture. Gardens adds naming — so a caller can declare "this memory is
+//! the blob garden" or "this memory is the diff garden" and retrieve it by name.
+//!
+//! Three gardens cover the near stack:
+//!   blob  — working memory for one Mantra blob (read buffer, serialize buffer)
+//!   diff  — line buffer for LCS diff computation
+//!   frame — Brushstroke widget tree per redraw
+//!
+//! A request past the edge fails with error.OutOfBounds — named and loud,
+//! not silent. A clear returns the cursor to zero; the season ends and a new
+//! one may begin over the same backing store.
+//!
+//! Invariants, held at every mutation:
+//!   region.pos <= region.buf.len    (the edge)
+//!   name.len > 0                    (every garden has a name)
+//!   name.len <= max_name_len        (names fit in the declared limit)
+//!   no two gardens share a name     (asserted at add)
+//!
+//! Build and prove:
+//!   RYE_ZIG=$PWD/vendor/zig-toolchain/zig \
+//!   rye/bin/rye build tally/gardens.rye -femit-bin=tally/bin/tally-gardens
+//!   tally/bin/tally-gardens
+//!
+//! Expected output: tally gardens: all facts held.
+
+const std = @import("std");
+
+const tally_gardens_version = "20260619.212312";
+
+// =========================================================================
+// § Region — the bounded garden (from tally/seed.rye, inline for rye build)
+// =========================================================================
+
+/// A Tally region: a bounded garden with a stated edge.
+/// Invariant: pos <= buf.len — asserted at every mutation.
+pub const Region = struct {
+    buf: []u8,
+    pos: usize,
+
+    pub fn init(buf: []u8) Region {
+        const r = Region{ .buf = buf, .pos = 0 };
+        std.debug.assert(r.pos <= r.buf.len);
+        return r;
+    }
+
+    /// Bump-allocate n bytes. Fails with OutOfBounds past the edge.
+    pub fn alloc(self: *Region, n: usize) error{OutOfBounds}![]u8 {
+        std.debug.assert(self.pos <= self.buf.len);
+        if (n > self.buf.len - self.pos) return error.OutOfBounds;
+        const slice = self.buf[self.pos .. self.pos + n];
+        self.pos += n;
+        std.debug.assert(self.pos <= self.buf.len);
+        return slice;
+    }
+
+    /// Clear whole — the season ends; fresh allocations may begin again.
+    pub fn clear(self: *Region) void {
+        self.pos = 0;
+        std.debug.assert(self.pos <= self.buf.len);
+    }
+
+    /// Bytes remaining before the edge.
+    pub fn remaining(self: *const Region) usize {
+        return self.buf.len - self.pos;
+    }
+};
+
+// =========================================================================
+// § Gardens — a named collection of Regions
+// =========================================================================
+
+/// Maximum name length for a garden name.
+pub const max_name_len: usize = 32;
+
+/// Maximum number of named gardens in one Gardens instance.
+pub const max_gardens: usize = 8;
+
+/// A single named entry in a Gardens.
+const NamedRegion = struct {
+    name: []const u8,
+    region: Region,
+};
+
+/// A named collection of Regions. The caller owns all backing memory;
+/// Gardens holds views of it and asserts the edges at every operation.
+///
+/// Invariants:
+///   count <= max_gardens
+///   every name: name.len > 0 and name.len <= max_name_len
+///   no two entries share the same name
+///   every region: region.pos <= region.buf.len
+pub const Gardens = struct {
+    entries: [max_gardens]NamedRegion,
+    count:   usize,
+
+    /// An empty Gardens — no regions yet.
+    pub fn init() Gardens {
+        return .{
+            .entries = undefined,
+            .count   = 0,
+        };
+    }
+
+    /// Register a named Region over `buf`. The name must be non-empty,
+    /// within max_name_len, and not already present.
+    pub fn add(self: *Gardens, name: []const u8, buf: []u8) !void {
+        std.debug.assert(name.len > 0);              // every garden has a name
+        std.debug.assert(name.len <= max_name_len);  // name fits declared limit
+        std.debug.assert(self.count < max_gardens);  // room to add
+        // Precondition: no duplicate names.
+        for (self.entries[0..self.count]) |e| {
+            std.debug.assert(!std.mem.eql(u8, e.name, name));
+        }
+        self.entries[self.count] = .{ .name = name, .region = Region.init(buf) };
+        self.count += 1;
+        std.debug.assert(self.count <= max_gardens);
+    }
+
+    /// Look up a garden by name. Returns a pointer to the Region so the
+    /// caller can alloc from it, or null if no such garden exists.
+    pub fn get(self: *Gardens, name: []const u8) ?*Region {
+        std.debug.assert(name.len > 0);
+        for (self.entries[0..self.count]) |*e| {
+            if (std.mem.eql(u8, e.name, name)) return &e.region;
+        }
+        return null;
+    }
+
+    /// Clear one named garden — the season ends for that garden only.
+    /// Asserts the garden exists (a caller naming a non-existent garden
+    /// is always a mistake).
+    pub fn clearOne(self: *Gardens, name: []const u8) void {
+        std.debug.assert(name.len > 0);
+        for (self.entries[0..self.count]) |*e| {
+            if (std.mem.eql(u8, e.name, name)) {
+                e.region.clear();
+                return;
+            }
+        }
+        std.debug.assert(false); // name not found — caller error
+    }
+
+    /// Clear all gardens at once — the whole season ends.
+    pub fn clearAll(self: *Gardens) void {
+        for (self.entries[0..self.count]) |*e| {
+            e.region.clear();
+        }
+        // Postcondition: every region is at position zero.
+        for (self.entries[0..self.count]) |e| {
+            std.debug.assert(e.region.pos == 0);
+        }
+    }
+
+    /// Total bytes remaining across all gardens.
+    pub fn totalRemaining(self: *const Gardens) usize {
+        var total: usize = 0;
+        for (self.entries[0..self.count]) |e| {
+            total += e.region.remaining();
+        }
+        return total;
+    }
+};
+
+// =========================================================================
+// § Proof — main asserts all facts hold
+// =========================================================================
+
+pub fn main() void {
+    // --- Set up three named gardens with stack backing store ---------------
+    var blob_buf:  [512]u8 = undefined;
+    var diff_buf:  [256]u8 = undefined;
+    var frame_buf: [128]u8 = undefined;
+
+    var g = Gardens.init();
+    g.add("blob",  &blob_buf)  catch unreachable;
+    g.add("diff",  &diff_buf)  catch unreachable;
+    g.add("frame", &frame_buf) catch unreachable;
+
+    std.debug.assert(g.count == 3);
+
+    // --- get returns a live pointer to the region -------------------------
+    const blob_r = g.get("blob") orelse unreachable;
+    std.debug.assert(blob_r.remaining() == 512);
+    std.debug.assert(g.get("diff")  != null);
+    std.debug.assert(g.get("frame") != null);
+    std.debug.assert(g.get("nope")  == null); // absent garden returns null
+
+    // --- alloc within bounds ----------------------------------------------
+    const a = blob_r.alloc(100) catch unreachable;
+    std.debug.assert(a.len == 100);
+    std.debug.assert(blob_r.remaining() == 412);
+    @memset(a, 0xAB);
+    std.debug.assert(a[0] == 0xAB);
+
+    const diff_r = g.get("diff") orelse unreachable;
+    const b = diff_r.alloc(200) catch unreachable;
+    std.debug.assert(b.len == 200);
+    std.debug.assert(diff_r.remaining() == 56);
+
+    // --- alloc past edge fails with OutOfBounds ---------------------------
+    {
+        const result = diff_r.alloc(57);
+        if (result) |_| unreachable
+        else |err| std.debug.assert(err == error.OutOfBounds);
+    }
+
+    // --- clearOne resets one garden; others untouched --------------------
+    g.clearOne("diff");
+    std.debug.assert(diff_r.pos == 0);
+    std.debug.assert(diff_r.remaining() == 256);
+    std.debug.assert(blob_r.remaining() == 412); // blob unchanged
+
+    // Re-allocate diff after clear — same memory, new season.
+    const c = diff_r.alloc(256) catch unreachable;
+    std.debug.assert(c.len == 256);
+    std.debug.assert(c.ptr == @as([*]u8, @ptrCast(&diff_buf[0])));
+
+    // --- clearAll resets every garden at once ----------------------------
+    g.clearAll();
+    std.debug.assert(blob_r.pos  == 0);
+    std.debug.assert(diff_r.pos  == 0);
+    const frame_r = g.get("frame") orelse unreachable;
+    std.debug.assert(frame_r.pos == 0);
+
+    // Total remaining after clearAll = sum of all backing sizes.
+    std.debug.assert(g.totalRemaining() == 512 + 256 + 128);
+
+    // --- Reuse after clearAll: same pointers, fresh season ---------------
+    const d = blob_r.alloc(512) catch unreachable;
+    std.debug.assert(d.len == 512);
+    std.debug.assert(d.ptr == @as([*]u8, @ptrCast(&blob_buf[0]))); // same backing memory
+
+    // --- Invariants hold across all entries at rest ----------------------
+    for (g.entries[0..g.count]) |e| {
+        std.debug.assert(e.name.len > 0);
+        std.debug.assert(e.name.len <= max_name_len);
+        std.debug.assert(e.region.pos <= e.region.buf.len);
+    }
+
+    std.debug.print("tally gardens: all facts held.\n", .{});
+}
