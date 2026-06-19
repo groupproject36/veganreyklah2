@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # additive-gate.sh — weigh whether a strengthening pass is purely invariant-stating.
 #
 # A pure strengthening adds only assertions, the `maybe` marker, and comments to
@@ -21,7 +21,7 @@
 #   usage:  tools/additive-gate.sh [<commit-or-range>]   (default: HEAD)
 set -u
 
-REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO" || exit 1
 
 RANGE="${1:-HEAD}"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # parity-selftest.sh — prove the parity gate turns RED on a real divergence.
 #
 # The parity gate (parity.sh) asserts that Rye's std is behavior-identical to
@@ -13,7 +13,7 @@
 # exit. See active-designing/998_strengthening_strategy.md (the gates).
 set -u
 
-REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO="$(cd "$(dirname "$0")/.." && pwd)"
 ZIG="${RYE_ZIG:-$REPO/vendor/zig-toolchain/zig}"
 BASELINE_LIB="$REPO/vendor/zig-toolchain/lib"
 RYE_LIB="$REPO/rye/lib"
