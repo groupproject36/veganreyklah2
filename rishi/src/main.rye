@@ -3,10 +3,11 @@
 //! Rishi is the shell of the Rye ecosystem: terse for the hand, typed for
 //! safety, a sibling of Rye that shares its value model. This first version is
 //! honest about how small it is. It reads a `.rish` script and runs it
-//! directly, supporting line comments, `let` bindings of strings and integers,
-//! and `say` with `${name}` interpolation. It is the seed from which the
-//! language grows toward `parity.rish`, the program that will name its first
-//! real purpose (see active-designing/996_growing_a_language.md).
+//! directly, supporting line comments; `let` bindings of strings, integers, and
+//! booleans; `say` with `${name}` interpolation; comparison with `==` and `!=`;
+//! and `assert` as a gate that stops the script and says why when a fact does not
+//! hold. It is the seed from which the language grows toward `parity.rish`, the
+//! program that will name its first real purpose (see active-designing/996_growing_a_language.md).
 //!
 //! Rishi is implemented in Rye and built against Rye's own standard library, so
 //! the language we are growing and the language we build it in are one and the
@@ -20,7 +21,7 @@ const std = @import("std");
 
 /// Rishi's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
 /// larger, the same clock Rye keeps. This is Rishi's founding stamp.
-const rishi_version = "20260618.175012";
+const rishi_version = "20260619.043612";
 
 /// A Rishi value. The first two kinds — a string and an integer — are the seed
 /// of a model that will grow to lists, records, and process results, shared
@@ -28,11 +29,13 @@ const rishi_version = "20260618.175012";
 const Value = union(enum) {
     string: []const u8,
     int: i64,
+    boolean: bool,
 
     fn write(self: Value) void {
         switch (self) {
             .string => |s| std.debug.print("{s}", .{s}),
             .int => |x| std.debug.print("{d}", .{x}),
+            .boolean => |b| std.debug.print("{s}", .{if (b) "true" else "false"}),
         }
     }
 };
@@ -137,7 +140,12 @@ fn interpret(source: []const u8) u8 {
         const line = std.mem.trim(u8, raw, " \t\r");
         if (line.len == 0 or line[0] == '#') continue;
         evalStatement(&env, line) catch |err| {
-            std.debug.print("rishi: line {d}: {s}\n  {s}\n", .{ line_no, @errorName(err), line });
+            if (err == error.AssertionFailed) {
+                // doAssert already named the broken fact; add where it broke.
+                std.debug.print("  at line {d}: {s}\n", .{ line_no, line });
+            } else {
+                std.debug.print("rishi: line {d}: {s}\n  {s}\n", .{ line_no, @errorName(err), line });
+            }
             return 1;
         };
     }
@@ -151,21 +159,120 @@ fn evalStatement(env: *Env, line: []const u8) !void {
         const name = std.mem.trim(u8, rest[0..eq], " \t");
         const valstr = std.mem.trim(u8, rest[eq + 1 ..], " \t");
         if (name.len == 0) return error.LetNeedsName;
-        try env.bind(name, try parseValue(valstr));
+        try env.bind(name, try evalExpr(env, valstr));
     } else if (std.mem.startsWith(u8, line, "say ")) {
         try doSay(env, std.mem.trim(u8, line[4..], " \t"));
+    } else if (std.mem.startsWith(u8, line, "assert ")) {
+        try doAssert(env, std.mem.trim(u8, line[7..], " \t"));
     } else {
         return error.UnknownStatement;
     }
 }
 
-/// A value literal is a double-quoted string or a base-ten integer.
-fn parseValue(s: []const u8) !Value {
+/// Evaluate an expression: a single operand, or two operands compared with `==`
+/// or `!=`, which yields a boolean. The comparison is found outside any quoted
+/// string, so a `==` woven into `"text"` stays text.
+fn evalExpr(env: *const Env, text: []const u8) !Value {
+    if (findComparison(text)) |cmp| {
+        const left = try evalOperand(env, cmp.left);
+        const right = try evalOperand(env, cmp.right);
+        const equal = valuesEqual(left, right);
+        return .{ .boolean = if (cmp.op == .ne) !equal else equal };
+    }
+    return evalOperand(env, text);
+}
+
+/// Evaluate one operand: a double-quoted string, a boolean, a base-ten integer,
+/// or a bare name that refers to an earlier binding.
+fn evalOperand(env: *const Env, raw: []const u8) !Value {
+    const s = std.mem.trim(u8, raw, " \t");
+    if (s.len == 0) return error.ExpectedValue;
     if (s.len >= 2 and s[0] == '"' and s[s.len - 1] == '"') {
         return .{ .string = s[1 .. s.len - 1] };
     }
-    const x = std.fmt.parseInt(i64, s, 10) catch return error.ValueMustBeStringOrInt;
-    return .{ .int = x };
+    if (std.mem.eql(u8, s, "true")) return .{ .boolean = true };
+    if (std.mem.eql(u8, s, "false")) return .{ .boolean = false };
+    if (std.fmt.parseInt(i64, s, 10)) |x| {
+        return .{ .int = x };
+    } else |_| {}
+    return env.lookup(s) orelse error.UndefinedName;
+}
+
+const Comparison = struct { op: enum { eq, ne }, left: []const u8, right: []const u8 };
+
+/// Find a top-level `==` or `!=`, skipping anything inside a quoted string.
+fn findComparison(text: []const u8) ?Comparison {
+    var in_quote = false;
+    var i: usize = 0;
+    while (i + 1 < text.len) : (i += 1) {
+        if (text[i] == '"') {
+            in_quote = !in_quote;
+        } else if (!in_quote and text[i] == '=' and text[i + 1] == '=') {
+            return .{ .op = .eq, .left = text[0..i], .right = text[i + 2 ..] };
+        } else if (!in_quote and text[i] == '!' and text[i + 1] == '=') {
+            return .{ .op = .ne, .left = text[0..i], .right = text[i + 2 ..] };
+        }
+    }
+    return null;
+}
+
+/// Two values are equal when they share a kind and a content. Unlike kinds are
+/// never equal, so a string and an integer simply differ.
+fn valuesEqual(a: Value, b: Value) bool {
+    switch (a) {
+        .string => |x| return switch (b) {
+            .string => |y| std.mem.eql(u8, x, y),
+            else => false,
+        },
+        .int => |x| return switch (b) {
+            .int => |y| x == y,
+            else => false,
+        },
+        .boolean => |x| return switch (b) {
+            .boolean => |y| x == y,
+            else => false,
+        },
+    }
+}
+
+/// `assert <expr>` makes a fact a gate: when the expression is a false boolean,
+/// the script stops and says why. An optional `else "message"` gives the reason
+/// to show; without it, the condition itself stands as the reason.
+fn doAssert(env: *const Env, arg: []const u8) !void {
+    var condition = arg;
+    var message: ?[]const u8 = null;
+    if (findElse(arg)) |idx| {
+        condition = std.mem.trim(u8, arg[0..idx], " \t");
+        const tail = std.mem.trim(u8, arg[idx + 6 ..], " \t");
+        message = if (tail.len >= 2 and tail[0] == '"' and tail[tail.len - 1] == '"')
+            tail[1 .. tail.len - 1]
+        else
+            tail;
+    }
+    const value = try evalExpr(env, condition);
+    const holds = switch (value) {
+        .boolean => |b| b,
+        else => return error.AssertNeedsCondition,
+    };
+    if (!holds) {
+        std.debug.print("rishi: assertion failed — {s}\n", .{message orelse condition});
+        return error.AssertionFailed;
+    }
+}
+
+/// Find ` else ` outside any quoted string, so an `else` inside a message stays
+/// part of the message.
+fn findElse(text: []const u8) ?usize {
+    var in_quote = false;
+    var i: usize = 0;
+    while (i + 6 <= text.len) : (i += 1) {
+        if (text[i] == '"') {
+            in_quote = !in_quote;
+        } else if (!in_quote and std.mem.startsWith(u8, text[i..], " else ")) {
+            return i;
+        }
+    }
+    return null;
 }
 
 /// `say` writes a string literal — interpolating `${name}` as it goes — or the
