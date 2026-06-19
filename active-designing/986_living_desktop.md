@@ -14,7 +14,7 @@
 
 ## Our Own Ground
 
-This is a clean room. We name only our own modules — TAME, Aurora, Rye, Silo, Tally, Caravan, Mantra, Pond, Rishi, Comlink, and now **Brushstroke** — together with **RISC-V** and, where the hardware target matters, **x86_64**, both of which we treat as solid ground. Everything else enters as a concept.
+This is a clean room. We name only our own modules — TAME, Aurora, Rye, Brix, Silo, Tally, Caravan, Mantra, Pond, Rishi, Comlink, and now **Brushstroke** — together with **RISC-V** and, where the hardware target matters, **x86_64**, both of which we treat as solid ground. Everything else enters as a concept.
 
 ---
 
@@ -64,22 +64,24 @@ The `frame` garden is immediate-mode made tangible: every redraw is a season —
 
 ---
 
-## Silo Minimum — A Project Descriptor
+## Brix Minimum — A Course Descriptor
 
-The full Silo — content-addressed build results, lawful composition, integration with Mantra's weave — grows from Caravan. The minimum Silo for Mantra right now is a project descriptor: a value one can read before the build language exists.
+The full Brix — a composing language for whole systems, with a lawful composition combinator — grows from Caravan. The minimum Brix for Mantra right now is a course descriptor: a value one can read before the composing language exists.
 
-A `.silo` file at the repository root, read as a Rishi record:
+A `.brix` file at the repository root, read as a line-by-line key-value record:
 
 ```
-let project = {
-  name: "veganreyklah2",
-  root: "/home/xy/veganreyklah2",
-  sources: ["rishi/" "aurora/" "tally/" "context/" "active-designing/"]
-  mantra_root: "/home/xy/veganreyklah2/.mantra/"
-}
+# .brix — veganreyklah2
+name veganreyklah2
+version 20260619.212312
+file rye/src/main.rye
+file rishi/src/main.rye
+file tally/seed.rye
+file tally/gardens.rye
+file mantra/src/main.rye
 ```
 
-Mantra reads this at startup: the root, the source set, the blob store location. Silo's seed is a description, not a command. Its full shape grows once Caravan exists to realize what Silo describes.
+Mantra reads this at startup: the project name and the bricks (source files) it tracks. `mantra brix` prints the descriptor. `mantra add` (no args) lays each brick into the weave. Brix's seed is a declaration, not a command. Its full shape — the lawful composition combinator, the Silo-backed content-addressed derivations — grows once Caravan exists to realize what Brix describes.
 
 ---
 
@@ -129,7 +131,7 @@ Aurora is designed in deep cohesion with RISC-V (`991`), and that arc continues 
 [6] Pond GUI: Rishi REPL in a Brushstroke window, Pond-lite enclosure
 [5] Brushstroke seed: one window, native rendering, text panel
 [4] Mantra seed + Rishi integration: add/commit/status via run
-[3] Silo minimum: project descriptor as Rishi record
+[3] Brix minimum: course descriptor (.brix)
 [2] Tally v1: named gardens (blob / diff / frame)
 [1] Strengthening: SHA3-256, mem.copy, path ops, fs boundary assertions
 [0] Already running: Rye, Rishi, Tally seed, SHA3-512, Ed25519, X25519, AEAD

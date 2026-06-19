@@ -13,7 +13,7 @@
 
 ## Our Own Ground
 
-This is a clean room. We name only what is ours — TAME, Rye, Silo, Tally, Caravan, Mantra, Aurora, Pond, and now **Rishi**, our shell — together with **RISC-V**, the open instruction set we treat as solid ground. Everything borrowed enters as a concept, weighed on its own merit. One value orders every recommendation: **safety first, performance second, the joy of the craft third** — and a clean design tends to serve all three at once.
+This is a clean room. We name only what is ours — TAME, Rye, Brix, Silo, Tally, Caravan, Mantra, Aurora, Pond, and now **Rishi**, our shell — together with **RISC-V**, the open instruction set we treat as solid ground. Everything borrowed enters as a concept, weighed on its own merit. One value orders every recommendation: **safety first, performance second, the joy of the craft third** — and a clean design tends to serve all three at once.
 
 ---
 
@@ -59,14 +59,14 @@ And a quiet circle closes. Rye is strengthened, pass by pass; the parity gate gu
 
 ## One Style, Many Specializations
 
-Which brings us to the broader question: how should TAME Style be organized across a family of languages — Rye, Silo, Rishi, the orchestration language still to be named, and Mantra — without splintering into many styles that drift apart?
+Which brings us to the broader question: how should TAME Style be organized across a family of languages — Rye, Brix, Rishi, the orchestration language still to be named, and Mantra — without splintering into many styles that drift apart?
 
 The answer follows from the same truth that lets the languages share values: **one root, and a small supplement for each.**
 
 - **The root holds what is universal** — the priority order of safety, performance, and joy; the discipline of assertions, of marking the space that varies, of always saying why; growth by accretion and naming that endures; bounds on everything; and the shared value model itself. This is the TAME Style every member inherits, unchanged.
 - **Each language adds only its own idioms**, in a supplement that begins, in effect, "everything in the root holds; here is what is specific to me":
   - **Rye** — explicitly sized types, compile-time assertions, the economy of where an expensive check earns its keep, functions kept short. The systems specifics.
-  - **Silo** — declarative purity, the discipline of what may be deferred, naming by content. *Describe, do not command.*
+  - **Brix** — declarative purity, the discipline of what may be deferred, composing by courses of simple bricks. *Describe, do not command.*
   - **Rishi** — typed pipelines, process results as structured values, assertions used as gates, terseness that never costs safety, honesty about effects and their order.
   - **The orchestration language** — surprise-free sequencing, no lingering interpreter, bounds on every chain.
   - **Mantra** — a data language rather than a syntax: the laws its weave must keep, the merge that always completes, the honest annotation of a conflict. Its supplement is about invariants rather than grammar.

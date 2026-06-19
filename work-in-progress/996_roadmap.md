@@ -66,12 +66,13 @@ Each milestone here is *made of* the working systems above.
 - [x] **`parity.rish` runs** — made of: Rishi (lists, records, `run`, `map`/`where`, interpolation, `assert`) + the parity logic. The gate, rewritten in our own shell — proven GREEN, and RED on a real divergence (`../tools/parity.rish`).
 - [ ] **Comlink v1 — the network module** *(see `../external-research/981`)* — made of: the encrypted-datagram seed grown into typed, content-named, sealed message delivery, exactly-once by hash, carrying values between identities.
 - [ ] **Unified keys v1** — made of: one owner seed deriving the keys a person needs (ed25519 for SSH/GPG/Sui, secp256k1 for Nostr), separated for safety and recovered as one (`../external-research/981`).
-- [ ] **Silo v1** — made of: a content-addressed store (grown from the smallest working build of one thing) + a single lawful compose combinator. Describes a simple system reproducibly.
+- [ ] **Brix v1** — made of: a lawful composition combinator over brick descriptors, backed by Silo (the content-addressed store). Describes a simple system reproducibly.
+- [ ] **Silo v1** — made of: a general-purpose content-addressed store grown from Mantra's `.mantra/blobs/` into a full, independently queryable artifact store.
 - [ ] **Tally v1** — made of: the process-garden pattern Rye already uses, grown into a named, bounded region allocator with asserted edges.
 - [ ] **Caravan v1** — made of: the simplest working supervision (one parent that never dies, one child, restart on fall), grown toward a small tree and chain-loaded startup.
 - [ ] **Pond v1** — made of: Caravan v1's isolation **composed with** Tally v1's bounds — one allow-listed path, one resource bound, opened from a policy that is a value (`pond.rish`).
 - [ ] **Mantra for `~/veganreyklah2`** — made of: Mantra seed grown into multi-file weave tracking the full repository; content-named HEAD chain, `mantra log`, integration tested in a Rishi script.
-- [x] **Silo minimum** — `.silo` at the repo root: `name`, `version`, and `file` entries for the 9 tracked sources. Mantra reads it at startup — `mantra silo` prints the descriptor; `mantra init` reports the project name and file count. The first floor toward Silo v1.
+- [x] **Brix minimum** — `.brix` at the repo root: `name`, `version`, and `file` entries for the 9 tracked bricks. Mantra reads it at startup — `mantra brix` prints the descriptor; `mantra init` reports the project name and file count. The first course toward Brix v1.
 - [ ] **Pond GUI — Rishi REPL + Mantra in a Brushstroke window** — made of: Brushstroke seed + Mantra seed + Rishi file I/O, composing into a single native x86_64 window with a Rishi text area and live Mantra version control of the repository (`../expanding-prompts/10009`, `../active-designing/986`).
 
 ---
@@ -81,14 +82,14 @@ Each milestone here is *made of* the working systems above.
 The far ends. Each is named with the simpler working systems it is composed of, so the path to it is always a growing, never a leap.
 
 - [ ] **Rye, a genuinely separate language** — made of: the strengthened `std` + a growing divergence in syntax and semantics, including borrow-checking-style guarantees over Tally's gardens (`../external-research/983`), compiling to RISC-V as a first-class target. Grown from the Zig-derivative, never rewritten from scratch.
-- [ ] **The full family, composing through one value model** — made of: Rye + Silo + Rishi + the orchestration language + Mantra + Comlink, each grown from its v1, sharing one value model so values flow seam-free from a keystroke to the wire.
+- [ ] **The full family, composing through one value model** — made of: Rye + Brix + Silo + Rishi + Mantra + Comlink, each grown from its v1, sharing one value model so values flow seam-free from a keystroke to the wire.
 - [ ] **The content-centric messenger** — made of: Comlink + Mantra + unified keys + Rishi's `talk` — an IRC-meets-Dojo where a message is a named, sealed value carried home (`../external-research/982`).
 - [ ] **The devotional social layer** — made of: the messenger + Nostr-simple store-and-forward relays on our coherent core, curated by honest structure, true to the values (`../external-research/984`).
 - [ ] **The fractal address space** — made of: unified keys + a derivation tree shaped as galaxies, stars, and planets (d5 × d12 = d60), with admins who coordinate and never command (`../external-research/981`).
 - [ ] **Aurora — the boot on RISC-V** — made of: the seed and relay, grown stage by stage into a verified, named-value boot from an immutable root.
 - [ ] **Pond — a trustworthy daily enclosure** — made of: Pond v1, hardened pass by pass over Caravan's isolation and Tally's gardens, until it is the room our agents work inside.
 - [ ] **Brushstroke, web-portable** — made of: Brushstroke seed grown with a `wasm32-freestanding` backend, so any Pond application runs in a browser surface without rewriting. The same frame-garden discipline, the same widget seam, a different surface below.
-- [ ] **A self-hosted, RISC-V-cohesive Rye system** — made of: Aurora (boot) + Caravan (kernel) + Tally (memory) + Silo (configuration) + Mantra (memory of the system) + Comlink (the network) + Rishi (the hand) + Pond (the enclosure) — the whole machine, grown from every working part beneath it, belonging wholly to the one who runs it.
+- [ ] **A self-hosted, RISC-V-cohesive Rye system** — made of: Aurora (boot) + Caravan (kernel) + Tally (memory) + Brix (composition) + Silo (store) + Mantra (memory of the system) + Comlink (the network) + Rishi (the hand) + Pond (the enclosure) — the whole machine, grown from every working part beneath it, belonging wholly to the one who runs it.
 
 ---
 
@@ -106,11 +107,11 @@ The far ends. Each is named with the simpler working systems it is composed of, 
 
 Two things ran today that had not run before. Rishi gained integer arithmetic and a real stdout; Tally's first seed ran with 13 asserted invariants, all green. The design arc then caught up with and outpaced those new parts: four research and design documents landed in one session — POSIX at the door (`../external-research/977`), the full living desktop stack (`../external-research/978`), a quarantined native system interface brief (`../active-designing/985`), and a quarantined living desktop brief (`../active-designing/986`) — together with an expanded ordered plan (`../expanding-prompts/10009`) and a mapped strengthening frontier (passes 9994–9991).
 
-The near goal is concrete and named: **a Pond GUI running a Rishi REPL and live Mantra version control of `~/veganreyklah2`, in a native Brushstroke window on x86_64 AMD.** The dependency stack runs six layers deep — from today's foundation through Tally v1 gardens, Mantra for the repo, Silo descriptor, Brushstroke seed, and the Pond GUI milestone. The Aurora RISC-V arc continues in parallel on its own horizon; x86_64 is the active build target where Pond, Brushstroke, and Rishi converge.
+The near goal is concrete and named: **a Pond GUI running a Rishi REPL and live Mantra version control of `~/veganreyklah2`, in a native Brushstroke window on x86_64 AMD.** The dependency stack runs six layers deep — from today's foundation through Tally v1 gardens, Mantra for the repo, Brix descriptor, Brushstroke seed, and the Pond GUI milestone. The Aurora RISC-V arc continues in parallel on its own horizon; x86_64 is the active build target where Pond, Brushstroke, and Rishi converge.
 
 ### What to Build Next, and Why
 
-Tally v1 and the Silo minimum are done. Mantra grows next: a commit-chain model (parent reference), `mantra add` without args walks the `.silo` file list, `mantra log` follows the HEAD chain. Then Rishi file I/O builtins (`read-file`, `write-file`, `list-dir`), Brushstroke seed, and the Pond GUI. See `../expanding-prompts/10009` and `../active-designing/986`.
+Tally v1 and the Brix minimum are done. Mantra grows next: a commit-chain model (parent reference), `mantra add` without args walks the `.brix` file list, `mantra log` follows the HEAD chain. Then Rishi file I/O builtins (`read-file`, `write-file`, `list-dir`), Brushstroke seed, and the Pond GUI. See `../expanding-prompts/10009` and `../active-designing/986`.
 
 ---
 
@@ -126,7 +127,7 @@ The strengthening frontier sealed, Mantra planted, Tally named, and the project 
 
 **Tally v1 — named gardens** (9989): `tally/gardens.rye` — `Gardens` struct, `blob/diff/frame`, `add/get/clearOne/clearAll`, 15/15 parity GREEN.
 
-**Silo minimum**: `.silo` at the repo root names the project and 9 tracked source files. `mantra silo` prints the descriptor; `mantra init` reads it. Mantra knows the project.
+**Brix minimum**: `.brix` at the repo root names the project and 9 tracked bricks. `mantra brix` prints the descriptor; `mantra init` reads it. Mantra knows the project. Silo and Brix are now distinct: Silo is the general-purpose content-addressed store; Brix is the composing language that declares what a system is made of.
 
 ---
 

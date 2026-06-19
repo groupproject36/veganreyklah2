@@ -34,12 +34,12 @@
 - **`init.arena` → `init.garden` — tied off.** TAME vocabulary in the public API; all callers updated.
 - **`parity-selftest.rish` — tied off.** The gate proves RED in Rishi too. Uses `cp -r` and `sh -c` as temporary stand-ins until `list-dir` and `write-file` land.
 - **Tally v1 — named gardens — tied off.** `tally/gardens.rye`: `Gardens`, three named regions, `add/get/clearOne/clearAll/totalRemaining`, 15/15 parity GREEN (`strengthening-compiler/9989`).
-- **Silo minimum — tied off.** `.silo` at repo root: name, version, 9 tracked files. `mantra silo` prints; `mantra init` reads. Mantra knows the project.
+- **Brix minimum — tied off.** `.brix` at repo root: name, version, 9 tracked bricks. `mantra brix` prints; `mantra init` reads. Mantra knows the project. (Silo is now the store layer; Brix is the composing language.)
 
 ## Threads Still Open
 
 **Near — Horizon 1 threads:**
-- **Mantra for `~/veganreyklah2`** — grow the seed into multi-file weave: commit-chain model (parent reference), `mantra add` (no args) walks `.silo` file list, `mantra log` follows the HEAD chain. Tally v1 and Silo minimum are both done; this is next.
+- **Mantra for `~/veganreyklah2`** — grow the seed into multi-file weave: commit-chain model (parent reference), `mantra add` (no args) walks `.brix` file list, `mantra log` follows the HEAD chain. Tally v1 and Brix minimum are both done; this is next.
 - **Device wire** — sealed datagram over emulated `virtio-net` between two QEMU machines; Comlink's next rung.
 
 **Near — display layer:**
@@ -65,7 +65,7 @@
 
 ## The Through-Line
 
-One value model, all the way down: a packet, a post, a Mantra line, a Silo build, a Rye value — the same kind of thing, signed, named, bounded, owned. The sealed datagram between two harts is that line made real: a value, sealed and named, arriving on the far side as the same value it left as. The Pond GUI goal holds the same line at a higher level: a Rishi command, a Mantra weave, a Brushstroke pixel — still the same value, still bounded, still proven at every edge. Each new step tightens the line; each clone tests it against how others actually did it. We keep it simple, we keep it kind, and we grow the whole from the smallest part that already works.
+One value model, all the way down: a packet, a post, a Mantra line, a Brix brick, a Rye value — the same kind of thing, signed, named, bounded, owned. The sealed datagram between two harts is that line made real: a value, sealed and named, arriving on the far side as the same value it left as. The Pond GUI goal holds the same line at a higher level: a Rishi command, a Mantra weave, a Brushstroke pixel — still the same value, still bounded, still proven at every edge. Each new step tightens the line; each clone tests it against how others actually did it. We keep it simple, we keep it kind, and we grow the whole from the smallest part that already works.
 
 ---
 

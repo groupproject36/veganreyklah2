@@ -28,7 +28,7 @@ const std  = @import("std");
 const Dir  = std.Io.Dir;
 const Sha3 = std.crypto.hash.sha3.Sha3_256;
 
-const mantra_version = "20260619.212312";
+const mantra_version = "20260619.213800";
 
 // =========================================================================
 // § Weave — the data model
@@ -336,27 +336,31 @@ fn deserializeWeave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
 }
 
 // =========================================================================
-// § Silo — .silo project descriptor
+// § Brix — .brix course descriptor
 // =========================================================================
 //
-// A .silo descriptor names a project and the source files Mantra tracks.
-// Format: one key-value pair per line, space-separated. Lines starting with
-// '#' are comments; blank lines are ignored.
+// A .brix descriptor names a project and the bricks (source files) Mantra
+// tracks. Format: one key-value pair per line, space-separated. Lines
+// starting with '#' are comments; blank lines are ignored.
 //
 //   name     — the project name (one value)
 //   version  — descriptor version (Rye chronological stamp)
-//   file     — one tracked source file (multiple allowed, in order)
+//   file     — one tracked brick/source file (multiple allowed, in order)
+//
+// Silo (the content-addressed store) holds blobs; Brix (the composing
+// language) describes what the system is made of. A .brix descriptor is
+// a course: an ordered list of bricks, declared plainly.
 
-const SiloConfig = struct {
+const BrixConfig = struct {
     name:    []const u8,
     version: []const u8,
     files:   []const []const u8,
 };
 
-/// Read and parse .silo from `dir`. Returns null if .silo is absent.
-fn readSilo(allocator: std.mem.Allocator, io: std.Io, dir: Dir) !?SiloConfig {
+/// Read and parse .brix from `dir`. Returns null if .brix is absent.
+fn readBrix(allocator: std.mem.Allocator, io: std.Io, dir: Dir) !?BrixConfig {
     var buf: [8192]u8 = undefined;
-    const content = dir.readFile(io, ".silo", &buf) catch |err| {
+    const content = dir.readFile(io, ".brix", &buf) catch |err| {
         if (err == error.FileNotFound) return null;
         return err;
     };
@@ -379,7 +383,7 @@ fn readSilo(allocator: std.mem.Allocator, io: std.Io, dir: Dir) !?SiloConfig {
             try files.append(allocator, try allocator.dupe(u8, val));
         }
     }
-    return SiloConfig{
+    return BrixConfig{
         .name    = name_val,
         .version = version_val,
         .files   = try files.toOwnedSlice(allocator),
@@ -407,8 +411,8 @@ pub fn main(init: std.process.Init) !u8 {
     const cmd = args[1];
     if (std.mem.eql(u8, cmd, "init")) {
         return cmdInit(allocator, io);
-    } else if (std.mem.eql(u8, cmd, "silo")) {
-        return cmdSilo(allocator, io);
+    } else if (std.mem.eql(u8, cmd, "brix")) {
+        return cmdBrix(allocator, io);
     } else if (std.mem.eql(u8, cmd, "add")) {
         if (args.len < 3) {
             std.debug.print("mantra: add requires a file path\n", .{});
@@ -437,7 +441,7 @@ fn printUsage() void {
         \\
         \\usage:
         \\  mantra init           create .mantra/ in the current directory
-        \\  mantra silo           print the .silo project descriptor
+        \\  mantra brix           print the .brix course descriptor
         \\  mantra add <file>     weave the file's current text into the history
         \\  mantra status <file>  show what has changed since the last weave
         \\  mantra version        print the Mantra version
@@ -451,8 +455,8 @@ fn cmdInit(allocator: std.mem.Allocator, io: std.Io) !u8 {
         return 1;
     };
     _ = &store;
-    const maybe_silo = try readSilo(allocator, io, Dir.cwd());
-    if (maybe_silo) |s| {
+    const maybe_brix = try readBrix(allocator, io, Dir.cwd());
+    if (maybe_brix) |s| {
         std.debug.print("mantra: initialized .mantra/ — project '{s}' ({d} tracked file(s)).\n", .{
             s.name, s.files.len,
         });
@@ -462,14 +466,14 @@ fn cmdInit(allocator: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-fn cmdSilo(allocator: std.mem.Allocator, io: std.Io) !u8 {
-    const maybe_silo = try readSilo(allocator, io, Dir.cwd());
-    if (maybe_silo == null) {
-        std.debug.print("mantra: no .silo found in the current directory.\n", .{});
+fn cmdBrix(allocator: std.mem.Allocator, io: std.Io) !u8 {
+    const maybe_brix = try readBrix(allocator, io, Dir.cwd());
+    if (maybe_brix == null) {
+        std.debug.print("mantra: no .brix found in the current directory.\n", .{});
         return 1;
     }
-    const s = maybe_silo.?;
-    std.debug.print("silo: {s}  version {s}  ({d} file(s))\n", .{ s.name, s.version, s.files.len });
+    const s = maybe_brix.?;
+    std.debug.print("brix: {s}  version {s}  ({d} file(s))\n", .{ s.name, s.version, s.files.len });
     for (s.files) |f| std.debug.print("  file {s}\n", .{f});
     return 0;
 }

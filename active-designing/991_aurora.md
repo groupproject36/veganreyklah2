@@ -31,7 +31,7 @@ This is the privilege relay made honest: control descends from the machine's mos
 
 ## Bounded, Owned, Declared
 
-Aurora leans on the parts we are already growing. **Tally** bounds each stage's memory in a garden, cleared whole when the stage's work is done, so a boot never sprawls. **Silo** declares the stages and their order as a value one can read before the machine runs — the boot described, rather than configured by mutable command. And **Caravan** is where Aurora is headed: the boot's last act is to hand a verified, named, living system to the supervisor that will keep it.
+Aurora leans on the parts we are already growing. **Tally** bounds each stage's memory in a garden, cleared whole when the stage's work is done, so a boot never sprawls. **Brix** declares the stages and their order as a value one can read before the machine runs — the boot described, rather than configured by mutable command. And **Caravan** is where Aurora is headed: the boot's last act is to hand a verified, named, living system to the supervisor that will keep it.
 
 ## Grown from the Seed
 

@@ -1,6 +1,6 @@
 # 10007 · First Seeds — Caravan, Tally, and a Close Reading Before the Wire Grows
 
-*Expanded from counsel received at `084412`, spoken in Reya 2's radiant voice through a TAME lens. The praise lands on what runs: Rye self-hosts, Aurora carries a sealed datagram between two harts, the gate lives in Rishi, Comlink has a name. The gentle warning is equally clear: Tally, Caravan, Silo, Mantra, and Pond remain designs, and the richest near work still leans on them. The counsel names three parallel threads — device-wire, the smallest living seeds of Caravan and Tally, and a close reading of what we cloned before Comlink grows further — so building stays level with design rather than slipping behind again.*
+*Expanded from counsel received at `084412`, spoken in Reya 2's radiant voice through a TAME lens. The praise lands on what runs: Rye self-hosts, Aurora carries a sealed datagram between two harts, the gate lives in Rishi, Comlink has a name. The gentle warning is equally clear: Tally, Caravan, Brix, Silo, Mantra, and Pond remain designs (Silo named as composer in the original counsel; now: Brix is the composing language, Silo is the content-addressed store), and the richest near work still leans on them. The counsel names three parallel threads — device-wire, the smallest living seeds of Caravan and Tally, and a close reading of what we cloned before Comlink grows further — so building stays level with design rather than slipping behind again.*
 
 **Language:** EN
 **Version:** `20260619.084412` (Rye chronological stamp)
@@ -79,7 +79,7 @@ Output: `external-research/980` band or new `979_*` close-reading stack — **ac
 
 ## Discipline
 
-- **Smallest thing that runs** for B and C — no kernel, no full Pond, no Silo store yet.
+- **Smallest thing that runs** for B and C — no kernel, no full Pond, no Brix composer or Silo store yet.
 - **Prove each seed** — assert, test, gate where pure.
 - **Read before inventing** on the wire — Thread D informs Thread A so Comlink does not guess at formats others already solved.
 - **One value model** — seeds return values and records Rishi can inspect later.

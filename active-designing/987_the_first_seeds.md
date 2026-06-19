@@ -17,7 +17,7 @@ To plant three parallel threads so the family does not outrun its ground: carry 
 
 ## Problem
 
-Tally, Caravan, Silo, Mantra, and Pond live richly in prose — `987_pond_foundation`, `997_recommended_architecture`, the caravan study — yet much of the near horizon (Comlink, Pond, the messenger) **leans on** supervision and bounded memory that do not yet run. If the device-wire races ahead alone, design drifts again: we would script a network atop abstractions we have not yet touched with code.
+Tally, Caravan, Brix, Silo, Mantra, and Pond live richly in prose — `987_pond_foundation`, `997_recommended_architecture`, the caravan study — yet much of the near horizon (Comlink, Pond, the messenger) **leans on** supervision and bounded memory that do not yet run. If the device-wire races ahead alone, design drifts again: we would script a network atop abstractions we have not yet touched with code.
 
 ## Opportunity
 

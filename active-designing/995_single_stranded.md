@@ -13,7 +13,7 @@
 
 ## Our Own Ground
 
-This is a clean room. We name only what is ours — TAME, Aurora, Rye, Silo, Tally, Caravan, Mantra, Rishi, Pond — together with **RISC-V**, the open instruction set we treat as solid ground. The ideas we lean on enter as principles, weighed on their own merit, restated in our own words.
+This is a clean room. We name only what is ours — TAME, Aurora, Rye, Brix, Silo, Tally, Caravan, Mantra, Rishi, Pond — together with **RISC-V**, the open instruction set we treat as solid ground. The ideas we lean on enter as principles, weighed on their own merit, restated in our own words.
 
 ---
 
@@ -29,7 +29,7 @@ We build by **composing**: laying free parts side by side, so any one can be dra
 
 ## Reading the Architecture for What Stands Free
 
-**Each module is about one thing.** Rye is the programs; Silo is the configuration; the orchestration language is the bringing-up; Rishi is the human's hand at the prompt; Mantra is the memory; Tally is the bounded living space; Caravan is the isolation and supervision; Pond is one agent's enclosure. Each is single-stranded — about one thing, free to be understood and changed on its own. The easy path would have been one tool doing all of it, familiar and near; the simple path keeps each free, and we take it.
+**Each module is about one thing.** Rye is the programs; Brix is the composing language (what a system is made of); Silo is the store (what it produced, content-addressed); Rishi is the human's hand at the prompt; Mantra is the memory; Tally is the bounded living space; Caravan is the isolation and supervision; Pond is one agent's enclosure. Each is single-stranded — about one thing, free to be understood and changed on its own. The easy path would have been one tool doing all of it, familiar and near; the simple path keeps each free, and we take it.
 
 **They compose through one value model.** The parts meet by sharing one model of values, so a value passes from one to the next without being flattened to text and reparsed. That shared model *is* composition without braiding: free parts set side by side, each still its own. The seam we refuse — the place where a value must be marshaled across a boundary — is exactly the braid we decline to tie. No seam is no braid.
 

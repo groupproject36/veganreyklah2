@@ -19,7 +19,7 @@ This file, `999_DESIGN.md`, is the foundation stone. It rests at the bottom of t
 
 One rule governs everything here, and it is the reason this folder stands apart: **active-designing names only what is ours, and one fixed external.**
 
-The names we may use are our own chosen modules — **TAME, Aurora, Rye, Silo, Tally, Caravan, Mantra, Pond, Rishi, Comlink, Brushstroke**, and any future names we coin — together with **RISC-V**, the open instruction set we build upon and treat as solid ground. No other project, product, language, or person is named here. Not the systems that inspired us, not the tools we admire, not even the languages our work descends from. Those belong elsewhere.
+The names we may use are our own chosen modules — **TAME, Aurora, Rye, Brix, Silo, Tally, Caravan, Mantra, Pond, Rishi, Comlink, Brushstroke**, and any future names we coin — together with **RISC-V**, the open instruction set we build upon and treat as solid ground. No other project, product, language, or person is named here. Not the systems that inspired us, not the tools we admire, not even the languages our work descends from. Those belong elsewhere.
 
 This is quarantine as a kindness to clarity. Outside ideas enter only as **concepts**, stripped of their origin and weighed on their own merits — a region of memory, a content-addressed store, a supervision tree, a lawful combinator. By refusing the borrowed name, we force ourselves to understand the idea well enough to restate it plainly, and we keep our design space free of any genealogy that might quietly smuggle in assumptions we never chose. What grows here grows on its own roots.
 

@@ -51,7 +51,7 @@ Between hosted Linux and RISC-V bare metal, bare-metal x86_64 is a natural inter
 Layer 6: Pond GUI (Pond-lite enclosure + Brushstroke + Rishi REPL)
 Layer 5: Brushstroke seed (one window, one text panel, input loop)
 Layer 4: Mantra seed + Rishi integration (add, commit, status for one file)
-Layer 3: Mantra for a repo (multi-file weave, Silo descriptor, blob store)
+Layer 3: Mantra for a repo (multi-file weave, Brix descriptor, blob store)
 Layer 2: Tally v1 (named gardens: blob / diff / frame)
 Layer 1: Strengthening passes (SHA3-256, mem.copy, path ops, fs boundaries)
 Layer 0: Already running (Rye, Rishi, Tally seed, crypto foundation)
@@ -130,20 +130,26 @@ say "mantra: ${s.out}"
 
 ---
 
-### Step 4 — Silo Minimum: Project Descriptor (Layer 3, first piece)
+### Step 4 — Brix Minimum: Course Descriptor (Layer 3, first piece)
 
-A `.silo` file at the repository root, expressed as a Rishi record literal Rishi can parse directly (with a future Rishi `read-file` builtin, or via `run ["cat" ".silo"]` in the near term):
+A `.brix` file at the repository root, a plain key-value descriptor Mantra parses directly:
 
 ```
-let project = {
-  name: "veganreyklah2",
-  root: "/home/xy/veganreyklah2",
-  sources: ["rishi/" "aurora/" "tally/" "context/" "active-designing/" "work-in-progress/"]
-  mantra_root: "/home/xy/veganreyklah2/.mantra/"
-}
+# .brix — veganreyklah2
+name veganreyklah2
+version 20260619.212312
+file rye/src/main.rye
+file rishi/src/main.rye
+file tally/seed.rye
+file tally/gardens.rye
+file mantra/src/main.rye
+file tools/parity.sh
+file tools/parity.rish
+file work-in-progress/995_open_threads.md
+file work-in-progress/996_roadmap.md
 ```
 
-Mantra reads this at startup to know its root and its source set. Silo's larger design (content-addressed builds, lawful composition) grows from this descriptor later.
+Mantra reads this at startup to know the project name and the bricks it tracks. `mantra brix` prints the descriptor. Brix's larger design (the lawful composition combinator, Silo-backed content-addressed derivations) grows from this descriptor later. Silo is the content-addressed store; Brix is the composing language — see `expanding-prompts/10010_brix_composing_language.md`.
 
 ---
 
@@ -155,7 +161,7 @@ Grow Mantra from one file to the full `~/veganreyklah2`.
 `HEAD` becomes a record: `{ files: { "rishi/README.md": "<blob-name>", ... }, gen: 42 }`, content-addressed as a whole. Each file's weave is stored independently; the manifest names them all.
 
 **5b. `mantra add` without an argument.**
-Walk the source paths from the Silo descriptor, diff each file against its weave entry, apply all diffs, write new blobs, write a new manifest, update `HEAD`. A garden is allocated, used, and cleared for each file in sequence — the season model in practice.
+Walk the bricks from the Brix descriptor (`.brix`), diff each file against its weave entry, apply all diffs, write new blobs, write a new manifest, update `HEAD`. A garden is allocated, used, and cleared for each file in sequence — the season model in practice.
 
 **5c. `mantra log`.**
 Follow the `HEAD` chain backward (each manifest blob names its predecessor's blob). Print the generation, the date, and the files changed. Pure read: no garden mutations.
@@ -191,7 +197,7 @@ At this point Rishi's `run ["cat" ...]` workaround becomes friction. Grow two Ri
 - `write-file <path> <content>` → writes the string to the path, returns `ok: true` or `ok: false` with `err`.
 - `list-dir <path>` → a list of filename strings.
 
-Each uses the Tally `blob` garden for its read buffer. Shape-cast at entry: path must be non-empty, within the declared root (from the Silo descriptor Rishi loads at startup). The boundary is the trust door; past it, the file contents are a trusted string value.
+Each uses the Tally `blob` garden for its read buffer. Shape-cast at entry: path must be non-empty, within the declared root (from the Brix descriptor Rishi loads at startup). The boundary is the trust door; past it, the file contents are a trusted string value.
 
 Rishi version bumps to `20260619.+N` at this step.
 
@@ -208,10 +214,10 @@ Rishi version bumps to `20260619.+N` at this step.
 **8c. Pond-lite enclosure.**
 On hosted Linux, the Pond enclosure uses:
 - `seccomp` to allow-list the syscalls the application needs (file read/write within `.mantra/`, Wayland socket, Vulkan device).
-- A filesystem namespace that allows only the declared `sources` paths from the Silo descriptor and the Mantra root.
+- A filesystem namespace that allows only the declared bricks from the Brix descriptor and the Mantra root.
 - Tally's gardens as the memory bound (no general allocator; every allocation is declared).
 
-`pond/src/enclosure.rye`: set up the seccomp filter and the namespace before the Brushstroke event loop starts. The policy is a Rishi record value, read from `.silo` and validated by shape-cast.
+`pond/src/enclosure.rye`: set up the seccomp filter and the namespace before the Brushstroke event loop starts. The policy is a Rishi record value, read from `.brix` and validated by shape-cast.
 
 **8d. The running demonstration.**
 From the Pond GUI, a person types:

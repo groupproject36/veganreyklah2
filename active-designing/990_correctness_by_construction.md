@@ -13,7 +13,7 @@
 
 ## What Rye Is For
 
-Rye carries the family. Silo, Tally, Caravan, Aurora, Pond, and Rishi are all written in it or grown from it, so the safety Rye offers is the safety they inherit. That makes Rye's first duty plain: to be a language in which correctness is *built in* rather than bolted on. We would rather spend our care once, in the shape of the language, than spend it forever in the catching of faults the shape allowed.
+Rye carries the family. Brix, Silo, Tally, Caravan, Aurora, Pond, and Rishi are all written in it or grown from it, so the safety Rye offers is the safety they inherit. That makes Rye's first duty plain: to be a language in which correctness is *built in* rather than bolted on. We would rather spend our care once, in the shape of the language, than spend it forever in the catching of faults the shape allowed.
 
 The promise takes a single form, said many ways through this brief: **make the dangerous states the ones a person cannot write.** A check the compiler performs is a class of fault that never reaches a running machine. A bound the type carries is a bound no one can forget. Correctness by construction is not a feature we add; it is the grain we cut the language along.
 

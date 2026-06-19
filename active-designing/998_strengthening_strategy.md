@@ -42,7 +42,7 @@ The weave gives more than a survivable merge. It remembers, in its own structure
 
 ## Aim Where the Leverage Is
 
-Two judgments keep the effort well spent. First, strengthen the **foundation we depend on** — the functions our own modules rest their weight upon — before the whole inherited library; reinforcing a beam we stand on earns more than polishing a floor we merely cross. Second, spend the larger share of our design energy on the modules that are **ours from the first line** — Tally, Caravan, Silo, Mantra, Aurora, Pond — where an invariant stated early shapes the whole structure, rather than being fitted to a structure already poured. Strengthening the inherited library is a kindness to our foundation; building our own modules TAME-first is how the house itself rises safe.
+Two judgments keep the effort well spent. First, strengthen the **foundation we depend on** — the functions our own modules rest their weight upon — before the whole inherited library; reinforcing a beam we stand on earns more than polishing a floor we merely cross. Second, spend the larger share of our design energy on the modules that are **ours from the first line** — Tally, Caravan, Brix, Silo, Mantra, Aurora, Pond — where an invariant stated early shapes the whole structure, rather than being fitted to a structure already poured. Strengthening the inherited library is a kindness to our foundation; building our own modules TAME-first is how the house itself rises safe.
 
 ---
 

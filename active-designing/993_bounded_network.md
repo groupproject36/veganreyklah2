@@ -27,7 +27,7 @@ The seal is made between identities — the owner keys of `994` — rather than 
 
 ## Carried by What We Build
 
-The network is a flow of named values, and our parts each hold a piece of the flow. **Comlink** is the carrier — the module that moves the messages and bridges the identities. **Caravan** owns the device and clears its state cleanly on fault. **Tally** bounds every queue and every peer's state inside a garden, so a flood meets an edge rather than open memory. **Mantra** gives each message its enduring, content-addressed name. **Rye** types the value; **Silo** declares which peers and channels exist, as a value one can read before it runs.
+The network is a flow of named values, and our parts each hold a piece of the flow. **Comlink** is the carrier — the module that moves the messages and bridges the identities. **Caravan** owns the device and clears its state cleanly on fault. **Tally** bounds every queue and every peer's state inside a garden, so a flood meets an edge rather than open memory. **Mantra** gives each message its enduring, content-addressed name. **Rye** types the value; **Brix** declares which peers and channels exist, as a value one can read before it runs.
 
 So the flow stays legible: values transformed, moved, routed, and remembered — those four kept apart, each simple enough to trust on its own.
 

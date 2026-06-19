@@ -14,7 +14,7 @@
 
 ## Our Own Ground
 
-This is a clean room. We name only what is ours — TAME, Aurora, Rye, Silo, Tally, Caravan, Mantra, Pond, Rishi, Comlink, Brushstroke — together with RISC-V and, where the hardware target matters, x86_64. The native system interface enters as a concept: the family of calls a program makes to cross into the kernel and receive OS services in return.
+This is a clean room. We name only what is ours — TAME, Aurora, Rye, Brix, Silo, Tally, Caravan, Mantra, Pond, Rishi, Comlink, Brushstroke — together with RISC-V and, where the hardware target matters, x86_64. The native system interface enters as a concept: the family of calls a program makes to cross into the kernel and receive OS services in return.
 
 ---
 
@@ -98,7 +98,7 @@ The Brushstroke seam holds this surface as a backend — one of several things t
 
 On hosted x86_64, Brushstroke connects to an existing compositor as a client — a window is a surface managed by whatever display server the host provides. This is the near path, and it is correct for the goal of a Rishi Pond shell running on AMD x86_64 today.
 
-On a full Pond OS — where there is no borrowed display server — Pond's display root *is* the compositor. Caravan supervises it; Tally bounds its per-surface memory; Silo declares which surfaces exist and in what arrangement. We studied a compositor written in Rye's grain language that shows how this works in practice: each client surface is a bounded resource with an explicit lifecycle; input is typed values; output is a composition operation over stated surface geometries. This is Caravan's isolation surface seen from the display angle: what a process may draw, bounded and declared, exactly as what a process may read and write is bounded and declared in the filesystem policy.
+On a full Pond OS — where there is no borrowed display server — Pond's display root *is* the compositor. Caravan supervises it; Tally bounds its per-surface memory; Brix declares which surfaces exist and in what arrangement. We studied a compositor written in Rye's grain language that shows how this works in practice: each client surface is a bounded resource with an explicit lifecycle; input is typed values; output is a composition operation over stated surface geometries. This is Caravan's isolation surface seen from the display angle: what a process may draw, bounded and declared, exactly as what a process may read and write is bounded and declared in the filesystem policy.
 
 The compositor design is not near work. It belongs to the Pond full OS horizon, after Caravan v1 exists. The study informs the design now so that Brushstroke's client protocol and Caravan's compositor surface are designed in coherence from the start, rather than retroactively fitted to each other.
 
