@@ -6,8 +6,9 @@
 //! directly, supporting line comments; `let` bindings of strings, integers,
 //! booleans, lists, and records; `say` with `${...}` interpolation; comparison
 //! with `==` and `!=`; list membership with `contains`; field access with
-//! `record.field`; and `assert` as a gate that stops the script and says why when
-//! a fact does not hold. It is the seed from which
+//! `record.field`; running a command with `run`, whose result is a record; and
+//! `assert` as a gate that stops the script and says why when a fact does not
+//! hold. It is the seed from which
 //! the language grows toward `parity.rish`, the program that will name its first
 //! real purpose (see active-designing/996_growing_a_language.md).
 //!
@@ -23,7 +24,7 @@ const std = @import("std");
 
 /// Rishi's version, stamped chronologically — YYYYMMDD.HHMMSS, where later is
 /// larger, the same clock Rye keeps. This is Rishi's founding stamp.
-const rishi_version = "20260619.050712";
+const rishi_version = "20260619.054612";
 
 /// A Rishi value. The first two kinds — a string and an integer — are the seed
 /// of a model that will grow to lists, records, and process results, shared
@@ -149,13 +150,13 @@ fn runFile(init: std.process.Init, args: []const [:0]const u8) !u8 {
         return 1;
     };
 
-    return interpret(arena, source);
+    return interpret(arena, io, source);
 }
 
 /// Run a Rishi script, line by line. Returns 0 when the whole script runs, or 1
 /// at the first line that does not make sense — named with its line number, so
 /// the trouble is easy to find.
-fn interpret(allocator: std.mem.Allocator, source: []const u8) u8 {
+fn interpret(allocator: std.mem.Allocator, io: std.Io, source: []const u8) u8 {
     var env = Env{};
     var line_no: usize = 0;
     var lines = std.mem.splitScalar(u8, source, '\n');
@@ -163,7 +164,7 @@ fn interpret(allocator: std.mem.Allocator, source: []const u8) u8 {
         line_no += 1;
         const line = std.mem.trim(u8, raw, " \t\r");
         if (line.len == 0 or line[0] == '#') continue;
-        evalStatement(allocator, &env, line) catch |err| {
+        evalStatement(allocator, io, &env, line) catch |err| {
             if (err == error.AssertionFailed) {
                 // doAssert already named the broken fact; add where it broke.
                 std.debug.print("  at line {d}: {s}\n", .{ line_no, line });
@@ -176,18 +177,18 @@ fn interpret(allocator: std.mem.Allocator, source: []const u8) u8 {
     return 0;
 }
 
-fn evalStatement(allocator: std.mem.Allocator, env: *Env, line: []const u8) !void {
+fn evalStatement(allocator: std.mem.Allocator, io: std.Io, env: *Env, line: []const u8) !void {
     if (std.mem.startsWith(u8, line, "let ")) {
         const rest = std.mem.trim(u8, line[4..], " \t");
         const eq = std.mem.indexOfScalar(u8, rest, '=') orelse return error.LetNeedsEquals;
         const name = std.mem.trim(u8, rest[0..eq], " \t");
         const valstr = std.mem.trim(u8, rest[eq + 1 ..], " \t");
         if (name.len == 0) return error.LetNeedsName;
-        try env.bind(name, try evalExpr(allocator, env, valstr));
+        try env.bind(name, try evalExpr(allocator, io, env, valstr));
     } else if (std.mem.startsWith(u8, line, "say ")) {
-        try doSay(allocator, env, std.mem.trim(u8, line[4..], " \t"));
+        try doSay(allocator, io, env, std.mem.trim(u8, line[4..], " \t"));
     } else if (std.mem.startsWith(u8, line, "assert ")) {
-        try doAssert(allocator, env, std.mem.trim(u8, line[7..], " \t"));
+        try doAssert(allocator, io, env, std.mem.trim(u8, line[7..], " \t"));
     } else {
         return error.UnknownStatement;
     }
@@ -205,6 +206,10 @@ const EvalError = error{
     FieldNeedsColon,
     NoSuchField,
     NotARecord,
+    RunNeedsList,
+    RunNeedsCommand,
+    RunArgsMustBeStrings,
+    CommandFailed,
     OutOfMemory,
 };
 
@@ -212,11 +217,16 @@ const EvalError = error{
 /// `<list> contains <value>` membership test — each comparison yielding a boolean.
 /// An operator is found outside any quoted string, so one woven into `"text"`
 /// stays text.
-fn evalExpr(allocator: std.mem.Allocator, env: *const Env, text: []const u8) EvalError!Value {
+fn evalExpr(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: []const u8) EvalError!Value {
+    // `run <list>` executes a command and hands back its result as a record.
+    const trimmed = std.mem.trim(u8, text, " \t");
+    if (std.mem.startsWith(u8, trimmed, "run ")) {
+        return doRun(allocator, io, env, trimmed[4..]);
+    }
     // `<list> contains <value>` asks membership, yielding a boolean.
     if (findWordOp(text, " contains ")) |idx| {
-        const haystack = try evalExpr(allocator, env, text[0..idx]);
-        const needle = try evalExpr(allocator, env, text[idx + 10 ..]);
+        const haystack = try evalExpr(allocator, io, env, text[0..idx]);
+        const needle = try evalExpr(allocator, io, env, text[idx + 10 ..]);
         const items = switch (haystack) {
             .list => |l| l,
             else => return error.ContainsNeedsList,
@@ -228,27 +238,61 @@ fn evalExpr(allocator: std.mem.Allocator, env: *const Env, text: []const u8) Eva
     }
     // `a == b` / `a != b` compare, yielding a boolean.
     if (findComparison(text)) |cmp| {
-        const left = try evalOperand(allocator, env, cmp.left);
-        const right = try evalOperand(allocator, env, cmp.right);
+        const left = try evalOperand(allocator, io, env, cmp.left);
+        const right = try evalOperand(allocator, io, env, cmp.right);
         const equal = valuesEqual(left, right);
         return .{ .boolean = if (cmp.op == .ne) !equal else equal };
     }
-    return evalOperand(allocator, env, text);
+    return evalOperand(allocator, io, env, text);
+}
+
+/// `run <list>` executes a command — the list's strings as argv — and returns a
+/// record of the result: `out` and `err` (the captured text), `code` (the exit
+/// status), and `ok` (true when the code is zero). A command that runs and exits
+/// non-zero is an ordinary result; only a command that cannot be spawned at all
+/// stops the script.
+fn doRun(allocator: std.mem.Allocator, io: std.Io, env: *const Env, argv_text: []const u8) EvalError!Value {
+    const argv_value = try evalExpr(allocator, io, env, argv_text);
+    const items = switch (argv_value) {
+        .list => |l| l,
+        else => return error.RunNeedsList,
+    };
+    if (items.len == 0) return error.RunNeedsCommand;
+    const argv = try allocator.alloc([]const u8, items.len);
+    for (items, 0..) |item, idx| {
+        argv[idx] = switch (item) {
+            .string => |s| s,
+            else => return error.RunArgsMustBeStrings,
+        };
+    }
+
+    const result = std.process.run(allocator, io, .{ .argv = argv }) catch return error.CommandFailed;
+    const code: i64 = switch (result.term) {
+        .exited => |c| @as(i64, c),
+        else => -1,
+    };
+
+    const fields = try allocator.alloc(Field, 4);
+    fields[0] = .{ .name = "out", .value = .{ .string = result.stdout } };
+    fields[1] = .{ .name = "err", .value = .{ .string = result.stderr } };
+    fields[2] = .{ .name = "code", .value = .{ .int = code } };
+    fields[3] = .{ .name = "ok", .value = .{ .boolean = code == 0 } };
+    return .{ .record = fields };
 }
 
 /// Evaluate one operand: a double-quoted string, a boolean, a base-ten integer,
 /// or a bare name that refers to an earlier binding.
-fn evalOperand(allocator: std.mem.Allocator, env: *const Env, raw: []const u8) EvalError!Value {
+fn evalOperand(allocator: std.mem.Allocator, io: std.Io, env: *const Env, raw: []const u8) EvalError!Value {
     const s = std.mem.trim(u8, raw, " \t");
     if (s.len == 0) return error.ExpectedValue;
     if (s.len >= 2 and s[0] == '"' and s[s.len - 1] == '"') {
         return .{ .string = s[1 .. s.len - 1] };
     }
     if (s.len >= 2 and s[0] == '[' and s[s.len - 1] == ']') {
-        return parseList(allocator, env, s[1 .. s.len - 1]);
+        return parseList(allocator, io, env, s[1 .. s.len - 1]);
     }
     if (s.len >= 2 and s[0] == '{' and s[s.len - 1] == '}') {
-        return parseRecord(allocator, env, s[1 .. s.len - 1]);
+        return parseRecord(allocator, io, env, s[1 .. s.len - 1]);
     }
     if (std.mem.eql(u8, s, "true")) return .{ .boolean = true };
     if (std.mem.eql(u8, s, "false")) return .{ .boolean = false };
@@ -257,7 +301,7 @@ fn evalOperand(allocator: std.mem.Allocator, env: *const Env, raw: []const u8) E
     } else |_| {}
     // `base.field.field…` reads a field from a record, one step at a time.
     if (findTopLevel(s, '.')) |dot| {
-        var value = try evalOperand(allocator, env, s[0..dot]);
+        var value = try evalOperand(allocator, io, env, s[0..dot]);
         var rest = s[dot + 1 ..];
         while (true) {
             const next_dot = findTopLevel(rest, '.');
@@ -287,13 +331,13 @@ fn findField(fields: []const Field, name: []const u8) ?Value {
 /// Parse a list literal's interior — space-separated operands, with spaces inside
 /// a quoted element kept whole. The element count is bounded, so a runaway literal
 /// meets a clear edge rather than eating memory without end.
-fn parseList(allocator: std.mem.Allocator, env: *const Env, inner: []const u8) EvalError!Value {
+fn parseList(allocator: std.mem.Allocator, io: std.Io, env: *const Env, inner: []const u8) EvalError!Value {
     var buffer: [256]Value = undefined;
     var count: usize = 0;
     var it = TokenIter{ .text = inner };
     while (it.next()) |token| {
         if (count == buffer.len) return error.ListTooLong;
-        buffer[count] = try evalOperand(allocator, env, token);
+        buffer[count] = try evalOperand(allocator, io, env, token);
         count += 1;
     }
     const items = try allocator.dupe(Value, buffer[0..count]);
@@ -333,7 +377,7 @@ const TokenIter = struct {
 /// Parse a record literal's interior — comma-separated `name: value` fields, with
 /// commas and colons inside nested lists, records, or strings kept whole. The
 /// field count is bounded, so a runaway literal meets a clear edge.
-fn parseRecord(allocator: std.mem.Allocator, env: *const Env, inner: []const u8) EvalError!Value {
+fn parseRecord(allocator: std.mem.Allocator, io: std.Io, env: *const Env, inner: []const u8) EvalError!Value {
     var buffer: [256]Field = undefined;
     var count: usize = 0;
     var it = TopLevelSplit{ .text = inner, .delim = ',' };
@@ -345,7 +389,7 @@ fn parseRecord(allocator: std.mem.Allocator, env: *const Env, inner: []const u8)
         const valtext = std.mem.trim(u8, ft[colon + 1 ..], " \t");
         if (name.len == 0) return error.FieldNeedsColon;
         if (count == buffer.len) return error.RecordTooLong;
-        buffer[count] = .{ .name = name, .value = try evalExpr(allocator, env, valtext) };
+        buffer[count] = .{ .name = name, .value = try evalExpr(allocator, io, env, valtext) };
         count += 1;
     }
     const fields = try allocator.dupe(Field, buffer[0..count]);
@@ -485,7 +529,7 @@ fn recordsEqual(x: []const Field, y: []const Field) bool {
 /// `assert <expr>` makes a fact a gate: when the expression is a false boolean,
 /// the script stops and says why. An optional `else "message"` gives the reason
 /// to show; without it, the condition itself stands as the reason.
-fn doAssert(allocator: std.mem.Allocator, env: *const Env, arg: []const u8) !void {
+fn doAssert(allocator: std.mem.Allocator, io: std.Io, env: *const Env, arg: []const u8) !void {
     var condition = arg;
     var message: ?[]const u8 = null;
     if (findWordOp(arg, " else ")) |idx| {
@@ -496,7 +540,7 @@ fn doAssert(allocator: std.mem.Allocator, env: *const Env, arg: []const u8) !voi
         else
             tail;
     }
-    const value = try evalExpr(allocator, env, condition);
+    const value = try evalExpr(allocator, io, env, condition);
     const holds = switch (value) {
         .boolean => |b| b,
         else => return error.AssertNeedsCondition,
@@ -532,7 +576,7 @@ fn findWordOp(text: []const u8, word: []const u8) ?usize {
 
 /// `say` writes a string literal — interpolating `${name}` as it goes — or the
 /// value bound to a bare name, then a newline.
-fn doSay(allocator: std.mem.Allocator, env: *const Env, arg: []const u8) !void {
+fn doSay(allocator: std.mem.Allocator, io: std.Io, env: *const Env, arg: []const u8) !void {
     if (arg.len >= 2 and arg[0] == '"' and arg[arg.len - 1] == '"') {
         const inner = arg[1 .. arg.len - 1];
         var i: usize = 0;
@@ -540,7 +584,7 @@ fn doSay(allocator: std.mem.Allocator, env: *const Env, arg: []const u8) !void {
             if (i + 1 < inner.len and inner[i] == '$' and inner[i + 1] == '{') {
                 const close = std.mem.indexOfScalarPos(u8, inner, i + 2, '}') orelse return error.UnterminatedInterpolation;
                 const expr = inner[i + 2 .. close];
-                const value = try evalOperand(allocator, env, expr);
+                const value = try evalOperand(allocator, io, env, expr);
                 value.write();
                 i = close + 1;
             } else {
@@ -554,7 +598,7 @@ fn doSay(allocator: std.mem.Allocator, env: *const Env, arg: []const u8) !void {
         }
         std.debug.print("\n", .{});
     } else if (arg.len > 0) {
-        const value = try evalOperand(allocator, env, arg);
+        const value = try evalOperand(allocator, io, env, arg);
         value.write();
         std.debug.print("\n", .{});
     } else {

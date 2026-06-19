@@ -1,6 +1,6 @@
 # Rishi — the shell of the Rye ecosystem
 
-**Version:** `20260619.050712` (chronological; later is larger)
+**Version:** `20260619.054612` (chronological; later is larger)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** First version — small, runnable, and growing
 
@@ -36,6 +36,10 @@ supporting:
   stays text.
 - **`contains`** — `xs contains value` yields a boolean, so membership reads as a
   fact and can be a gate: `assert allowed contains here`.
+- **`run`** — `let result = run ["echo" "hello"]` executes a command and returns a
+  record: `out` and `err` (the captured text), `code` (the exit status), and `ok`
+  (true when the code is zero). A command that exits non-zero is an ordinary
+  result; a command that cannot be spawned at all stops the script.
 - **`assert`** — `assert <expr>` makes a fact a gate: when the expression is a
   false boolean, the script stops, says why, and exits non-zero. An optional
   `else "message"` gives the reason to show.
@@ -65,23 +69,25 @@ rishi/bin/rishi run rishi/tests/hello.rish
 rishi/bin/rishi run rishi/tests/checks.rish   # booleans, comparison, and assert
 rishi/bin/rishi run rishi/tests/lists.rish    # lists, contains, and equality
 rishi/bin/rishi run rishi/tests/records.rish  # records, field access, and equality
+rishi/bin/rishi run rishi/tests/run.rish      # running commands, results as records
 ```
 
 `tests/checks.rish` shows the comparison-and-assert pieces, `tests/lists.rish` the
-list-and-membership ones, and `tests/records.rish` the records and field paths —
-each a run of facts that all hold. A false `assert` instead stops the script, names
-the broken fact, and exits non-zero: the gate behavior `parity.rish` will lean on.
+list-and-membership ones, `tests/records.rish` the records and field paths, and
+`tests/run.rish` a command run and read as a record — each a run of facts that all
+hold. A false `assert` instead stops the script, names the broken fact, and exits
+non-zero: the gate behavior `parity.rish` will lean on.
 
 ## How It Grows
 
 The first version is the seed; the destination is `parity.rish`, our parity gate
-written in Rishi. Most of the pieces it asks for have now landed — the `==` that
+written in Rishi. Nearly all the pieces it asks for have now landed — the `==` that
 compares, the `assert` that gates, the **list** that holds a corpus (with `contains`
-for membership), and the **record** that gives a value named fields — each arriving
-the Rye way, additive and proven, one careful step at a time. Two remain: a `run`
-that returns a structured process result (a record of its own), and `map` and
-`where` over a pipeline. Each shares Rye's value model, so a value made in a Rye
-program and a value carried through a Rishi pipeline are the same value.
+for membership), the **record** that gives a value named fields, and the **`run`**
+that executes a command and returns its result as a record — each arriving the Rye
+way, additive and proven, one careful step at a time. One piece remains: `map` and
+`where`, to walk and filter a pipeline. Each shares Rye's value model, so a value
+made in a Rye program and a value carried through a Rishi pipeline are the same value.
 
 Two north stars guide that growth. `tests/hello.rish` is what runs today;
 `examples/pond.rish` is where we are headed — an illustrative sketch of Rishi
