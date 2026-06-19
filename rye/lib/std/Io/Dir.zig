@@ -204,7 +204,16 @@ pub const Iterator = struct {
 
     pub fn next(it: *Iterator, io: Io) Error!?Entry {
         it.reader.buffer = &it.reader_buffer;
-        return it.reader.next(io);
+        const result = try it.reader.next(io);
+        // Postcondition: every returned entry has a non-empty name within the OS
+        // limit; null means the directory is exhausted and the reader is finished.
+        if (result) |entry| {
+            assert(entry.name.len > 0);              // every directory entry has a name
+            assert(entry.name.len <= max_name_bytes); // the name fits the OS limit
+        } else {
+            assert(it.reader.state == .finished); // null means iteration is complete
+        }
+        return result;
     }
 };
 
