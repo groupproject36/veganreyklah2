@@ -1359,7 +1359,17 @@ pub const indexOfAny = findAny;
 /// Linear search for the index of any value in the provided list inside a slice.
 /// Returns null if no values are found.
 pub fn findAny(comptime T: type, slice: []const T, values: []const T) ?usize {
-    return findAnyPos(T, slice, 0, values);
+    const result = findAnyPos(T, slice, 0, values);
+    // Postcondition at cold wrapper (pairs with findScalar, 9996).
+    if (result) |i| {
+        assert(i < slice.len);
+        var matched = false;
+        for (values) |value| {
+            if (slice[i] == value) matched = true;
+        }
+        assert(matched);
+    }
+    return result;
 }
 
 /// Deprecated in favor of `findLastAny`.
@@ -1387,7 +1397,13 @@ pub fn findAnyPos(comptime T: type, slice: []const T, start_index: usize, values
     if (start_index >= slice.len) return null;
     for (slice[start_index..], start_index..) |c, i| {
         for (values) |value| {
-            if (c == value) return i;
+            if (c == value) {
+                // Postcondition: a found index lands inside the slice at a sought value.
+                assert(i < slice.len);
+                assert(slice[i] == value);
+                assert(i >= start_index);
+                return i;
+            }
         }
     }
     return null;
