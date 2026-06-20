@@ -3019,11 +3019,14 @@ test "split (reset)" {
 ///           `tokenizeAny`, `tokenizeSequence`, and `tokenizeScalar`.
 pub fn splitBackwardsSequence(comptime T: type, buffer: []const T, delimiter: []const T) SplitBackwardsIterator(T, .sequence) {
     assert(delimiter.len != 0);
-    return .{
+    const it: SplitBackwardsIterator(T, .sequence) = .{
         .index = buffer.len,
         .buffer = buffer,
         .delimiter = delimiter,
     };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
 }
 
 /// Returns an iterator that iterates backwards over the slices of `buffer` that
@@ -3039,11 +3042,14 @@ pub fn splitBackwardsSequence(comptime T: type, buffer: []const T, delimiter: []
 ///           `splitSequence`, `splitAny`,`splitScalar`,
 ///           `tokenizeAny`, `tokenizeSequence`, and `tokenizeScalar`.
 pub fn splitBackwardsAny(comptime T: type, buffer: []const T, delimiters: []const T) SplitBackwardsIterator(T, .any) {
-    return .{
+    const it: SplitBackwardsIterator(T, .any) = .{
         .index = buffer.len,
         .buffer = buffer,
         .delimiter = delimiters,
     };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
 }
 
 /// Returns an iterator that iterates backwards over the slices of `buffer` that
@@ -3059,11 +3065,14 @@ pub fn splitBackwardsAny(comptime T: type, buffer: []const T, delimiters: []cons
 ///           `splitSequence`, `splitAny`,`splitScalar`,
 ///           `tokenizeAny`, `tokenizeSequence`, and `tokenizeScalar`.
 pub fn splitBackwardsScalar(comptime T: type, buffer: []const T, delimiter: T) SplitBackwardsIterator(T, .scalar) {
-    return .{
+    const it: SplitBackwardsIterator(T, .scalar) = .{
         .index = buffer.len,
         .buffer = buffer,
         .delimiter = delimiter,
     };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
 }
 
 test splitBackwardsScalar {

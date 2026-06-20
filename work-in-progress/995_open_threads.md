@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `205212`: pass 9934 mem split factories; 69 witnesses.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `205912`: pass 9933 mem split backwards factories; 70 witnesses.*
 
 **Language:** EN
-**Version:** `20260620.205212` (Rye chronological stamp)
+**Version:** `20260620.205912` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,6 +12,7 @@
 
 ## What Just Landed (this session)
 
+- **Strengthening pass 9933 (`205912`).** `splitBackwardsScalar` / `splitBackwardsAny` / `splitBackwardsSequence` factory postconditions; witness `mem_split_backwards_factory_test`; 70/70 witnesses GREEN.
 - **Strengthening pass 9934 (`205212`).** `splitScalar` / `splitAny` / `splitSequence` factory postconditions; witness `mem_split_factory_test`; 69/69 witnesses GREEN.
 - **Strengthening pass 9935 (`204212`).** SHA3 `ShakeLike.squeeze` buffered `@memcpy` slice bounds in `sha3.zig`; witness `sha3_shake_buffered_memcpy_test`; 68/68 witnesses GREEN.
 - **Strengthening pass 9936 (`203912`).** Keccak sponge `absorb` + `squeeze` `@memcpy` slice bounds in `keccak_p.zig`; witness `keccak_sponge_memcpy_test`; 67/67 witnesses GREEN.
@@ -74,7 +75,7 @@
 - **Rishi arithmetic + stdout** — `+`/`-`/`*`/`/`, correct precedence, `say`.
 - **Tally seed** — one Region, 13 invariants.
 - **Tally v1 named gardens** — `Gardens`, blob/diff/frame, 15/15 GREEN.
-- **Strengthening 9994–9934** — through mem split factories. 69 witnesses.
+- **Strengthening 9994–9933** — through mem split backwards factories. 70 witnesses.
 - **Mantra seed** — weave, LCS diff, SHA3-256 store, init/add/status.
 - **Mantra for the repo (seed)** — commit chain, add-all walks `.brix`, log follows chain. 9/9 bricks.
 - **`init.garden` (phase 1)** — `std.process.Init.garden` renamed from upstream `arena`.
@@ -108,7 +109,7 @@
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio (9933 and below) | `10023` Track B, `998` |
+| 1 | **Strengthening series** — next `std` surface through gate trio (9932 and below) | `10023` Track B, `998` |
 | 2 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 3 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
 | 4 | **Aurora metal lane** — std surfaces on the freestanding crypto path (see below) | `991`, `9995`, `998` |
@@ -194,7 +195,7 @@ Phase 2 vocabulary sweep is **closed**. Policy at `161112`: warm names enter bes
 - **Compare:** baseline `vendor/zig-toolchain/lib` vs strengthened `rye/lib` — same test, same pinned Zig (`RYE_ZIG`).
 - **Invoke:** `rye run rye/tests/<name>.rye` on both arms (`RYE_LIB` for baseline); exercises the real bridge path.
 - **Hold:** exit code + stdout/stderr identical — assertions change what code *says*, never what it *does*.
-- **Witnesses:** 69 programs, all GREEN (9934 mem split factories latest).
+- **Witnesses:** 70 programs, all GREEN (9933 mem split backwards factories latest).
 
 ## The Through-Line
 
