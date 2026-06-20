@@ -1488,7 +1488,12 @@ pub fn findPosLinear(comptime T: type, haystack: []const T, start_index: usize, 
     var i: usize = start_index;
     const end = haystack.len - needle.len;
     while (i <= end) : (i += 1) {
-        if (eql(T, haystack[i..][0..needle.len], needle)) return i;
+        if (eql(T, haystack[i..][0..needle.len], needle)) {
+            // Postcondition: a found index fits the needle from start_index onward.
+            assert(i + needle.len <= haystack.len);
+            assert(i >= start_index);
+            return i;
+        }
     }
     return null;
 }
