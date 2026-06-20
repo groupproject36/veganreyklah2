@@ -3463,6 +3463,9 @@ pub fn TokenIterator(comptime T: type, comptime delimiter_type: DelimiterType) t
             var end = start;
             while (end < self.buffer.len and !self.isDelimiter(end)) : (end += 1) {}
 
+            // Postcondition: token slice stays within the buffer (pairs with SplitIterator 9993).
+            assert(start <= end);
+            assert(end <= self.buffer.len);
             return self.buffer[start..end];
         }
 
@@ -3474,6 +3477,8 @@ pub fn TokenIterator(comptime T: type, comptime delimiter_type: DelimiterType) t
                 .sequence => self.delimiter.len,
                 .any, .scalar => 1,
             }) {}
+            // Postcondition: rest is the tail from the next token start.
+            assert(index <= self.buffer.len);
             return self.buffer[index..];
         }
 
