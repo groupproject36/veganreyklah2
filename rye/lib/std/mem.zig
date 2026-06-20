@@ -244,6 +244,13 @@ pub fn copyForwards(comptime T: type, dest: []T, source: []const T) void {
     // Precondition: dest must have room for every element of source.
     assert(dest.len >= source.len);
     for (dest[0..source.len], source) |*d, s| d.* = s;
+    // Postcondition: when regions do not overlap, copied prefix matches source.
+    const source_addr = @intFromPtr(source.ptr);
+    const dest_addr = @intFromPtr(dest.ptr);
+    const sources_end = source_addr + source.len * @sizeOf(T);
+    const dests_end = dest_addr + dest.len * @sizeOf(T);
+    const non_overlapping = source.len == 0 or dest_addr >= sources_end or dests_end <= source_addr;
+    if (non_overlapping) assert(eql(T, dest[0..source.len], source));
 }
 
 /// Copy all of source into dest at position 0.
