@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `211712`: explicit-width policy in rules + Tally Phase 1 (`seed`, `gardens`); strengthening at 9932 / 71 witnesses.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `212412`: pass 9931 mem window factory; 72 witnesses.*
 
 **Language:** EN
-**Version:** `20260620.211712` (Rye chronological stamp)
+**Version:** `20260620.212412` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,6 +12,7 @@
 
 ## What Just Landed (this session)
 
+- **Strengthening pass 9931 (`212412`).** `mem.window` factory postconditions; witness `mem_window_factory_test`; 72/72 witnesses GREEN.
 - **Explicit-width Phase 1 (`211712`).** `tally/seed.rye` + `tally/gardens.rye`: `Region.pos`, `alloc`, `remaining`, `Gardens.count` → `u32`; `bufLenU32` at slice seam. Rules in `.cursor`, `.claude`, `context/specs/tame-style.md`.
 - **Explicit-width audit (`210812`).** TAME supplement corrected — `u32`/`u64` in authored APIs, `usize` boundary-only. Charter `10024`; baseline `992`.
 - **Strengthening pass 9932 (`210412`).** `tokenizeScalar` / `tokenizeAny` / `tokenizeSequence` factory postconditions; witness `mem_tokenize_factory_test`; 71/71 witnesses GREEN.
@@ -112,7 +113,7 @@
 
 | When | Strand | Next step |
 |------|--------|-----------|
-| **`k <stamp>`** | **Strengthening** | Next `std` surface (`9931` and below) through `parity.rish` |
+| **`k <stamp>`** | **Strengthening** | Next `std` surface (`9930` and below) through `parity.rish` |
 | **Between `k` runs** | **Explicit width** | Phase 1 queue: ~~`tally/seed`~~ ~~`tally/gardens`~~ → `caravan/*` → `brushstroke/skate_grid.rye` |
 | **Metal pause** | **Aurora smoke** | `aurora/run.sh` in CI (`10024` Phase 2 after Caravan/Skate) |
 
@@ -122,7 +123,7 @@ Width and strengthening **do not block each other** — they touch different fil
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio (9931 and below) | `10023` Track B, `998` |
+| 1 | **Strengthening series** — next `std` surface through gate trio (9930 and below) | `10023` Track B, `998` |
 | 2 | **Explicit-width migration** — `usize` → `u32`/`u64` in authored `.rye` (parallel, one module per session) | `10024`, `992` |
 | 3 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 4 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |

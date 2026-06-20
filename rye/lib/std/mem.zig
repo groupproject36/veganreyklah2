@@ -3255,12 +3255,21 @@ test "splitBackwards (reset)" {
 pub fn window(comptime T: type, buffer: []const T, size: usize, advance: usize) WindowIterator(T) {
     assert(size != 0);
     assert(advance != 0);
-    return .{
+    const it: WindowIterator(T) = .{
         .index = if (buffer.len > 0) 0 else null,
         .buffer = buffer,
         .size = size,
         .advance = advance,
     };
+    if (buffer.len > 0) {
+        assert(it.index.? == 0);
+        assert(it.index.? <= buffer.len);
+    } else {
+        assert(it.index == null);
+    }
+    assert(it.size == size);
+    assert(it.advance == advance);
+    return it;
 }
 
 test window {
