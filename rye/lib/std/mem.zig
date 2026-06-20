@@ -3423,7 +3423,18 @@ pub fn endsWith(comptime T: type, haystack: []const T, needle: []const T) bool {
     // Both are valid and expected — state the variable space rather than constraining it.
     maybe(needle.len == 0);
     maybe(needle.len > haystack.len);
-    return if (needle.len > haystack.len) false else eql(T, haystack[haystack.len - needle.len ..], needle);
+    if (needle.len > haystack.len) {
+        assert(needle.len > haystack.len);
+        return false;
+    }
+    const suffix = haystack[haystack.len - needle.len ..];
+    const result = eql(T, suffix, needle);
+    if (result) {
+        assert(needle.len <= haystack.len);
+    } else {
+        assert(needle.len == 0 or !eql(T, suffix, needle));
+    }
+    return result;
 }
 
 test endsWith {
