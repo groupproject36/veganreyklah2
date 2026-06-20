@@ -779,15 +779,32 @@ pub fn eql(comptime T: type, a: []const T, b: []const T) bool {
     if (!@inComptime() and @sizeOf(T) != 0 and std.meta.hasUniqueRepresentation(T) and
         use_vectors_for_comparison)
     {
-        return eqlBytes(sliceAsBytes(a), sliceAsBytes(b));
+        const result = eqlBytes(sliceAsBytes(a), sliceAsBytes(b));
+        // Postcondition: result agrees with length and first-difference facts (pairs with findDiff 9949).
+        if (result) {
+            assert(a.len == b.len);
+        } else {
+            assert(a.len != b.len or findDiff(T, a, b) != null);
+        }
+        return result;
     }
 
-    if (a.len != b.len) return false;
-    if (a.len == 0 or a.ptr == b.ptr) return true;
+    if (a.len != b.len) {
+        assert(a.len != b.len);
+        return false;
+    }
+    if (a.len == 0 or a.ptr == b.ptr) {
+        assert(a.len == b.len);
+        return true;
+    }
 
     for (a, b) |a_elem, b_elem| {
-        if (a_elem != b_elem) return false;
+        if (a_elem != b_elem) {
+            assert(a_elem != b_elem);
+            return false;
+        }
     }
+    assert(a.len == b.len);
     return true;
 }
 

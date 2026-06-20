@@ -3,7 +3,7 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260620.195112` (Rye chronological stamp)
+**Version:** `20260620.195412` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -37,9 +37,9 @@ These are the simple systems that run today. Everything ahead grows from them.
 - **Seeds defined in `976`.** Every module grows from the smallest version that runs; the catalog and planting discipline live in `active-designing/976_what_we_mean_by_seed.md`.
 - **Seven hosted/freestanding seeds in one arc** — Caravan (seed → chain), Brushstroke (stdout + Wayland), Comlink (posted + hosted wire), Aurora deciding — code advancing; design (~20 active-designing docs) now leads until build catches up (`10017`).
 - **Comlink hosted wire** — sealed datagram over localhost UDP (`comlink/hosted_wire.rye`); virtio-net is next (`10016`).
-- **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of`; gate trio 60/60 GREEN.
+- **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of`; gate trio 61/61 GREEN.
 - **Skate text grid** — monospace 8×8 glyphs on Brushstroke Wayland seed; headless selftest green (`10023` Track A).
-- **Strengthening passes 9979–9943** — `trimStart` … `mem.copyForwards`. Each through the gate; witness count 17 → 60.
+- **Strengthening passes 9979–9942** — `trimStart` … `mem.len`. Each through the gate; witness count 17 → 61.
 - **Garden memory policy** — authored `.rye` uses `init.garden.allocator()`, never `ArenaAllocator`; no std `GardenAllocator` rename; owned wrapper at `rye.garden` / `tally/heap-garden.rye` when built (`inherited-names.md`, TAME rules).
 
 ---
@@ -69,7 +69,7 @@ Each is a thing that runs on its own, added by degrees, behind the gates.
 - [x] **Comlink hosted wire** — sealed datagram over localhost UDP (`comlink/hosted_wire.rye`; `10014` Track D).
 - [x] **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of` (`10023` Track C).
 - [x] **Skate text grid** — monospace glyph rendering on the Wayland seed (`skate_grid.rye`, `font8x8_data.rye`, `wayland_seed.rye`; `10023` Track A).
-- [x] **Strengthening 9979–9943** — everyday `std` surfaces through the gate (`trimStart` … `mem.copyForwards`; see `strengthening-compiler/9943`–`9987`).
+- [x] **Strengthening 9979–9942** — everyday `std` surfaces through the gate (`trimStart` … `mem.len`; see `strengthening-compiler/9942`–`9987`).
 - [ ] **Device wire (virtio-net)** — two QEMU guests (`10016`).
 - [ ] **Rye chronological version parser** — accrete `std.RyeVersion` beside `SemanticVersion` (`parse` / `format` / `order` for `YYYYMMDD.HHMMSS`); unblocks Caravan capability min-version and Tablecloth policy (`rye-versioning-style.md`, `995`).
 - [ ] **Continue the strengthening series** — the next `std` surfaces our tools depend on, each through the gate trio, each recorded in the strengthening-compiler stack.
@@ -126,7 +126,7 @@ The far ends. Each is named with the simpler working systems it is composed of, 
 
 **Highest-leverage build threads (ordered):**
 
-1. **Strengthening series** — next `std` surface through the gate trio (`9942` and below; `998`)
+1. **Strengthening series** — next `std` surface through the gate trio (`9941` and below; `998`)
 2. **Rishi** — builtins as gates and Pond policy need them (core string/path set landed)
 3. **Comlink virtio-net** — device wire between QEMU guests (`10016`, `993`)
 4. **Caravan capability table** — `984` step 5 (pairs with **RyeVersion** accretion when min-version bounds are needed)
@@ -136,15 +136,15 @@ The Pond GUI (`10009`, `986`) composes when Brushstroke + Skate + Mantra + Rishi
 
 ### What to Build Next, and Why
 
-Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, **SemanticVersion** trio (**format 9946**, **parse 9947**, **order 9948**), **mem.sliceTo (9945)**, **copyBackwards (9944)**, **copyForwards (9943)**, **mem.len (9942)**, mem compare/count through **findDiff (9949)** onward, mem iterators through **WindowIterator (9954)**, mem.join (9961), cut family (9958–9960) — all done. **Strengthening the next `std` surface (9941)** stays the honest next step on the main track; **RyeVersion** accretion waits beside the capability table.
+Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, **SemanticVersion** trio (**format 9946**, **parse 9947**, **order 9948**), **mem.sliceTo (9945)**, **copyBackwards (9944)**, **copyForwards (9943)**, **mem.len (9942)**, **mem.eql (9941)**, mem compare/count through **findDiff (9949)** onward, mem iterators through **WindowIterator (9954)**, mem.join (9961), cut family (9958–9960) — all done. **Strengthening the next `std` surface (9940)** stays the honest next step on the main track; **RyeVersion** accretion waits beside the capability table.
 
 ---
 
 ## The Steps Just Taken
 
-Strengthening through **9943**, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, witnesses vocabulary, style audit shipped.
+Strengthening through **9942**, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, witnesses vocabulary, style audit shipped.
 
-**Strengthening passes 9979–9943** (`143312`–`194512`): `trimStart` … `mem.copyForwards`. Witness count 17 → 60, all green.
+**Strengthening passes 9979–9942** (`143312`–`195112`): `trimStart` … `mem.len`. Witness count 17 → 61, all green.
 
 **Version parser thread (`173212`–`174312`)** — documented in `995` Near build: accrete `std.RyeVersion` beside `SemanticVersion` when capability table or Tablecloth needs programmatic bounds; lexicographic compare on fixed-width stamps suffices until then.
 

@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `195112`: pass 9942 `mem.len`; 61 witnesses.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `195412`: pass 9941 `mem.eql`; 62 witnesses.*
 
 **Language:** EN
-**Version:** `20260620.195112` (Rye chronological stamp)
+**Version:** `20260620.195412` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,6 +12,7 @@
 
 ## What Just Landed (this session)
 
+- **Strengthening pass 9941 (`195412`).** `mem.eql` return-path postconditions; 62/62 witnesses GREEN.
 - **Strengthening pass 9942 (`195112`).** `mem.len` postconditions; 61/61 witnesses GREEN.
 - **Strengthening pass 9943 (`194512`).** `mem.copyForwards` postconditions; 60/60 witnesses GREEN.
 - **Strengthening pass 9944 (`194012`).** `mem.copyBackwards` postconditions; 59/59 witnesses GREEN.
@@ -65,7 +66,7 @@
 - **Rishi arithmetic + stdout** — `+`/`-`/`*`/`/`, correct precedence, `say`.
 - **Tally seed** — one Region, 13 invariants.
 - **Tally v1 named gardens** — `Gardens`, blob/diff/frame, 15/15 GREEN.
-- **Strengthening 9994–9942** — through `mem.len`. 61 witnesses.
+- **Strengthening 9994–9941** — through `mem.eql`. 62 witnesses.
 - **Mantra seed** — weave, LCS diff, SHA3-256 store, init/add/status.
 - **Mantra for the repo (seed)** — commit chain, add-all walks `.brix`, log follows chain. 9/9 bricks.
 - **`init.garden` (phase 1)** — `std.process.Init.garden` renamed from upstream `arena`.
