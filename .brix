@@ -9,7 +9,7 @@
 #   file     — one tracked brick/source file (multiple, in order)
 
 name veganreyklah2
-version 20260619.224512
+version 20260620.004412
 
 # Rye compiler
 file rye/src/main.rye
@@ -27,8 +27,7 @@ file caravan/seed.rye
 # Mantra version control
 file mantra/src/main.rye
 
-# Gate trio
-file tools/parity.sh
+# Gate trio (Rishi is the primary; .sh is the fallback)
 file tools/parity.rish
 
 # Living documentation
