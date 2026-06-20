@@ -56,7 +56,8 @@
 - **Brushstroke seed** — one native x86_64 window, one static frame, thin Wayland/Vulkan backend (`../active-designing/985`, `../active-designing/986`). Depends on River and Ghostty.
 
 **Near — shell:**
-- **`additive-gate.rish` — tied off.** Rishi orchestrates (`git diff` + `write-file` + `awk -f`); the awk classifier (`additive-classify.awk`) handles line classification. Both gates agree. The `.sh` version remains as a fallback.
+- **`additive-gate.rish` — tied off.** Rishi orchestrates; awk classifies. The `.sh` fallbacks are removed — Rishi gates are the primary.
+- **Rishi `lines` + `starts-with` — tied off.** String splitting and prefix checking. Paren depth fix across all parsers. 16/16 GREEN.
 
 **Horizon 2 milestone:**
 - **Pond GUI on x86_64 AMD** — Rishi REPL + live Mantra version control of `~/veganreyklah2` in a Brushstroke window (`../expanding-prompts/10009`).
@@ -67,6 +68,7 @@
 - **Close reading** — packet format, commit rule, relay protocols from `gratitude/` before Comlink's format hardens.
 - **Aurora's deciding stage** — a relay stage that hands the next a value it chose.
 - **Caravan kernel design** — decided: microkernel. Quarantined in `../active-designing/984`. Research in `../external-research/976`.
+- **The Forge** — Mantra-native forge with Brushstroke surface, Comlink replication, Pond CI, key-based identity. Quarantined in `../active-designing/982`. Research in `../external-research/973`.
 - **`pond.rish`** — the enclosure as a value; awaits Caravan isolation and Tally bounds.
 - **The owner-key PKI** — rotation, revocation, and recovery.
 - **The verify-flag hot path** — data-plane postconditions behind a `verify` flag (`../strengthening-compiler/9996`).

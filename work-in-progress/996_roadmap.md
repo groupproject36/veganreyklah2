@@ -3,8 +3,8 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260619.212312` (Rye chronological stamp)
-**Last updated:** 2026-06-19
+**Version:** `20260620.004712` (Rye chronological stamp)
+**Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, the joy of the craft; and Gall's Law, that working wholes grow from working parts
@@ -50,11 +50,11 @@ Each is a thing that runs on its own, added by degrees, behind the gates.
 - [x] **Strengthening passes 9994–9991** — SHA3-256 (9994), mem diff primitives (9993), `std.Io.Dir` boundary assertions (9992), `Dir.iterate` (9991). All four through the gate, corpus at 14, all green.
 - [x] **Mantra seed** — Weave, LCS diff, SHA3-256 store, `init / add / status`. Runs end-to-end; pure LCS test in corpus (`../strengthening-compiler/9990`).
 - [x] **Tally v1 — named gardens** — `tally/gardens.rye`: `Gardens` struct holding named `Region` values, `add/get/clearOne/clearAll/totalRemaining`. Three named gardens for the stack: `blob`, `diff`, `frame`. Corpus grows to 15/15 GREEN (`../strengthening-compiler/9989`).
-- [ ] **Mantra for `~/veganreyklah2`** — grow the seed into multi-file weave: manifest HEAD names all files, `mantra add` without an argument walks the source paths, `mantra log` follows the HEAD chain. Depends on Tally v1 gardens.
-- [ ] **River and Ghostty into `gratitude/`** — clone both display-layer references before Brushstroke's native backend hardens; actionable reading for the OS-boundary wrapping discipline (`../active-designing/985`).
+- [x] **Mantra for `~/veganreyklah2` (seed)** — commit-chain model, `mantra add` (no args) walks `.brix`, `mantra log` follows the HEAD chain. 9/9 bricks wove. Multi-file manifest (separate weave per file) is the next growth pass.
+- [ ] **Display-layer study** — River studied through public Wayland specs only (GPL-3.0, not cloned). Ghostty (MIT) may be cloned. Our terminal is **Skate**; our surface is **Brushstroke**. Both from scratch in Rye.
 - [x] **Rishi file I/O builtins** — `read-file`, `write-file`, `list-dir` behind OS-boundary wrappers. Round-trip test in `rishi/tests/file_io.rish`, all assertions green. Parity gate 15/15 GREEN.
-- [ ] **`additive-gate.rish`** — Rishi version of `additive-gate.sh`. Needs Rishi stream processing (for-each-line over `git diff` output). Until then, `additive-gate.sh` remains the backstop. Part of the rish-first, sh-fallback progression.
-- [ ] **Brushstroke seed** — one native window on x86_64 AMD, one static frame drawn via the display layer protocol, libghostty thin costume for the text area. Depends on River and Ghostty in `gratitude/` and the OS interface wrappers (`../active-designing/985`, `../active-designing/986`).
+- [x] **`additive-gate.rish`** — Rishi orchestrates (`git diff` + awk classifier). The `.sh` fallbacks are removed. Gate trio complete in Rishi.
+- [ ] **Brushstroke seed** — one native window on x86_64 AMD, one static frame. Written from scratch in Rye; informed by public Wayland specs and display-layer documentation (`../active-designing/985`, `../active-designing/986`, `../active-designing/988`).
 - [ ] **Continue the strengthening series** — the next `std` surfaces our tools depend on, each through the gate trio, each recorded in the strengthening-compiler stack.
 
 ---
@@ -111,7 +111,7 @@ The near goal is concrete and named: **a Pond GUI running a Rishi REPL and live 
 
 ### What to Build Next, and Why
 
-Tally v1 and the Brix minimum are done. Mantra grows next: a commit-chain model (parent reference), `mantra add` without args walks the `.brix` file list, `mantra log` follows the HEAD chain. Then Rishi file I/O builtins (`read-file`, `write-file`, `list-dir`), Brushstroke seed, and the Pond GUI. See `../expanding-prompts/10009` and `../active-designing/986`.
+Tally v1, Brix minimum, Mantra seed (commit chain, add-all, log), Rishi file I/O, Caravan seed, and the gate trio migration to Rishi — all done. The near frontier: **Brushstroke seed** (one native window, Wayland study from public specs), **Caravan + Tally** (child in a bounded garden), **display-layer study**, and the **strengthening series** continuing. The Forge vision (982) and the whole-system map (983) set the direction; each step grows from what already runs.
 
 ---
 
