@@ -1,38 +1,28 @@
 # parity.rish — the differential-parity gate, written in Rishi.
 #
-# This is the parity gate in our own shell. For each program in the corpus, run
-# it against the pristine BASELINE standard library and against Rye's STRENGTHENED
-# one, and confirm the observable behavior — exit code and combined output — is
-# identical. A strengthening is safe only while this stays GREEN: we add what the
-# code SAYS, never what it DOES. The child keeps watch over the parent.
+# For each program in the corpus, run it twice through `rye run` on the `.rye`
+# source: once with RYE_LIB pointing at the pristine baseline std, once with
+# Rye's default strengthened std. Same pinned Zig (RYE_ZIG); only the library
+# tree differs. Observable behavior — exit code and combined output — must match.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/parity.rish
 
+let rye = "rye/bin/rye"
 let zig = "vendor/zig-toolchain/zig"
 let dir = "rye/tests"
-let work = "rishi/bin/parity-work"
 let baseline = "vendor/zig-toolchain/lib"
-let ryelib = "rye/lib"
 
-let corpus = ["dir_iterate_test" "fs_boundary_test" "mem_diff_test" "sha3_256_test" "sha3_256_boundary_test" "sha3_512_test" "sha3_boundary_test" "version_test" "call_paths_test" "ed25519_sign_test" "x25519_agree_test" "aead_seal_test" "sealed_message_test" "mantra_weave_test" "tally_gardens_test" "alloc_print_test"]
+let corpus = ["dir_iterate_test" "fs_boundary_test" "mem_diff_test" "sha3_256_test" "sha3_256_boundary_test" "sha3_512_test" "sha3_boundary_test" "version_test" "call_paths_test" "ed25519_sign_test" "x25519_agree_test" "aead_seal_test" "sealed_message_test" "mantra_weave_test" "tally_gardens_test" "alloc_print_test" "allocator_alloc_test" "buf_print_test" "write_streaming_all_test" "read_file_alloc_test" "path_join_test" "process_run_test" "path_dirname_test" "trim_start_test"]
 
 say "parity gate: checking ${corpus}"
 
-# zig run wants a .zig extension, and the .rye source is Zig for now, so copy each
-# into a clean work directory under the (untracked) rishi/bin.
-let mk = run ["mkdir" "-p" work]
-assert mk.ok else "could not make the work directory"
-let copies = map corpus as s: run ["cp" "${dir}/${s}.rye" "${work}/${s}.zig"]
-let bad_copies = where copies as c: c.ok == false
-assert bad_copies == [] else "a source copy failed before the gate could run"
+# Baseline arm: rye bridges each .rye test, Zig compiles against vendor std.
+let bases = map corpus as s: run ["env" "RYE_ZIG=${zig}" "RYE_LIB=${baseline}" rye "run" "${dir}/${s}.rye"]
 
-# Run each program twice: against the baseline std, and against ours.
-let bases = map corpus as s: run [zig "run" "${work}/${s}.zig" "--zig-lib-dir" baseline]
-let ryes = map corpus as s: run [zig "run" "${work}/${s}.zig" "--zig-lib-dir" ryelib]
+# Strengthened arm: same bridge path, Rye's default rye/lib std.
+let ryes = map corpus as s: run ["env" "RYE_ZIG=${zig}" rye "run" "${dir}/${s}.rye"]
 
-# A program's observable behavior is its exit code and its combined output. The two
-# lists compare as one value: equal means every program behaved identically.
 let base_view = map bases as r: "${r.code}|${r.out}${r.err}"
 let rye_view = map ryes as r: "${r.code}|${r.out}${r.err}"
 

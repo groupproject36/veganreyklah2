@@ -149,21 +149,22 @@ fn bridgeToZig(
         return 2;
     }
 
-    // Bridge to the toolchain, whose front-end reads only the `.zig` extension:
-    // copy the `.rye` source to an adjacent `.zig` file, hand that to the
-    // compiler, then clear the bridge away so the tree stays tidy.
     const dir = std.Io.Dir.cwd();
-    const bridge_path = try std.fmt.allocPrint(garden, "{s}.zig", .{rye_path});
 
-    const source = dir.readFileAlloc(io, rye_path, garden, .unlimited) catch |err| {
-        std.debug.print("rye {s}: could not read '{s}': {s}\n", .{ label, rye_path, @errorName(err) });
-        return 1;
-    };
-    dir.writeFile(io, .{ .sub_path = bridge_path, .data = source }) catch |err| {
-        std.debug.print("rye {s}: could not stage '{s}': {s}\n", .{ label, bridge_path, @errorName(err) });
-        return 1;
-    };
-    defer dir.deleteFile(io, bridge_path) catch {};
+    // Bridge the root `.rye` file and every local `@import("*.rye")` dependency to
+    // ephemeral `.zig` files the toolchain can read, then clear them all away.
+    var staged_rye = std.ArrayListUnmanaged([]const u8).empty;
+    defer staged_rye.deinit(garden);
+    var bridge_zigs = std.ArrayListUnmanaged([]const u8).empty;
+    defer {
+        for (bridge_zigs.items) |path| dir.deleteFile(io, path) catch {};
+        for (bridge_zigs.items) |p| garden.free(p);
+        bridge_zigs.deinit(garden);
+    }
+    defer {
+        for (staged_rye.items) |p| garden.free(p);
+    }
+    const bridge_path = try bridgeRyeTree(io, dir, rye_path, true, &staged_rye, &bridge_zigs, garden, label);
 
     // Resolve the toolchain explicitly: an absolute RYE_ZIG, else `zig` on PATH.
     const zig = init.environ_map.get("RYE_ZIG") orelse "zig";
@@ -234,4 +235,117 @@ fn resolveRyeLib(init: std.process.Init, garden: std.mem.Allocator) ![]const u8 
     const bin_dir = std.fs.path.dirname(exe_path) orelse return error.NoExecutableDirectory;
     // Apply the relative template against the binary's own directory.
     return std.fmt.allocPrint(garden, "{s}/{s}", .{ bin_dir, rye_lib_relative_to_exe });
+}
+
+/// Ephemeral bridge path for a `.rye` source. The root file keeps the historical
+/// `{path}.rye.zig` shape; local imports bridge to `{basename}.zig` beside the source.
+fn bridgeZigPath(rye_path: []const u8, is_root: bool, garden: std.mem.Allocator) ![]const u8 {
+    if (is_root) return std.fmt.allocPrint(garden, "{s}.zig", .{rye_path});
+    if (!std.mem.endsWith(u8, rye_path, ".rye")) return error.NotRyeFile;
+    return std.fmt.allocPrint(garden, "{s}.zig", .{rye_path[0 .. rye_path.len - ".rye".len]});
+}
+
+/// Rewrite `@import("foo.rye")` to `@import("foo.zig")` for the toolchain bridge.
+fn rewriteRyeImports(source: []const u8, garden: std.mem.Allocator) ![]u8 {
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(garden);
+
+    var i: usize = 0;
+    while (i < source.len) {
+        if (std.mem.startsWith(u8, source[i..], "@import(\"")) {
+            const marker_start = i;
+            i += "@import(\"".len;
+            const import_start = i;
+            while (i < source.len and source[i] != '"') : (i += 1) {}
+            const import_path = source[import_start..i];
+            try out.appendSlice(garden, source[marker_start..import_start]);
+            if (std.mem.endsWith(u8, import_path, ".rye")) {
+                try out.appendSlice(garden, import_path[0 .. import_path.len - ".rye".len]);
+                try out.appendSlice(garden, ".zig");
+            } else {
+                try out.appendSlice(garden, import_path);
+            }
+            if (i < source.len) {
+                try out.append(garden, source[i]);
+                i += 1;
+            }
+        } else {
+            try out.append(garden, source[i]);
+            i += 1;
+        }
+    }
+    return try out.toOwnedSlice(garden);
+}
+
+fn bridgeAlreadyStaged(staged_rye: *const std.ArrayListUnmanaged([]const u8), rye_path: []const u8) bool {
+    for (staged_rye.items) |path| {
+        if (std.mem.eql(u8, path, rye_path)) return true;
+    }
+    return false;
+}
+
+/// Bridge `rye_path` and every local `.rye` module it imports, recursively.
+fn bridgeRyeTree(
+    io: std.Io,
+    dir: std.Io.Dir,
+    rye_path: []const u8,
+    is_root: bool,
+    staged_rye: *std.ArrayListUnmanaged([]const u8),
+    bridge_zigs: *std.ArrayListUnmanaged([]const u8),
+    garden: std.mem.Allocator,
+    label: []const u8,
+) ![]const u8 {
+    if (bridgeAlreadyStaged(staged_rye, rye_path)) {
+        return bridgeZigPath(rye_path, is_root, garden);
+    }
+
+    const source = dir.readFileAlloc(io, rye_path, garden, .unlimited) catch |err| {
+        std.debug.print("rye {s}: could not read '{s}': {s}\n", .{ label, rye_path, @errorName(err) });
+        return err;
+    };
+
+    var import_paths = std.ArrayListUnmanaged([]const u8).empty;
+    defer {
+        for (import_paths.items) |p| garden.free(p);
+        import_paths.deinit(garden);
+    }
+
+    var scan: usize = 0;
+    while (scan < source.len) {
+        if (std.mem.startsWith(u8, source[scan..], "@import(\"")) {
+            scan += "@import(\"".len;
+            const import_start = scan;
+            while (scan < source.len and source[scan] != '"') : (scan += 1) {}
+            const import_path = source[import_start..scan];
+            if (std.mem.endsWith(u8, import_path, ".rye")) {
+                const base_dir = std.fs.path.dirname(rye_path) orelse ".";
+                const resolved = std.fs.path.resolve(garden, &.{ base_dir, import_path }) catch |err| {
+                    std.debug.print("rye {s}: could not resolve import '{s}' from '{s}': {s}\n", .{
+                        label, import_path, rye_path, @errorName(err),
+                    });
+                    return err;
+                };
+                try import_paths.append(garden, resolved);
+            }
+            if (scan < source.len) scan += 1;
+        } else {
+            scan += 1;
+        }
+    }
+
+    for (import_paths.items) |dep_rye| {
+        _ = try bridgeRyeTree(io, dir, dep_rye, false, staged_rye, bridge_zigs, garden, label);
+    }
+
+    const bridged_source = try rewriteRyeImports(source, garden);
+    const zig_path = try bridgeZigPath(rye_path, is_root, garden);
+    dir.writeFile(io, .{ .sub_path = zig_path, .data = bridged_source }) catch |err| {
+        std.debug.print("rye {s}: could not stage '{s}': {s}\n", .{ label, zig_path, @errorName(err) });
+        return err;
+    };
+
+    try staged_rye.append(garden, try garden.dupe(u8, rye_path));
+    try bridge_zigs.append(garden, try garden.dupe(u8, zig_path));
+
+    return zig_path;
 }
