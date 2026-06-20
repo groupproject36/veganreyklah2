@@ -22,11 +22,13 @@
 | **2** | **Strengthening series** — next `std` surface through gate trio | `9999_STRENGTHENING`, `9988`+ | Corpus stays 16/16 GREEN; new `9987_*` log written |
 | **3** | **Rishi builtins** — as gates and Pond policy need them | `10017`, `rishi/README` | One family + one `.rish` test per run |
 | **4** | **TAME assertion backlog** — fix as code is touched | audit list | Assertions land beside code we edit |
+| **5** | **Explicit-width migration** — `usize` → `u32`/`u64` in authored `.rye` | `10024`, `992` | One module migrated; parity green |
 
 **After main track holds green:**
 
 | Thread | Anchor |
 |--------|--------|
+| Explicit-width migration (`usize` audit) | `10024`, `992` |
 | Comlink virtio-net device wire | `10016` |
 | Caravan capability table | `984` step 5 |
 | Tablecloth v1 store seed | `10022` (deferred until 1–3 stay green) |

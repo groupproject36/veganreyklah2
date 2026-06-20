@@ -29,7 +29,12 @@
 
 const std = @import("std");
 
-const tally_gardens_version = "20260619.212312";
+const tally_gardens_version = "20260620.211712";
+
+fn bufLenU32(buf: []const u8) u32 {
+    std.debug.assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
 
 // =========================================================================
 // § Region — the bounded garden (from tally/seed.rye, inline for rye build)
@@ -39,33 +44,37 @@ const tally_gardens_version = "20260619.212312";
 /// Invariant: pos <= buf.len — asserted at every mutation.
 pub const Region = struct {
     buf: []u8,
-    pos: usize,
+    pos: u32,
 
     pub fn init(buf: []u8) Region {
         const r = Region{ .buf = buf, .pos = 0 };
-        std.debug.assert(r.pos <= r.buf.len);
+        std.debug.assert(r.pos <= bufLenU32(r.buf));
         return r;
     }
 
     /// Bump-allocate n bytes. Fails with OutOfBounds past the edge.
-    pub fn alloc(self: *Region, n: usize) error{OutOfBounds}![]u8 {
-        std.debug.assert(self.pos <= self.buf.len);
-        if (n > self.buf.len - self.pos) return error.OutOfBounds;
-        const slice = self.buf[self.pos .. self.pos + n];
+    pub fn alloc(self: *Region, n: u32) error{OutOfBounds}![]u8 {
+        const cap = bufLenU32(self.buf);
+        std.debug.assert(self.pos <= cap);
+        if (n > cap - self.pos) return error.OutOfBounds;
+        const start: usize = @intCast(self.pos);
+        const end: usize = @intCast(self.pos + n);
+        std.debug.assert(end <= self.buf.len);
+        const slice = self.buf[start..end];
         self.pos += n;
-        std.debug.assert(self.pos <= self.buf.len);
+        std.debug.assert(self.pos <= cap);
         return slice;
     }
 
     /// Clear whole — the season ends; fresh allocations may begin again.
     pub fn clear(self: *Region) void {
         self.pos = 0;
-        std.debug.assert(self.pos <= self.buf.len);
+        std.debug.assert(self.pos <= bufLenU32(self.buf));
     }
 
     /// Bytes remaining before the edge.
-    pub fn remaining(self: *const Region) usize {
-        return self.buf.len - self.pos;
+    pub fn remaining(self: *const Region) u32 {
+        return bufLenU32(self.buf) - self.pos;
     }
 };
 
@@ -74,10 +83,10 @@ pub const Region = struct {
 // =========================================================================
 
 /// Maximum name length for a garden name.
-pub const max_name_len: usize = 32;
+pub const max_name_len: u32 = 32;
 
 /// Maximum number of named gardens in one Gardens instance.
-pub const max_gardens: usize = 8;
+pub const max_gardens: u32 = 8;
 
 /// A single named entry in a Gardens.
 const NamedRegion = struct {
@@ -95,27 +104,27 @@ const NamedRegion = struct {
 ///   every region: region.pos <= region.buf.len
 pub const Gardens = struct {
     entries: [max_gardens]NamedRegion,
-    count:   usize,
+    count: u32,
 
     /// An empty Gardens — no regions yet.
     pub fn init() Gardens {
         return .{
             .entries = undefined,
-            .count   = 0,
+            .count = 0,
         };
     }
 
     /// Register a named Region over `buf`. The name must be non-empty,
     /// within max_name_len, and not already present.
     pub fn add(self: *Gardens, name: []const u8, buf: []u8) !void {
-        std.debug.assert(name.len > 0);              // every garden has a name
-        std.debug.assert(name.len <= max_name_len);  // name fits declared limit
-        std.debug.assert(self.count < max_gardens);  // room to add
-        // Precondition: no duplicate names.
-        for (self.entries[0..self.count]) |e| {
+        std.debug.assert(name.len > 0);
+        std.debug.assert(name.len <= max_name_len);
+        std.debug.assert(self.count < max_gardens);
+        const n: usize = @intCast(self.count);
+        for (self.entries[0..n]) |e| {
             std.debug.assert(!std.mem.eql(u8, e.name, name));
         }
-        self.entries[self.count] = .{ .name = name, .region = Region.init(buf) };
+        self.entries[n] = .{ .name = name, .region = Region.init(buf) };
         self.count += 1;
         std.debug.assert(self.count <= max_gardens);
     }
@@ -124,7 +133,8 @@ pub const Gardens = struct {
     /// caller can alloc from it, or null if no such garden exists.
     pub fn get(self: *Gardens, name: []const u8) ?*Region {
         std.debug.assert(name.len > 0);
-        for (self.entries[0..self.count]) |*e| {
+        const n: usize = @intCast(self.count);
+        for (self.entries[0..n]) |*e| {
             if (std.mem.eql(u8, e.name, name)) return &e.region;
         }
         return null;
@@ -135,7 +145,8 @@ pub const Gardens = struct {
     /// is always a mistake).
     pub fn clearOne(self: *Gardens, name: []const u8) void {
         std.debug.assert(name.len > 0);
-        for (self.entries[0..self.count]) |*e| {
+        const n: usize = @intCast(self.count);
+        for (self.entries[0..n]) |*e| {
             if (std.mem.eql(u8, e.name, name)) {
                 e.region.clear();
                 return;
@@ -146,19 +157,20 @@ pub const Gardens = struct {
 
     /// Clear all gardens at once — the whole season ends.
     pub fn clearAll(self: *Gardens) void {
-        for (self.entries[0..self.count]) |*e| {
+        const n: usize = @intCast(self.count);
+        for (self.entries[0..n]) |*e| {
             e.region.clear();
         }
-        // Postcondition: every region is at position zero.
-        for (self.entries[0..self.count]) |e| {
+        for (self.entries[0..n]) |e| {
             std.debug.assert(e.region.pos == 0);
         }
     }
 
     /// Total bytes remaining across all gardens.
-    pub fn totalRemaining(self: *const Gardens) usize {
-        var total: usize = 0;
-        for (self.entries[0..self.count]) |e| {
+    pub fn totalRemaining(self: *const Gardens) u32 {
+        var total: u32 = 0;
+        const n: usize = @intCast(self.count);
+        for (self.entries[0..n]) |e| {
             total += e.region.remaining();
         }
         return total;
@@ -235,7 +247,7 @@ pub fn main() void {
     std.debug.assert(d.ptr == @as([*]u8, @ptrCast(&blob_buf[0]))); // same backing memory
 
     // --- Invariants hold across all entries at rest ----------------------
-    for (g.entries[0..g.count]) |e| {
+    for (g.entries[0..@intCast(g.count)]) |e| {
         std.debug.assert(e.name.len > 0);
         std.debug.assert(e.name.len <= max_name_len);
         std.debug.assert(e.region.pos <= e.region.buf.len);

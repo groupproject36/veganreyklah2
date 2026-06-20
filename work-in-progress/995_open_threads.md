@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `210412`: pass 9932 mem tokenize factories; 71 witnesses.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `211712`: explicit-width policy in rules + Tally Phase 1 (`seed`, `gardens`); strengthening at 9932 / 71 witnesses.*
 
 **Language:** EN
-**Version:** `20260620.210412` (Rye chronological stamp)
+**Version:** `20260620.211712` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,6 +12,8 @@
 
 ## What Just Landed (this session)
 
+- **Explicit-width Phase 1 (`211712`).** `tally/seed.rye` + `tally/gardens.rye`: `Region.pos`, `alloc`, `remaining`, `Gardens.count` → `u32`; `bufLenU32` at slice seam. Rules in `.cursor`, `.claude`, `context/specs/tame-style.md`.
+- **Explicit-width audit (`210812`).** TAME supplement corrected — `u32`/`u64` in authored APIs, `usize` boundary-only. Charter `10024`; baseline `992`.
 - **Strengthening pass 9932 (`210412`).** `tokenizeScalar` / `tokenizeAny` / `tokenizeSequence` factory postconditions; witness `mem_tokenize_factory_test`; 71/71 witnesses GREEN.
 - **Strengthening pass 9933 (`205912`).** `splitBackwardsScalar` / `splitBackwardsAny` / `splitBackwardsSequence` factory postconditions; witness `mem_split_backwards_factory_test`; 70/70 witnesses GREEN.
 - **Strengthening pass 9934 (`205212`).** `splitScalar` / `splitAny` / `splitSequence` factory postconditions; witness `mem_split_factory_test`; 69/69 witnesses GREEN.
@@ -106,14 +108,27 @@
 
 ## Threads Still Open
 
+**Recommended build braid** *(oriented `211712`)* — two parallel strands, one green step per session:
+
+| When | Strand | Next step |
+|------|--------|-----------|
+| **`k <stamp>`** | **Strengthening** | Next `std` surface (`9931` and below) through `parity.rish` |
+| **Between `k` runs** | **Explicit width** | Phase 1 queue: ~~`tally/seed`~~ ~~`tally/gardens`~~ → `caravan/*` → `brushstroke/skate_grid.rye` |
+| **Metal pause** | **Aurora smoke** | `aurora/run.sh` in CI (`10024` Phase 2 after Caravan/Skate) |
+
+Width and strengthening **do not block each other** — they touch different files. Prefer **one width module** when not on a `k` strengthening pass.
+
 **Main track — Rye · Rishi · strengthening:** `expanding-prompts/10023_main_track_rye_rishi_strengthening.md` (`044412`). Run this for the current build order; `10010` is a reserved stub only.
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
 | 1 | **Strengthening series** — next `std` surface through gate trio (9931 and below) | `10023` Track B, `998` |
-| 2 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
-| 3 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
-| 4 | **Aurora metal lane** — std surfaces on the freestanding crypto path (see below) | `991`, `9995`, `998` |
+| 2 | **Explicit-width migration** — `usize` → `u32`/`u64` in authored `.rye` (parallel, one module per session) | `10024`, `992` |
+| 3 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
+| 4 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
+| 5 | **Aurora metal lane** — freestanding integration smoke | `991`, `aurora/run.sh` |
+
+**Explicit-width migration** *(opened `210812`, Phase 1 underway `211712`)* — Tiger Style asks for explicitly sized types. **Policy:** `u32` bounded in-memory, `u64` wire-persistent, `usize` only at slice seams. **Done:** `tally/seed.rye`, `tally/gardens.rye`. **Next:** `caravan/seed.rye` → `bounded` → `twin` → `chain`. Charter `10024`; inventory `992`.
 
 **Aurora metal lane** *(opened `200312`)* — parallel to the main mem/string arc, not a fork of it. Aurora's freestanding stages (`aurora/src/*.rye`, `riscv64-freestanding-none`) lean on **crypto** and a thin **mem** slice, not `std.os` or hosted I/O.
 

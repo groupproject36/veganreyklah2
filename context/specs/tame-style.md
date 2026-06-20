@@ -7,7 +7,7 @@ type: reference
 # TAME Style — A Code Guide
 
 **Language:** EN
-**Last updated:** 2026-06-20
+**Last updated:** 2026-06-20 (`210812` — explicit-width policy; `usize` demoted to boundary-only)
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Active — grow by supplement, earned when the language is ready
 
@@ -77,7 +77,35 @@ Rye carries the family. The safety Rye offers is the safety every module written
 
 ### Typed and sized
 
-Use explicitly sized integer types: `u8`, `u16`, `u32`, `u64`, `i8`, `i16`, `i32`, `i64`, `usize`. Use `f32` or `f64` for floating-point. Never use `c_int`, `c_uint`, or `anyopaque` without a stated, commented reason. Array indices and lengths are `usize`.
+Use explicitly sized integer types: `u8`, `u16`, `u32`, `u64`, `i8`, `i16`, `i32`, `i64`. Use `f32` or `f64` for floating-point. Never use `c_int`, `c_uint`, or `anyopaque` without a stated, commented reason.
+
+**`usize` is a boundary type, not a design type.** Tiger Style asks us to set aside architecture-specific widths so behavior stays exact across targets — especially RISC-V (`riscv64`) and hosted x86_64. Our inherited Zig `std` still speaks `usize` at slice and pointer edges; we honor that at the seam and convert explicitly everywhere we own the contract.
+
+| Width | Role in authored Rye |
+|-------|----------------------|
+| **`u32`** | In-memory counts, indices, and lengths **bounded by a named constant** (garden capacity, grid dimension, stack depth, frame size). Default width for “how many in this region.” |
+| **`u64`** | Wire-persistent sizes, timestamps, content offsets, and any quantity that must mean the same thing on every target without relying on `usize` width. |
+| **`usize`** | **Only** at the immediate Zig slice boundary: `buf.len`, indexing a `[]T` you do not own, or calling inherited `std` APIs that require `usize`. Convert in with `@intCast` and a narrow assert; convert out before the value crosses a module we authored. |
+
+Do **not** store `usize` in struct fields, function parameters, or return types we publish. Name the bound when you pick `u32`:
+
+```zig
+const MAX_FRAME_BYTES: u32 = 4096;
+pos: u32, // invariant: pos <= MAX_FRAME_BYTES
+```
+
+Full audit charter and phased migration: `expanding-prompts/10024_explicit_width_audit.md`, baseline `work-in-progress/992_usize_width_baseline.md`.
+
+**At the slice seam**, convert explicitly:
+
+```zig
+std.debug.assert(buf.len <= std.math.maxInt(u32));
+const cap: u32 = @intCast(buf.len);
+// ... arithmetic in u32 ...
+const start: usize = @intCast(self.pos);
+std.debug.assert(start <= buf.len);
+return buf[start .. start + @as(usize, @intCast(n))];
+```
 
 ### Assertions as first-class design
 
@@ -110,8 +138,8 @@ Parameters: declare the tightest type you can. Prefer slices over pointers when 
 No magic numbers inline. Name constants with their type:
 
 ```zig
-const MAX_DEPTH: usize = 1024;     // chain length above which we stop and warn
-const DIGEST_HEX_LEN: usize = 64;  // SHA3-256 digest rendered as hex
+const MAX_DEPTH: u32 = 1024;     // chain length above which we stop and warn
+const DIGEST_HEX_LEN: u32 = 64;  // SHA3-256 digest rendered as hex
 ```
 
 Constants are `lowerCamelCase` in Rye (matching Zig convention). The comment names why the bound exists, not just what it is.
@@ -125,7 +153,7 @@ The comment block immediately before a struct declaration states what must hold 
 // Invariant: every byte in buf[0..pos] was written by this Region's put call.
 const Region = struct {
     buf: []u8,
-    pos: usize,
+    pos: u32,
 };
 ```
 

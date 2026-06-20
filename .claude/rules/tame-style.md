@@ -21,9 +21,23 @@ Full guide: `context/specs/tame-style.md`. Apply when writing or reviewing Rye s
 
 | Language | Key discipline |
 |----------|----------------|
-| **Rye** | Explicitly sized types (`u8`, `u32`, `usize`). `std.debug.assert` at every invariant. Named errors, propagated with `try`. Short functions named with a verb. Constants named with type and comment. **Never use `ArenaAllocator` in authored `.rye`** — use `init.garden.allocator()`; see `inherited-names.md`. |
+| **Rye** | Explicit widths (`u32` bounded, `u64` wire); `usize` only at inherited slice boundaries. `std.debug.assert` at every invariant. Named errors, propagated with `try`. Short functions named with a verb. Constants named with type and comment. **Never use `ArenaAllocator` in authored `.rye`** — use `init.garden.allocator()`; see `inherited-names.md`. |
 | **Brix** | Declarative only — no commands, no conditions. One field per line. Comments name what the brick *is*. Plain key-value; readable by hand. |
 | **Rishi** | `run` always returns `{ status, out, err }`. Check `status` before trusting `out`. `assert` as a pipeline gate at every stage boundary. Effects come last and are visible. Named `let` bindings. |
+
+## Explicit widths (Rye only)
+
+Tiger Style: **`usize` is a boundary type, not a design type.** Inherited Zig `std` still uses `usize` at slice edges — convert explicitly at our API boundary.
+
+| Width | Use |
+|-------|-----|
+| `u32` | Bounded in-memory counts, indices, lengths (named `MAX_*`) |
+| `u64` | Wire offsets, timestamps, cross-target persistent sizes |
+| `usize` | Only at `buf.len`, slice indexing, inherited `std` calls — always with `@intCast` + assert |
+
+- **Never** `usize` in struct fields, public parameters, or return types we publish.
+- Pair every narrow cast: `assert(buf.len <= std.math.maxInt(u32))` before `@intCast`.
+- Charter: `expanding-prompts/10024_explicit_width_audit.md`; inventory: `work-in-progress/992_usize_width_baseline.md`.
 
 ## Garden memory (Rye only)
 

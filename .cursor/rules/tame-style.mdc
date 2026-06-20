@@ -12,6 +12,17 @@ Full guide: `context/specs/tame-style.md`. Apply when writing or reviewing Rye (
 
 - State invariants **before** implementing; `// invariant:` on every `assert`.
 - Bounds on everything; named errors; accrete never break; one value model.
+- **Explicit widths** — `u32` / `u64` in authored APIs; `usize` only at inherited slice boundaries (`context/specs/tame-style.md`, `10024`).
+
+## Explicit widths (authored Rye)
+
+Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full table in `context/specs/tame-style.md`.
+
+- **`u32`** — in-memory counts, indices, lengths bounded by a named constant (`MAX_*`, garden capacity, grid cols).
+- **`u64`** — wire-persistent offsets, timestamps, cross-target sizes.
+- **`usize`** — **only** at inherited slice edges (`buf.len`, `[]T` indexing, `std` APIs). Pair every `@intCast` with `assert(value <= std.math.maxInt(Target))`.
+- **Never** `usize` in struct fields, public params, or return types we publish.
+- Charter: `expanding-prompts/10024_explicit_width_audit.md`; inventory: `work-in-progress/992_usize_width_baseline.md`.
 
 ## Garden memory (authored Rye)
 

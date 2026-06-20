@@ -40,6 +40,7 @@ These are the simple systems that run today. Everything ahead grows from them.
 - **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of`; gate trio 71/71 GREEN.
 - **Skate text grid** — monospace 8×8 glyphs on Brushstroke Wayland seed; headless selftest green (`10023` Track A).
 - **Strengthening passes 9979–9932** — `trimStart` … mem tokenize factories. Each through the gate; witness count 17 → 71.
+- **Explicit-width policy** — TAME supplement aligned with Tiger Style (`210812`); baseline `992`; charter `10024`.
 - **Garden memory policy** — authored `.rye` uses `init.garden.allocator()`, never `ArenaAllocator`; no std `GardenAllocator` rename; owned wrapper at `rye.garden` / `tally/heap-garden.rye` when built (`inherited-names.md`, TAME rules).
 
 ---
@@ -72,6 +73,7 @@ Each is a thing that runs on its own, added by degrees, behind the gates.
 - [x] **Strengthening 9979–9932** — everyday `std` surfaces through the gate (`trimStart` … mem tokenize factories; see `strengthening-compiler/9932`–`9987`).
 - [ ] **Device wire (virtio-net)** — two QEMU guests (`10016`).
 - [ ] **Rye chronological version parser** — accrete `std.RyeVersion` beside `SemanticVersion` (`parse` / `format` / `order` for `YYYYMMDD.HHMMSS`); unblocks Caravan capability min-version and Tablecloth policy (`rye-versioning-style.md`, `995`).
+- [ ] **Explicit-width migration** — `usize` → `u32`/`u64` in authored `.rye`; inherited `std` at strengthen touch only (`10024`, `992`; pilot `tally/seed.rye`)
 - [ ] **Continue the strengthening series** — the next `std` surfaces our tools depend on, each through the gate trio, each recorded in the strengthening-compiler stack.
 
 ---
@@ -126,11 +128,14 @@ The far ends. Each is named with the simpler working systems it is composed of, 
 
 **Highest-leverage build threads (ordered):**
 
-1. **Strengthening series** — next `std` surface through the gate trio (`9932` and below; `998`)
-2. **Rishi** — builtins as gates and Pond policy need them (core string/path set landed)
-3. **Comlink virtio-net** — device wire between QEMU guests (`10016`, `993`)
-4. **Caravan capability table** — `984` step 5 (pairs with **RyeVersion** accretion when min-version bounds are needed)
-5. **Tablecloth v1** — after 1–2 stay green (`10022`; Mantra blobs → queryable store)
+1. **Strengthening series** — next `std` surface (`9931` and below; `998`) — invoke with **`k <stamp>`**
+2. **Explicit-width migration** — Phase 1 queue: Caravan family next (`10024`, `992`; Tally **done**)
+3. **Rishi** — builtins as gates need them
+4. **Comlink virtio-net** — device wire (`10016`)
+5. **Caravan capability table** — `984` step 5 + **RyeVersion** when needed
+6. **Tablecloth v1** — after 1–2 stay green (`10022`)
+
+**Braid:** `k` runs strengthening; between them, one width module from the Phase 1 queue. Aurora metal smoke when the main mem arc pauses.
 
 **Aurora metal lane** (`200312`, detail in `995`): freestanding stages ride strengthened **crypto** (including **`timing_safe.eql` `9937`**), **`mem.eql`**, the **prefix/suffix pair** (`9938`–`9939`), and **Keccak/SHAKE `@memcpy` bounds (`9936` + `9935`)**. **Next on metal:** freestanding **integration smoke** (`aurora/run.sh` in CI).
 
@@ -138,15 +143,17 @@ The Pond GUI (`10009`, `986`) composes when Brushstroke + Skate + Mantra + Rishi
 
 ### What to Build Next, and Why
 
-Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, **SemanticVersion** trio, **mem** compare/copy/sentinel arc, **timing_safe.eql (9937)** on the metal path, **Keccak/SHAKE `@memcpy` (9936 + 9935)** on the metal path, mem iterators through **WindowIterator (9954)**, mem.join (9961), cut family (9958–9960), **split factories (9934 + 9933)** — all done. **Strengthening the next `std` surface (9932)** stays the honest next step on the main track; **freestanding smoke** remains on the Aurora metal lane; **RyeVersion** accretion waits beside the capability table.
+Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, **SemanticVersion** trio, **mem** compare/copy/sentinel arc, **timing_safe.eql (9937)** on the metal path, **Keccak/SHAKE `@memcpy` (9936 + 9935)** on the metal path, mem iterators through **WindowIterator (9954)**, mem.join (9961), cut family (9958–9960), **split factories (9934 + 9933)**, **tokenize factories (9932)**, **Tally explicit widths (`211712`)** — done. **Strengthening (`9931`)** via `k`; **width Phase 1** continues Caravan → Skate between `k` runs. **Freestanding smoke** on Aurora metal lane; **RyeVersion** beside capability table.
 
 ---
 
 ## The Steps Just Taken
 
-Strengthening through **9932**, Aurora metal lane Keccak/SHAKE memcpy bounds complete, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, witnesses vocabulary, style audit shipped.
+Strengthening through **9932**, explicit-width policy in TAME + rules, **Tally Phase 1** (`seed` + `gardens`) migrated to `u32`, parity 71/71 green.
 
-**Strengthening passes 9979–9932** (`143312`–`210412`): `trimStart` … mem tokenize factories. Witness count 17 → 71, all green.
+**Explicit-width (`210812`–`211712`)** — policy, charter `10024`, baseline `992`, Tally `Region` + `Gardens` on `u32`.
+
+**Strengthening passes 9979–9932** (`143312`–`210412`): witness count 17 → 71, all green.
 
 **Version parser thread (`173212`–`174312`)** — documented in `995` Near build: accrete `std.RyeVersion` beside `SemanticVersion` when capability table or Tablecloth needs programmatic bounds; lexicographic compare on fixed-width stamps suffices until then.
 
