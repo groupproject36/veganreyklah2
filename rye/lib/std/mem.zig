@@ -261,6 +261,13 @@ pub fn copyBackwards(comptime T: type, dest: []T, source: []const T) void {
         i -= 1;
         dest[i] = source[i];
     }
+    // Postcondition: when regions do not overlap, copied prefix matches source.
+    const source_addr = @intFromPtr(source.ptr);
+    const dest_addr = @intFromPtr(dest.ptr);
+    const sources_end = source_addr + source.len * @sizeOf(T);
+    const dests_end = dest_addr + dest.len * @sizeOf(T);
+    const non_overlapping = source.len == 0 or dest_addr >= sources_end or dests_end <= source_addr;
+    if (non_overlapping) assert(eql(T, dest[0..source.len], source));
 }
 
 /// Generally, Zig users are encouraged to explicitly initialize all fields of a struct explicitly rather than using this function.
