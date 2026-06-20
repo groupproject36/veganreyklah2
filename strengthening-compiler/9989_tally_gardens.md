@@ -62,4 +62,4 @@ no two gardens share a name     (asserted at add)
 
 - **Mantra for the repo** — `blob`, `diff`, and `frame` gardens now have names; Mantra's memory floor is declared. The next pass grows Mantra from seed to multi-file weave.
 - **Silo minimum** — `.silo` project descriptor at the repo root; Mantra reads it at startup to know which paths to walk.
-- **`tally/arena.rye`** — a future pass: stack Gardens → heap Garden, backed by `std.heap.ArenaAllocator`. The same season model, one level up.
+- **`tally/heap-garden.rye`** — a future pass: stack Gardens → heap Garden, backed by `std.heap.ArenaAllocator`. The same season model, one level up.

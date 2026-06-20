@@ -127,13 +127,13 @@ fn mode(comptime x: comptime_int) comptime_int {
 
 pub fn main(init: std.process.Init) !void {
     const io = init.io;
-    const arena = init.garden.allocator();
+    const garden = init.garden.allocator();
 
     var stdout_buffer: [0x100]u8 = undefined;
     var stdout_writer = Io.File.stdout().writer(io, &stdout_buffer);
     const stdout = &stdout_writer.interface;
 
-    const args = try init.minimal.args.toSlice(arena);
+    const args = try init.minimal.args.toSlice(garden);
 
     var filter: ?[]const u8 = null;
     var count: usize = mode(128 * MiB);

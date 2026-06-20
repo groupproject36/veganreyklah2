@@ -29,6 +29,7 @@
 !/aurora/
 !/tally/
 !/caravan/
+!/brushstroke/
 !/mantra/
 !/expanding-prompts/
 !/session-logs/
@@ -45,6 +46,8 @@
 /rye/bin/
 /rishi/bin/
 /tally/bin/
+/caravan/bin/
+/brushstroke/bin/
 /mantra/bin/
 /aurora/.build/
 *.rye.zig

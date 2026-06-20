@@ -110,8 +110,8 @@ const Env = struct {
 };
 
 pub fn main(init: std.process.Init) !u8 {
-    const arena = init.garden.allocator();
-    const args = try init.minimal.args.toSlice(arena);
+    const garden = init.garden.allocator();
+    const args = try init.minimal.args.toSlice(garden);
     if (args.len < 2) {
         printUsage();
         return 0;
@@ -145,7 +145,7 @@ fn printUsage() void {
 }
 
 fn runFile(init: std.process.Init, args: []const [:0]const u8) !u8 {
-    const arena = init.garden.allocator();
+    const garden = init.garden.allocator();
     const io = init.io;
 
     if (args.len < 3) {
@@ -161,12 +161,12 @@ fn runFile(init: std.process.Init, args: []const [:0]const u8) !u8 {
     }
 
     const dir = std.Io.Dir.cwd();
-    const source = dir.readFileAlloc(io, path, arena, .unlimited) catch |err| {
+    const source = dir.readFileAlloc(io, path, garden, .unlimited) catch |err| {
         std.debug.print("rishi run: could not read '{s}': {s}\n", .{ path, @errorName(err) });
         return 1;
     };
 
-    return interpret(arena, io, source);
+    return interpret(garden, io, source);
 }
 
 /// Run a Rishi script, line by line. Returns 0 when the whole script runs, or 1

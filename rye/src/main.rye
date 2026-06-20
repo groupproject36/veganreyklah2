@@ -76,10 +76,10 @@ comptime {
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    // Allocate from the process arena — a single garden the runtime clears whole
-    // on exit. A short-lived command needs no finer bookkeeping than that.
-    const arena = init.garden.allocator();
-    const args = try init.minimal.args.toSlice(arena);
+    // Allocate from the process garden — cleared whole on exit by the runtime.
+    // A short-lived command needs no finer bookkeeping than that.
+    const garden = init.garden.allocator();
+    const args = try init.minimal.args.toSlice(garden);
     if (args.len < 2) {
         printUsage();
         return 0;
@@ -134,7 +134,7 @@ fn bridgeToZig(
     zig_subcommand: []const u8,
     label: []const u8,
 ) !u8 {
-    const arena = init.garden.allocator();
+    const garden = init.garden.allocator();
     const io = init.io;
 
     if (args.len < 3) {
@@ -153,9 +153,9 @@ fn bridgeToZig(
     // copy the `.rye` source to an adjacent `.zig` file, hand that to the
     // compiler, then clear the bridge away so the tree stays tidy.
     const dir = std.Io.Dir.cwd();
-    const bridge_path = try std.fmt.allocPrint(arena, "{s}.zig", .{rye_path});
+    const bridge_path = try std.fmt.allocPrint(garden, "{s}.zig", .{rye_path});
 
-    const source = dir.readFileAlloc(io, rye_path, arena, .unlimited) catch |err| {
+    const source = dir.readFileAlloc(io, rye_path, garden, .unlimited) catch |err| {
         std.debug.print("rye {s}: could not read '{s}': {s}\n", .{ label, rye_path, @errorName(err) });
         return 1;
     };
@@ -171,7 +171,7 @@ fn bridgeToZig(
     // Resolve Rye's own standard library, so `@import("std")` means *our* std.
     // Rye insists on its own std and never falls back to the toolchain's
     // silently: a build that succeeds is a build that used our standard library.
-    const rye_lib = resolveRyeLib(init, arena) catch |err| {
+    const rye_lib = resolveRyeLib(init, garden) catch |err| {
         std.debug.print(
             "rye {s}: could not locate Rye's standard library ({s}). It should sit beside this binary at '{s}', or set RYE_LIB to point at rye/lib.\n",
             .{ label, @errorName(err), rye_lib_relative_to_exe },
@@ -181,7 +181,7 @@ fn bridgeToZig(
 
     // Confirm our std is truly present at that path before we lean on it. This
     // is the assurance that we load our own library, never the backend's.
-    const std_root = try std.fmt.allocPrint(arena, "{s}/std/std.zig", .{rye_lib});
+    const std_root = try std.fmt.allocPrint(garden, "{s}/std/std.zig", .{rye_lib});
     dir.access(io, std_root, .{}) catch |err| {
         std.debug.print(
             "rye {s}: Rye's standard library is missing at '{s}' ({s}). Expected our std at '{s}'.\n",
@@ -195,7 +195,7 @@ fn bridgeToZig(
     // a build choose its target, code model, linker script, and output path — the
     // levers Aurora's freestanding RISC-V seed leans on.
     const extra: []const [:0]const u8 = if (args.len > 3) args[3..] else &.{};
-    const argv = try arena.alloc([]const u8, 5 + extra.len);
+    const argv = try garden.alloc([]const u8, 5 + extra.len);
     argv[0] = zig;
     argv[1] = zig_subcommand;
     argv[2] = bridge_path;
@@ -222,7 +222,7 @@ fn bridgeToZig(
 /// that, we read this executable's own path and apply the relative template
 /// beside it — `<exe_dir>/../lib`, the layout the `rye` tree ships in. We
 /// return an error rather than a fallback, so the caller can insist on our std.
-fn resolveRyeLib(init: std.process.Init, arena: std.mem.Allocator) ![]const u8 {
+fn resolveRyeLib(init: std.process.Init, garden: std.mem.Allocator) ![]const u8 {
     // An explicit RYE_LIB wins, for clarity and for hosts without `/proc`.
     if (init.environ_map.get("RYE_LIB")) |path| return path;
 
@@ -233,5 +233,5 @@ fn resolveRyeLib(init: std.process.Init, arena: std.mem.Allocator) ![]const u8 {
     const exe_path = buf[0..len];
     const bin_dir = std.fs.path.dirname(exe_path) orelse return error.NoExecutableDirectory;
     // Apply the relative template against the binary's own directory.
-    return std.fmt.allocPrint(arena, "{s}/{s}", .{ bin_dir, rye_lib_relative_to_exe });
+    return std.fmt.allocPrint(garden, "{s}/{s}", .{ bin_dir, rye_lib_relative_to_exe });
 }

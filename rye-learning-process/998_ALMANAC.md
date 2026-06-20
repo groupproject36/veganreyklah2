@@ -56,7 +56,7 @@ Zig 0.16.0 changed how a program begins, and the change is a gift to clarity. A 
 
 - `init.minimal.args` — the command-line arguments.
 - `init.minimal.environ` — the environment.
-- `init.arena` — a process-wide arena allocator, cleared automatically on exit.
+- `init.garden` — the process season allocator (`*std.heap.ArenaAllocator`), cleared automatically on exit.
 - `init.gpa` — a general-purpose allocator for finer-grained, freed-as-you-go work.
 - `init.io` — the I/O implementation, threaded explicitly through every operation that touches the outside world.
 - `init.environ_map` — the environment parsed into a lookup map.
@@ -112,7 +112,7 @@ A small kindness in the defaults: the child's standard input, output, and error 
 
 The first run of the `rye` command worked and printed the right answer — and the debug allocator then reported several leaks. The lesson was clean and on-theme. We had allocated from `init.gpa`, the leak-checking general allocator, and never freed, so it rightly complained.
 
-The fix is the region model we already cherish, here named Tally in our designs: allocate a short-lived command's memory from `init.arena.allocator()`. The arena is one garden, cleared whole by the runtime on exit, so there is nothing to track and nothing to leak. Switching the command's allocations to the arena turned a noisy run into a silent, clean one. The guidance settles simply: for whole-command, live-until-exit allocations, reach for the arena; reserve the freed-as-you-go allocator for memory with a shorter, finer lifetime.
+The fix is the region model we already cherish, here named Tally in our designs: allocate a short-lived command's memory from `init.garden.allocator()`. The garden clears whole when the runtime exits, so there is nothing to track and nothing to leak. Switching the command's allocations to the garden turned a noisy run into a silent, clean one. The guidance settles simply: for whole-command, live-until-exit allocations, reach for `init.garden`; reserve the freed-as-you-go allocator for memory with a shorter, finer lifetime.
 
 ---
 

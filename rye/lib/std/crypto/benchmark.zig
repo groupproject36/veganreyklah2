@@ -498,14 +498,14 @@ fn mode(comptime x: comptime_int) comptime_int {
 
 pub fn main(init: std.process.Init) !void {
     const io = init.io;
-    const arena = init.garden.allocator();
+    const garden = init.garden.allocator();
 
     // Size of buffer is about size of printed message.
     var stdout_buffer: [0x100]u8 = undefined;
     var stdout_writer = Io.File.stdout().writer(io, &stdout_buffer);
     const stdout = &stdout_writer.interface;
 
-    const args = try init.minimal.args.toSlice(arena);
+    const args = try init.minimal.args.toSlice(garden);
 
     var filter: ?[]const u8 = null;
 
@@ -551,7 +551,7 @@ pub fn main(init: std.process.Init) !void {
 
     inline for (parallel_hashes) |H| {
         if (filter == null or std.mem.find(u8, H.name, filter.?) != null) {
-            const throughput = try benchmarkHashParallel(H.ty, mode(128 * MiB), arena, io);
+            const throughput = try benchmarkHashParallel(H.ty, mode(128 * MiB), garden, io);
             try stdout.print("{s:>17}: {:10} MiB/s\n", .{ H.name, throughput / (1 * MiB) });
             try stdout.flush();
         }
@@ -623,7 +623,7 @@ pub fn main(init: std.process.Init) !void {
 
     inline for (pwhashes) |H| {
         if (filter == null or std.mem.find(u8, H.name, filter.?) != null) {
-            const throughput = try benchmarkPwhash(arena, H.ty, H.params, mode(64), io);
+            const throughput = try benchmarkPwhash(garden, H.ty, H.params, mode(64), io);
             try stdout.print("{s:>17}: {d:10.3} s/ops\n", .{ H.name, throughput });
             try stdout.flush();
         }

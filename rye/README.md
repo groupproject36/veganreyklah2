@@ -93,7 +93,7 @@ The test hashes the bytes `"Rye"` with SHA3-512 and asserts the digest against a
 
 ## A Note on Memory
 
-The `rye` command allocates from the process arena — a single garden the runtime clears whole on exit — so a short-lived command needs no finer bookkeeping and leaves nothing behind. This is the region model our designs name Tally, lived in the smallest place.
+The `rye` command allocates from `init.garden` — the process season allocator the runtime clears whole on exit — so a short-lived command needs no finer bookkeeping and leaves nothing behind. This is the region model our designs name Tally, lived in the smallest place.
 
 ---
 

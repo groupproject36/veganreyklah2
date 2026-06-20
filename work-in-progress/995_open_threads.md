@@ -3,7 +3,7 @@
 *A living snapshot of what has landed, what is closed, and what remains open. Updated after tonight's building session: Caravan bounded, Aurora deciding, the gate trio complete in Rishi, Wayland and editor research, the forge quarantined, and the whole-system map drawn.*
 
 **Language:** EN
-**Version:** `20260620.020712` (Rye chronological stamp)
+**Version:** `20260620.021212` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -30,8 +30,9 @@
 - **TAME Style spec + Claude rule.** Root + Rye/Brix/Rishi supplements.
 - **Skate named.** Our terminal — GPU-accelerated text in a Brushstroke window.
 
-- **Formats, editors, inference research (`970`).** JSON/Brix unification, Scribble markdown survey, Zed/GPUI study, Ollama/Tinygrad/PyTorch/TensorFlow boundaries.
-- **Horizon modules quarantined (`978`).** Scribble, Lantern, Lattice, Anvil on one value grammar; editor extends `980`.
+- **Brushstroke seed (`brushstroke/seed.rye`).** Hosted frame-from-values; stdout redraw; `10011` Track A.
+- **`977_flow_of_values.md`.** Quarantined Language-of-the-System foundation — transform, move, route, remember.
+- **Garden vocabulary sweep (phase 2).** Locals `garden`, `start.zig` internals, README, ALMANAC — open thread closed.
 
 ## Threads Now Closed
 
@@ -56,29 +57,21 @@
 - **Brix rename (Silo → Brix)** — composing language vs store layer.
 - **TAME Style spec** — `context/specs/tame-style.md` + Claude rule.
 - **GPL compliance** — gitlinks, River not cloned, clean-room boundary.
+- **Garden vocabulary sweep** — phase 2: locals, docs, `start.zig`; `ArenaAllocator` stays inherited (`inherited-names.md`).
+- **Formats, editors, inference research (`970`).** JSON/Brix, Scribble, Zed/GPUI, inference stacks.
+- **Horizon modules quarantined (`978`).** Scribble, Lantern, Lattice, Anvil.
+- **Flow of values foundation (`977`).** System-wide compositional law quarantined.
 
 ## Threads Still Open
 
 **Near — build:**
-- **Brushstroke seed** — one native x86_64 window, one static frame. Written from scratch in Rye, informed by public Wayland specs (`985`, `986`, `988`). The display layer is the next frontier.
+- **Brushstroke Wayland seed** — one native x86_64 window, one static frame (`985`, `986`, `988`). Hosted seed runs (`brushstroke/seed.rye`).
 - **Device wire** — sealed datagram over emulated `virtio-net` between two QEMU machines; Comlink's next rung.
 - **Caravan multi-child** — grow the bounded seed toward two children with separate gardens, then chain-loading (`984`).
 
 **Near — strengthen:**
 - **Continue the strengthening series** — the next `std` surfaces our tools lean on, each through the parity gate. Corpus at 16.
 - **TAME assertion backlog** — ~50 locations identified in the audit, not yet fixed. Addressed as code is touched.
-
-**Near — vocabulary (`arena` → `garden`):**
-- **Finish the garden vocabulary sweep** — Tally's metaphor should read consistently in our code and prose. Phase 1 landed `init.garden` on `std.process.Init`; the rest is still open.
-  - **Local names in our programs** — `const arena = init.garden.allocator()` → `garden` in `rye/src/main.rye`, `rishi/src/main.rye`, and the three `std` benchmark entrypoints (`Random`, `hash`, `crypto`). Function parameters that mean season memory (`resolveRyeLib`, etc.) follow suit.
-  - **Comments and bridges** — update comments that still say "process arena" where the API is now `init.garden` (`rye/src/main.rye`).
-  - **Learning and reference docs** — `rye/README.md`, `rye-learning-process/998_ALMANAC.md` still cite `init.arena`; align to `init.garden` and keep the bridge sentence (*garden cleared whole on exit*).
-  - **`context/specs/inherited-names.md`** — reconcile with phase 1: `Init.garden` is an approved Rye public field; **`ArenaAllocator`** and `std.heap.ArenaAllocator` stay inherited Zig names.
-  - **`rye/lib/std/start.zig`** — internal `arena_allocator` / `arena_backing_allocator` locals could become `garden_allocator` where we own the file (parity gate after).
-  - **Strengthening notes** — `9989_tally_gardens.md` future `tally/arena.rye` → name `tally/heap-garden.rye` or fold into `gardens.rye`.
-  - **External-research pedagogy** — `994` may keep *arena* when citing Urbit's loom or CS literature as the generic term; our prose there already maps *arena → garden Tally*. No blind sed in gratitude or unmodified upstream std.
-  - **TAME Style example** — `996_TAME_STYLE.md` `arena: Allocator` example could add `garden: Allocator` beside it.
-  - **Out of scope** — `std.heap.ArenaAllocator`, thousands of inherited `arena` locals inside unmodified `rye/lib/std/**`; those remain Zig vocabulary until a deliberate std fork pass.
 
 **Near — study:**
 - **Display-layer study** — Wayland protocol specs for Brushstroke. Ghostty (MIT) for Skate. River through public docs only (GPL-3.0).

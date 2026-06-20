@@ -716,10 +716,10 @@ inline fn callMain(args: std.process.Args.Vector, environ: std.process.Environ.B
         _ = debug_allocator.deinit(); // Leaks do not affect return code.
     };
 
-    const arena_backing_allocator = if (is_wasm) gpa else std.heap.page_allocator;
+    const garden_backing_allocator = if (is_wasm) gpa else std.heap.page_allocator;
 
-    var arena_allocator = std.heap.ArenaAllocator.init(arena_backing_allocator);
-    defer arena_allocator.deinit();
+    var garden_allocator = std.heap.ArenaAllocator.init(garden_backing_allocator);
+    defer garden_allocator.deinit();
 
     var threaded: std.Io.Threaded = .init(gpa, .{
         .argv0 = .init(.{ .vector = args }),
@@ -731,7 +731,7 @@ inline fn callMain(args: std.process.Args.Vector, environ: std.process.Environ.B
         std.process.fatal("failed to parse environment variables: {t}", .{err});
     defer environ_map.deinit();
 
-    const preopens = std.process.Preopens.init(arena_allocator.allocator()) catch |err|
+    const preopens = std.process.Preopens.init(garden_allocator.allocator()) catch |err|
         std.process.fatal("failed to init preopens: {t}", .{err});
 
     return wrapMain(root.main(.{
@@ -739,7 +739,7 @@ inline fn callMain(args: std.process.Args.Vector, environ: std.process.Environ.B
             .args = .{ .vector = args },
             .environ = .{ .block = environ },
         },
-        .garden = &arena_allocator,
+        .garden = &garden_allocator,
         .gpa = gpa,
         .io = threaded.io(),
         .environ_map = &environ_map,
