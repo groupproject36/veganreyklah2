@@ -1829,10 +1829,16 @@ pub fn containsAtLeast(comptime T: type, haystack: []const T, expected_count: us
     var found: usize = 0;
 
     while (findPos(T, haystack, i, needle)) |idx| {
+        assert(idx >= i);
+        assert(idx + needle.len <= haystack.len);
         i = idx + needle.len;
         found += 1;
-        if (found == expected_count) return true;
+        if (found == expected_count) {
+            assert(found >= expected_count);
+            return true;
+        }
     }
+    assert(found < expected_count);
     return false;
 }
 
@@ -1877,16 +1883,26 @@ pub fn containsAtLeastScalar2(comptime T: type, list: []const T, element: T, min
             while (n - i >= block_size) : (i += block_size) {
                 const haystack_block: Block = list[i..][0..block_size].*;
                 found += std.simd.countTrues(letter_mask == haystack_block);
-                if (found >= minimum) return true;
+                if (found >= minimum) {
+                    assert(found >= minimum);
+                    assert(found <= list.len);
+                    return true;
+                }
             }
         }
     }
 
     for (list[i..n]) |item| {
         found += @intFromBool(item == element);
-        if (found >= minimum) return true;
+        if (found >= minimum) {
+            assert(found >= minimum);
+            assert(found <= list.len);
+            return true;
+        }
     }
 
+    assert(found < minimum);
+    assert(found <= list.len);
     return false;
 }
 
