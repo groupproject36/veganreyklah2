@@ -3651,6 +3651,10 @@ fn joinMaybeZ(allocator: Allocator, separator: []const u8, slices: []const []con
 
     if (zero) buf[buf.len - 1] = 0;
 
+    // Postcondition: buffer size matches the computed total; payload fills it exactly.
+    assert(buf.len == total_len);
+    assert(buf_index + @as(usize, @intFromBool(zero)) == total_len);
+
     // No need for shrink since buf is exactly the correct size.
     return buf;
 }
