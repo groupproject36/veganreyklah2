@@ -61,7 +61,7 @@ The TAME editor (`980`) already holds select-then-act editing, Brix for settings
 - **Brushstroke** owns the window and input events.
 - **The editor module** owns buffer text, modes, undo history, and command values.
 
-Each frame, the editor produces a styled grid value; Skate renders it. Each key event arrives as a value; Rishi maps key sequences to command values when configured. Syntax coloring consumes an Scribble- or grammar-shaped tree incrementally — parse once per saved buffer region, reuse on redraw.
+Each frame, the editor produces a styled grid value; Skate renders it. Each key event arrives as a value; Rishi maps key sequences to command values when configured. Syntax coloring consumes a Scribble- or grammar-shaped tree incrementally — parse once per saved buffer region, reuse on redraw.
 
 Multiplayer editing, when it arrives, is shared buffer state over Comlink — the same value-sync model as remote shells (`979`), applied to text.
 
@@ -145,7 +145,7 @@ Until then, Anvil is a reserved name and a study direction, not a build target.
 | **Lattice** | Tally, parity gate | Tensors as bounded buffers |
 | **Anvil** | Caravan, Silo | Training orchestration (horizon) |
 
-The through-line from `983` holds: a Mantra line, a Brix brick, an Scribble block, a Brushstroke frame, a Lantern completion, and a Lattice tensor are the same kind of thing — named, bounded, owned, passing as values across seams that stay closed.
+The through-line from `983` holds: a Mantra line, a Brix brick, a Scribble block, a Brushstroke frame, a Lantern completion, and a Lattice tensor are the same kind of thing — named, bounded, owned, passing as values across seams that stay closed.
 
 ---
 
