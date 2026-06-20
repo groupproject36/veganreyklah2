@@ -2808,11 +2808,15 @@ test "tokenize (reset)" {
 ///           `tokenizeAny`, `tokenizeSequence`, and `tokenizeScalar`.
 pub fn splitSequence(comptime T: type, buffer: []const T, delimiter: []const T) SplitIterator(T, .sequence) {
     assert(delimiter.len != 0);
-    return .{
+    const it: SplitIterator(T, .sequence) = .{
         .index = 0,
         .buffer = buffer,
         .delimiter = delimiter,
     };
+    assert(it.index.? == 0);
+    assert(it.index.? <= buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
 }
 
 /// Returns an iterator that iterates over the slices of `buffer` that
@@ -2828,11 +2832,15 @@ pub fn splitSequence(comptime T: type, buffer: []const T, delimiter: []const T) 
 ///           `splitBackwardsAny`,`splitBackwardsScalar`,
 ///           `tokenizeAny`, `tokenizeSequence`, and `tokenizeScalar`.
 pub fn splitAny(comptime T: type, buffer: []const T, delimiters: []const T) SplitIterator(T, .any) {
-    return .{
+    const it: SplitIterator(T, .any) = .{
         .index = 0,
         .buffer = buffer,
         .delimiter = delimiters,
     };
+    assert(it.index.? == 0);
+    assert(it.index.? <= buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
 }
 
 /// Returns an iterator that iterates over the slices of `buffer` that
@@ -2848,11 +2856,15 @@ pub fn splitAny(comptime T: type, buffer: []const T, delimiters: []const T) Spli
 ///           `splitBackwardsAny`,`splitBackwardsScalar`,
 ///           `tokenizeAny`, `tokenizeSequence`, and `tokenizeScalar`.
 pub fn splitScalar(comptime T: type, buffer: []const T, delimiter: T) SplitIterator(T, .scalar) {
-    return .{
+    const it: SplitIterator(T, .scalar) = .{
         .index = 0,
         .buffer = buffer,
         .delimiter = delimiter,
     };
+    assert(it.index.? == 0);
+    assert(it.index.? <= buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
 }
 
 test splitScalar {
