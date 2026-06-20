@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `145612`: parity runs `rye run` on `.rye` corpus; `.rye`/`.zig` discipline recorded.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `161312`: garden-memory policy in TAME + rules; pass 9977 `path.extension`.*
 
 **Language:** EN
-**Version:** `20260620.145612` (Rye chronological stamp)
+**Version:** `20260620.161312` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,17 +12,15 @@
 
 ## What Just Landed (this session)
 
-- **Parity via `rye run` (`145612`).** `tools/parity.rish` and `parity-selftest.rish` run corpus `.rye` files through `rye run`; baseline arm sets `RYE_LIB` to pinned vendor std. No more `parity-work` `.zig` copies.
-- **`.rye` vs `.zig` discipline (`145312`–`145612`).** Documented in *Ongoing — Rye vocabulary* below: we author `.rye`; we strengthen `rye/lib/std/*.zig` until Rye owns the import graph.
-- **Strengthening pass 9983 (`144812`).** `std.fs.path.join` buffer postcondition + `maybe` for empty components; corpus 21/21 GREEN.
-- **Rishi `join` (`144412`).** List-to-string compose builtin.
-- **Strengthening pass 9984 (`144112`).** `readFileAlloc` limit postcondition; pairs with 9985 write path.
-- **Strengthening pass 9985 (`143912`).** `writeStreamingAll` postcondition.
-- **Rishi `ends-with` (`143612`).** String suffix builtin; `rishi/tests/ends_with.rish` green.
-- **Strengthening pass 9987 (`050912`).** `Allocator.alloc` postcondition; Skate modules migrated from `.zig` to `.rye`; corpus 17/17 GREEN.
-- **Tablecloth vocabulary (`043212`).** Store module renamed from the retired name; **silo** / **siloed** names the clean-room discipline only.
-- **Tablecloth prompt ladder (`10018`–`10022`).** Five rungs from `043712`–`044112`: index, Brix split, build flow, value model, v1 seed frame.
-- **Prompt numbering (`044412`).** `10010_reserved.md` holds the number open; **`10023`** carries the main-track build order (Skate → strengthening → Rishi).
+- **Strengthening pass 9977 (`161312`).** `std.fs.path.extension` postcondition; corpus 26/26 GREEN. Path trio complete: `dirname` (9980), `basename` (9978), `extension` (9977).
+- **Garden-memory policy (`161112`–`161312`).** Authored `.rye` never uses `ArenaAllocator` directly — use `init.garden.allocator()`. No `std.heap.GardenAllocator` rename; owned wrapper path is `rye.garden` / `tally/heap-garden.rye`. Recorded in `inherited-names.md`, `tame-style.md`, `.cursor/rules/tame-style.mdc`, `.claude/rules/tame-style.md`.
+- **Strengthening pass 9978 (`160312`).** `std.fs.path.basename`; corpus 25/25 GREEN.
+- **Living docs refresh (`160312`).** `994_style_audit.md` (timestamp removed from filename); `995` and `996` brought current after `155212` ship.
+- **Style audit shipped (`155212`).** TAME + Radiant GREEN on 22 `.rye`/`.rish` files; record at `work-in-progress/994_style_audit.md`. Seven commits pushed to all remotes (`36203a9`).
+- **Strengthening 9979–9987 (`143312`–`050912`).** `trimStart`, `path.dirname`, `process.run`, `allocPrint`+`trimEnd`, `path.join`, `readFileAlloc`, `writeStreamingAll`, `bufPrint`, `Allocator.alloc` + Skate `.rye` migration — corpus grew 17 → 24.
+- **Rishi builtins + parser (`151212`–`153812`).** `split`, `join`, `ends-with`, string `contains`, infix `index-of`; `findComparison` before infix word ops; `isWordHyphen` for hyphenated identifiers vs subtraction. Rishi stamp `20260620.153812`.
+- **Parity via `rye run` (`145612`).** Corpus `.rye` through `rye run`; baseline arm `RYE_LIB=vendor/zig-toolchain/lib`.
+- **Skate text grid.** Monospace 8×8 glyphs on Wayland; headless `selftest` green.
 
 ## Threads Now Closed
 
@@ -32,13 +30,15 @@
 - **Rishi arithmetic + stdout** — `+`/`-`/`*`/`/`, correct precedence, `say`.
 - **Tally seed** — one Region, 13 invariants.
 - **Tally v1 named gardens** — `Gardens`, blob/diff/frame, 15/15 GREEN.
-- **Strengthening 9994–9983** — through path.join. Corpus 21.
+- **Strengthening 9994–9977** — through `path.extension`. Corpus 26.
 - **Mantra seed** — weave, LCS diff, SHA3-256 store, init/add/status.
 - **Mantra for the repo (seed)** — commit chain, add-all walks `.brix`, log follows chain. 9/9 bricks.
 - **`init.garden` (phase 1)** — `std.process.Init.garden` renamed from upstream `arena`.
+- **Garden-memory policy** — authored code uses `init.garden`, never `ArenaAllocator`; no std `GardenAllocator` alias; TAME + Cursor + Claude rules.
 - **Brix minimum** — `.brix` descriptor, 10 tracked bricks.
 - **Rishi file I/O** — `read-file`, `write-file`, `list-dir`.
-- **Rishi `lines` + `starts-with`** — string splitting, prefix checking, paren depth fix.
+- **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of`.
+- **Rishi parser hyphen fix** — comparisons before infix words; `isWordHyphen`.
 - **Caravan seed** — parent/child restart, 5 assertions.
 - **Caravan bounded** — supervision + Tally garden, 10 assertions.
 - **Aurora deciding stage** — wake, prove, decide, rest.
@@ -47,7 +47,6 @@
 - **Brix + Tablecloth naming** — compose (Brix) vs store (Tablecloth) vs discipline (silo/siloed); prompt ladder `10018`–`10022`.
 - **TAME Style spec** — `context/specs/tame-style.md` + Claude rule.
 - **GPL compliance** — gitlinks, River not cloned, clean-room boundary.
-- **Garden vocabulary sweep** — phase 2: locals, docs, `start.zig`; `ArenaAllocator` stays inherited.
 - **Formats, editors, inference research (`970`).**
 - **Horizon modules siloed (`978`).** Scribble, Lantern, Lattice, Anvil.
 - **Flow of values foundation (`977`).**
@@ -56,8 +55,8 @@
 - **Caravan multi-child (twin seed).** Two supervised children, independent gardens.
 - **Caravan chain-loading (`caravan/chain.rye`).**
 - **Comlink hosted wire (`comlink/hosted_wire.rye`).**
-- **Rishi string builtins (`length`, `trim`, `slice`).** Parity 16/16.
 - **Skate text grid.** Monospace 8×8 glyphs on `wayland_seed`; headless `selftest` green.
+- **Style audit (`155212`).** TAME + Radiant GREEN; record `994_style_audit.md`.
 
 ## Threads Still Open
 
@@ -65,9 +64,9 @@
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio | `10023` Track B, `998` |
-| 2 | **Rishi** — builtins as gates and Pond policy need them (`join` done) | `10023` Track C |
-| 3 | **TAME assertion backlog** — fix as code is touched | audit list |
+| 1 | **Strengthening series** — next `std` surface through gate trio (9976 and below) | `10023` Track B, `998` |
+| 2 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
+| 3 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
 
 **Near — build (after main track holds green):**
 
@@ -92,6 +91,7 @@
 - **Pond GUI** — Rishi REPL + Mantra in a Brushstroke window (`10009`, `986`).
 - **The Forge** — Mantra-native forge (`982`).
 - **Brix v1** — lawful combinator over brick descriptors (`10019`, `10020`).
+- **Tally-native `garden` module** — `rye/lib/rye/garden.zig` or `tally/heap-garden.rye`: owned wrapper beside inherited `ArenaAllocator`; graduates to native Tally (`inherited-names.md`, `9989`).
 
 **Horizon — inference & tensors** *(see `978`):* Lantern, Lattice, Anvil.
 
@@ -111,16 +111,29 @@
 
 Skate briefly used `.zig` modules; migrated at `050912` with recursive `.rye` import bridging. **Whole std as `.rye`** is a horizon move — the lib tree is the backend layout today.
 
+**Garden naming — where we stand:**
+
+| Layer | Status |
+|-------|--------|
+| `std.process.Init.garden` | Done (phase 1) |
+| Locals in rye/rishi/benchmarks/docs | Done (phase 2) |
+| Authored `.rye` / `.rish` | `init.garden` only — never `ArenaAllocator` (TAME rule) |
+| `ArenaAllocator` in inherited std | Keep — do not rename to `GardenAllocator` |
+| Owned wrapper | Horizon — `rye.garden` / `tally/heap-garden.rye` |
+| Upstream std internals / vendor | Untouched |
+
+Phase 2 vocabulary sweep is **closed**. Policy at `161112`: warm names enter beside inherited types, not as renames.
+
 **Parity contract (`145612`):**
 
 - **Compare:** baseline `vendor/zig-toolchain/lib` vs strengthened `rye/lib` — same test, same pinned Zig (`RYE_ZIG`).
 - **Invoke:** `rye run rye/tests/<name>.rye` on both arms (`RYE_LIB` for baseline); exercises the real bridge path.
 - **Hold:** exit code + stdout/stderr identical — assertions change what code *says*, never what it *does*.
-- **Horizon:** strengthened std modules as `.rye` when Rye controls imports without bridging the full lib tree.
+- **Corpus:** 26 programs, all GREEN (9977 `path.extension` latest).
 
 ## The Through-Line
 
-One value model, all the way down. The main work now is **Rye** growing surely, **Rishi** scripting the gates, and **strengthening** earning each `std` surface before the next layer composes. Tablecloth's ladder waits documented on the side — store prose unified, v1 seed named, code deferred until the track is green again.
+One value model, all the way down. The main work now is **Rye** growing surely, **Rishi** scripting the gates, and **strengthening** earning each `std` surface before the next layer composes. Garden memory in authored code flows through `init.garden`; inherited `ArenaAllocator` stays in std until `rye.garden` earns its keep. Tablecloth's ladder waits documented on the side.
 
 ---
 

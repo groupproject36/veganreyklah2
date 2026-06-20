@@ -1,7 +1,7 @@
 # 994 · Style Audit — TAME and Radiant since sweep `0963662`
 
-**Stamp:** `20260620.155212`
-**Scope:** Uncommitted work from main track (`143312`–`153812`): strengthening 9979–9987, Skate grid, parity-via-`rye run`, Rishi builtins, parser hyphen fix.
+**Stamp:** `20260620.155212` (audit run); filename is stable — no timestamp suffix.
+**Scope:** Main-track arc (`143312`–`153812`): strengthening 9979–9987, Skate grid, parity-via-`rye run`, Rishi builtins, parser hyphen fix. Shipped at `155212`.
 **Baseline:** Last Radiant sweep commit `0963662`; garden vocabulary sweep `c91253e`.
 
 ---
