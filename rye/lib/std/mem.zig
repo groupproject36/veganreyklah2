@@ -3485,7 +3485,14 @@ pub fn SplitIterator(comptime T: type, comptime delimiter_type: DelimiterType) t
         /// Asserts that iteration has not begun.
         pub fn first(self: *Self) []const T {
             assert(self.index.? == 0);
-            return self.next().?;
+            const start: usize = 0;
+            const field = self.next().?;
+            // Postcondition: first field is a valid prefix sub-slice (pairs with next 9993, peek 9969).
+            // Index-based only — SemanticVersion.parse calls first() at comptime.
+            assert(start <= self.buffer.len);
+            assert(field.len <= self.buffer.len);
+            assert(start + field.len <= self.buffer.len);
+            return field;
         }
 
         /// Returns a slice of the next field, or null if splitting is complete.

@@ -3,7 +3,7 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260620.171512` (Rye chronological stamp)
+**Version:** `20260620.172012` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -27,10 +27,10 @@ These are the simple systems that run today. Everything ahead grows from them.
 - **A sealed datagram crosses between two harts** — Alice seals on hart 0; Bob, on hart 1, reads the raw bytes off a shared-memory wire, shape-casts them, verifies the attestation, confirms the content-name, derives the shared secret from his own key, and opens it. The content-name matches the hosted test byte-for-byte: the move that turns the whole networking arc into something that runs, running.
 - **The strengthening series is live** — SHA3-512, the Keccak sponge beneath it, and the everyday `std` our own tools lean on (`mem.trim`, `mem.eql`, `mem.findScalar`, `fmt.parseInt`), each given stated invariants and each parity-green, recorded in the strengthening-compiler stack.
 - **The crypto foundation is proven, primitive by primitive** — the content hash (SHA3-512, strengthened), signing (Ed25519), key agreement (X25519), and the authenticated seal (AEAD: ChaCha20-Poly1305) all run in Rye's own std, hosted and freestanding alike, and stand parity-green: the foundation the network and identity rest on (`../strengthening-compiler/9995`).
-- **The gate trio runs** — `parity.rish` (behavior), `parity-selftest.rish` (proves RED on divergence), `additive-gate.rish` (shape). All three run in Rishi; the corpus carries thirty-nine programs, all green.
+- **The gate trio runs** — `parity.rish` (behavior), `parity-selftest.rish` (proves RED on divergence), `additive-gate.rish` (shape). All three run in Rishi; the corpus carries forty programs, all green.
 - **Rishi runs** — a shell interpreter in Rye with comments; `let` of strings, integers, booleans, lists, and records; string interpolation that composes a value into text (`"${a}/${b}"`); `say`; `==`/`!=` comparison; list membership with `contains`; field access with `record.field`; running a command with `run` (its result a record of `out`, `err`, `code`, `ok`); transforming and filtering lists with `map` and `where`; and `assert` as a gate that exits non-zero with its reason. Built by `rye build`.
 - **Rishi gained arithmetic and a real stdout** — integer `+`/`-`/`×`/`÷` with correct operator precedence via two-layer recursive descent, parenthesized grouping, and `say` rebound from stderr to stdout. Nine arithmetic assertions in `rishi/tests/arithmetic.rish`, all green. The shell can now compute, compose, and speak.
-- **The parity gate runs in Rishi** — `tools/parity.rish` runs each corpus `.rye` through `rye run` (baseline via `RYE_LIB=vendor/zig-toolchain/lib`, strengthened via default `rye/lib`), compares outputs as one value, and asserts the verdict. Proven GREEN across 39 programs and RED on tamper (`parity-selftest.rish`).
+- **The parity gate runs in Rishi** — `tools/parity.rish` runs each corpus `.rye` through `rye run` (baseline via `RYE_LIB=vendor/zig-toolchain/lib`, strengthened via default `rye/lib`), compares outputs as one value, and asserts the verdict. Proven GREEN across 40 programs and RED on tamper (`parity-selftest.rish`).
 - **The strengthening frontier (9994–9991) is sealed** — SHA3-256 (content-naming primitive), mem diff primitives (`copyForwards`, `startsWith`, `endsWith`, `find`, `splitScalar`), `std.Io.Dir` filesystem boundary assertions, and `Dir.iterate` name invariants and exhaustion state — all four through the gate, corpus at 14, all green.
 - **Mantra seed runs** — the smallest version-control that runs: a Weave holds the full history of a text file as Lines with stable positions and generation-parity presence; `computeDiff` finds the minimal LCS edit; the store content-names every weave state by its SHA3-256 digest. `mantra init / add / status` confirmed end-to-end. Pure LCS test joins the corpus (`../strengthening-compiler/9990`).
 - **`init.garden` replaces `init.arena` in Rye's vocabulary** — `std.process.Init.garden` is Rye's name for the season allocator: allocate freely within the session, clear whole on exit. The TAME vocabulary (`garden`) now lives in the public API; `arena` recedes to an implementation detail inside `start.zig`. Rishi, Rye, Mantra, and all benchmark callers updated.
@@ -141,9 +141,9 @@ Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chai
 
 ## The Steps Just Taken
 
-Strengthening through **9964**, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, style audit shipped.
+Strengthening through **9963**, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, style audit shipped.
 
-**Strengthening passes 9979–9964** (`143312`–`171512`): `trimStart` … `findLastNone`. Corpus 17 → 39, all green.
+**Strengthening passes 9979–9963** (`143312`–`172012`): `trimStart` … `SplitIterator.first`. Corpus 17 → 40, all green.
 
 **Garden memory (`161112`)** — authored code: `init.garden` only; no `ArenaAllocator`; no std `GardenAllocator`; owned wrapper horizon at `rye.garden` / `tally/heap-garden.rye`. TAME + Cursor + Claude rules.
 
