@@ -681,7 +681,12 @@ pub fn order(comptime T: type, lhs: []const T, rhs: []const T) math.Order {
 
 /// Compares two many-item pointers with NUL-termination lexicographically.
 pub fn orderZ(comptime T: type, lhs: [*:0]const T, rhs: [*:0]const T) math.Order {
-    return boundedOrderZ(T, lhs, rhs, std.math.maxInt(usize));
+    const result = boundedOrderZ(T, lhs, rhs, std.math.maxInt(usize));
+    // Postcondition: NUL-terminated compare agrees with slice order (pairs with order 9953).
+    const lhs_len = findSentinel(T, 0, lhs);
+    const rhs_len = findSentinel(T, 0, rhs);
+    assert(result == order(T, lhs[0..lhs_len], rhs[0..rhs_len]));
+    return result;
 }
 
 /// Compares two many-item pointers with NUL-termination lexicographically until some specified bound.
@@ -689,7 +694,10 @@ pub fn boundedOrderZ(comptime T: type, lhs: [*:0]const T, rhs: [*:0]const T, bou
     if (lhs == rhs) return .eq;
     var i: usize = 0;
     while (lhs[i] == rhs[i] and lhs[i] != 0 and i < bound) : (i += 1) {}
-    return if (i < bound) math.order(lhs[i], rhs[i]) else .eq;
+    if (i < bound) return math.order(lhs[i], rhs[i]);
+    // Postcondition: compared equal through bound without a differing byte before NUL.
+    assert(i <= bound);
+    return .eq;
 }
 
 test order {
@@ -1153,6 +1161,8 @@ pub fn findSentinel(comptime T: type, comptime sentinel: T, p: [*:sentinel]const
     while (p[i] != sentinel) {
         i += 1;
     }
+    // Postcondition: returned index points at the sentinel.
+    assert(p[i] == sentinel);
     return i;
 }
 
