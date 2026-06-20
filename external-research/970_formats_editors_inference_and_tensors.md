@@ -1,9 +1,9 @@
 # 970 · Formats, Editors, Inference, and Tensors — What the Horizon Modules Inherit
 
-*Six open threads share one through-line: values that cross seams without losing their shape. This research reads JSON and Brix together, surveys markdown parsers in Zig and Rust, studies Zed's editor architecture and GPUI's permissive frame discipline, and reads Ollama, Tinygrad, PyTorch, and TensorFlow for what **Ink**, **Lantern**, **Lattice**, and **Anvil** should become in tame Rye. The distilled design lives in quarantine at `../active-designing/978_ink_lantern_and_lattice.md`.*
+*Six open threads share one through-line: values that cross seams without losing their shape. This research reads JSON and Brix together, surveys markdown parsers in Zig and Rust, studies Zed's editor architecture and GPUI's permissive frame discipline, and reads Ollama, Tinygrad, PyTorch, and TensorFlow for what **Scribble**, **Lantern**, **Lattice**, and **Anvil** should become in tame Rye. The distilled design lives in quarantine at `../active-designing/978_scribble_lantern_and_lattice.md`.*
 
 **Language:** EN
-**Version:** `20260620.020012` (Rye chronological stamp)
+**Version:** `20260620.020712` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -14,7 +14,7 @@
 
 ## The Shared Question
 
-Every format we adopt, every surface we draw, every model we run — does it speak **values**, or does it smuggle behavior across a wire? Rich Hickey named the pattern early: JSON, EDN, and their kin won because they carry data; RPC schemes that shipped code lost. Our stack already keeps one value model from Rishi through Mantra, Brix, Pond, and Comlink (`983`). The horizon work extends that line outward: **Brix** and JSON as one grammar, **Ink** for human-readable docs, a GPU-aware editor layer beside Kakoune-shaped editing (`971`, `980`), and **Lantern** / **Lattice** / **Anvil** for inference and tensors — each bounded, each enclosed, each honest about what it owns.
+Every format we adopt, every surface we draw, every model we run — does it speak **values**, or does it smuggle behavior across a wire? Rich Hickey named the pattern early: JSON, EDN, and their kin won because they carry data; RPC schemes that shipped code lost. Our stack already keeps one value model from Rishi through Mantra, Brix, Pond, and Comlink (`983`). The horizon work extends that line outward: **Brix** and JSON as one grammar, **Scribble** for human-readable docs, a GPU-aware editor layer beside Kakoune-shaped editing (`971`, `980`), and **Lantern** / **Lattice** / **Anvil** for inference and tensors — each bounded, each enclosed, each honest about what it owns.
 
 ---
 
@@ -44,11 +44,11 @@ A Brix brick record and a JSON object describing that brick should be the same s
 
 ---
 
-## Ink — Markdown for Docs Surfaces
+## Scribble — Markdown for Docs Surfaces
 
 ### The Need
 
-Mantra views, Forge pages, and research itself are written in Markdown today. A tame Rye parser — **Ink** — turns human prose into a value tree (headings, paragraphs, links, code fences) that Brushstroke and the Forge can render without shelling out to another language. The parser must be bounded: input size cap, nesting depth cap, allocation budget per document, failure named loudly.
+Mantra views, Forge pages, and research itself are written in Markdown today. A tame Rye parser — **Scribble** — turns human prose into a value tree (headings, paragraphs, links, code fences) that Brushstroke and the Forge can render without shelling out to another language. The parser must be bounded: input size cap, nesting depth cap, allocation budget per document, failure named loudly.
 
 ### Zig Candidates (Permissive)
 
@@ -65,12 +65,12 @@ Mantra views, Forge pages, and research itself are written in Markdown today. A 
 | **pulldown-cmark** | MIT | Pull parser for CommonMark; fast, widely used, optional GFM extensions; excellent spec reference even for a clean-room Zig port |
 | **Comrak** (via Koino) | MIT | GFM superset; Koino already ports it to Zig |
 
-### What Ink Should Inherit
+### What Scribble Should Inherit
 
 - **Pull parsing, not DOM-first.** Stream events (start heading, text, end heading) into a value list without retaining the whole document twice.
 - **Stated limits before parse.** Maximum bytes, maximum heading depth, maximum link count — TAME at the boundary.
-- **No HTML execution.** Ink produces a value tree or a safe static HTML string; script tags and raw HTML injection are declined or escaped by policy.
-- **Clean-room Rye implementation.** Study permissive parsers in `gratitude/` or public repos; ship Ink in Rye on our ground. md4c may be linked only if LGPL obligations are respected — prefer pure Zig/Rye paths first.
+- **No HTML execution.** Scribble produces a value tree or a safe static HTML string; script tags and raw HTML injection are declined or escaped by policy.
+- **Clean-room Rye implementation.** Study permissive parsers in `gratitude/` or public repos; ship Scribble in Rye on our ground. md4c may be linked only if LGPL obligations are respected — prefer pure Zig/Rye paths first.
 
 **Lesson:** Zmd and pulldown-cmark are the two best close-reading targets: small, MIT, and explicit about the CommonMark contract. Koino bridges them if we want GFM tables and task lists on day one.
 
@@ -160,12 +160,12 @@ Mantra views, Forge pages, and research itself are written in Markdown today. A 
 ## Recommendations — What Crosses into Active Design
 
 1. **Unify JSON and Brix now** in spec — one record grammar, three faces (`.brix` lines, JSON wire, Rishi literals).
-2. **Ink seed** — CommonMark subset parser in Rye; close-read Zmd and pulldown-cmark; bounds at the door.
-3. **Editor** — extend `980` with GPU frame discipline studied from GPUI; Tree-sitter-shaped syntax as a later Ink sibling or shared grammar crate.
+2. **Scribble seed** — CommonMark subset parser in Rye; close-read Zmd and pulldown-cmark; bounds at the door.
+3. **Editor** — extend `980` with GPU frame discipline studied from GPUI; Tree-sitter-shaped syntax as a later Scribble sibling or shared grammar crate.
 4. **Lattice before Lantern before Anvil** — numeric primitives, then local inference, then training scale.
 5. **Every module Pond-enclosed** — inference and tensors are high-risk; policy-as-a-value is non-negotiable.
 
-The quarantined design brief at `../active-designing/978_ink_lantern_and_lattice.md` states these modules on our own ground.
+The quarantined design brief at `../active-designing/978_scribble_lantern_and_lattice.md` states these modules on our own ground.
 
 ---
 

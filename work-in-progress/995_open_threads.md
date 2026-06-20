@@ -3,7 +3,7 @@
 *A living snapshot of what has landed, what is closed, and what remains open. Updated after tonight's building session: Caravan bounded, Aurora deciding, the gate trio complete in Rishi, Wayland and editor research, the forge quarantined, and the whole-system map drawn.*
 
 **Language:** EN
-**Version:** `20260620.021012` (Rye chronological stamp)
+**Version:** `20260620.020712` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -30,8 +30,8 @@
 - **TAME Style spec + Claude rule.** Root + Rye/Brix/Rishi supplements.
 - **Skate named.** Our terminal — GPU-accelerated text in a Brushstroke window.
 
-- **Formats, editors, inference research (`970`).** JSON/Brix unification, Ink markdown survey, Zed/GPUI study, Ollama/Tinygrad/PyTorch/TensorFlow boundaries.
-- **Horizon modules quarantined (`978`).** Ink, Lantern, Lattice, Anvil on one value grammar; editor extends `980`.
+- **Formats, editors, inference research (`970`).** JSON/Brix unification, Scribble markdown survey, Zed/GPUI study, Ollama/Tinygrad/PyTorch/TensorFlow boundaries.
+- **Horizon modules quarantined (`978`).** Scribble, Lantern, Lattice, Anvil on one value grammar; editor extends `980`.
 
 ## Threads Now Closed
 
@@ -86,7 +86,7 @@
 - **TAME editor design** — Kakoune's select-then-act in Rye, Brix for settings, Rishi for behavior (`971`, `980`, `978`).
 - **TAME editor — Zed architecture study** — GPU frame discipline from permissive GPUI patterns; GPL core study-only (`970`). Implements on Brushstroke + Skate.
 - **JSON unified with Brix** — one value grammar (`970`, `978`); grow from `.brix` descriptor in Mantra.
-- **Ink (markdown parser)** — tame Rye CommonMark subset (`970` survey, `978` design); Zmd, pulldown-cmark close-reading targets.
+- **Scribble (markdown parser)** — tame Rye CommonMark subset (`970` survey, `978` design); Zmd, pulldown-cmark close-reading targets.
 - **Comlink remoting** — value-based state sync over UDP, our own crypto, Pond enclosures (`971`).
 
 **Horizon 2 milestones:**

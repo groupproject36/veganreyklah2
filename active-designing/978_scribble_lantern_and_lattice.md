@@ -1,9 +1,9 @@
-# 978 · Ink, Lantern, and Lattice — Horizon Modules on One Value Grammar
+# 978 · Scribble, Lantern, and Lattice — Horizon Modules on One Value Grammar
 
-*A quarantined design brief for the modules that extend our stack toward human-readable docs, GPU-aware editing, local inference, and honest tensors. **Ink** parses markdown into values. **Brix** and JSON share one record grammar. **Lantern** runs models in Pond enclosures. **Lattice** holds tensor math in Tally gardens. **Anvil** names training-scale work on the far horizon. The editor grows from `980` with GPU frame discipline on Brushstroke and Skate. This brief names only our modules and speaks only on our ground.*
+*A quarantined design brief for the modules that extend our stack toward human-readable docs, GPU-aware editing, local inference, and honest tensors. **Scribble** parses markdown into values. **Brix** and JSON share one record grammar. **Lantern** runs models in Pond enclosures. **Lattice** holds tensor math in Tally gardens. **Anvil** names training-scale work on the far horizon. The editor grows from `980` with GPU frame discipline on Brushstroke and Skate. This brief names only our modules and speaks only on our ground.*
 
 **Language:** EN
-**Version:** `20260620.020012` (Rye chronological stamp)
+**Version:** `20260620.020712` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -14,7 +14,7 @@
 
 ## Our Own Ground
 
-This is a clean room. We name only what is ours — **Ink**, **Lantern**, **Lattice**, **Anvil**, **Brix**, **Silo**, **Mantra**, **Brushstroke**, **Skate**, **Pond**, **Tally**, **Caravan**, **Rishi**, and **Rye** — together with **RISC-V** and **x86_64** where hardware matters. Markdown, JSON, tensors, and GPU text rendering enter as concepts. The close reading that named external teachers lives in `../external-research/970_formats_editors_inference_and_tensors.md`.
+This is a clean room. We name only what is ours — **Scribble**, **Lantern**, **Lattice**, **Anvil**, **Brix**, **Silo**, **Mantra**, **Brushstroke**, **Skate**, **Pond**, **Tally**, **Caravan**, **Rishi**, and **Rye** — together with **RISC-V** and **x86_64** where hardware matters. Markdown, JSON, tensors, and GPU text rendering enter as concepts. The close reading that named external teachers lives in `../external-research/970_formats_editors_inference_and_tensors.md`.
 
 ---
 
@@ -32,13 +32,13 @@ Silo stores the content-addressed artifacts Brix names. JSON does not replace Si
 
 ---
 
-## Ink — Markdown as Values
+## Scribble — Markdown as Values
 
-Ink turns human prose into a value tree the rest of the stack can render and diff.
+Scribble turns human prose into a value tree the rest of the stack can render and diff.
 
 **Input.** A bounded byte slice — a file from Mantra, a Forge page, a research document.
 
-**Output.** A list of block values: headings, paragraphs, code fences, links, lists. Each block is a record with a `kind` field and typed children. Ink never executes code embedded in prose; code fences are opaque strings until a downstream module chooses to highlight or run them under Pond policy.
+**Output.** A list of block values: headings, paragraphs, code fences, links, lists. Each block is a record with a `kind` field and typed children. Scribble never executes code embedded in prose; code fences are opaque strings until a downstream module chooses to highlight or run them under Pond policy.
 
 **Invariants.**
 
@@ -47,9 +47,9 @@ Ink turns human prose into a value tree the rest of the stack can render and dif
 - Maximum link count and code-fence count — soft guards against adversarial expansion.
 - Allocation from a Tally garden; the garden clears when the parse completes.
 
-**Consumers.** Mantra renders weave annotations beside Ink blocks. The Forge draws Ink trees through Brushstroke. Research and session logs remain Markdown source; Ink is the runtime face.
+**Consumers.** Mantra renders weave annotations beside Scribble blocks. The Forge draws Scribble trees through Brushstroke. Research and session logs remain Markdown source; Scribble is the runtime face.
 
-Ink grows from a **CommonMark subset** first — headings, paragraphs, emphasis, links, fenced code — then accretes tables and task lists when a second pass earns them.
+Scribble grows from a **CommonMark subset** first — headings, paragraphs, emphasis, links, fenced code — then accretes tables and task lists when a second pass earns them.
 
 ---
 
@@ -61,7 +61,7 @@ The TAME editor (`980`) already holds select-then-act editing, Brix for settings
 - **Brushstroke** owns the window and input events.
 - **The editor module** owns buffer text, modes, undo history, and command values.
 
-Each frame, the editor produces a styled grid value; Skate renders it. Each key event arrives as a value; Rishi maps key sequences to command values when configured. Syntax coloring consumes an Ink- or grammar-shaped tree incrementally — parse once per saved buffer region, reuse on redraw.
+Each frame, the editor produces a styled grid value; Skate renders it. Each key event arrives as a value; Rishi maps key sequences to command values when configured. Syntax coloring consumes an Scribble- or grammar-shaped tree incrementally — parse once per saved buffer region, reuse on redraw.
 
 Multiplayer editing, when it arrives, is shared buffer state over Comlink — the same value-sync model as remote shells (`979`), applied to text.
 
@@ -138,15 +138,15 @@ Until then, Anvil is a reserved name and a study direction, not a build target.
 
 | Module | Sits beside | Provides |
 |--------|-------------|----------|
-| **Ink** | Mantra, Forge | Prose as values |
+| **Scribble** | Mantra, Forge | Prose as values |
 | **Brix + JSON** | Silo, Pond | Composition and policy as values |
 | **Editor (`980`)** | Skate, Brushstroke | Text editing as values |
 | **Lantern** | Pond, Silo, Tally | Inference as bounded request/response |
 | **Lattice** | Tally, parity gate | Tensors as bounded buffers |
 | **Anvil** | Caravan, Silo | Training orchestration (horizon) |
 
-The through-line from `983` holds: a Mantra line, a Brix brick, an Ink block, a Brushstroke frame, a Lantern completion, and a Lattice tensor are the same kind of thing — named, bounded, owned, passing as values across seams that stay closed.
+The through-line from `983` holds: a Mantra line, a Brix brick, an Scribble block, a Brushstroke frame, a Lantern completion, and a Lattice tensor are the same kind of thing — named, bounded, owned, passing as values across seams that stay closed.
 
 ---
 
-*Ink reads what we write. Brix names what we build. Lantern answers what we ask. Lattice counts what we learn. Anvil waits until the numbers are honest. The horizon extends the stack we already stand on.*
+*Scribble reads what we write. Brix names what we build. Lantern answers what we ask. Lattice counts what we learn. Anvil waits until the numbers are honest. The horizon extends the stack we already stand on.*
