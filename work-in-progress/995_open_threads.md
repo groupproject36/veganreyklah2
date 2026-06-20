@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `180712`: pass 9955 iterator `reset`; corpus 48.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `181512`: pass 9954 `WindowIterator`; corpus 49.*
 
 **Language:** EN
-**Version:** `20260620.180712` (Rye chronological stamp)
+**Version:** `20260620.181512` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,7 +12,8 @@
 
 ## What Just Landed (this session)
 
-- **Strengthening pass 9955 (`180712`).** `SplitIterator`/`SplitBackwardsIterator`/`TokenIterator` `reset`; corpus 48/48 GREEN.
+- **Strengthening pass 9954 (`181512`).** `WindowIterator` postconditions; corpus 49/49 GREEN.
+- **Strengthening pass 9955 (`180712`).** iterator `reset` postconditions; corpus 48 GREEN.
 - **Strengthening pass 9956 (`180012`).** `TokenIterator.next` postconditions; corpus 47 GREEN.
 - **Strengthening pass 9957 (`175712`).** `TokenIterator.peek` + `rest` postconditions; corpus 46 GREEN.
 - **Strengthening pass 9958 (`175312`).** `cutLast` + `cutScalarLast` postconditions; corpus 45 GREEN.
@@ -52,7 +53,7 @@
 - **Rishi arithmetic + stdout** — `+`/`-`/`*`/`/`, correct precedence, `say`.
 - **Tally seed** — one Region, 13 invariants.
 - **Tally v1 named gardens** — `Gardens`, blob/diff/frame, 15/15 GREEN.
-- **Strengthening 9994–9955** — through iterator `reset`. Corpus 48.
+- **Strengthening 9994–9954** — through `WindowIterator`. Corpus 49.
 - **Mantra seed** — weave, LCS diff, SHA3-256 store, init/add/status.
 - **Mantra for the repo (seed)** — commit chain, add-all walks `.brix`, log follows chain. 9/9 bricks.
 - **`init.garden` (phase 1)** — `std.process.Init.garden` renamed from upstream `arena`.
@@ -86,7 +87,7 @@
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio (9954 and below) | `10023` Track B, `998` |
+| 1 | **Strengthening series** — next `std` surface through gate trio (9953 and below) | `10023` Track B, `998` |
 | 2 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 3 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
 
@@ -152,7 +153,7 @@ Phase 2 vocabulary sweep is **closed**. Policy at `161112`: warm names enter bes
 - **Compare:** baseline `vendor/zig-toolchain/lib` vs strengthened `rye/lib` — same test, same pinned Zig (`RYE_ZIG`).
 - **Invoke:** `rye run rye/tests/<name>.rye` on both arms (`RYE_LIB` for baseline); exercises the real bridge path.
 - **Hold:** exit code + stdout/stderr identical — assertions change what code *says*, never what it *does*.
-- **Corpus:** 48 programs, all GREEN (9955 iterator `reset` latest).
+- **Corpus:** 49 programs, all GREEN (9954 `WindowIterator` latest).
 
 ## The Through-Line
 

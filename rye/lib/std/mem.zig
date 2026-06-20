@@ -3256,12 +3256,17 @@ pub fn WindowIterator(comptime T: type) type {
                 self.index = null;
                 break :blk self.buffer.len;
             };
+            // Postcondition: every window returned is a valid sub-slice of the buffer.
+            assert(start <= end);
+            assert(end <= self.buffer.len);
             return self.buffer[start..end];
         }
 
         /// Resets the iterator to the initial window.
         pub fn reset(self: *Self) void {
             self.index = 0;
+            // Postcondition: sliding window restarts at buffer start.
+            assert(self.index.? == 0);
         }
     };
 }

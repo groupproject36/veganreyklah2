@@ -3,7 +3,7 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260620.180712` (Rye chronological stamp)
+**Version:** `20260620.181512` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -27,7 +27,7 @@ These are the simple systems that run today. Everything ahead grows from them.
 - **A sealed datagram crosses between two harts** — Alice seals on hart 0; Bob, on hart 1, reads the raw bytes off a shared-memory wire, shape-casts them, verifies the attestation, confirms the content-name, derives the shared secret from his own key, and opens it. The content-name matches the hosted test byte-for-byte: the move that turns the whole networking arc into something that runs, running.
 - **The strengthening series is live** — SHA3-512, the Keccak sponge beneath it, and the everyday `std` our own tools lean on (`mem.trim`, `mem.eql`, `mem.findScalar`, `fmt.parseInt`), each given stated invariants and each parity-green, recorded in the strengthening-compiler stack.
 - **The crypto foundation is proven, primitive by primitive** — the content hash (SHA3-512, strengthened), signing (Ed25519), key agreement (X25519), and the authenticated seal (AEAD: ChaCha20-Poly1305) all run in Rye's own std, hosted and freestanding alike, and stand parity-green: the foundation the network and identity rest on (`../strengthening-compiler/9995`).
-- **The gate trio runs** — `parity.rish` (behavior), `parity-selftest.rish` (proves RED on divergence), `additive-gate.rish` (shape). All three run in Rishi; the corpus carries forty-eight programs, all green.
+- **The gate trio runs** — `parity.rish` (behavior), `parity-selftest.rish` (proves RED on divergence), `additive-gate.rish` (shape). All three run in Rishi; the corpus carries forty-nine programs, all green.
 - **Rishi runs** — a shell interpreter in Rye with comments; `let` of strings, integers, booleans, lists, and records; string interpolation that composes a value into text (`"${a}/${b}"`); `say`; `==`/`!=` comparison; list membership with `contains`; field access with `record.field`; running a command with `run` (its result a record of `out`, `err`, `code`, `ok`); transforming and filtering lists with `map` and `where`; and `assert` as a gate that exits non-zero with its reason. Built by `rye build`.
 - **Rishi gained arithmetic and a real stdout** — integer `+`/`-`/`×`/`÷` with correct operator precedence via two-layer recursive descent, parenthesized grouping, and `say` rebound from stderr to stdout. Nine arithmetic assertions in `rishi/tests/arithmetic.rish`, all green. The shell can now compute, compose, and speak.
 - **The parity gate runs in Rishi** — `tools/parity.rish` runs each corpus `.rye` through `rye run` (baseline via `RYE_LIB=vendor/zig-toolchain/lib`, strengthened via default `rye/lib`), compares outputs as one value, and asserts the verdict. Proven GREEN across 48 programs and RED on tamper (`parity-selftest.rish`).
@@ -136,7 +136,7 @@ The Pond GUI (`10009`, `986`) composes when Brushstroke + Skate + Mantra + Rishi
 
 ### What to Build Next, and Why
 
-Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, mem search, split/tokenize iterators through **reset (9955)** and **next (9956)**, mem.join (9961), cut family (9958–9960) — all done. **Strengthening the next `std` surface (9954)** stays the honest next step on the main track; **RyeVersion** accretion waits beside the capability table.
+Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, mem iterators through **WindowIterator (9954)**, mem.join (9961), cut family (9958–9960) — all done. **Strengthening the next `std` surface (9953)** stays the honest next step on the main track; **RyeVersion** accretion waits beside the capability table.
 
 ---
 
