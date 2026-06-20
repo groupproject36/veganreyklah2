@@ -3,6 +3,7 @@
 //! See: https://semver.org
 
 const std = @import("std");
+const assert = std.debug.assert;
 const Version = @This();
 
 major: usize,
@@ -16,16 +17,31 @@ pub const Range = struct {
     max: Version,
 
     pub fn includesVersion(self: Range, ver: Version) bool {
-        if (self.min.order(ver) == .gt) return false;
-        if (self.max.order(ver) == .lt) return false;
-        return true;
+        const lo = self.min.order(ver);
+        const hi = self.max.order(ver);
+        const result = lo != .gt and hi != .lt;
+        if (result) {
+            assert(lo != .gt);
+            assert(hi != .lt);
+        } else {
+            assert(lo == .gt or hi == .lt);
+        }
+        return result;
     }
 
     /// Checks if system is guaranteed to be at least `version` or older than `version`.
     /// Returns `null` if a runtime check is required.
     pub fn isAtLeast(self: Range, ver: Version) ?bool {
-        if (self.min.order(ver) != .lt) return true;
-        if (self.max.order(ver) == .lt) return false;
+        const min_ord = self.min.order(ver);
+        if (min_ord != .lt) {
+            assert(min_ord == .eq or min_ord == .gt);
+            return true;
+        }
+        const max_ord = self.max.order(ver);
+        if (max_ord == .lt) {
+            assert(max_ord == .lt);
+            return false;
+        }
         return null;
     }
 };
@@ -37,9 +53,18 @@ pub fn order(lhs: Version, rhs: Version) std.math.Order {
     if (lhs.minor > rhs.minor) return .gt;
     if (lhs.patch < rhs.patch) return .lt;
     if (lhs.patch > rhs.patch) return .gt;
-    if (lhs.pre != null and rhs.pre == null) return .lt;
-    if (lhs.pre == null and rhs.pre == null) return .eq;
-    if (lhs.pre == null and rhs.pre != null) return .gt;
+    if (lhs.pre != null and rhs.pre == null) {
+        assert(lhs.major == rhs.major and lhs.minor == rhs.minor and lhs.patch == rhs.patch);
+        return .lt;
+    }
+    if (lhs.pre == null and rhs.pre == null) {
+        assert(lhs.major == rhs.major and lhs.minor == rhs.minor and lhs.patch == rhs.patch);
+        return .eq;
+    }
+    if (lhs.pre == null and rhs.pre != null) {
+        assert(lhs.major == rhs.major and lhs.minor == rhs.minor and lhs.patch == rhs.patch);
+        return .gt;
+    }
 
     // Iterate over pre-release identifiers until a difference is found.
     var lhs_pre_it = std.mem.splitScalar(u8, lhs.pre.?, '.');
@@ -50,7 +75,10 @@ pub fn order(lhs: Version, rhs: Version) std.math.Order {
 
         // A larger set of pre-release fields has a higher precedence than a smaller set.
         if (next_lid == null and next_rid != null) return .lt;
-        if (next_lid == null and next_rid == null) return .eq;
+        if (next_lid == null and next_rid == null) {
+            assert(std.mem.eql(u8, lhs.pre.?, rhs.pre.?));
+            return .eq;
+        }
         if (next_lid != null and next_rid == null) return .gt;
 
         const lid = next_lid.?; // Left identifier
