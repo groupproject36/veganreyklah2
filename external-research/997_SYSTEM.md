@@ -87,6 +87,16 @@ Our debt here is unusual, because we did not only learn from Zig — we stood on
 
 ---
 
+## The Compositor and the Terminal — River, Ghostty, and What We Build From Them
+
+As the work reached the display layer, two projects from the Zig ecosystem showed how a compositor and a terminal are built on the same ground our language stands on.
+
+**River**, created by Isaac Freund, is a non-monolithic Wayland compositor written in Zig. Its architecture separates the compositor and the window manager into distinct processes that communicate through a Wayland protocol — the same single-responsibility separation we carry into our own stack. River taught us that a compositor can be clean, minimal, and composed from protocol-level parts rather than monolithic abstractions. We study River through its public documentation and the Wayland protocol specifications it implements, and we honor Isaac Freund's design. River is licensed under the GPL-3.0, and we respect that license by studying the project's public design decisions, protocol documentation, and architecture without cloning or incorporating its source code. Our compositor surface, **Brushstroke**, and our terminal, **Skate**, are written from scratch in Rye, on our own ground.
+
+**Ghostty**, created by Mitchell Hashimoto, is a GPU-accelerated terminal emulator with a clean backend seam and a `libghostty` C API. It showed us how a terminal's rendering pipeline can be separated from its surface, and how font shaping and grid layout can be done well. Ghostty is licensed under the MIT license. We honor Mitchell Hashimoto's craft and study Ghostty's public design for the concepts that inform Skate.
+
+---
+
 ## The Drawn Surface — David Vanderson and DVUI
 
 As the work reached toward showing itself, one more source joined the lineage: **David Vanderson's DVUI**, an immediate-mode interface toolkit for Zig. It taught us two things we carry into our own surface, **Brushstroke**. The first is **immediate mode**: an interface redrawn from the current values every frame, holding no retained tree that can drift from the truth — the same single-stranded simplicity Hickey names, now applied to what a person sees. The second is a **backend abstraction**: one interface decoupled from the surface it lands on, so the same program can draw to many places through one clean seam, including a surface a person reaches from a small, portable, sandboxed artifact.
@@ -178,7 +188,19 @@ So TAME is more than a label. It is a small daily reminder that strength and gen
 - **`../gratitude/infuse.nix/`** — Adam Joseph's infuse, the bridge between Nix and s6. The connection between declaration and supervision that Brix and Caravan inherit. Cloned from Codeberg.
 - **`../gratitude/nix/`** — Eelco Dolstra's Nix, the purely functional package manager. The source of content-addressed reproducible builds, and the composability model Brix and Silo inherit. LGPL-2.1, cloned shallow.
 - **`../gratitude/manyana/`** — Manyana, a CRDT-based version control system. The direct ancestor of Mantra's weave structure, generation counting, and conflict-free merges. Public domain.
+- **River** (Isaac Freund) — a non-monolithic Wayland compositor in Zig. GPL-3.0. Studied through public documentation and Wayland protocol specs only; not cloned, not incorporated. The design that informs our **Brushstroke** compositor surface.
+- **Ghostty** (Mitchell Hashimoto) — a GPU-accelerated terminal emulator with a clean backend seam. MIT. The design that informs our terminal, **Skate**.
 - **This note** — the one gratitude bridge between all these sources and our work.
+
+---
+
+## A Note on Licenses and the Clean Room
+
+We honor every source plainly and keep a clean conscience about how we use them. The projects held in `../gratitude/` fall into two families: **permissively licensed** sources (MIT, ISC, Apache 2.0, public domain) whose code we may study freely, and **copyleft-licensed** sources (GPL-3.0, LGPL-2.1) whose code we study for concepts only. In every case, our implementations are written from scratch in Rye. No code, no documentation, and no text is copied from any source into our own modules; what we inherit is ideas, and ideas are free.
+
+The GPL-licensed projects held in `gratitude/` — SixOS, ai-jail, and Damus — are recorded as gitlinks (commit pointers) rather than as source files in our repository. Our git history has never contained their source code. The locally cloned copies (Nix, s6, skalibs) are not tracked by git at all; they live on disk for reading and are excluded from our commits. River, also GPL-3.0, is not cloned and is studied only through its public documentation and the Wayland protocol specifications it implements.
+
+This separation is deliberate. The `active-designing/` directory is a clean room: it names only our own modules and expresses concepts in our own vocabulary. The `external-research/` directory studies the world with attribution. The boundary between reading and building is the boundary between `gratitude/` and `rye/`, and it is never crossed by code — only by understanding.
 
 ---
 
