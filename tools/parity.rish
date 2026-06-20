@@ -13,7 +13,7 @@ let zig = "vendor/zig-toolchain/zig"
 let dir = "rye/tests"
 let baseline = "vendor/zig-toolchain/lib"
 
-let corpus = ["dir_iterate_test" "fs_boundary_test" "mem_diff_test" "sha3_256_test" "sha3_256_boundary_test" "sha3_512_test" "sha3_boundary_test" "version_test" "call_paths_test" "ed25519_sign_test" "x25519_agree_test" "aead_seal_test" "sealed_message_test" "mantra_weave_test" "tally_gardens_test" "alloc_print_test" "allocator_alloc_test" "buf_print_test" "write_streaming_all_test" "read_file_alloc_test" "path_join_test" "process_run_test" "path_dirname_test" "trim_start_test"]
+let corpus = ["dir_iterate_test" "fs_boundary_test" "mem_diff_test" "sha3_256_test" "sha3_256_boundary_test" "sha3_512_test" "sha3_boundary_test" "version_test" "call_paths_test" "ed25519_sign_test" "x25519_agree_test" "aead_seal_test" "sealed_message_test" "mantra_weave_test" "tally_gardens_test" "alloc_print_test" "allocator_alloc_test" "buf_print_test" "write_streaming_all_test" "read_file_alloc_test" "path_join_test" "process_run_test" "path_dirname_test" "trim_start_test" "path_basename_test" "path_extension_test"]
 
 say "parity gate: checking ${corpus}"
 

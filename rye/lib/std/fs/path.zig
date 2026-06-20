@@ -1443,7 +1443,11 @@ pub fn basenameWindows(path: []const u8) []const u8 {
 fn basenameInner(comptime path_type: PathType, path: []const u8) []const u8 {
     var it = ComponentIterator(path_type, u8).init(path);
     const last = it.last() orelse return &[_]u8{};
-    return last.name;
+    const result = last.name;
+    // Postcondition: basename is a sub-slice of the input path.
+    assert(result.len <= path.len);
+    if (result.len > 0) assert(mem.indexOf(u8, path, result) != null);
+    return result;
 }
 
 test basename {
@@ -1838,7 +1842,11 @@ pub fn extension(path: []const u8) []const u8 {
     const filename = basename(path);
     const index = mem.lastIndexOfScalar(u8, filename, '.') orelse return path[path.len..];
     if (index == 0) return path[path.len..];
-    return filename[index..];
+    const result = filename[index..];
+    // Postcondition: extension is a sub-slice of the input path (doc guarantee).
+    assert(result.len <= path.len);
+    if (result.len > 0) assert(mem.indexOf(u8, path, result) != null);
+    return result;
 }
 
 fn testExtension(path: []const u8, expected: []const u8) !void {
