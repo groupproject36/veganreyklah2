@@ -25,7 +25,7 @@ Two problems meet in one small script.
 
 First, Bash is the least TAME thing we use (`990` lays out why): untyped text, implicit word-splitting, a bolted-on error model. Our parity gate deserves better than the language most likely to betray it quietly.
 
-Second — and this is the subtler one — **the parity gate is two kinds of work wearing one coat.** Part of it is *orchestration*: for each program in the corpus, run it against the baseline library, then against ours. That part wants execline's spirit — a predictable sequence of process hand-offs with no surprises. The other part is *data*: compare two outputs, keep a running tally of matched and diverged, and report a single verdict at the end. That part wants typed values and honest aggregation. No borrowed shell does both halves well, and the systems language that could (Rye) is too ceremonious for a glue task. The script sits exactly on the seam `989` drew between orchestration and typed-data work.
+Second — and this is the subtler one — **the parity gate is two kinds of work wearing one coat.** Part of it is *orchestration*: for each witness, run it against the baseline library, then against ours. That part wants execline's spirit — a predictable sequence of process hand-offs with no surprises. The other part is *data*: compare two outputs, keep a running tally of matched and diverged, and report a single verdict at the end. That part wants typed values and honest aggregation. No borrowed shell does both halves well, and the systems language that could (Rye) is too ceremonious for a glue task. The script sits exactly on the seam `989` drew between orchestration and typed-data work.
 
 ---
 
@@ -72,15 +72,15 @@ Yet read it again for what is *missing*. There is no running tally — no clean 
 Rye can do the whole job, tally and all, as a real checkable program (Rye is Zig-shaped today, so this reads as Zig):
 
 ```zig
-const corpus = [_][]const u8{ "sha3_512_test", "sha3_boundary_test", "version_test" };
+const witnesses = [_][]const u8{ "sha3_512_test", "sha3_boundary_test", "version_test" };
 var matched: u32 = 0;
 var diverged: u32 = 0;
-for (corpus) |prog| {
+for (witnesses) |prog| {
     const base = try run(io, .{ zig, "run", testPath(prog), "--zig-lib-dir", baseline_lib });
     const ours = try run(io, .{ zig, "run", testPath(prog), "--zig-lib-dir", rye_lib });
     if (std.mem.eql(u8, base.out, ours.out) and base.code == ours.code) matched += 1 else diverged += 1;
 }
-assert(matched + diverged == corpus.len); // every program accounted for
+assert(matched + diverged == witnesses.len); // every program accounted for
 ```
 
 Here the tally is honest, the loop is bounded, the invariant is asserted, the comparison is exact. This is the safety we want. Yet it is *heavy*: spawning, capturing, allocation, and error handling are all spelled out, because a systems language is built to spell them out. For a program that runs for a microsecond on a server, that weight is right. For a glue script, it is a wall to climb each time.
@@ -91,9 +91,9 @@ Rishi keeps Rye's honesty and execline's safety, in a surface as quick as the Ba
 
 ```
 # parity.rish — the gate, in the Rye ecosystem shell
-let corpus = ["sha3_512_test" "sha3_boundary_test" "version_test"]
+let witnesses = ["sha3_512_test" "sha3_boundary_test" "version_test"]
 
-let results = corpus | map prog => {
+let results = witnesses | map prog => {
     name:   prog,
     parity: (zig run (test prog) --zig-lib-dir $baseline)
             == (zig run (test prog) --zig-lib-dir $rye_lib),

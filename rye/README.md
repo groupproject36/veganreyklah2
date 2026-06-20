@@ -106,7 +106,7 @@ rye/bin/rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c 
 Rye's `std` grows by **strengthening** — assertions and `maybe` markers that state what the code already does, never changing behavior. Each pass is recorded in `../strengthening-compiler/` and proven by three **Rishi** gates (`../tools/*.rish`):
 
 ```sh
-rishi/bin/rishi run tools/parity.rish          # 16 corpus programs, GREEN
+rishi/bin/rishi run tools/parity.rish          # 16 witness programs, GREEN
 rishi/bin/rishi run tools/parity-selftest.rish # gate turns RED on tamper
 rishi/bin/rishi run tools/additive-gate.rish   # shape of std changes only
 ```

@@ -72,11 +72,11 @@ Rishi parses its integer literals with base 10, well inside the contract.
 
 ## The Discipline Held
 
-Each change adds what the code *says*, never what it *does*. To prove it, a new corpus program — `rye/tests/call_paths_test.rye` — exercises all four functions across found and not-found searches, equal and unequal comparisons, trims that strip everything, and several bases. The differential-parity gate (`tools/parity.sh`) runs it against the pristine baseline `std` and against our strengthened `std` and finds the output and exit code identical to the byte:
+Each change adds what the code *says*, never what it *does*. To prove it, a new witness program — `rye/tests/call_paths_test.rye` — exercises all four functions across found and not-found searches, equal and unequal comparisons, trims that strip everything, and several bases. The differential-parity gate (`tools/parity.sh`) runs it against the pristine baseline `std` and against our strengthened `std` and finds the output and exit code identical to the byte:
 
 ```
 PARITY    call_paths_test.rye
-GREEN: Rye's std is behavior-identical to the baseline across the corpus.
+GREEN: Rye's std is behavior-identical to the baseline across the witnesses.
 ```
 
 And because `rye run` builds in Debug, the assertions are **live** every time we run Rishi — so each `.rish` script we run now actively checks these invariants as it goes, and would stop loudly, near the cause, if one were ever false.

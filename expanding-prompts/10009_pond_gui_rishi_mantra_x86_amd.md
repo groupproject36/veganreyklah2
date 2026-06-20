@@ -66,16 +66,16 @@ Layer 0: Already running (Rye, Rishi, Tally seed, crypto foundation)
 Run before any Mantra code exists. These passes harden the std Mantra will lean on.
 
 **1a. SHA3-256.**
-Add a strengthening pass for SHA3-256. The sponge is already strengthened (`9997`); the SHA3-256 wrapper mirrors the SHA3-512 pass (`9998`) at the narrower digest width. Add a test to the corpus: a known SHA3-256 digest, green against baseline and strengthened std. Record in a new `strengthening-compiler/9994_sha3_256.md`.
+Add a strengthening pass for SHA3-256. The sponge is already strengthened (`9997`); the SHA3-256 wrapper mirrors the SHA3-512 pass (`9998`) at the narrower digest width. Add a test to the witnesses: a known SHA3-256 digest, green against baseline and strengthened std. Record in a new `strengthening-compiler/9994_sha3_256.md`.
 
 **1b. `mem.copy`.**
-State the invariant: destination has capacity for source length; no overlap assumed. Assert at entry. Add to corpus (a copy-and-compare test). Record in `9996` or a companion pass.
+State the invariant: destination has capacity for source length; no overlap assumed. Assert at entry. Add a witness (a copy-and-compare test). Record in `9996` or a companion pass.
 
 **1c. `std.fs` boundary assertions.**
-Write a `rye/tests/fs_roundtrip_test.rye`: write a known blob, read it back, confirm byte-for-byte equality. Add it to the corpus. For each `openFile` / `readAll` / `writeAll` call in Mantra, assert the path is non-empty and within the allowed root before the call. These are effectful and not parity-gate-testable directly; the additive gate governs, and the integration test gates the behavior.
+Write a `rye/tests/fs_roundtrip_test.rye`: write a known blob, read it back, confirm byte-for-byte equality. Add it to the witnesses. For each `openFile` / `readAll` / `writeAll` call in Mantra, assert the path is non-empty and within the allowed root before the call. These are effectful and not parity-gate-testable directly; the additive gate governs, and the integration test gates the behavior.
 
 **1d. Path operations.**
-Assert in `std.fs.path.join` that no component is empty and the result stays within a declared root. Add a path-join test to the corpus.
+Assert in `std.fs.path.join` that no component is empty and the result stays within a declared root. Add a path-join test to the witnesses.
 
 ---
 
@@ -107,7 +107,7 @@ A `Weave` struct: a list of `Line` values, each carrying `text: []const u8`, `ge
 The invariants are asserted at every mutation: generation counts never decrease, presence follows parity. TAME-first, written from line one this way, not retrofitted.
 
 **3b. Diff computation: `mantra/src/diff.rye`.**
-A pure function `diff(old: []Line, new_text: [][]const u8) Diff`: computes the minimal edit between the current weave state and the new text. Patience diff or a simple LCS — small and correct over fast and complex. Pure: same inputs, same output, always. Add to the corpus immediately.
+A pure function `diff(old: []Line, new_text: [][]const u8) Diff`: computes the minimal edit between the current weave state and the new text. Patience diff or a simple LCS — small and correct over fast and complex. Pure: same inputs, same output, always. Add to the witnesses immediately.
 
 **3c. Blob store: `mantra/src/store.rye`.**
 Content-addressed storage under `.mantra/blobs/`. A blob's name is its SHA3-256 digest (hex string). `store.write(blob: []const u8)` writes the blob only if the name is new; `store.read(name: []const u8)` reads it back. Uses Tally's `blob` garden for working memory. The store manifest (`.mantra/HEAD`) holds the current weave's blob name.
@@ -245,11 +245,11 @@ The Wasm target is Brushstroke's web-compatible face, the path that lets a Pond 
 
 Every new Rye file written in Steps 1–8 arrives TAME-first:
 - Every function states its invariants as assertions at entry and exit.
-- Pure functions join the corpus immediately; the parity gate proves each one.
+- Pure functions join the witnesses immediately; the parity gate proves each one.
 - Effectful functions (file I/O, Wayland calls, Vulkan calls) are bounded by boundary assertions and an integration test script.
 - Each step that touches an existing std function checks whether a strengthening pass is warranted before proceeding.
 
-The parity gate expands its corpus with each new Mantra primitive, each new Tally garden operation, and each new Brushstroke draw function. By the time the Pond GUI runs, the corpus includes Mantra's diff and merge, Tally's garden lifecycle, and Brushstroke's frame computation — all pure, all proven, all green.
+The parity gate grows its witnesses with each new Mantra primitive, each new Tally garden operation, and each new Brushstroke draw function. By the time the Pond GUI runs, the witnesses include Mantra's diff and merge, Tally's garden lifecycle, and Brushstroke's frame computation — all pure, all proven, all green.
 
 ---
 

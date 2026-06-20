@@ -118,7 +118,7 @@ rishi/bin/rishi run rishi/tests/string_builtins.rish   # length, trim, slice
 Rishi orchestrates Rye's strengthening safety net — all `.rish`, no `.sh`:
 
 ```sh
-rishi/bin/rishi run tools/parity.rish           # behavior: corpus via rye run, 21 programs GREEN
+rishi/bin/rishi run tools/parity.rish           # behavior: witnesses via rye run, 21 programs GREEN
 rishi/bin/rishi run tools/parity-selftest.rish  # gate turns RED on tamper
 rishi/bin/rishi run tools/additive-gate.rish    # shape: assertions-only std diff
 ```
@@ -130,7 +130,7 @@ the broken fact, and exits non-zero: the gate behavior `parity.rish` leans on.
 
 ## How It Grows
 
-The first version was the seed; **`parity.rish` now runs** and guards the whole strengthened corpus (`../tools/parity.rish`). **`parity-selftest.rish`** proves the gate turns RED on a real divergence. **`additive-gate.rish`** classifies std diffs as assertions-only or REVIEW. Together they are the gate trio documented in `../rye-learning-process/998_ALMANAC.md`.
+The first version was the seed; **`parity.rish` now runs** and guards the whole strengthened witness set (`../tools/parity.rish`). **`parity-selftest.rish`** proves the gate turns RED on a real divergence. **`additive-gate.rish`** classifies std diffs as assertions-only or REVIEW. Together they are the gate trio documented in `../rye-learning-process/998_ALMANAC.md`.
 
 Two north stars guide further growth. `tests/hello.rish` is what runs today;
 `examples/pond.rish` is where we are headed — an illustrative sketch of Rishi

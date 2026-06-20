@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `181512`: pass 9954 `WindowIterator`; corpus 49.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `182812`: pass 9953 `mem.order`; 50 witnesses.*
 
 **Language:** EN
-**Version:** `20260620.181512` (Rye chronological stamp)
+**Version:** `20260620.182812` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,37 +12,38 @@
 
 ## What Just Landed (this session)
 
-- **Strengthening pass 9954 (`181512`).** `WindowIterator` postconditions; corpus 49/49 GREEN.
-- **Strengthening pass 9955 (`180712`).** iterator `reset` postconditions; corpus 48 GREEN.
-- **Strengthening pass 9956 (`180012`).** `TokenIterator.next` postconditions; corpus 47 GREEN.
-- **Strengthening pass 9957 (`175712`).** `TokenIterator.peek` + `rest` postconditions; corpus 46 GREEN.
-- **Strengthening pass 9958 (`175312`).** `cutLast` + `cutScalarLast` postconditions; corpus 45 GREEN.
-- **Strengthening pass 9959 (`174912`).** `cut` + `cutScalar` postconditions; corpus 44 GREEN.
-- **Strengthening pass 9960 (`174312`).** `cutPrefix` + `cutSuffix` postconditions; corpus 43 GREEN.
-- **Strengthening pass 9961 (`173212`).** `mem.join` postconditions; corpus 42 GREEN.
-- **Strengthening pass 9962 (`172612`).** `SplitBackwardsIterator` postconditions; corpus 41 GREEN.
-- **Strengthening pass 9963 (`172012`).** `SplitIterator.first` postconditions; corpus 40 GREEN.
-- **Strengthening pass 9964 (`171512`).** `findLastNone` postconditions; corpus 39 GREEN.
-- **Strengthening pass 9965 (`171112`).** `findNonePos` + `findNone` postconditions; corpus 38 GREEN.
-- **Strengthening pass 9966 (`170312`).** `findLastAny` postconditions; corpus 37 GREEN.
-- **Strengthening pass 9967 (`165812`).** `findAnyPos` + `findAny` postconditions; corpus 36 GREEN.
-- **Strengthening pass 9968 (`165512`).** `SplitIterator.rest`; corpus 35 GREEN.
-- **Strengthening pass 9969 (`165112`).** `SplitIterator.peek`; corpus 34 GREEN.
-- **Strengthening pass 9970 (`164812`).** `std.mem.findLast`; corpus 33 GREEN.
-- **Strengthening pass 9971 (`164312`).** `std.mem.findPos`; corpus 32 GREEN.
-- **Strengthening pass 9972 (`164012`).** `std.mem.findLastLinear`; corpus 31 GREEN.
-- **Strengthening pass 9973 (`163512`).** `std.mem.findPosLinear`; corpus 30 GREEN.
-- **Strengthening pass 9974 (`163112`).** `std.mem.findScalarPos`; corpus 29 GREEN.
-- **Strengthening pass 9975 (`162712`).** `std.mem.findScalarLast`; corpus 28 GREEN.
-- **Strengthening pass 9976 (`161812`–`162512`).** `std.fs.path.stem`; corpus 27 GREEN.
-- **Strengthening pass 9977 (`161312`).** `std.fs.path.extension` postcondition; corpus 26/26 GREEN.
+- **Strengthening pass 9953 (`182812`).** `mem.order` + `lessThan` postconditions; 50/50 witnesses GREEN.
+- **Strengthening pass 9954 (`181512`).** `WindowIterator` postconditions; 49 witnesses GREEN.
+- **Strengthening pass 9955 (`180712`).** iterator `reset` postconditions; 48 witnesses GREEN.
+- **Strengthening pass 9956 (`180012`).** `TokenIterator.next` postconditions; 47 witnesses GREEN.
+- **Strengthening pass 9957 (`175712`).** `TokenIterator.peek` + `rest` postconditions; 46 witnesses GREEN.
+- **Strengthening pass 9958 (`175312`).** `cutLast` + `cutScalarLast` postconditions; 45 witnesses GREEN.
+- **Strengthening pass 9959 (`174912`).** `cut` + `cutScalar` postconditions; 44 witnesses GREEN.
+- **Strengthening pass 9960 (`174312`).** `cutPrefix` + `cutSuffix` postconditions; 43 witnesses GREEN.
+- **Strengthening pass 9961 (`173212`).** `mem.join` postconditions; 42 witnesses GREEN.
+- **Strengthening pass 9962 (`172612`).** `SplitBackwardsIterator` postconditions; 41 witnesses GREEN.
+- **Strengthening pass 9963 (`172012`).** `SplitIterator.first` postconditions; 40 witnesses GREEN.
+- **Strengthening pass 9964 (`171512`).** `findLastNone` postconditions; 39 witnesses GREEN.
+- **Strengthening pass 9965 (`171112`).** `findNonePos` + `findNone` postconditions; 38 witnesses GREEN.
+- **Strengthening pass 9966 (`170312`).** `findLastAny` postconditions; 37 witnesses GREEN.
+- **Strengthening pass 9967 (`165812`).** `findAnyPos` + `findAny` postconditions; 36 witnesses GREEN.
+- **Strengthening pass 9968 (`165512`).** `SplitIterator.rest`; 35 witnesses GREEN.
+- **Strengthening pass 9969 (`165112`).** `SplitIterator.peek`; 34 witnesses GREEN.
+- **Strengthening pass 9970 (`164812`).** `std.mem.findLast`; 33 witnesses GREEN.
+- **Strengthening pass 9971 (`164312`).** `std.mem.findPos`; 32 witnesses GREEN.
+- **Strengthening pass 9972 (`164012`).** `std.mem.findLastLinear`; 31 witnesses GREEN.
+- **Strengthening pass 9973 (`163512`).** `std.mem.findPosLinear`; 30 witnesses GREEN.
+- **Strengthening pass 9974 (`163112`).** `std.mem.findScalarPos`; 29 witnesses GREEN.
+- **Strengthening pass 9975 (`162712`).** `std.mem.findScalarLast`; 28 witnesses GREEN.
+- **Strengthening pass 9976 (`161812`–`162512`).** `std.fs.path.stem`; 27 witnesses GREEN.
+- **Strengthening pass 9977 (`161312`).** `std.fs.path.extension` postcondition; 26/26 witnesses GREEN.
 - **Garden-memory policy (`161112`–`161312`).** Authored `.rye` never uses `ArenaAllocator` directly — use `init.garden.allocator()`. No `std.heap.GardenAllocator` rename; owned wrapper path is `rye.garden` / `tally/heap-garden.rye`. Recorded in `inherited-names.md`, `tame-style.md`, `.cursor/rules/tame-style.mdc`, `.claude/rules/tame-style.md`.
-- **Strengthening pass 9978 (`160312`).** `std.fs.path.basename`; corpus 25/25 GREEN.
+- **Strengthening pass 9978 (`160312`).** `std.fs.path.basename`; 25/25 witnesses GREEN.
 - **Living docs refresh (`160312`).** `994_style_audit.md` (timestamp removed from filename); `995` and `996` brought current after `155212` ship.
 - **Style audit shipped (`155212`).** TAME + Radiant GREEN on 22 `.rye`/`.rish` files; record at `work-in-progress/994_style_audit.md`. Seven commits pushed to all remotes (`36203a9`).
-- **Strengthening 9979–9987 (`143312`–`050912`).** `trimStart`, `path.dirname`, `process.run`, `allocPrint`+`trimEnd`, `path.join`, `readFileAlloc`, `writeStreamingAll`, `bufPrint`, `Allocator.alloc` + Skate `.rye` migration — corpus grew 17 → 24.
+- **Strengthening 9979–9987 (`143312`–`050912`).** `trimStart`, `path.dirname`, `process.run`, `allocPrint`+`trimEnd`, `path.join`, `readFileAlloc`, `writeStreamingAll`, `bufPrint`, `Allocator.alloc` + Skate `.rye` migration — witnesses grew 17 → 24.
 - **Rishi builtins + parser (`151212`–`153812`).** `split`, `join`, `ends-with`, string `contains`, infix `index-of`; `findComparison` before infix word ops; `isWordHyphen` for hyphenated identifiers vs subtraction. Rishi stamp `20260620.153812`.
-- **Parity via `rye run` (`145612`).** Corpus `.rye` through `rye run`; baseline arm `RYE_LIB=vendor/zig-toolchain/lib`.
+- **Parity via `rye run` (`145612`).** Witness `.rye` through `rye run`; baseline arm `RYE_LIB=vendor/zig-toolchain/lib`.
 - **Skate text grid.** Monospace 8×8 glyphs on Wayland; headless `selftest` green.
 
 ## Threads Now Closed
@@ -53,7 +54,7 @@
 - **Rishi arithmetic + stdout** — `+`/`-`/`*`/`/`, correct precedence, `say`.
 - **Tally seed** — one Region, 13 invariants.
 - **Tally v1 named gardens** — `Gardens`, blob/diff/frame, 15/15 GREEN.
-- **Strengthening 9994–9954** — through `WindowIterator`. Corpus 49.
+- **Strengthening 9994–9953** — through `mem.order`. 50 witnesses.
 - **Mantra seed** — weave, LCS diff, SHA3-256 store, init/add/status.
 - **Mantra for the repo (seed)** — commit chain, add-all walks `.brix`, log follows chain. 9/9 bricks.
 - **`init.garden` (phase 1)** — `std.process.Init.garden` renamed from upstream `arena`.
@@ -87,7 +88,7 @@
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio (9953 and below) | `10023` Track B, `998` |
+| 1 | **Strengthening series** — next `std` surface through gate trio (9952 and below) | `10023` Track B, `998` |
 | 2 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 3 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
 
@@ -129,7 +130,7 @@
 
 | Layer | Extension | Role |
 |-------|-----------|------|
-| **Our programs** | `.rye` | Rishi, seeds, Skate, corpus tests — what we author |
+| **Our programs** | `.rye` | Rishi, seeds, Skate, witness tests — what we author |
 | **Our std** | `.zig` under `rye/lib/std` | Strengthened surfaces the compiler reads via `--zig-lib-dir` |
 | **Ephemeral bridge** | adjacent `.zig` | `rye run` / `rye build` only; deleted after compile |
 
@@ -148,12 +149,15 @@ Skate briefly used `.zig` modules; migrated at `050912` with recursive `.rye` im
 
 Phase 2 vocabulary sweep is **closed**. Policy at `161112`: warm names enter beside inherited types, not as renames.
 
+**Reserved words** — high-value metaphors held until a surface earns them (`context/specs/reserved-vocabulary.md`). **`plot`** is reserved today; parity programs are **witnesses**.
+
 **Parity contract (`145612`):**
 
+- **Witnesses** — `.rye` programs in `rye/tests/` listed in `tools/parity.rish`; each one witnesses that baseline and strengthened `std` agree on behavior.
 - **Compare:** baseline `vendor/zig-toolchain/lib` vs strengthened `rye/lib` — same test, same pinned Zig (`RYE_ZIG`).
 - **Invoke:** `rye run rye/tests/<name>.rye` on both arms (`RYE_LIB` for baseline); exercises the real bridge path.
 - **Hold:** exit code + stdout/stderr identical — assertions change what code *says*, never what it *does*.
-- **Corpus:** 49 programs, all GREEN (9954 `WindowIterator` latest).
+- **Witnesses:** 50 programs, all GREEN (9953 `mem.order` latest).
 
 ## The Through-Line
 

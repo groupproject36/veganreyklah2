@@ -105,9 +105,9 @@ One layout, three grounds proven, one ground framed:
 | **Two harts, shared RAM** | `aurora/src/posted.rye` | Mailbox + fence (`974`) |
 | **Two processes, hosted** | `comlink/hosted_wire.rye` | Localhost UDP :38472 |
 | **Two guests, emulated** | `10016`, `975` | Virtio-net frame |
-| **Hosted test corpus** | `sealed_message_test` | In-process, parity-gated |
+| **Hosted witness** | `sealed_message_test` | In-process, parity-gated |
 
-Changing the datagram shape is a **version** event — new offsets, new corpus entry, gates re-run. Changing the transport is a **wire** event — same open path, new `read()` beneath.
+Changing the datagram shape is a **version** event — new offsets, new witness entry, gates re-run. Changing the transport is a **wire** event — same open path, new `read()` beneath.
 
 ---
 

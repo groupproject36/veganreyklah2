@@ -32,7 +32,7 @@ We would add an alias only if it earned its keep, and only ever as an addition â
 
 ## Authored code â€” reach for `init.garden`, not `ArenaAllocator`
 
-**Decided (2026-06-20, `161112`):** programs we write (`.rye` seeds, Rishi, Skate, corpus, tools) **never construct or name `std.heap.ArenaAllocator` directly**. Use the process season allocator:
+**Decided (2026-06-20, `161112`):** programs we write (`.rye` seeds, Rishi, Skate, witnesses, tools) **never construct or name `std.heap.ArenaAllocator` directly**. Use the process season allocator:
 
 ```zig
 const garden = init.garden.allocator();

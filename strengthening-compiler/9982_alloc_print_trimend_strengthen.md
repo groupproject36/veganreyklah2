@@ -1,12 +1,12 @@
 # Pass 9982 · allocPrint and trimEnd — postconditions on the formatting and trim layer
 
-**Corpus:** 21 programs (unchanged — `alloc_print_test` from pass 9988)
+**Witnesses:** 21 programs (unchanged — `alloc_print_test` from pass 9988)
 **Gate:** GREEN — parity confirmed
 **Stamp:** `20260620.150112`
 
 ## What this pass covers
 
-Pass 9988 added `rye/tests/alloc_print_test.rye` to the parity corpus. This pass lands TAME postconditions in the strengthened `std` so the gate exercises assertions at runtime, not only in the test file.
+Pass 9988 added `rye/tests/alloc_print_test.rye` to the parity witnesses. This pass lands TAME postconditions in the strengthened `std` so the gate exercises assertions at runtime, not only in the test file.
 
 1. **`std.fmt.allocPrint`** — Rishi path conversion (`doReadFile`, `doListDir`, `doWriteFile`), Mantra path construction.
 

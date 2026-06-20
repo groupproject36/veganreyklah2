@@ -22,7 +22,7 @@ Open the **display frontier** on x86_64: one Wayland client window, one static f
 |-------|-----------|-------------|
 | **A** | **Wayland client seed** — connect, create surface, attach buffer, commit once | Smallest window that shows our frame |
 | **B** | **Display seam doc** — narrow Rye wrappers for socket, registry, surface (`985` § display) | No OS pattern escapes wrappers |
-| **C** | **Roadmap / threads sync** — `996` corpus 16, hosted Brushstroke checked, twin checked | Docs match what runs |
+| **C** | **Roadmap / threads sync** — `996` 16 witnesses, hosted Brushstroke checked, twin checked | Docs match what runs |
 
 **Defer unless time remains:**
 
@@ -68,7 +68,7 @@ Each wrapper: assert at entry, typed errors, no raw fds in Brushstroke logic.
 
 ## Track C — Doc Sync
 
-- `996_roadmap.md`: corpus 16, Caravan bounded + twin, hosted Brushstroke seed [x], Wayland seed [ ].
+- `996_roadmap.md`: 16 witnesses, Caravan bounded + twin, hosted Brushstroke seed [x], Wayland seed [ ].
 - `995_open_threads.md`: twin landed; Wayland seed in progress → closed when A green.
 
 ## Discipline

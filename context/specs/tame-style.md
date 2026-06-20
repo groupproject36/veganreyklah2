@@ -133,7 +133,7 @@ A mutation function on the struct asserts the invariant holds on entry and on ex
 
 ### Garden memory — never `ArenaAllocator` directly
 
-In **authored** Rye programs (`.rye` seeds, tools, corpus tests, Skate, Rishi source), reach for the process season allocator through **`init.garden`**, not through `std.heap.ArenaAllocator`:
+In **authored** Rye programs (`.rye` seeds, tools, witness tests, Skate, Rishi source), reach for the process season allocator through **`init.garden`**, not through `std.heap.ArenaAllocator`:
 
 ```zig
 const garden = init.garden.allocator();

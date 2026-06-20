@@ -33,7 +33,7 @@ Opus built **two new running programs** and **eleven research and design documen
 1. **`caravan/bounded.rye`** — supervision + Tally garden composed. The step between seed and microkernel.
 2. **`aurora/src/deciding.rye`** — four-stage relay that chooses what runs next. Clean exit on QEMU RISC-V.
 
-Rishi builtins: `read-file`, `write-file`, `list-dir`, `lines`, `starts-with`. Paren depth fix across all parsers. Additive gate migrated to Rishi. 12 TAME assertion fixes. Strengthening pass 9988 (corpus 16/16 GREEN).
+Rishi builtins: `read-file`, `write-file`, `list-dir`, `lines`, `starts-with`. Paren depth fix across all parsers. Additive gate migrated to Rishi. 12 TAME assertion fixes. Strengthening pass 9988 (16/16 witnesses GREEN).
 
 Research: s6/SixOS/Nix/infuse (974), Wayland/compositor (972), editors/remoting (971), Mantra forge (973). GPL compliance analysis. Multi-license strategy.
 
@@ -73,7 +73,7 @@ The honest reckoning:
 **The priority counsel:**
 
 1. **More Rye implementation time, less new research.** The design layer is comprehensive; the next value comes from building, not from studying more projects.
-2. **Strengthen what we built.** The assertion backlog has ~50 locations. The strengthening corpus should grow with each new program.
+2. **Strengthen what we built.** The assertion backlog has ~50 locations. The strengthening witnesses should grow with each new program.
 3. **The Brushstroke Wayland seed is the most important new code.** It opens the display layer — the path to the Pond GUI. Growing it toward text rendering (Skate) is the highest-leverage next step.
 4. **The Comlink hosted wire is the most important networking code.** It carries real crypto over real sockets. Growing it toward the device wire (virtio-net) is the next rung.
 5. **Rishi needs more builtins for real scripting.** `trim`, `slice`, `length`, `for-each` would let the additive gate run without awk and let configuration scripts express real behavior.

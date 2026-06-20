@@ -9,7 +9,7 @@
 **Voice:** Reya 2
 **Lens:** TAME Style (`../external-research/996_TAME_STYLE.md`); the method in `9999_STRENGTHENING.md`
 **Builds on:** `9993_mem_diff_primitives.md`, `../active-designing/985_native_system_interface.md`
-**Status:** Applied to `rye/lib/std/Io/Dir.zig` — parity GREEN, corpus at 12 programs
+**Status:** Applied to `rye/lib/std/Io/Dir.zig` — parity GREEN, 12 witnesses
 
 ---
 
@@ -90,7 +90,7 @@ PARITY    mem_diff_test.rye
 ... (10 prior entries, all PARITY) ...
 ---
 parity gate: 12 matched, 0 diverged across 12 programs
-GREEN: Rye's std is behavior-identical to the baseline across the corpus.
+GREEN: Rye's std is behavior-identical to the baseline across the witnesses.
 ```
 
 Twelve programs, all green. The write-then-read round-trip produced identical output on both stds, confirming the added assertions compile to nothing in the observable behavior and fire only when an invariant is broken.
@@ -104,7 +104,7 @@ Twelve programs, all green. The write-then-read round-trip produced identical ou
 | `rye/lib/std/Io/Dir.zig` | Four functions strengthened: `openFile`, `createFile`, `readFile`, `writeFile` |
 | `rye/tests/fs_boundary_test.rye` | Write–read–open round-trip exercising all four functions |
 | `tools/parity.sh` | Corpus extended to 12 programs |
-| `tools/parity.rish` | Same corpus extension |
+| `tools/parity.rish` | Same witness extension |
 | `strengthening-compiler/9992_fs_boundary.md` | This record |
 
 ---

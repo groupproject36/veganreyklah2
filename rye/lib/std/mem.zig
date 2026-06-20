@@ -659,12 +659,24 @@ pub fn order(comptime T: type, lhs: []const T, rhs: []const T) math.Order {
         for (lhs[0..n], rhs[0..n]) |lhs_elem, rhs_elem| {
             switch (math.order(lhs_elem, rhs_elem)) {
                 .eq => continue,
-                .lt => return .lt,
-                .gt => return .gt,
+                .lt => {
+                    // Postcondition: strict ordering disagrees with slice equality.
+                    assert(!eql(T, lhs, rhs));
+                    return .lt;
+                },
+                .gt => {
+                    assert(!eql(T, lhs, rhs));
+                    return .gt;
+                },
             }
         }
     }
-    return math.order(lhs.len, rhs.len);
+    const result = math.order(lhs.len, rhs.len);
+    switch (result) {
+        .eq => assert(eql(T, lhs, rhs)),
+        .lt, .gt => assert(!eql(T, lhs, rhs)),
+    }
+    return result;
 }
 
 /// Compares two many-item pointers with NUL-termination lexicographically.
@@ -705,7 +717,12 @@ test orderZ {
 
 /// Returns true if lhs < rhs, false otherwise
 pub fn lessThan(comptime T: type, lhs: []const T, rhs: []const T) bool {
-    return order(T, lhs, rhs) == .lt;
+    const ord = order(T, lhs, rhs);
+    if (ord == .lt) {
+        assert(!eql(T, lhs, rhs));
+        return true;
+    }
+    return false;
 }
 
 test lessThan {

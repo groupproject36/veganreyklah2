@@ -32,11 +32,11 @@ Three milestones, one session, composed not braided:
 |-------|-----------|----------|
 | **D** | **Caravan multi-child** — two children, separate gardens | After bounded seed pattern is copied |
 | **E** | **Device wire** — virtio-net datagram | Needs close-reading beside it (`10007` Thread D) |
-| **F** | **Roadmap refresh** — `996`/`983` corpus 16, `978` horizon | After A–C land |
+| **F** | **Roadmap refresh** — `996`/`983` 16 witnesses, `978` horizon | After A–C land |
 
 ## What Already Runs
 
-- Tally seed + gardens, Caravan seed + bounded, Mantra weave + chain, Rishi gate trio, Aurora deciding, 16-test corpus (`995`).
+- Tally seed + gardens, Caravan seed + bounded, Mantra weave + chain, Rishi gate trio, Aurora deciding, 16 witnesses (`995`).
 - Design: `988` Brushstroke, `986` living desktop, `978` Scribble/Lantern/Lattice horizon, `983` whole system.
 - Open threads: Brushstroke seed (build), garden vocabulary (near), flow foundation gap (`021112` review).
 
@@ -54,7 +54,7 @@ Three milestones, one session, composed not braided:
 
 **Not in scope:** Wayland, Vulkan, GPU, Skate grid, Pond enclosure. The seed proves **values → frame → surface** on the hosted path. Wayland is study (`985`, `986`).
 
-**Prove:** `rye build` + run binary; optional `rye/tests/brushstroke_seed_test.rye` if a corpus test earns its place.
+**Prove:** `rye build` + run binary; optional `rye/tests/brushstroke_seed_test.rye` if a witness test earns its place.
 
 **Allow-list:** add `!/brushstroke/` to `.gitignore`.
 

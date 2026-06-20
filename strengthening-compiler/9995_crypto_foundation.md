@@ -39,7 +39,7 @@ So the crypto passes will come, sponge by sponge, with a steady hand.
 
 Before we strengthen the signing, we prove it — the way the SHA3 test proved hashing before the SHA3 pass strengthened it. `rye/tests/ed25519_sign_test.rye` derives a deterministic key pair from a fixed seed, signs a message with null noise (a deterministic signature), confirms the true message verifies and a tampered one is rejected, and renders the public-key identity as stable hex. It runs identically every time, and the parity gate now carries it: five programs, all green, the signing primitive pinned byte-for-byte to the baseline.
 
-This is the foundation of rooted identity and sealed messaging, shown to work in our own std — and the corpus entry that will catch the day a strengthening pass touches it. The next implementation seeds grow from here: a shared secret between two identities (key agreement), a sealed payload (the cipher), and then the single encrypted, content-named datagram the network is waiting for (`../external-research/985`, `../external-research/982`).
+This is the foundation of rooted identity and sealed messaging, shown to work in our own std — and the witness entry that will catch the day a strengthening pass touches it. The next implementation seeds grow from here: a shared secret between two identities (key agreement), a sealed payload (the cipher), and then the single encrypted, content-named datagram the network is waiting for (`../external-research/985`, `../external-research/982`).
 
 ## So, Two Answers
 

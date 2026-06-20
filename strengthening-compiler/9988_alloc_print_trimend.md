@@ -1,12 +1,12 @@
 # Pass 9988 · allocPrint and trimEnd — the path conversion and parsing layer
 
-**Corpus:** 16 programs (grew from 15)
+**Witnesses:** 16 programs (grew from 15)
 **Gate:** GREEN — parity confirmed
 **Stamp:** `20260619.225712`
 
 ## What this pass covers
 
-Two `std` functions our recent code depends on, now exercised in the parity corpus:
+Two `std` functions our recent code depends on, now exercised in the parity witnesses:
 
 1. **`std.fmt.allocPrint`** — allocates a formatted, sentinel-terminated string. Used in Rishi's file I/O builtins (`doReadFile`, `doListDir`, `doWriteFile`) to convert Rishi string values (non-sentinel `[]const u8`) to OS-boundary-safe `[:0]u8` paths. Also used in Mantra's `Store` methods for path construction.
 

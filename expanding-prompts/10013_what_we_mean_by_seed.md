@@ -55,7 +55,7 @@ Seeds green today: Aurora, Tally (+ gardens), Caravan (+ bounded, twin), Mantra,
 
 ## Track C — Catalog Sync
 
-**Deliverable:** refresh `983_the_whole_system.md` seed table — corpus 16, Brushstroke hosted green, Caravan bounded+twin, gate trio in Rishi, pointer to `976`.
+**Deliverable:** refresh `983_the_whole_system.md` seed table — 16 witnesses, Brushstroke hosted green, Caravan bounded+twin, gate trio in Rishi, pointer to `976`.
 
 ## Discipline
 

@@ -1,6 +1,6 @@
 # 9990 — Mantra seed: the living history of a text stream
 
-**Target:** `mantra/src/main.rye` (new module), `rye/tests/mantra_weave_test.rye` (new corpus test)
+**Target:** `mantra/src/main.rye` (new module), `rye/tests/mantra_weave_test.rye` (new witness test)
 **Parity:** 14/14 GREEN
 
 ---

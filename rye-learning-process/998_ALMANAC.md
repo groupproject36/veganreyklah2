@@ -24,7 +24,7 @@ Rye's first version is honest about what it is: a thin front-end over the Zig 0.
 
 The one wrinkle we met immediately: the toolchain's front-end reads only the `.zig` extension. `zig run file.rye` answers `error: unrecognized file extension`. So the `rye` command bridges — it copies the `.rye` source to an adjacent `.zig` file, hands that to the compiler, and clears the bridge away afterward so the tree stays tidy. Since `050912`, `rye build` and `rye run` also bridge every local `@import("*.rye")` dependency recursively, rewriting those imports to `.zig` for the toolchain while the repository keeps `.rye` sources only.
 
-**What we write vs what we strengthen:** programs and corpus tests are `.rye`; assertions accrete in `rye/lib/std/**/*.zig` because that is the layout `--zig-lib-dir` serves. See `work-in-progress/995_open_threads.md` (*Ongoing — Rye vocabulary*).
+**What we write vs what we strengthen:** programs and witness tests are `.rye`; assertions accrete in `rye/lib/std/**/*.zig` because that is the layout `--zig-lib-dir` serves. See `work-in-progress/995_open_threads.md` (*Ongoing — Rye vocabulary*).
 
 Since then, Rye has taken its first steps away from the toolchain: it owns its standard library, and it counts its versions in its own way. The three entries that follow record how.
 
@@ -180,7 +180,7 @@ Four functions, each a different kind of TAME invariant:
 - **`std.mem.eql`** — a *`maybe`*, the dual of assert: equal and unequal lengths are both expected, so we name the variable space rather than constrain it.
 - **`std.fmt.parseInt`** — a *precondition*: a base is `0` (detect the prefix) or a true radix in 2…36; anything else is the caller's mistake, named at the door.
 
-The discipline held: each change adds what the code *says*, never what it *does*. A new corpus program, `rye/tests/call_paths_test.rye`, exercises all four across found/not-found, equal/unequal, all-stripped trims, and several bases; the parity gate (`tools/parity.rish`) runs it against the baseline and the strengthened `std` and stays green. And because `rye run` builds in Debug, the assertions are *live* when we run Rishi — every `.rish` script now checks these invariants as it goes. The full study is `strengthening-compiler/9996_stdlib_call_paths.md`.
+The discipline held: each change adds what the code *says*, never what it *does*. A new witness program, `rye/tests/call_paths_test.rye`, exercises all four across found/not-found, equal/unequal, all-stripped trims, and several bases; the parity gate (`tools/parity.rish`) runs it against the baseline and the strengthened `std` and stays green. And because `rye run` builds in Debug, the assertions are *live* when we run Rishi — every `.rish` script now checks these invariants as it goes. The full study is `strengthening-compiler/9996_stdlib_call_paths.md`.
 
 One deferral, named on purpose: `indexOfScalarPos` is a direct alias to the hot `findScalarPos`, so giving *it* a postcondition means touching the hot core. That waits for a pass that strengthens hot paths behind a `verify` flag — checks too costly for the data plane, compiled in only when asked for.
 
@@ -225,7 +225,7 @@ Strengthening is safe only while we can prove it. Three gates run in **Rishi** t
 
 | Gate | Script | What it proves |
 |------|--------|----------------|
-| **Parity** | `tools/parity.rish` | Rye's strengthened `std` is behavior-identical to the baseline across **21** corpus programs |
+| **Parity** | `tools/parity.rish` | Rye's strengthened `std` is behavior-identical to the baseline across **21** witness programs |
 | **Selftest** | `tools/parity-selftest.rish` | The parity gate turns **RED** on a deliberate SHA3 tamper |
 | **Additive** | `tools/additive-gate.rish` | The latest commit to `rye/lib/` changed only assertions, comments, and `maybe` markers |
 
@@ -237,7 +237,7 @@ rishi/bin/rishi run tools/parity-selftest.rish
 rishi/bin/rishi run tools/additive-gate.rish   # after a std-touching commit
 ```
 
-`parity.rish` runs each corpus `.rye` through `rye run` twice: baseline arm sets `RYE_LIB=vendor/zig-toolchain/lib`, strengthened arm uses default `rye/lib`. Same `RYE_ZIG`; only the std tree differs. Exit codes and combined output must match. The selftest builds a shadow copy of `rye/lib` with one tampered file (`sed -i` on the shadow) and confirms `rye run` catches the divergence. The additive gate pipes `git diff` through `tools/additive-classify.awk`. Each strengthening pass in `strengthening-compiler/` (9998 downward) records what was touched and expects these gates to stay green.
+`parity.rish` runs each witness `.rye` through `rye run` twice: baseline arm sets `RYE_LIB=vendor/zig-toolchain/lib`, strengthened arm uses default `rye/lib`. Same `RYE_ZIG`; only the std tree differs. Exit codes and combined output must match. The selftest builds a shadow copy of `rye/lib` with one tampered file (`sed -i` on the shadow) and confirms `rye run` catches the divergence. The additive gate pipes `git diff` through `tools/additive-classify.awk`. Each strengthening pass in `strengthening-compiler/` (9998 downward) records what was touched and expects these gates to stay green.
 
 ---
 
@@ -301,7 +301,7 @@ A few paths we have left lit for later, each a deliberate choice rather than an 
 - **Self-hosting the `rye` command.** The command is now written in Rye (`rye/src/main.rye`) and built by `rye build`, so the *build* is self-hosted. The deeper end state remains ahead: Rye compiling Rye, rather than bridging to the Zig toolchain beneath. We walk toward it as the language grows its own shape.
 - **A `build.rye` story.** `rye build` now compiles a single `.rye` file to a binary, freestanding targets included, and accepts extra source files and link flags after the path (see *Brushstroke* above). Zig builds *whole projects* through a `build.zig` script; Rye will want its own `build.rye` for many-file programs, bridged the same way single files are today.
 - **Device wire (virtio-net).** Sealed datagram over emulated `virtio-net` between two QEMU guests — Comlink's next rung after `comlink/hosted_wire.rye` (`10016`).
-- **Strengthening series.** Passes 9988–9991 and crypto foundation 9995 are green; the next `std` surfaces our tools lean on each earn a strengthening note and a corpus extension when they change behavior.
+- **Strengthening series.** Passes 9988–9991 and crypto foundation 9995 are green; the next `std` surfaces our tools lean on each earn a strengthening note and a witness extension when they change behavior.
 - **Pond.** The `ai-jail` sandbox we work inside is a Rust project; re-growing it as a gentle, TAME-style enclosure in Rye — Pond — is a thread we mean to follow once the language stands on more of its own.
 
 ---

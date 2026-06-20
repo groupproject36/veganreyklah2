@@ -35,7 +35,7 @@ Every seed in the family shares a shape, even when the domains differ (boot, mem
 | Property | Meaning |
 |----------|---------|
 | **Runs** | Build + execute on the stated target (hosted Linux, QEMU RISC-V, stdout, …). |
-| **Proves** | `debug.assert`, explicit exit codes, or gate corpus — the claim is checkable, not hoped for. |
+| **Proves** | `debug.assert`, explicit exit codes, or gate witnesses — the claim is checkable, not hoped for. |
 | **Names one thing** | One primary responsibility; composition comes in the *next* file, not inside the seed. |
 | **Bounded** | Budgets, restart limits, line counts, garden sizes — stated at construction. |
 | **Version-stamped** | A chronological constant (`20260620.021912`) ties the running artifact to the brief that authorized it. |
@@ -100,7 +100,7 @@ The seed file stays. Later rings import its discipline or inline its types hones
 | **Brushstroke** | `brushstroke/seed.rye` (hosted); `wayland_seed.rye` (native window) | Frame drawn from values | Running |
 | **Brix** | `.brix` | Project descriptor Mantra can read | Running |
 | **Comlink** | `posted.rye` (shared memory); `comlink/hosted_wire.rye` (localhost UDP) | Sealed datagram moves between harts or processes | Running |
-| **Rye** | `rye/src/main.rye` | Self-hosting compiler + strengthened std | Running (corpus 16) |
+| **Rye** | `rye/src/main.rye` | Self-hosting compiler + strengthened std | Running (16 witnesses) |
 | **Rishi** | `rishi/src/main.rye` + tests | Typed shell; gate trio in `.rish` | Running |
 | **Pond** | `rishi/examples/pond.rish` | Policy as a value | Designed; awaits Caravan + Tally enforcement |
 | **Skate** | `skate_grid.rye` + `font8x8_data.rye` on `wayland_seed.rye` | Monospace text grid on Wayland seed | Running (`10023` Track A) |
@@ -114,11 +114,11 @@ Horizon seeds still to plant: **virtio-net device wire**, **Caravan capability t
 
 A seed earns trust when the **gate trio** can reach it:
 
-- **`parity.rish`** — behavior identical across baseline and strengthened std (corpus programs).
+- **`parity.rish`** — behavior identical across baseline and strengthened std (witness programs).
 - **`parity-selftest.rish`** — the gate turns RED on a real divergence.
 - **`additive-gate.rish`** — std changes are assertions and words only.
 
-Seeds that touch `rye/lib/std` grow the corpus. Seeds that are pure module code (Caravan, Tally, Brushstroke) prove with their own assertions first; they join the corpus when they strengthen shared surfaces.
+Seeds that touch `rye/lib/std` grow the witnesses. Seeds that are pure module code (Caravan, Tally, Brushstroke) prove with their own assertions first; they join the witnesses when they strengthen shared surfaces.
 
 ---
 

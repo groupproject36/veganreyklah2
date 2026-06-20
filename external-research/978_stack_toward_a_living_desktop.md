@@ -36,7 +36,7 @@ Every layer above rests on this.
 
 ### The std functions Mantra leans on
 
-Mantra is not yet written, so "what needs strengthening" means: tracing what the implementation will lean on and checking each against the corpus.
+Mantra is not yet written, so "what needs strengthening" means: tracing what the implementation will lean on and checking each against the witnesses.
 
 **Already strengthened:**
 

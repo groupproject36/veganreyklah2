@@ -40,7 +40,7 @@ Still needed before Mantra:
 
 **Mantra's own algorithms — TAME-first:**
 
-The weave data structure, the diff algorithm, and the merge algorithm are our own code. They arrive TAME-first: invariants stated as assertions at every mutation, pure functions added to the corpus on day one, the parity gate green before any commit. The weave's invariant — generation counts non-decreasing, presence alternating with absence in the generation parity, position order permanent once set — is asserted at every `apply`. The diff and merge are each provable by their structural properties; the corpus carries them.
+The weave data structure, the diff algorithm, and the merge algorithm are our own code. They arrive TAME-first: invariants stated as assertions at every mutation, pure functions become witnesses on day one, the parity gate green before any commit. The weave's invariant — generation counts non-decreasing, presence alternating with absence in the generation parity, position order permanent once set — is asserted at every `apply`. The diff and merge are each provable by their structural properties; the witnesses hold them.
 
 **The blob store:**
 

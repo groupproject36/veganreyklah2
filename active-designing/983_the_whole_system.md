@@ -155,7 +155,7 @@ Every module has a seed. Every seed already runs — vocabulary in `976_what_we_
 
 | Module | Seed | Status |
 |--------|------|--------|
-| Rye | Self-hosting compiler, strengthened std | Running, corpus 16 |
+| Rye | Self-hosting compiler, strengthened std | Running, 16 witnesses |
 | Aurora | Six-stage relay on RISC-V, sealed datagram | Running |
 | Caravan | `seed.rye` → `bounded` → `twin` → `chain` | Running |
 | Tally | `seed.rye` + `gardens.rye` named regions | Running |

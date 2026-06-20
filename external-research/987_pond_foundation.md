@@ -51,7 +51,7 @@ So Pond is not a thing apart. It is Caravan's isolation and Tally's bounds, comp
 
 ## The Gates Harden the Shared Floor
 
-Pond, Caravan, and Tally all stand on the same standard-library surface — the calls that scope a process, the arithmetic that bounds a region — and the strengthening machinery is built to harden exactly that. One honest nuance carries over from the crypto work: much of this surface is *effectful*, where the parity gate (which shines on pure, deterministic functions) helps less directly, so the weight there shifts to assertions and the additive gate, with careful review. The *pure* parts — policy parsing, path canonicalization, the resource math — are squarely parity-testable, and they join the corpus so we harden them the proven way.
+Pond, Caravan, and Tally all stand on the same standard-library surface — the calls that scope a process, the arithmetic that bounds a region — and the strengthening machinery is built to harden exactly that. One honest nuance carries over from the crypto work: much of this surface is *effectful*, where the parity gate (which shines on pure, deterministic functions) helps less directly, so the weight there shifts to assertions and the additive gate, with careful review. The *pure* parts — policy parsing, path canonicalization, the resource math — are squarely parity-testable, and they join the witnesses so we harden them the proven way.
 
 ---
 

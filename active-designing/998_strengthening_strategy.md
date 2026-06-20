@@ -24,7 +24,7 @@ By hand is the right way to begin and the wrong way to continue. We mean to take
 
 The next step is not another hand-pass. It is to give the strengthening a mechanical floor, so that the safety we now win by care, we win instead by construction. A pass should become a thing we trust the way we trust arithmetic, because two gates stand between it and the library, and nothing crosses without passing both.
 
-**The parity gate.** Keep a growing corpus of small programs, and run each one against both the baseline library and our strengthened one, confirming their results match to the last value. A pass that changes a single output fails the gate and never lands. This turns *we promise the behavior is unchanged* into *the behavior is shown to be unchanged* — which is the whole reason a strengthening is safe to make at all.
+**The parity gate.** Keep a growing set of witness programs, and run each one against both the baseline library and our strengthened one, confirming their results match to the last value. A pass that changes a single output fails the gate and never lands. This turns *we promise the behavior is unchanged* into *the behavior is shown to be unchanged* — which is the whole reason a strengthening is safe to make at all.
 
 **The additive gate.** Prove that each pass's change adds only checks and words — assertions, the marker for the variable space, comments — and never an expression that acts. A change that touches behavior-bearing code fails the gate. Together the two make a pass's promise — *say more, do nothing different* — true by inspection rather than by trust.
 

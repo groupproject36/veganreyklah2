@@ -1,6 +1,6 @@
 # parity.rish — the differential-parity gate, written in Rishi.
 #
-# For each program in the corpus, run it twice through `rye run` on the `.rye`
+# For each witness, run it twice through `rye run` on the `.rye`
 # source: once with RYE_LIB pointing at the pristine baseline std, once with
 # Rye's default strengthened std. Same pinned Zig (RYE_ZIG); only the library
 # tree differs. Observable behavior — exit code and combined output — must match.
@@ -13,18 +13,18 @@ let zig = "vendor/zig-toolchain/zig"
 let dir = "rye/tests"
 let baseline = "vendor/zig-toolchain/lib"
 
-let corpus = ["dir_iterate_test" "fs_boundary_test" "mem_diff_test" "sha3_256_test" "sha3_256_boundary_test" "sha3_512_test" "sha3_boundary_test" "version_test" "call_paths_test" "ed25519_sign_test" "x25519_agree_test" "aead_seal_test" "sealed_message_test" "mantra_weave_test" "tally_gardens_test" "alloc_print_test" "allocator_alloc_test" "buf_print_test" "write_streaming_all_test" "read_file_alloc_test" "path_join_test" "process_run_test" "path_dirname_test" "trim_start_test" "path_basename_test" "path_extension_test" "path_stem_test" "find_scalar_last_test" "find_scalar_pos_test" "find_pos_linear_test" "find_last_linear_test" "find_pos_test" "find_last_test" "split_peek_test" "split_rest_test" "find_any_pos_test" "find_last_any_test" "find_none_pos_test" "find_last_none_test" "split_first_test" "split_backwards_test" "mem_join_test" "cut_prefix_suffix_test" "cut_test" "cut_last_test" "tokenize_peek_test" "tokenize_next_test" "iterator_reset_test" "window_iterator_test"]
+let witnesses = ["dir_iterate_test" "fs_boundary_test" "mem_diff_test" "sha3_256_test" "sha3_256_boundary_test" "sha3_512_test" "sha3_boundary_test" "version_test" "call_paths_test" "ed25519_sign_test" "x25519_agree_test" "aead_seal_test" "sealed_message_test" "mantra_weave_test" "tally_gardens_test" "alloc_print_test" "allocator_alloc_test" "buf_print_test" "write_streaming_all_test" "read_file_alloc_test" "path_join_test" "process_run_test" "path_dirname_test" "trim_start_test" "path_basename_test" "path_extension_test" "path_stem_test" "find_scalar_last_test" "find_scalar_pos_test" "find_pos_linear_test" "find_last_linear_test" "find_pos_test" "find_last_test" "split_peek_test" "split_rest_test" "find_any_pos_test" "find_last_any_test" "find_none_pos_test" "find_last_none_test" "split_first_test" "split_backwards_test" "mem_join_test" "cut_prefix_suffix_test" "cut_test" "cut_last_test" "tokenize_peek_test" "tokenize_next_test" "iterator_reset_test" "window_iterator_test" "mem_order_test"]
 
-say "parity gate: checking ${corpus}"
+say "parity gate: checking ${witnesses}"
 
 # Baseline arm: rye bridges each .rye test, Zig compiles against vendor std.
-let bases = map corpus as s: run ["env" "RYE_ZIG=${zig}" "RYE_LIB=${baseline}" rye "run" "${dir}/${s}.rye"]
+let bases = map witnesses as s: run ["env" "RYE_ZIG=${zig}" "RYE_LIB=${baseline}" rye "run" "${dir}/${s}.rye"]
 
 # Strengthened arm: same bridge path, Rye's default rye/lib std.
-let ryes = map corpus as s: run ["env" "RYE_ZIG=${zig}" rye "run" "${dir}/${s}.rye"]
+let ryes = map witnesses as s: run ["env" "RYE_ZIG=${zig}" rye "run" "${dir}/${s}.rye"]
 
 let base_view = map bases as r: "${r.code}|${r.out}${r.err}"
 let rye_view = map ryes as r: "${r.code}|${r.out}${r.err}"
 
 assert base_view == rye_view else "a strengthening changed behavior — the gate is RED"
-say "GREEN: Rye's strengthened std is behavior-identical to the baseline across the corpus."
+say "GREEN: Rye's strengthened std is behavior-identical to the baseline across the witnesses."

@@ -27,7 +27,7 @@
 
 | Module | Design home | Running ground | Gap |
 |--------|-------------|----------------|-----|
-| **Rye** | `996`, `998` | corpus 16, self-hosting `rye` | strengthening continues |
+| **Rye** | `996`, `998` | 16 witnesses, self-hosting `rye` | strengthening continues |
 | **Rishi** | `996`, `980` | gate trio, file I/O, strings partial | **trim / length / slice** (this run) |
 | **Aurora** | `991` | seed → posted, deciding | virtio-net stage |
 | **Caravan** | `984` | seed → chain | capability table (step 5) |

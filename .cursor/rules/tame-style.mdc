@@ -15,7 +15,7 @@ Full guide: `context/specs/tame-style.md`. Apply when writing or reviewing Rye (
 
 ## Garden memory (authored Rye)
 
-- **Never** use `std.heap.ArenaAllocator` directly in `.rye` we author (seeds, Rishi, Skate, corpus, tools).
+- **Never** use `std.heap.ArenaAllocator` directly in `.rye` we author (seeds, Rishi, Skate, witnesses, tools).
 - **Always** use `const garden = init.garden.allocator()` for the process season allocator.
 - Do **not** add `GardenAllocator` as a std rename — owned wrapper belongs at `rye.garden` / `tally/heap-garden.rye` when built.
 - Policy: `context/specs/inherited-names.md`.

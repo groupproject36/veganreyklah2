@@ -16,8 +16,8 @@
 | Preconditions on paths (`path.len > 0`) in Rishi I/O | GREEN |
 | Postconditions on strengthened std wrappers | GREEN (9979–9987) |
 | Named errors in Rishi `EvalError` set | GREEN |
-| Assertions state invariants (`// postcondition`, `// invariant`) | GREEN on new Skate, Rishi, corpus tests |
-| `std.debug.assert` in corpus tests (parity pattern) | Consistent with existing corpus |
+| Assertions state invariants (`// postcondition`, `// invariant`) | GREEN on new Skate, Rishi, witness tests |
+| `std.debug.assert` in witness tests (parity pattern) | Consistent with existing witnesses |
 
 **Notes:** Corpus tests intentionally use `std.debug.assert` so strengthened postconditions run at parity time — same pattern as `alloc_print_test` and `mem_diff_test`. Inherited `ArenaAllocator` in std remains per `context/specs/inherited-names.md`.
 

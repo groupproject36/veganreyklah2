@@ -1,6 +1,6 @@
 # 9989 — Tally v1: named gardens
 
-**Target:** `tally/gardens.rye` (new module), `rye/tests/tally_gardens_test.rye` (new corpus test)
+**Target:** `tally/gardens.rye` (new module), `rye/tests/tally_gardens_test.rye` (new witness test)
 **Parity:** 15/15 GREEN
 
 ---

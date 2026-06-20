@@ -9,7 +9,7 @@
 **Voice:** Reya 2
 **Lens:** TAME Style (`../external-research/996_TAME_STYLE.md`); the method in `9999_STRENGTHENING.md`
 **Builds on:** `9996_stdlib_call_paths.md` (which already handled `trim`, `findScalar`, `eql`, `parseInt`)
-**Status:** Applied to `rye/lib/std/mem.zig` — parity GREEN, corpus at 11 programs
+**Status:** Applied to `rye/lib/std/mem.zig` — parity GREEN, 11 witnesses
 
 ---
 
@@ -123,7 +123,7 @@ PARITY    aead_seal_test.rye
 PARITY    sealed_message_test.rye
 ---
 parity gate: 11 matched, 0 diverged across 11 programs
-GREEN: Rye's std is behavior-identical to the baseline across the corpus.
+GREEN: Rye's std is behavior-identical to the baseline across the witnesses.
 ```
 
 Eleven programs, all green. `mem_diff_test.rye` exercises copyForwards, startsWith, endsWith, indexOf, and splitScalar across the edge cases — empty needle, over-long needle, not-found searches, empty fields from split — with the live assertions running on every call.
@@ -137,7 +137,7 @@ Eleven programs, all green. `mem_diff_test.rye` exercises copyForwards, startsWi
 | `rye/lib/std/mem.zig` | Five strengthenings: precondition on `copyForwards`; `maybe` on `startsWith` and `endsWith`; postcondition on `find`; postcondition on `SplitIterator.next` |
 | `rye/tests/mem_diff_test.rye` | Parity test: all five functions across interesting cases |
 | `tools/parity.sh` | Corpus extended to 11 programs |
-| `tools/parity.rish` | Same corpus extension |
+| `tools/parity.rish` | Same witness extension |
 | `strengthening-compiler/9993_mem_diff_primitives.md` | This record |
 
 ---
