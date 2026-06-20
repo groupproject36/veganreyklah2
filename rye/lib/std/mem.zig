@@ -1174,11 +1174,16 @@ pub fn len(value: anytype) usize {
             .many => {
                 const sentinel = info.sentinel() orelse
                     @compileError("invalid type given to std.mem.len: " ++ @typeName(@TypeOf(value)));
-                return findSentinel(info.child, sentinel, value);
+                const result = findSentinel(info.child, sentinel, value);
+                // Postcondition: length index points at the sentinel (pairs with findSentinel 9952).
+                assert(value[result] == sentinel);
+                return result;
             },
             .c => {
                 assert(value != null);
-                return findSentinel(info.child, 0, value);
+                const result = findSentinel(info.child, 0, value);
+                assert(value[result] == 0);
+                return result;
             },
             else => @compileError("invalid type given to std.mem.len: " ++ @typeName(@TypeOf(value))),
         },
