@@ -64,7 +64,7 @@
 
 **Ongoing — strengthen and grow:**
 - **Continue the strengthening series** — the next `std` surfaces our tools lean on, each through the gate trio.
-- **Caravan seed + Tally** — the child runs inside a bounded garden; the parent controls the garden. Grows the seed toward multi-child and chain-loading (`../active-designing/984`).
+- **Caravan bounded — tied off.** Child runs inside a 256-byte Tally garden; exceeds budget → falls → supervisor restarts → child stays within bounds → 10 assertions GREEN (`caravan/bounded.rye`). Grows toward multi-child and chain-loading (`../active-designing/984`).
 - **Close reading** — packet format, commit rule, relay protocols from `gratitude/` before Comlink's format hardens.
 - **Aurora's deciding stage** — a relay stage that hands the next a value it chose.
 - **Caravan kernel design** — decided: microkernel. Quarantined in `../active-designing/984`. Research in `../external-research/976`.

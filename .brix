@@ -23,6 +23,7 @@ file tally/gardens.rye
 
 # Caravan supervision
 file caravan/seed.rye
+file caravan/bounded.rye
 
 # Mantra version control
 file mantra/src/main.rye
