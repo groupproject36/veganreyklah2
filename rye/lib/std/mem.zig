@@ -1328,7 +1328,13 @@ pub fn findScalarPos(comptime T: type, slice: []const T, start_index: usize, val
     }
 
     for (slice[i..], i..) |c, j| {
-        if (c == value) return j;
+        if (c == value) {
+            // Postcondition: a found index lands inside the slice at the sought value.
+            assert(j < slice.len);
+            assert(slice[j] == value);
+            assert(j >= start_index);
+            return j;
+        }
     }
     return null;
 }
