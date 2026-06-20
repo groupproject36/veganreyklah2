@@ -864,11 +864,28 @@ pub const indexOfDiff = findDiff;
 /// Returns null if the slices are equal.
 pub fn findDiff(comptime T: type, a: []const T, b: []const T) ?usize {
     const shortest = @min(a.len, b.len);
-    if (a.ptr == b.ptr)
-        return if (a.len == b.len) null else shortest;
+    if (a.ptr == b.ptr) {
+        const result: ?usize = if (a.len == b.len) null else shortest;
+        if (result) |idx| {
+            assert(idx == shortest);
+            assert(a.len != b.len);
+        } else assert(eql(T, a, b));
+        return result;
+    }
     var index: usize = 0;
-    while (index < shortest) : (index += 1) if (a[index] != b[index]) return index;
-    return if (a.len == b.len) null else shortest;
+    while (index < shortest) : (index += 1) {
+        if (a[index] != b[index]) {
+            assert(index < shortest);
+            assert(a[index] != b[index]);
+            return index;
+        }
+    }
+    const result: ?usize = if (a.len == b.len) null else shortest;
+    if (result) |idx| {
+        assert(idx == shortest);
+        assert(a.len != b.len);
+    } else assert(eql(T, a, b));
+    return result;
 }
 
 test findDiff {
