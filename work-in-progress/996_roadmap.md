@@ -141,9 +141,9 @@ Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chai
 
 ## The Steps Just Taken
 
-Strengthening through **9963**, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, style audit shipped.
+Strengthening through **9962**, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, style audit shipped.
 
-**Strengthening passes 9979–9963** (`143312`–`172012`): `trimStart` … `SplitIterator.first`. Corpus 17 → 40, all green.
+**Strengthening passes 9979–9962** (`143312`–`172612`): `trimStart` … `SplitBackwardsIterator`. Corpus 17 → 41, all green.
 
 **Garden memory (`161112`)** — authored code: `init.garden` only; no `ArenaAllocator`; no std `GardenAllocator`; owned wrapper horizon at `rye.garden` / `tally/heap-garden.rye`. TAME + Cursor + Claude rules.
 
