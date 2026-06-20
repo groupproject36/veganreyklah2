@@ -23,7 +23,10 @@ pub fn eql(comptime T: type, a: T, b: T) bool {
             const s = @typeInfo(C).int.bits;
             const Cu = std.meta.Int(.unsigned, s);
             const Cext = std.meta.Int(.unsigned, s + 1);
-            return @as(bool, @bitCast(@as(u1, @truncate((@as(Cext, @as(Cu, @bitCast(acc))) -% 1) >> s))));
+            const result = @as(bool, @bitCast(@as(u1, @truncate((@as(Cext, @as(Cu, @bitCast(acc))) -% 1) >> s))));
+            // Postcondition: true iff every byte matched (xor accumulator zero).
+            assert(result == (acc == 0));
+            return result;
         },
         .vector => |info| {
             const C = info.child;
@@ -34,7 +37,9 @@ pub fn eql(comptime T: type, a: T, b: T) bool {
             const s = @typeInfo(C).int.bits;
             const Cu = std.meta.Int(.unsigned, s);
             const Cext = std.meta.Int(.unsigned, s + 1);
-            return @as(bool, @bitCast(@as(u1, @truncate((@as(Cext, @as(Cu, @bitCast(acc))) -% 1) >> s))));
+            const result = @as(bool, @bitCast(@as(u1, @truncate((@as(Cext, @as(Cu, @bitCast(acc))) -% 1) >> s))));
+            assert(result == (acc == 0));
+            return result;
         },
         else => {
             @compileError("Only arrays and vectors can be compared");

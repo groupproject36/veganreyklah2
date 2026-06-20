@@ -3,7 +3,7 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260620.201912` (Rye chronological stamp)
+**Version:** `20260620.203612` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -138,7 +138,7 @@ The Pond GUI (`10009`, `986`) composes when Brushstroke + Skate + Mantra + Rishi
 
 ### What to Build Next, and Why
 
-Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, **SemanticVersion** trio, **mem** compare/copy/sentinel arc (**endsWith 9938** through **allEqual 9940**), mem iterators through **WindowIterator (9954)**, mem.join (9961), cut family (9958–9960) — all done. **Strengthening the next `std` surface (9937)** stays the honest next step on the main track; **Aurora metal lane** next surfaces (`timing_safe`, Keccak `@memcpy`) wait for a natural pause; **RyeVersion** accretion waits beside the capability table.
+Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, **SemanticVersion** trio, **mem** compare/copy/sentinel arc, **timing_safe.eql (9937)** on the metal path, mem iterators through **WindowIterator (9954)**, mem.join (9961), cut family (9958–9960) — all done. **Strengthening the next `std` surface (9936)** stays the honest next step on the main track; **Keccak `@memcpy`** and freestanding smoke remain on the Aurora metal lane; **RyeVersion** accretion waits beside the capability table.
 
 ---
 

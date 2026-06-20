@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `201912`: pass 9938 `mem.endsWith`; 65 witnesses; Aurora metal lane prefix/suffix pair complete.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `203612`: pass 9937 `crypto.timing_safe.eql`; 66 witnesses; Aurora metal lane first crypto mem surface.*
 
 **Language:** EN
-**Version:** `20260620.201912` (Rye chronological stamp)
+**Version:** `20260620.203612` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,6 +12,7 @@
 
 ## What Just Landed (this session)
 
+- **Strengthening pass 9937 (`203612`).** `crypto.timing_safe.eql` postconditions; 66/66 witnesses GREEN.
 - **Strengthening pass 9938 (`201912`).** `mem.endsWith` return-path postconditions; 65/65 witnesses GREEN.
 - **Aurora metal lane documented (`200312`).** Parallel priority beside main mem arc; prefix/suffix pair now complete (`9938`–`9939`).
 - **Strengthening pass 9939 (`200012`).** `mem.startsWith` return-path postconditions; 64/64 witnesses GREEN.
@@ -70,7 +71,7 @@
 - **Rishi arithmetic + stdout** — `+`/`-`/`*`/`/`, correct precedence, `say`.
 - **Tally seed** — one Region, 13 invariants.
 - **Tally v1 named gardens** — `Gardens`, blob/diff/frame, 15/15 GREEN.
-- **Strengthening 9994–9938** — through `mem.endsWith`. 65 witnesses.
+- **Strengthening 9994–9937** — through `crypto.timing_safe.eql`. 66 witnesses.
 - **Mantra seed** — weave, LCS diff, SHA3-256 store, init/add/status.
 - **Mantra for the repo (seed)** — commit chain, add-all walks `.brix`, log follows chain. 9/9 bricks.
 - **`init.garden` (phase 1)** — `std.process.Init.garden` renamed from upstream `arena`.
@@ -104,7 +105,7 @@
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio (9937 and below) | `10023` Track B, `998` |
+| 1 | **Strengthening series** — next `std` surface through gate trio (9936 and below) | `10023` Track B, `998` |
 | 2 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 3 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
 | 4 | **Aurora metal lane** — std surfaces on the freestanding crypto path (see below) | `991`, `9995`, `998` |
@@ -118,7 +119,7 @@
 | `mem.eql` | Content-name check in `sealed` / `posted` | **Done** (`9941`); **scalar path** is what RISC-V uses (`stage2_riscv64` disables vector `eqlBytes`) |
 | `mem.copyForwards` / `copyBackwards` | Sibling discipline to sponge `@memcpy` buffer walks | **Done** (`9943`–`9944`) |
 | `mem.startsWith` / `endsWith` | Mantra weave edges; `rye` suffix checks (hosted) | **Done** (`9938`–`9939`) |
-| `crypto.timing_safe.eql` | AEAD tag compare on decrypt path | **Open** — timing-sensitive; needs cold-wrapper postconditions per `9995` |
+| `crypto.timing_safe.eql` | AEAD tag compare on decrypt path | **Done** (`9937`) |
 | Keccak `@memcpy` slice bounds | Every hash update on the metal path | **Partial** — `offset <= block_length`; slice-length asserts around `@memcpy` still open |
 | Freestanding integration gate | `aurora/run.sh` stages prove RISC-V link + QEMU | **Open** — complements hosted `parity.rish`, does not replace it |
 | CSR / MMIO / UART in `deciding`, `seed` | Boot relay, not `std` | **Aurora-owned** — TAME assertions in `.rye`, not strengthening passes |
