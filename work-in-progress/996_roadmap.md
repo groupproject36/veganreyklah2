@@ -3,7 +3,7 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260620.173212` (Rye chronological stamp)
+**Version:** `20260620.174312` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -27,19 +27,19 @@ These are the simple systems that run today. Everything ahead grows from them.
 - **A sealed datagram crosses between two harts** — Alice seals on hart 0; Bob, on hart 1, reads the raw bytes off a shared-memory wire, shape-casts them, verifies the attestation, confirms the content-name, derives the shared secret from his own key, and opens it. The content-name matches the hosted test byte-for-byte: the move that turns the whole networking arc into something that runs, running.
 - **The strengthening series is live** — SHA3-512, the Keccak sponge beneath it, and the everyday `std` our own tools lean on (`mem.trim`, `mem.eql`, `mem.findScalar`, `fmt.parseInt`), each given stated invariants and each parity-green, recorded in the strengthening-compiler stack.
 - **The crypto foundation is proven, primitive by primitive** — the content hash (SHA3-512, strengthened), signing (Ed25519), key agreement (X25519), and the authenticated seal (AEAD: ChaCha20-Poly1305) all run in Rye's own std, hosted and freestanding alike, and stand parity-green: the foundation the network and identity rest on (`../strengthening-compiler/9995`).
-- **The gate trio runs** — `parity.rish` (behavior), `parity-selftest.rish` (proves RED on divergence), `additive-gate.rish` (shape). All three run in Rishi; the corpus carries forty-two programs, all green.
+- **The gate trio runs** — `parity.rish` (behavior), `parity-selftest.rish` (proves RED on divergence), `additive-gate.rish` (shape). All three run in Rishi; the corpus carries forty-three programs, all green.
 - **Rishi runs** — a shell interpreter in Rye with comments; `let` of strings, integers, booleans, lists, and records; string interpolation that composes a value into text (`"${a}/${b}"`); `say`; `==`/`!=` comparison; list membership with `contains`; field access with `record.field`; running a command with `run` (its result a record of `out`, `err`, `code`, `ok`); transforming and filtering lists with `map` and `where`; and `assert` as a gate that exits non-zero with its reason. Built by `rye build`.
 - **Rishi gained arithmetic and a real stdout** — integer `+`/`-`/`×`/`÷` with correct operator precedence via two-layer recursive descent, parenthesized grouping, and `say` rebound from stderr to stdout. Nine arithmetic assertions in `rishi/tests/arithmetic.rish`, all green. The shell can now compute, compose, and speak.
-- **The parity gate runs in Rishi** — `tools/parity.rish` runs each corpus `.rye` through `rye run` (baseline via `RYE_LIB=vendor/zig-toolchain/lib`, strengthened via default `rye/lib`), compares outputs as one value, and asserts the verdict. Proven GREEN across 42 programs and RED on tamper (`parity-selftest.rish`).
+- **The parity gate runs in Rishi** — `tools/parity.rish` runs each corpus `.rye` through `rye run` (baseline via `RYE_LIB=vendor/zig-toolchain/lib`, strengthened via default `rye/lib`), compares outputs as one value, and asserts the verdict. Proven GREEN across 43 programs and RED on tamper (`parity-selftest.rish`).
 - **The strengthening frontier (9994–9991) is sealed** — SHA3-256 (content-naming primitive), mem diff primitives (`copyForwards`, `startsWith`, `endsWith`, `find`, `splitScalar`), `std.Io.Dir` filesystem boundary assertions, and `Dir.iterate` name invariants and exhaustion state — all four through the gate, corpus at 14, all green.
 - **Mantra seed runs** — the smallest version-control that runs: a Weave holds the full history of a text file as Lines with stable positions and generation-parity presence; `computeDiff` finds the minimal LCS edit; the store content-names every weave state by its SHA3-256 digest. `mantra init / add / status` confirmed end-to-end. Pure LCS test joins the corpus (`../strengthening-compiler/9990`).
 - **`init.garden` replaces `init.arena` in Rye's vocabulary** — `std.process.Init.garden` is Rye's name for the season allocator: allocate freely within the session, clear whole on exit. The TAME vocabulary (`garden`) now lives in the public API; `arena` recedes to an implementation detail inside `start.zig`. Rishi, Rye, Mantra, and all benchmark callers updated.
 - **Seeds defined in `976`.** Every module grows from the smallest version that runs; the catalog and planting discipline live in `active-designing/976_what_we_mean_by_seed.md`.
 - **Seven hosted/freestanding seeds in one arc** — Caravan (seed → chain), Brushstroke (stdout + Wayland), Comlink (posted + hosted wire), Aurora deciding — code advancing; design (~20 active-designing docs) now leads until build catches up (`10017`).
 - **Comlink hosted wire** — sealed datagram over localhost UDP (`comlink/hosted_wire.rye`); virtio-net is next (`10016`).
-- **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of`; gate trio 42/42 GREEN.
+- **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of`; gate trio 43/43 GREEN.
 - **Skate text grid** — monospace 8×8 glyphs on Brushstroke Wayland seed; headless selftest green (`10023` Track A).
-- **Strengthening passes 9979–9961** — `trimStart` … `mem.join`. Each through the gate; corpus 17 → 42.
+- **Strengthening passes 9979–9960** — `trimStart` … `cutPrefix`/`cutSuffix`. Each through the gate; corpus 17 → 43.
 - **Garden memory policy** — authored `.rye` uses `init.garden.allocator()`, never `ArenaAllocator`; no std `GardenAllocator` rename; owned wrapper at `rye.garden` / `tally/heap-garden.rye` when built (`inherited-names.md`, TAME rules).
 
 ---
@@ -69,8 +69,9 @@ Each is a thing that runs on its own, added by degrees, behind the gates.
 - [x] **Comlink hosted wire** — sealed datagram over localhost UDP (`comlink/hosted_wire.rye`; `10014` Track D).
 - [x] **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of` (`10023` Track C).
 - [x] **Skate text grid** — monospace glyph rendering on the Wayland seed (`skate_grid.rye`, `font8x8_data.rye`, `wayland_seed.rye`; `10023` Track A).
-- [x] **Strengthening 9979–9961** — everyday `std` surfaces through the gate (`trimStart` … `mem.join`; see `strengthening-compiler/9961`–`9987`).
+- [x] **Strengthening 9979–9960** — everyday `std` surfaces through the gate (`trimStart` … `cutPrefix`/`cutSuffix`; see `strengthening-compiler/9960`–`9987`).
 - [ ] **Device wire (virtio-net)** — two QEMU guests (`10016`).
+- [ ] **Rye chronological version parser** — accrete `std.RyeVersion` beside `SemanticVersion` (`parse` / `format` / `order` for `YYYYMMDD.HHMMSS`); unblocks Caravan capability min-version and Tablecloth policy (`rye-versioning-style.md`, `995`).
 - [ ] **Continue the strengthening series** — the next `std` surfaces our tools depend on, each through the gate trio, each recorded in the strengthening-compiler stack.
 
 ---
@@ -125,25 +126,27 @@ The far ends. Each is named with the simpler working systems it is composed of, 
 
 **Highest-leverage build threads (ordered):**
 
-1. **Strengthening series** — next `std` surface through the gate trio (`9960` and below; `998`)
+1. **Strengthening series** — next `std` surface through the gate trio (`9959` and below; `998`)
 2. **Rishi** — builtins as gates and Pond policy need them (core string/path set landed)
 3. **Comlink virtio-net** — device wire between QEMU guests (`10016`, `993`)
-4. **Caravan capability table** — `984` step 5
+4. **Caravan capability table** — `984` step 5 (pairs with **RyeVersion** accretion when min-version bounds are needed)
 5. **Tablecloth v1** — after 1–2 stay green (`10022`; Mantra blobs → queryable store)
 
 The Pond GUI (`10009`, `986`) composes when Brushstroke + Skate + Mantra + Rishi meet on x86_64. Aurora's RISC-V arc continues in parallel.
 
 ### What to Build Next, and Why
 
-Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, mem search, forward and backward split iterators, findAnyPos (9967), findLastAny (9966), findNonePos (9965), findLastNone (9964), SplitBackwardsIterator (9962) — all done. **Strengthening the next `std` surface (9960)** is the honest next step on the main track before virtio-net or the capability table widen scope.
+Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, mem search, split iterators, mem.join (9961), and **cutPrefix/cutSuffix (9960)** — all done. **Strengthening the next `std` surface (9959)** stays the honest next step on the main track; **RyeVersion** accretion waits beside the capability table, not on the critical path yet.
 
 ---
 
 ## The Steps Just Taken
 
-Strengthening through **9961**, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, style audit shipped.
+Strengthening through **9960**, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, style audit shipped.
 
-**Strengthening passes 9979–9961** (`143312`–`173212`): `trimStart` … `mem.join`. Corpus 17 → 42, all green.
+**Strengthening passes 9979–9960** (`143312`–`174312`): `trimStart` … `cutPrefix`/`cutSuffix`. Corpus 17 → 43, all green.
+
+**Version parser thread (`173212`–`174312`)** — documented in `995` Near build: accrete `std.RyeVersion` beside `SemanticVersion` when capability table or Tablecloth needs programmatic bounds; lexicographic compare on fixed-width stamps suffices until then.
 
 **Garden memory (`161112`)** — authored code: `init.garden` only; no `ArenaAllocator`; no std `GardenAllocator`; owned wrapper horizon at `rye.garden` / `tally/heap-garden.rye`. TAME + Cursor + Claude rules.
 

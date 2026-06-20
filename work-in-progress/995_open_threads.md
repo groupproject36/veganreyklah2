@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `173212`: pass 9961 `mem.join`; corpus 42.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `174312`: pass 9960 `cutPrefix`/`cutSuffix`; corpus 43.*
 
 **Language:** EN
-**Version:** `20260620.173212` (Rye chronological stamp)
+**Version:** `20260620.174312` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,7 +12,8 @@
 
 ## What Just Landed (this session)
 
-- **Strengthening pass 9961 (`173212`).** `mem.join` postconditions; corpus 42/42 GREEN.
+- **Strengthening pass 9960 (`174312`).** `cutPrefix` + `cutSuffix` postconditions; corpus 43/43 GREEN.
+- **Strengthening pass 9961 (`173212`).** `mem.join` postconditions; corpus 42 GREEN.
 - **Strengthening pass 9962 (`172612`).** `SplitBackwardsIterator` postconditions; corpus 41 GREEN.
 - **Strengthening pass 9963 (`172012`).** `SplitIterator.first` postconditions; corpus 40 GREEN.
 - **Strengthening pass 9964 (`171512`).** `findLastNone` postconditions; corpus 39 GREEN.
@@ -46,7 +47,7 @@
 - **Rishi arithmetic + stdout** — `+`/`-`/`*`/`/`, correct precedence, `say`.
 - **Tally seed** — one Region, 13 invariants.
 - **Tally v1 named gardens** — `Gardens`, blob/diff/frame, 15/15 GREEN.
-- **Strengthening 9994–9961** — through `mem.join`. Corpus 42.
+- **Strengthening 9994–9960** — through `cutPrefix`/`cutSuffix`. Corpus 43.
 - **Mantra seed** — weave, LCS diff, SHA3-256 store, init/add/status.
 - **Mantra for the repo (seed)** — commit chain, add-all walks `.brix`, log follows chain. 9/9 bricks.
 - **`init.garden` (phase 1)** — `std.process.Init.garden` renamed from upstream `arena`.
@@ -80,7 +81,7 @@
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio (9960 and below) | `10023` Track B, `998` |
+| 1 | **Strengthening series** — next `std` surface through gate trio (9959 and below) | `10023` Track B, `998` |
 | 2 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 3 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
 
@@ -88,6 +89,7 @@
 
 - **Device wire (virtio-net)** — sealed datagram over emulated link (`10016`).
 - **Caravan capability table** — small Rye struct per child (`984` step 5).
+- **Rye chronological version parser (accretion)** — `std.RyeVersion` (or `rye.version`) **beside** `SemanticVersion`, never replacing it: `parse`, `format`, and `order` for `YYYYMMDD.HHMMSS`. Fixed-width stamps already order by lexicographic compare; a parser earns its keep when the capability table or Tablecloth needs programmatic min-version bounds (`rye-versioning-style.md`, `173212`).
 
 **Documented — Tablecloth (deferred code, ladder ready):**
 
@@ -145,7 +147,7 @@ Phase 2 vocabulary sweep is **closed**. Policy at `161112`: warm names enter bes
 - **Compare:** baseline `vendor/zig-toolchain/lib` vs strengthened `rye/lib` — same test, same pinned Zig (`RYE_ZIG`).
 - **Invoke:** `rye run rye/tests/<name>.rye` on both arms (`RYE_LIB` for baseline); exercises the real bridge path.
 - **Hold:** exit code + stdout/stderr identical — assertions change what code *says*, never what it *does*.
-- **Corpus:** 42 programs, all GREEN (9961 `mem.join` latest).
+- **Corpus:** 43 programs, all GREEN (9960 `cutPrefix`/`cutSuffix` latest).
 
 ## The Through-Line
 

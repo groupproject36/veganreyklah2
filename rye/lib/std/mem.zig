@@ -3298,7 +3298,12 @@ test endsWith {
 
 /// If `slice` starts with `prefix`, returns the rest of `slice` starting at `prefix.len`.
 pub fn cutPrefix(comptime T: type, slice: []const T, prefix: []const T) ?[]const T {
-    return if (startsWith(T, slice, prefix)) slice[prefix.len..] else null;
+    if (!startsWith(T, slice, prefix)) return null;
+    const rest = slice[prefix.len..];
+    // Postcondition: rest is the tail after a verified prefix.
+    assert(prefix.len <= slice.len);
+    assert(rest.len + prefix.len == slice.len);
+    return rest;
 }
 
 test cutPrefix {
@@ -3308,7 +3313,12 @@ test cutPrefix {
 
 /// If `slice` ends with `suffix`, returns `slice` from beginning to start of `suffix`.
 pub fn cutSuffix(comptime T: type, slice: []const T, suffix: []const T) ?[]const T {
-    return if (endsWith(T, slice, suffix)) slice[0 .. slice.len - suffix.len] else null;
+    if (!endsWith(T, slice, suffix)) return null;
+    const rest = slice[0 .. slice.len - suffix.len];
+    // Postcondition: rest is the head before a verified suffix.
+    assert(suffix.len <= slice.len);
+    assert(rest.len + suffix.len == slice.len);
+    return rest;
 }
 
 test cutSuffix {
