@@ -1903,7 +1903,11 @@ pub fn stem(path: []const u8) []const u8 {
     const filename = basename(path);
     const index = mem.lastIndexOfScalar(u8, filename, '.') orelse return filename[0..];
     if (index == 0) return path;
-    return filename[0..index];
+    const result = filename[0..index];
+    // Postcondition: stem is a sub-slice of the input path.
+    assert(result.len <= path.len);
+    if (result.len > 0) assert(mem.indexOf(u8, path, result) != null);
+    return result;
 }
 
 fn testStem(path: []const u8, expected: []const u8) !void {
