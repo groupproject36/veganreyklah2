@@ -1588,9 +1588,14 @@ pub const indexOfPos = findPos;
 pub fn findPos(comptime T: type, haystack: []const T, start_index: usize, needle: []const T) ?usize {
     if (needle.len > haystack.len) return null;
     if (needle.len < 2) {
-        if (needle.len == 0) return start_index;
+        if (needle.len == 0) {
+            assert(start_index <= haystack.len);
+            return start_index;
+        }
         // findScalarPos is significantly faster than findPosLinear
-        return findScalarPos(T, haystack, start_index, needle[0]);
+        const scalar = findScalarPos(T, haystack, start_index, needle[0]);
+        if (scalar) |i| assert(i + needle.len <= haystack.len);
+        return scalar;
     }
 
     if (!std.meta.hasUniqueRepresentation(T) or haystack.len < 52 or needle.len <= 4)
@@ -1605,7 +1610,10 @@ pub fn findPos(comptime T: type, haystack: []const T, start_index: usize, needle
     var i: usize = start_index * @sizeOf(T);
     while (i <= haystack_bytes.len - needle_bytes.len) {
         if (i % @sizeOf(T) == 0 and mem.eql(u8, haystack_bytes[i .. i + needle_bytes.len], needle_bytes)) {
-            return @divExact(i, @sizeOf(T));
+            const result = @divExact(i, @sizeOf(T));
+            // Postcondition at cold wrapper: a found index fits the needle (data-plane economy).
+            assert(result + needle.len <= haystack.len);
+            return result;
         }
         i += skip_table[haystack_bytes[i + needle_bytes.len - 1]];
     }
