@@ -3442,7 +3442,13 @@ pub fn TokenIterator(comptime T: type, comptime delimiter_type: DelimiterType) t
         /// complete, and advances to the next token.
         pub fn next(self: *Self) ?[]const T {
             const result = self.peek() orelse return null;
+            const token_start = self.index;
             self.index += result.len;
+            // Postcondition: consumed token stays in-range; cursor advances past it (pairs with peek 9957).
+            assert(token_start <= self.buffer.len);
+            assert(result.len <= self.buffer.len);
+            assert(self.index <= self.buffer.len);
+            assert(token_start + result.len == self.index);
             return result;
         }
 
