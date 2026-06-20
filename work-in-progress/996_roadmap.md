@@ -3,7 +3,7 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260620.021612` (Rye chronological stamp)
+**Version:** `20260620.021912` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -34,6 +34,7 @@ These are the simple systems that run today. Everything ahead grows from them.
 - **The strengthening frontier (9994–9991) is sealed** — SHA3-256 (content-naming primitive), mem diff primitives (`copyForwards`, `startsWith`, `endsWith`, `find`, `splitScalar`), `std.Io.Dir` filesystem boundary assertions, and `Dir.iterate` name invariants and exhaustion state — all four through the gate, corpus at 14, all green.
 - **Mantra seed runs** — the smallest version-control that runs: a Weave holds the full history of a text file as Lines with stable positions and generation-parity presence; `computeDiff` finds the minimal LCS edit; the store content-names every weave state by its SHA3-256 digest. `mantra init / add / status` confirmed end-to-end. Pure LCS test joins the corpus (`../strengthening-compiler/9990`).
 - **`init.garden` replaces `init.arena` in Rye's vocabulary** — `std.process.Init.garden` is Rye's name for the season allocator: allocate freely within the session, clear whole on exit. The TAME vocabulary (`garden`) now lives in the public API; `arena` recedes to an implementation detail inside `start.zig`. Rishi, Rye, Mantra, and all benchmark callers updated.
+- **Seeds defined in `976`.** Every module grows from the smallest version that runs; the catalog and planting discipline live in `active-designing/976_what_we_mean_by_seed.md`.
 
 ---
 

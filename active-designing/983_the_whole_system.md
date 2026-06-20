@@ -151,21 +151,22 @@ Aurora is designed in deep cohesion with RISC-V (`991`). The Rye code is the sam
 
 ## The Path — Grown from What Already Works
 
-Every module has a seed. Every seed already runs:
+Every module has a seed. Every seed already runs — vocabulary in `976_what_we_mean_by_seed.md`:
 
 | Module | Seed | Status |
 |--------|------|--------|
-| Rye | Self-hosting compiler, strengthened std | Running, 15 parity passes |
+| Rye | Self-hosting compiler, strengthened std | Running, corpus 16 |
 | Aurora | Six-stage relay on RISC-V, sealed datagram | Running |
-| Caravan | Parent/child restart loop, 5 assertions | Running |
-| Tally | Named gardens, 15 invariants | Running |
-| Brix | `.brix` descriptor, 10 tracked bricks | Running |
+| Caravan | `seed.rye` → `bounded.rye` → `twin.rye` | Running |
+| Tally | `seed.rye` + `gardens.rye` named regions | Running |
+| Brix | `.brix` descriptor | Running |
 | Silo | `.mantra/blobs/`, content-addressed store | Running (inside Mantra) |
-| Mantra | Weave + LCS diff + commit chain, 9 files wove | Running |
-| Rishi | Shell with typed values, file I/O, arithmetic | Running |
-| Brushstroke | Quarantined design, awaits River/Ghostty | Designed |
-| Pond | Policy as a value, awaits Caravan + Tally | Designed |
+| Mantra | Weave + LCS diff + commit chain | Running |
+| Rishi | Shell with typed values; gate trio in `.rish` | Running |
+| Brushstroke | `brushstroke/seed.rye` — frame from values (hosted) | Running; Wayland next |
+| Pond | Policy as a value (`pond.rish`) | Designed |
 | Comlink | Sealed datagram between two harts | Running (shared-memory) |
+| Skate, Scribble, Lantern, Lattice | Horizon (`978`) | Quarantined design |
 
 The complex system that works grows from the simpler systems that work. Each seed runs; each grows by accretion; each is proven before the next layer begins.
 

@@ -3,7 +3,7 @@
 *A living snapshot of what has landed, what is closed, and what remains open. Updated after tonight's building session: Caravan bounded, Aurora deciding, the gate trio complete in Rishi, Wayland and editor research, the forge quarantined, and the whole-system map drawn.*
 
 **Language:** EN
-**Version:** `20260620.021612` (Rye chronological stamp)
+**Version:** `20260620.021912` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -34,6 +34,7 @@
 - **`977_flow_of_values.md`.** Quarantined Language-of-the-System foundation — transform, move, route, remember.
 - **Garden vocabulary sweep (phase 2).** Locals `garden`, `start.zig` internals, README, ALMANAC — open thread closed.
 - **Caravan twin (`caravan/twin.rye`).** One parent, two children, separate stack gardens (128 / 192 bytes); A falls once then holds; B holds first try.
+- **`976_what_we_mean_by_seed.md`.** Quarantined vocabulary — Gall's Law as the word *seed*, catalog, anti-patterns, growth rings (`10013`).
 
 ## Threads Now Closed
 
@@ -62,6 +63,7 @@
 - **Formats, editors, inference research (`970`).** JSON/Brix, Scribble, Zed/GPUI, inference stacks.
 - **Horizon modules quarantined (`978`).** Scribble, Lantern, Lattice, Anvil.
 - **Flow of values foundation (`977`).** System-wide compositional law quarantined.
+- **Seed vocabulary (`976`).** What *seed* means — law, catalog, how to plant; instances in `987`.
 - **Caravan multi-child (twin seed).** Two supervised children, independent gardens (`caravan/twin.rye`).
 
 ## Threads Still Open
