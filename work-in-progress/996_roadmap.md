@@ -126,7 +126,7 @@ The far ends. Each is named with the simpler working systems it is composed of, 
 
 **Highest-leverage build threads (ordered):**
 
-1. **Strengthening series** — next `std` surface through the gate trio (`9957` and below; `998`)
+1. **Strengthening series** — next `std` surface through the gate trio (`9956` and below; `998`)
 2. **Rishi** — builtins as gates and Pond policy need them (core string/path set landed)
 3. **Comlink virtio-net** — device wire between QEMU guests (`10016`, `993`)
 4. **Caravan capability table** — `984` step 5 (pairs with **RyeVersion** accretion when min-version bounds are needed)
@@ -136,15 +136,15 @@ The Pond GUI (`10009`, `986`) composes when Brushstroke + Skate + Mantra + Rishi
 
 ### What to Build Next, and Why
 
-Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, mem search, split iterators, mem.join (9961), cut family through **cutLast/cutScalarLast (9958)** — all done. **Strengthening the next `std` surface (9957)** stays the honest next step on the main track; **RyeVersion** accretion waits beside the capability table.
+Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, mem search, split/tokenize iterators, mem.join (9961), cut family (9958–9960), and **TokenIterator.peek (9957)** — all done. **Strengthening the next `std` surface (9956)** stays the honest next step on the main track; **RyeVersion** accretion waits beside the capability table.
 
 ---
 
 ## The Steps Just Taken
 
-Strengthening through **9958**, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, style audit shipped.
+Strengthening through **9957**, garden-memory policy in TAME and rules, Rishi builtins and parser fix, Skate grid, parity via `rye run`, style audit shipped.
 
-**Strengthening passes 9979–9958** (`143312`–`175312`): `trimStart` … `cutLast`/`cutScalarLast`. Corpus 17 → 45, all green.
+**Strengthening passes 9979–9957** (`143312`–`175712`): `trimStart` … `TokenIterator.peek`. Corpus 17 → 46, all green.
 
 **Version parser thread (`173212`–`174312`)** — documented in `995` Near build: accrete `std.RyeVersion` beside `SemanticVersion` when capability table or Tablecloth needs programmatic bounds; lexicographic compare on fixed-width stamps suffices until then.
 
