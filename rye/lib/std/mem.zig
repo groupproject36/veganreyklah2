@@ -3497,6 +3497,9 @@ pub fn SplitIterator(comptime T: type, comptime delimiter_type: DelimiterType) t
         pub fn rest(self: Self) []const T {
             const end = self.buffer.len;
             const start = self.index orelse end;
+            // Postcondition: rest is the tail of the buffer from the current cursor.
+            if (self.index) |idx| assert(idx <= self.buffer.len);
+            assert(start <= end);
             return self.buffer[start..end];
         }
 
