@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `164312`: pass 9971 `findPos`; corpus 32.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `164812`: pass 9970 `findLast`; corpus 33.*
 
 **Language:** EN
-**Version:** `20260620.164312` (Rye chronological stamp)
+**Version:** `20260620.164812` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,7 +12,8 @@
 
 ## What Just Landed (this session)
 
-- **Strengthening pass 9971 (`164312`).** `std.mem.findPos` cold-wrapper postconditions; corpus 32/32 GREEN.
+- **Strengthening pass 9970 (`164812`).** `std.mem.findLast` reverse BMH postcondition; corpus 33/33 GREEN.
+- **Strengthening pass 9971 (`164312`).** `std.mem.findPos`; corpus 32 GREEN.
 - **Strengthening pass 9972 (`164012`).** `std.mem.findLastLinear`; corpus 31 GREEN.
 - **Strengthening pass 9973 (`163512`).** `std.mem.findPosLinear`; corpus 30 GREEN.
 - **Strengthening pass 9974 (`163112`).** `std.mem.findScalarPos`; corpus 29 GREEN.
@@ -36,7 +37,7 @@
 - **Rishi arithmetic + stdout** — `+`/`-`/`*`/`/`, correct precedence, `say`.
 - **Tally seed** — one Region, 13 invariants.
 - **Tally v1 named gardens** — `Gardens`, blob/diff/frame, 15/15 GREEN.
-- **Strengthening 9994–9971** — through `findPos`. Corpus 32.
+- **Strengthening 9994–9970** — through `findLast`. Corpus 33.
 - **Mantra seed** — weave, LCS diff, SHA3-256 store, init/add/status.
 - **Mantra for the repo (seed)** — commit chain, add-all walks `.brix`, log follows chain. 9/9 bricks.
 - **`init.garden` (phase 1)** — `std.process.Init.garden` renamed from upstream `arena`.
@@ -70,7 +71,7 @@
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio (9970 and below) | `10023` Track B, `998` |
+| 1 | **Strengthening series** — next `std` surface through gate trio (9969 and below) | `10023` Track B, `998` |
 | 2 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 3 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
 
@@ -135,7 +136,7 @@ Phase 2 vocabulary sweep is **closed**. Policy at `161112`: warm names enter bes
 - **Compare:** baseline `vendor/zig-toolchain/lib` vs strengthened `rye/lib` — same test, same pinned Zig (`RYE_ZIG`).
 - **Invoke:** `rye run rye/tests/<name>.rye` on both arms (`RYE_LIB` for baseline); exercises the real bridge path.
 - **Hold:** exit code + stdout/stderr identical — assertions change what code *says*, never what it *does*.
-- **Corpus:** 32 programs, all GREEN (9971 `findPos` latest).
+- **Corpus:** 33 programs, all GREEN (9970 `findLast` latest).
 
 ## The Through-Line
 

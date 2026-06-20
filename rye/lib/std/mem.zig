@@ -1571,7 +1571,10 @@ pub fn findLast(comptime T: type, haystack: []const T, needle: []const T) ?usize
     var i: usize = haystack_bytes.len - needle_bytes.len;
     while (true) {
         if (i % @sizeOf(T) == 0 and mem.eql(u8, haystack_bytes[i .. i + needle_bytes.len], needle_bytes)) {
-            return @divExact(i, @sizeOf(T));
+            const result = @divExact(i, @sizeOf(T));
+            // Postcondition at cold wrapper: a found index fits the needle (data-plane economy).
+            assert(result + needle.len <= haystack.len);
+            return result;
         }
         const skip = skip_table[haystack_bytes[i]];
         if (skip > i) break;
