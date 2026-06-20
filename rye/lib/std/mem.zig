@@ -1752,10 +1752,15 @@ pub fn count(comptime T: type, haystack: []const T, needle: []const T) usize {
     var found: usize = 0;
 
     while (findPos(T, haystack, i, needle)) |idx| {
+        assert(idx >= i);
+        assert(idx + needle.len <= haystack.len);
         i = idx + needle.len;
         found += 1;
     }
 
+    // Postcondition: non-overlapping scan never advances past haystack end.
+    assert(i <= haystack.len);
+    assert(found <= haystack.len);
     return found;
 }
 
@@ -1797,6 +1802,8 @@ pub fn countScalar(comptime T: type, list: []const T, element: T) usize {
         found += @intFromBool(item == element);
     }
 
+    // Postcondition: tally never exceeds slice length.
+    assert(found <= list.len);
     return found;
 }
 
