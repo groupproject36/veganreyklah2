@@ -205,7 +205,15 @@ A sealed datagram is a value; carrying it *between* harts needs a wire. The smal
 - **One hart powers down, after the other has read.** The machine's test finisher powers off the *whole* machine, so the receiver writes it only once it has the value; the sender rests in a `wfi` loop rather than halting, lest it cut the wire mid-message.
 - **Zig 0.16 clobbers are a struct.** Inline-asm clobbers moved from a string (`::: "memory"`) to a struct (`::: .{ .memory = true }`); the older spelling no longer compiles.
 
-On that wire, `posted.rye` carries a whole sealed datagram: hart 0 seals and serializes it into the mailbox; hart 1 reads the raw bytes, *shape-casts* them (a datagram shorter than its header or longer than the wire is refused at the edge), and opens it — trusting only its own secret and the sender's public key off the wire, reconstructed with `Ed25519.PublicKey.fromBytes`, `Ed25519.Signature.fromBytes`, and `X25519.publicKeyFromEd25519`. The content-name matches the hosted test once more. The next wire is a real device between two machines, where Comlink fully begins (`expanding-prompts/10014`).
+On that wire, `posted.rye` carries a whole sealed datagram: hart 0 seals and serializes it into the mailbox; hart 1 reads the raw bytes, *shape-casts* them (a datagram shorter than its header or longer than the wire is refused at the edge), and opens it — trusting only its own secret and the sender's public key off the wire, reconstructed with `Ed25519.PublicKey.fromBytes`, `Ed25519.Signature.fromBytes`, and `X25519.publicKeyFromEd25519`. The content-name matches the hosted test once more.
+
+The next rung is a **hosted wire** between processes: `comlink/hosted_wire.rye` seals the same datagram shape and posts it over **localhost UDP** (port 38472). One process sends; one receives, shape-casts, and opens. Modes: `selftest` (crypto in one process), `send`, `recv`, `demo` (supervisor spawns recv then send). Build:
+
+```sh
+rye build comlink/hosted_wire.rye -lc -femit-bin=comlink/bin/hosted-wire
+```
+
+After that, the wire is a real device between two machines — virtio-net in QEMU (`expanding-prompts/10016`).
 
 ---
 
@@ -287,7 +295,7 @@ A few paths we have left lit for later, each a deliberate choice rather than an 
 
 - **Self-hosting the `rye` command.** The command is now written in Rye (`rye/src/main.rye`) and built by `rye build`, so the *build* is self-hosted. The deeper end state remains ahead: Rye compiling Rye, rather than bridging to the Zig toolchain beneath. We walk toward it as the language grows its own shape.
 - **A `build.rye` story.** `rye build` now compiles a single `.rye` file to a binary, freestanding targets included, and accepts extra source files and link flags after the path (see *Brushstroke* above). Zig builds *whole projects* through a `build.zig` script; Rye will want its own `build.rye` for many-file programs, bridged the same way single files are today.
-- **Device wire.** Sealed datagram over virtio-net or hosted datagram between processes — Comlink's next rung after `posted.rye` (`10014`).
+- **Device wire (virtio-net).** Sealed datagram over emulated `virtio-net` between two QEMU guests — Comlink's next rung after `comlink/hosted_wire.rye` (`10016`).
 - **Strengthening series.** Passes 9988–9991 and crypto foundation 9995 are green; the next `std` surfaces our tools lean on each earn a strengthening note and a corpus extension when they change behavior.
 - **Pond.** The `ai-jail` sandbox we work inside is a Rust project; re-growing it as a gentle, TAME-style enclosure in Rye — Pond — is a thread we mean to follow once the language stands on more of its own.
 

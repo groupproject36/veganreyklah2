@@ -1,0 +1,243 @@
+//! comlink/hosted_wire.rye — a sealed datagram over a real localhost socket.
+//!
+//! Aurora's posted.rye proved a sealed value on shared memory between harts.
+//! This seed proves the same datagram shape crosses a **hosted wire** — UDP
+//! on 127.0.0.1 — between two processes. One process sends; one receives,
+//! shape-casts, verifies, and opens. Comlink's next rung before virtio-net.
+//!
+//! Usage:
+//!   hosted_wire demo      Supervisor: spawn recv, then send; assert both green
+//!   hosted_wire send      Seal and post datagram to localhost
+//!   hosted_wire recv      Bind, receive one datagram, open it
+//!   hosted_wire selftest  Seal and open in one process (no socket)
+//!
+//! Build:
+//!   rye build comlink/hosted_wire.rye -lc -femit-bin=comlink/bin/hosted-wire
+
+const std = @import("std");
+const c = std.c;
+const Ed25519 = std.crypto.sign.Ed25519;
+const X25519 = std.crypto.dh.X25519;
+const ChaCha20Poly1305 = std.crypto.aead.chacha_poly.ChaCha20Poly1305;
+const Sha3_512 = std.crypto.hash.sha3.Sha3_512;
+
+const hosted_wire_version = "20260620.034212";
+
+const AF_INET: c_uint = 2;
+const SOCK_DGRAM: c_uint = 2;
+const SOL_SOCKET: c_int = 1;
+const SO_REUSEADDR: c_int = 2;
+
+const wire_port: u16 = 38472;
+const wire_capacity: usize = 512;
+
+const off_sender: usize = 0;
+const off_nonce: usize = off_sender + 32;
+const off_name: usize = off_nonce + ChaCha20Poly1305.nonce_length;
+const off_sig: usize = off_name + Sha3_512.digest_length;
+const off_tag: usize = off_sig + Ed25519.Signature.encoded_length;
+const off_cipher: usize = off_tag + ChaCha20Poly1305.tag_length;
+const max_message: usize = wire_capacity - off_cipher;
+
+const seed_alice = [_]u8{0xA1} ** 32;
+const seed_bob = [_]u8{0xB0} ** 32;
+
+const sockaddr_in = extern struct {
+    sin_family: c_ushort = AF_INET,
+    sin_port: c_ushort,
+    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
+    sin_zero: [8]u8 = .{0} ** 8,
+};
+
+fn sealKey(shared: [32]u8) [ChaCha20Poly1305.key_length]u8 {
+    var digest: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&shared, &digest, .{});
+    return digest[0..ChaCha20Poly1305.key_length].*;
+}
+
+fn localhostAddr(port: u16) sockaddr_in {
+    return .{
+        .sin_port = std.mem.nativeToBig(u16, port),
+    };
+}
+
+fn openSocket() !c.fd_t {
+    const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0) return error.SocketFailed;
+    const yes: c_int = 1;
+    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    return fd;
+}
+
+fn sealDatagram(buf: *[wire_capacity]u8) usize {
+    const alice_id = Ed25519.KeyPair.generateDeterministic(seed_alice) catch unreachable;
+    const bob_pub = (Ed25519.KeyPair.generateDeterministic(seed_bob) catch unreachable).public_key;
+    const alice_x = X25519.KeyPair.fromEd25519(alice_id) catch unreachable;
+    const bob_x_pub = X25519.publicKeyFromEd25519(bob_pub) catch unreachable;
+
+    const message = expected_message;
+    const nonce = [_]u8{0x01} ** ChaCha20Poly1305.nonce_length;
+
+    const shared = X25519.scalarmult(alice_x.secret_key, bob_x_pub) catch unreachable;
+    const key = sealKey(shared);
+    var ciphertext: [message.len]u8 = undefined;
+    var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
+    ChaCha20Poly1305.encrypt(&ciphertext, &tag, message, "", nonce, key);
+    var name: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(&ciphertext, &name, .{});
+    const sig = alice_id.sign(&name, null) catch unreachable;
+
+    const sender_bytes = alice_id.public_key.toBytes();
+    const sig_bytes = sig.toBytes();
+    @memcpy(buf[off_sender..][0..32], &sender_bytes);
+    @memcpy(buf[off_nonce..][0..nonce.len], &nonce);
+    @memcpy(buf[off_name..][0..name.len], &name);
+    @memcpy(buf[off_sig..][0..sig_bytes.len], &sig_bytes);
+    @memcpy(buf[off_tag..][0..tag.len], &tag);
+    @memcpy(buf[off_cipher..][0..ciphertext.len], &ciphertext);
+    return off_cipher + ciphertext.len;
+}
+
+const expected_message = "Meet me where the rye grows.";
+
+fn openDatagram(buf: []const u8, opened: []u8) !usize {
+    std.debug.assert(buf.len >= off_cipher);
+    std.debug.assert(buf.len <= wire_capacity);
+    std.debug.assert(opened.len >= max_message);
+
+    const sender = Ed25519.PublicKey.fromBytes(buf[off_sender..][0..32].*) catch return error.BadSender;
+    const nonce = buf[off_nonce..][0..ChaCha20Poly1305.nonce_length].*;
+    const name = buf[off_name..][0..Sha3_512.digest_length].*;
+    const sig = Ed25519.Signature.fromBytes(buf[off_sig..][0..Ed25519.Signature.encoded_length].*);
+    const tag = buf[off_tag..][0..ChaCha20Poly1305.tag_length].*;
+    const ciphertext = buf[off_cipher..];
+
+    sig.verify(&name, sender) catch return error.VerifyFailed;
+    var check: [Sha3_512.digest_length]u8 = undefined;
+    Sha3_512.hash(ciphertext, &check, .{});
+    if (!std.mem.eql(u8, &name, &check)) return error.NameMismatch;
+
+    const bob_id = Ed25519.KeyPair.generateDeterministic(seed_bob) catch unreachable;
+    const bob_x = X25519.KeyPair.fromEd25519(bob_id) catch unreachable;
+    const sender_x = X25519.publicKeyFromEd25519(sender) catch unreachable;
+    const shared = X25519.scalarmult(bob_x.secret_key, sender_x) catch unreachable;
+    const key = sealKey(shared);
+
+    ChaCha20Poly1305.decrypt(opened[0..ciphertext.len], ciphertext, tag, "", nonce, key) catch return error.OpenFailed;
+    return ciphertext.len;
+}
+
+fn runSelftest() !u8 {
+    var buf: [wire_capacity]u8 = undefined;
+    const len = sealDatagram(&buf);
+    var opened: [max_message]u8 = undefined;
+    const msg_len = try openDatagram(buf[0..len], &opened);
+    if (!std.mem.eql(u8, opened[0..msg_len], expected_message)) return error.MessageWrong;
+    std.debug.print("comlink hosted wire: selftest GREEN — seal and open in one process\n", .{});
+    return 0;
+}
+
+fn runSend() !u8 {
+    const fd = try openSocket();
+    defer _ = c.close(fd);
+
+    var buf: [wire_capacity]u8 = undefined;
+    const len = sealDatagram(&buf);
+
+    const dest = localhostAddr(wire_port);
+    const sent = c.sendto(fd, &buf, len, 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != len) return error.SendFailed;
+
+    std.debug.print("comlink hosted wire: datagram sent ({d} bytes)\n", .{len});
+    return 0;
+}
+
+fn runRecv() !u8 {
+    const fd = try openSocket();
+    defer _ = c.close(fd);
+
+    var bind_addr = localhostAddr(wire_port);
+    if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+
+    var buf: [wire_capacity]u8 = undefined;
+    var from: sockaddr_in = undefined;
+    var from_len: c.socklen_t = @sizeOf(sockaddr_in);
+    const n = c.recvfrom(fd, &buf, buf.len, 0, @ptrCast(&from), &from_len);
+    if (n < 0) return error.RecvFailed;
+    const len: usize = @intCast(n);
+
+    if (len < off_cipher or len > wire_capacity) {
+        std.debug.print("comlink hosted wire: malformed datagram, refused at the edge\n", .{});
+        return 1;
+    }
+
+    var opened: [max_message]u8 = undefined;
+    const msg_len = openDatagram(buf[0..len], &opened) catch {
+        std.debug.print("comlink hosted wire: open failed\n", .{});
+        return 1;
+    };
+
+    if (!std.mem.eql(u8, opened[0..msg_len], expected_message)) {
+        std.debug.print("comlink hosted wire: opened message mismatch\n", .{});
+        return 1;
+    }
+
+    std.debug.print("comlink hosted wire: opened sealed datagram from localhost\n", .{});
+    std.debug.print("  message = {s}\n", .{opened[0..msg_len]});
+    return 0;
+}
+
+fn runDemo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    const recv_argv = try allocator.alloc([]const u8, 2);
+    recv_argv[0] = self_path;
+    recv_argv[1] = "recv";
+
+    var recv_child = try std.process.spawn(io, .{ .argv = recv_argv });
+    // Brief pause so recv binds before send.
+    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    const send_argv = try allocator.alloc([]const u8, 2);
+    send_argv[0] = self_path;
+    send_argv[1] = "send";
+
+    var send_child = try std.process.spawn(io, .{ .argv = send_argv });
+
+    const recv_term = try recv_child.wait(io);
+    const send_term = try send_child.wait(io);
+
+    const recv_code: u8 = switch (recv_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+    const send_code: u8 = switch (send_term) {
+        .exited => |code| code,
+        else => 255,
+    };
+
+    std.debug.assert(recv_code == 0);
+    std.debug.assert(send_code == 0);
+
+    std.debug.print("comlink hosted wire: demo GREEN — sealed datagram crossed localhost UDP\n", .{});
+    std.debug.print("comlink hosted wire: version {s}\n", .{hosted_wire_version});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.garden.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "send")) return runSend();
+        if (std.mem.eql(u8, args[1], "recv")) return runRecv();
+        if (std.mem.eql(u8, args[1], "selftest")) return runSelftest();
+        if (std.mem.eql(u8, args[1], "demo")) {
+            std.debug.assert(args.len >= 1);
+            return runDemo(garden, io, args[0]);
+        }
+    }
+
+    if (args.len >= 1) return runDemo(garden, io, args[0]);
+    return 1;
+}

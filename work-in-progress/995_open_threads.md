@@ -3,7 +3,7 @@
 *A living snapshot of what has landed, what is closed, and what remains open. Updated after tonight's building session: Caravan bounded, Aurora deciding, the gate trio complete in Rishi, Wayland and editor research, the forge quarantined, and the whole-system map drawn.*
 
 **Language:** EN
-**Version:** `20260620.033912` (Rye chronological stamp)
+**Version:** `20260620.034212` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -39,6 +39,7 @@
 - **Gate trio pure Rishi.** `parity-selftest.rish` no longer shells to `sh`; `parity-selftest.sh` removed.
 - **Caravan chain (`caravan/chain.rye`).** Ordered startup wake → prove; per-stage restart; chain does not rewind (`10014`).
 - **Documentation sync (`10015`).** `998_ALMANAC`, `rye/README`, `rishi/README` aligned to gate trio, Caravan arc, Brushstroke, `init.garden`.
+- **Comlink hosted wire (`comlink/hosted_wire.rye`).** Same sealed datagram as `posted.rye`, over localhost UDP between two processes; `selftest` / `send` / `recv` / `demo` GREEN (`10014` Track D).
 
 ## Threads Now Closed
 
@@ -71,11 +72,12 @@
 - **Brushstroke Wayland seed.** Native window, one frame from values (`brushstroke/wayland_seed.rye`).
 - **Caravan multi-child (twin seed).** Two supervised children, independent gardens (`caravan/twin.rye`).
 - **Caravan chain-loading (`caravan/chain.rye`).** Sequential wake → prove; per-stage restart (`984` step 4).
+- **Comlink hosted wire (`comlink/hosted_wire.rye`).** Sealed datagram over localhost UDP; hosted rung before virtio-net (`10014` Track D).
 
 ## Threads Still Open
 
 **Near — build:**
-- **Device wire** — sealed datagram over emulated `virtio-net` between two QEMU machines; Comlink's next rung (`10014`).
+- **Device wire (virtio-net)** — sealed datagram over emulated `virtio-net` between two QEMU guests; Comlink's next rung (`10016`).
 - **Caravan capability table** — small Rye struct naming what each child may do (`984` step 5).
 
 **Near — strengthen:**

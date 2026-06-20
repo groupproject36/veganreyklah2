@@ -99,14 +99,14 @@ The seed file stays. Later rings import its discipline or inline its types hones
 | **Mantra** | `mantra/src/main.rye` (seed commands) | Weave, LCS diff, SHA3-256 store, init/add/status | Running; repo chain wove 9 bricks |
 | **Brushstroke** | `brushstroke/seed.rye` (hosted); `wayland_seed.rye` (native window) | Frame drawn from values | Running |
 | **Brix** | `.brix` | Project descriptor Mantra can read | Running |
-| **Comlink** | `posted.rye` / two-hart wire | Sealed datagram moves between harts | Running (shared memory) |
+| **Comlink** | `posted.rye` (shared memory); `comlink/hosted_wire.rye` (localhost UDP) | Sealed datagram moves between harts or processes | Running |
 | **Rye** | `rye/src/main.rye` | Self-hosting compiler + strengthened std | Running (corpus 16) |
 | **Rishi** | `rishi/src/main.rye` + tests | Typed shell; gate trio in `.rish` | Running |
 | **Pond** | `rishi/examples/pond.rish` | Policy as a value | Designed; awaits Caravan + Tally enforcement |
 | **Skate** | — | Terminal surface in a Brushstroke window | Awaits Brushstroke Wayland seed |
 | **Scribble / Lantern / Lattice** | — | Horizon modules (`978`) | Quarantined design only |
 
-Horizon seeds still to plant: **device wire** (virtio-net), **Caravan capability table**, **Forge HTTP seed** (`982`).
+Horizon seeds still to plant: **virtio-net device wire**, **Caravan capability table**, **Forge HTTP seed** (`982`).
 
 ---
 

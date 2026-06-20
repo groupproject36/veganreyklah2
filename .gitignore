@@ -30,6 +30,7 @@
 !/tally/
 !/caravan/
 !/brushstroke/
+!/comlink/
 !/mantra/
 !/expanding-prompts/
 !/session-logs/
@@ -47,6 +48,7 @@
 /rishi/bin/
 /tally/bin/
 /caravan/bin/
+/comlink/bin/
 /brushstroke/bin/
 /mantra/bin/
 /aurora/.build/
