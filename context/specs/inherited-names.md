@@ -1,7 +1,7 @@
 # Spec: Inherited Names Endure; Ours Are Added
 
 **Language:** EN
-**Last updated:** 2026-06-18
+**Last updated:** 2026-06-20
 **Decided:** Rye clock `20260618.210812`
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Decided
@@ -29,6 +29,22 @@ And there is a quieter reason. `arena` is a good, true name. It means the same t
 `garden` is not a fresh coat of paint for Zig's `arena`. It is the name of a thing we are making: **Tally**, our own region allocator, framed from the first as a garden (`../../external-research/994_caravan_tally_networking.md`). When Tally is real, `garden` is real in the code — natively, as our own owned name, standing beside the inherited `arena` rather than erasing it. A Rye program might reach for Zig's `arena` today and for Tally's garden tomorrow, and both names go on meaning exactly what they meant.
 
 We would add an alias only if it earned its keep, and only ever as an addition — `garden` could one day point at `arena` without the old name moving — yet we prefer the honest path: the warm name belongs to the thing we made, not to a borrowed thing relabeled.
+
+## Authored code — reach for `init.garden`, not `ArenaAllocator`
+
+**Decided (2026-06-20, `161112`):** programs we write (`.rye` seeds, Rishi, Skate, corpus, tools) **never construct or name `std.heap.ArenaAllocator` directly**. Use the process season allocator:
+
+```zig
+const garden = init.garden.allocator();
+```
+
+This is TAME discipline recorded in `context/specs/tame-style.md` and enforced in Cursor/Claude rules.
+
+**Do not** add `std.heap.GardenAllocator` as a type alias or thin rename of `ArenaAllocator`. That steals the name reserved for Tally and confuses inherited std with owned vocabulary.
+
+**Do** add an owned wrapper beside inherited std when it earns its keep — `rye/lib/rye/garden.zig` or `tally/heap-garden.rye` (`9989`) — so callers import our surface and the depth can graduate from arena-backed to native Tally without breaking names.
+
+Inherited `rye/lib/std/**` may keep `ArenaAllocator` internally; `vendor/` and `gratitude/` are untouched.
 
 ## The One Place We Speak Freely
 

@@ -1,0 +1,25 @@
+---
+description: TAME Style for Rye, Brix, and Rishi — invariants, bounds, garden memory
+globs: "**/*.{rye,rish,brix}"
+alwaysApply: false
+---
+
+# TAME Style — Code
+
+Full guide: `context/specs/tame-style.md`. Apply when writing or reviewing Rye (`.rye`), Brix (`.brix`), and Rishi (`.rish`).
+
+## Core moves (root)
+
+- State invariants **before** implementing; `// invariant:` on every `assert`.
+- Bounds on everything; named errors; accrete never break; one value model.
+
+## Garden memory (authored Rye)
+
+- **Never** use `std.heap.ArenaAllocator` directly in `.rye` we author (seeds, Rishi, Skate, corpus, tools).
+- **Always** use `const garden = init.garden.allocator()` for the process season allocator.
+- Do **not** add `GardenAllocator` as a std rename — owned wrapper belongs at `rye.garden` / `tally/heap-garden.rye` when built.
+- Policy: `context/specs/inherited-names.md`.
+
+## Priority
+
+Safety first, performance second, joy third.

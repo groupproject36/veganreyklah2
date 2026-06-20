@@ -7,7 +7,7 @@ type: reference
 # TAME Style — A Code Guide
 
 **Language:** EN
-**Last updated:** 2026-06-19
+**Last updated:** 2026-06-20
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Active — grow by supplement, earned when the language is ready
 
@@ -130,6 +130,20 @@ const Region = struct {
 ```
 
 A mutation function on the struct asserts the invariant holds on entry and on exit.
+
+### Garden memory — never `ArenaAllocator` directly
+
+In **authored** Rye programs (`.rye` seeds, tools, corpus tests, Skate, Rishi source), reach for the process season allocator through **`init.garden`**, not through `std.heap.ArenaAllocator`:
+
+```zig
+const garden = init.garden.allocator();
+```
+
+Name the local `garden` (or `allocator` when the role is generic). Do not construct `ArenaAllocator` in our code, do not name the type in our APIs, and do not add `std.heap.GardenAllocator` as a rename of the inherited type.
+
+**Why:** `ArenaAllocator` is Zig's inherited name — we keep it in `std` untouched (`context/specs/inherited-names.md`). Our warm vocabulary names what we own: `Init.garden` today; `rye.garden` or `tally/heap-garden.rye` when the owned wrapper graduates to Tally. Inherited `std` internals may still use `ArenaAllocator`; that is out of scope for authored programs.
+
+**Freestanding / no `Init`:** use `std.heap.FixedBufferAllocator`, Tally `Region`, or an explicit child allocator passed in — still not `ArenaAllocator` in authored code unless you are strengthening inherited `std` itself.
 
 ---
 

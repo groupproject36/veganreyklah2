@@ -21,9 +21,16 @@ Full guide: `context/specs/tame-style.md`. Apply when writing or reviewing Rye s
 
 | Language | Key discipline |
 |----------|----------------|
-| **Rye** | Explicitly sized types (`u8`, `u32`, `usize`). `std.debug.assert` at every invariant. Named errors, propagated with `try`. Short functions named with a verb. Constants named with type and comment. |
+| **Rye** | Explicitly sized types (`u8`, `u32`, `usize`). `std.debug.assert` at every invariant. Named errors, propagated with `try`. Short functions named with a verb. Constants named with type and comment. **Never use `ArenaAllocator` in authored `.rye`** — use `init.garden.allocator()`; see `inherited-names.md`. |
 | **Brix** | Declarative only — no commands, no conditions. One field per line. Comments name what the brick *is*. Plain key-value; readable by hand. |
 | **Rishi** | `run` always returns `{ status, out, err }`. Check `status` before trusting `out`. `assert` as a pipeline gate at every stage boundary. Effects come last and are visible. Named `let` bindings. |
+
+## Garden memory (Rye only)
+
+- **Never** construct or name `std.heap.ArenaAllocator` in authored `.rye` (seeds, Rishi, Skate, corpus, tools).
+- **Always** reach for the season allocator via `const garden = init.garden.allocator()` (or pass `allocator` from that garden).
+- Do **not** add `GardenAllocator` as a std rename of `ArenaAllocator`. The owned wrapper lives at `rye.garden` / `tally/heap-garden.rye` when we build it — beside inherited names, not in their place.
+- Full policy: `context/specs/inherited-names.md`.
 
 ## The priority order
 
