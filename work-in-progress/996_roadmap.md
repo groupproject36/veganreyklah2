@@ -3,7 +3,7 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260620.174912` (Rye chronological stamp)
+**Version:** `20260620.175312` (Rye chronological stamp)
 **Last updated:** 2026-06-20
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -126,7 +126,7 @@ The far ends. Each is named with the simpler working systems it is composed of, 
 
 **Highest-leverage build threads (ordered):**
 
-1. **Strengthening series** — next `std` surface through the gate trio (`9958` and below; `998`)
+1. **Strengthening series** — next `std` surface through the gate trio (`9957` and below; `998`)
 2. **Rishi** — builtins as gates and Pond policy need them (core string/path set landed)
 3. **Comlink virtio-net** — device wire between QEMU guests (`10016`, `993`)
 4. **Caravan capability table** — `984` step 5 (pairs with **RyeVersion** accretion when min-version bounds are needed)
