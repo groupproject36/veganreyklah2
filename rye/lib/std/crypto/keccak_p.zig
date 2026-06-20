@@ -273,6 +273,8 @@ pub fn State(comptime f: u11, comptime capacity: u11, comptime rounds: u5) type 
             var i: usize = 0;
             if (self.offset > 0) {
                 const left = @min(rate - self.offset, bytes.len);
+                assert(left <= bytes.len);
+                assert(self.offset + left <= rate);
                 @memcpy(self.buf[self.offset..][0..left], bytes[0..left]);
                 self.offset += left;
                 if (left == bytes.len) return;
@@ -289,6 +291,8 @@ pub fn State(comptime f: u11, comptime capacity: u11, comptime rounds: u5) type 
             }
             const left = bytes.len - i;
             if (left > 0) {
+                assert(left <= rate);
+                assert(i + left == bytes.len);
                 @memcpy(self.buf[0..left], bytes[i..][0..left]);
             }
             self.offset = left;
@@ -362,6 +366,8 @@ pub fn State(comptime f: u11, comptime capacity: u11, comptime rounds: u5) type 
                 var buf: [rate]u8 = undefined;
                 self.st.extractBytes(buf[0..]);
                 const left = @min(rate - self.offset, out.len);
+                assert(left <= out.len);
+                assert(self.offset + left <= rate);
                 @memcpy(out[0..left], buf[self.offset..][0..left]);
                 self.offset += left;
                 if (left == out.len) return;
