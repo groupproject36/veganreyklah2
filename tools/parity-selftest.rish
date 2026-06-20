@@ -1,7 +1,5 @@
 # parity-selftest.rish — prove the parity gate turns RED on a real divergence.
 #
-# This is parity-selftest.sh reborn in Rishi.
-#
 # A gate we have never seen fail is a gate we cannot yet trust. So here we build
 # a deliberately TAMPERED std — SHA3's domain-separation byte changed (0x06 →
 # 0x07), which alters every SHA3 digest — and confirm that the sha3_512 corpus
@@ -11,10 +9,6 @@
 # Nothing real is touched. The tampered std is a full copy of rye/lib with
 # exactly one file replaced. The copy lives in rishi/bin/selftest-shadow (an
 # untracked directory) and is rebuilt fresh on every run.
-#
-# Current limitation: std copy uses `cp -r` rather than symlinks, so it is
-# slower than the sh version. Once Rishi gains list-dir and write-file, a
-# native implementation will replace the cp -r and the sh -c sed redirect.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/parity-selftest.rish
@@ -36,12 +30,9 @@ assert clean.ok else "could not remove old shadow"
 let copy = run ["cp" "-r" rye_lib shadow]
 assert copy.ok else "could not copy rye/lib to shadow"
 
-# Overwrite sha3.zig: flip the SHA3 domain-separation byte (0x06 → 0x07). This
-# changes every SHA3 digest while leaving the structure identical, so the code
-# compiles normally but produces different results. We shell out for the redirect
-# because Rishi does not yet have write-file.
-let tamper = run ["sh" "-c" "sed 's/0x06, 24/0x07, 24/g' ${rye_lib}/std/crypto/sha3.zig > ${shadow}/std/crypto/sha3.zig"]
-assert tamper.ok else "could not write tampered sha3.zig"
+# Overwrite sha3.zig in the shadow copy only — flip domain-separation byte.
+let tamper = run ["sed" "-i" "s/0x06, 24/0x07, 24/g" "${shadow}/std/crypto/sha3.zig"]
+assert tamper.ok else "could not tamper sha3.zig in shadow"
 
 # Guard: the tamper must actually change the file. cmp -s returns 0 when files
 # are identical; we assert it returned non-zero (files differ).

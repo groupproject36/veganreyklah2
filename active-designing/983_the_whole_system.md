@@ -163,7 +163,7 @@ Every module has a seed. Every seed already runs — vocabulary in `976_what_we_
 | Silo | `.mantra/blobs/`, content-addressed store | Running (inside Mantra) |
 | Mantra | Weave + LCS diff + commit chain | Running |
 | Rishi | Shell with typed values; gate trio in `.rish` | Running |
-| Brushstroke | `brushstroke/seed.rye` — frame from values (hosted) | Running; Wayland next |
+| Brushstroke | `seed.rye` + `wayland_seed.rye` — frame from values | Running |
 | Pond | Policy as a value (`pond.rish`) | Designed |
 | Comlink | Sealed datagram between two harts | Running (shared-memory) |
 | Skate, Scribble, Lantern, Lattice | Horizon (`978`) | Quarantined design |

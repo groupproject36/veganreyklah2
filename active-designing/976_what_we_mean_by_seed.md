@@ -96,7 +96,7 @@ The seed file stays. Later rings import its discipline or inline its types hones
 | **Tally** | `tally/seed.rye` | One Region; allocate within edges; clear whole | Running; v1 in `gardens.rye` |
 | **Caravan** | `caravan/seed.rye` | Parent watches child; restart on fall; counts match plan | Running; grown through `bounded`, `twin` |
 | **Mantra** | `mantra/src/main.rye` (seed commands) | Weave, LCS diff, SHA3-256 store, init/add/status | Running; repo chain wove 9 bricks |
-| **Brushstroke** | `brushstroke/seed.rye` | Frame drawn from values (immediate mode) | Running (hosted stdout) |
+| **Brushstroke** | `brushstroke/seed.rye` (hosted); `wayland_seed.rye` (native window) | Frame drawn from values | Running |
 | **Brix** | `.brix` | Project descriptor Mantra can read | Running |
 | **Comlink** | `posted.rye` / two-hart wire | Sealed datagram moves between harts | Running (shared memory) |
 | **Rye** | `rye/src/main.rye` | Self-hosting compiler + strengthened std | Running (corpus 16) |
@@ -105,7 +105,7 @@ The seed file stays. Later rings import its discipline or inline its types hones
 | **Skate** | — | Terminal surface in a Brushstroke window | Awaits Brushstroke Wayland seed |
 | **Scribble / Lantern / Lattice** | — | Horizon modules (`978`) | Quarantined design only |
 
-Horizon seeds still to plant: **Brushstroke Wayland**, **device wire** (virtio-net), **Caravan chain-loading**, **Forge HTTP seed** (`982`).
+Horizon seeds still to plant: **device wire** (virtio-net), **Caravan chain-loading**, **Forge HTTP seed** (`982`).
 
 ---
 

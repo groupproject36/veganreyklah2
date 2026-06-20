@@ -1,6 +1,6 @@
 # parity.rish — the differential-parity gate, written in Rishi.
 #
-# This is parity.sh reborn in our own shell. For each program in the corpus, run
+# This is the parity gate in our own shell. For each program in the corpus, run
 # it against the pristine BASELINE standard library and against Rye's STRENGTHENED
 # one, and confirm the observable behavior — exit code and combined output — is
 # identical. A strengthening is safe only while this stays GREEN: we add what the

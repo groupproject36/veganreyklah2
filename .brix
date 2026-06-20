@@ -29,7 +29,7 @@ file caravan/twin.rye
 # Mantra version control
 file mantra/src/main.rye
 
-# Gate trio (Rishi is the primary; .sh is the fallback)
+# Gate trio — Rishi only (tools/*.rish)
 file tools/parity.rish
 
 # Living documentation

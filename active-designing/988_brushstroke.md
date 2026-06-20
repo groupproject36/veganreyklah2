@@ -51,4 +51,18 @@ Brushstroke is a surface that draws itself from values — immediate-mode at its
 
 ---
 
+## Display Seam (native x86_64)
+
+The native backend crosses the OS boundary through three narrow wrappers (`985`, proven in `wayland_seed.rye`):
+
+| Wrapper | Job |
+|---------|-----|
+| **`Display.connect`** | Open the compositor socket, hold `wl_display` for the session |
+| **`Display.Surface`** | Create `wl_surface`, xdg toplevel, configure/ack, commit lifecycle |
+| **`Display.Buffer`** | SHM pool from a bounded memfd, stride, attach, damage |
+
+Brushstroke logic speaks only in `Frame` values and these wrappers — no raw fds or wire types above the seam. The hosted seed (`seed.rye`) uses stdout as the backend; the Wayland seed swaps the backend, not the redraw discipline.
+
+---
+
 *May the surface we draw show only what is true, computed fresh from the values beneath it. May the documents come first and the drawing follow. And may the system, in time, show itself in its own hand — every page a value, every value drawn with care.*
