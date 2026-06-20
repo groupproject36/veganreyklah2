@@ -11,6 +11,9 @@
 !/.gitignore
 !/.gitmodules
 !/SOURCE.md
+!/LICENSE-MIT
+!/LICENSE-APACHE
+!/LICENSE-CC-BY
 !/.brix
 !/keys_*.png
 !/context/
