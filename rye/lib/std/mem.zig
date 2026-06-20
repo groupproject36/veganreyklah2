@@ -1382,7 +1382,12 @@ pub fn findLastAny(comptime T: type, slice: []const T, values: []const T) ?usize
     while (i != 0) {
         i -= 1;
         for (values) |value| {
-            if (slice[i] == value) return i;
+            if (slice[i] == value) {
+                // Postcondition: a found index lands inside the slice at a sought value.
+                assert(i < slice.len);
+                assert(slice[i] == value);
+                return i;
+            }
         }
     }
     return null;
