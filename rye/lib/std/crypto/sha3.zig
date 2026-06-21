@@ -159,6 +159,11 @@ fn ShakeLike(comptime security_level: u11, comptime default_delim: u8, comptime 
         /// Absorb a slice of bytes into the state.
         pub fn update(self: *Self, bytes: []const u8) void {
             self.st.absorb(bytes);
+            // After absorbing, the sponge cursor rests within one block — at or below
+            // the rate boundary, never past it (pairs with Keccak update and squeeze 9935).
+            assert(self.st.offset <= block_length);
+            maybe(self.st.offset == block_length);
+            assert(self.offset <= self.buf.len);
         }
 
         /// Squeeze a slice of bytes from the state.

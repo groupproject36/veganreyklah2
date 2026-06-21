@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `014512`: TAME document stack; `caravan/seed.rye` widths; 75 witnesses.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `015112`: pass 9927 ShakeLike.update; 76 witnesses.*
 
 **Language:** EN
-**Version:** `20260621.014512` (Rye chronological stamp)
+**Version:** `20260621.015112` (Rye chronological stamp)
 **Last updated:** 2026-06-21
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,6 +12,7 @@
 
 ## What Just Landed (this session)
 
+- **Strengthening pass 9927 (`015112`).** SHA3 `ShakeLike.update` sponge cursor postconditions; witness `sha3_shake_update_test`; 76/76 witnesses GREEN.
 - **TAME document stack (`014512`).** Operational supplement → `context/TAME_STYLE.md` (TigerBeetle `TIGER_STYLE.md` filename pattern). Canon: `external-research/996_TAME_STYLE.md` + `gratitude/TIGER_STYLE.md`. Rules updated; `snake_case` defers to 996.
 - **Explicit-width Phase 1b (`014512`).** `caravan/seed.rye`: `max_restarts`, `planned_failures`, `restarts` → `u32`.
 - **Strengthening pass 9928 (`013412`).** `mem.span` sentinel slice postconditions; witness `mem_span_test`; 75/75 witnesses GREEN.
@@ -82,7 +83,7 @@
 - **Rishi arithmetic + stdout** — `+`/`-`/`*`/`/`, correct precedence, `say`.
 - **Tally seed** — one Region, 13 invariants.
 - **Tally v1 named gardens** — `Gardens`, blob/diff/frame, 15/15 GREEN.
-- **Strengthening 9994–9928** — through mem.span. 75 witnesses.
+- **Strengthening 9994–9927** — through ShakeLike.update. 76 witnesses.
 - **Mantra seed** — weave, LCS diff, SHA3-256 store, init/add/status.
 - **Mantra for the repo (seed)** — commit chain, add-all walks `.brix`, log follows chain. 9/9 bricks.
 - **`init.garden` (phase 1)** — `std.process.Init.garden` renamed from upstream `arena`.
@@ -116,7 +117,7 @@
 
 | When | Strand | Next step |
 |------|--------|-----------|
-| **`k <stamp>`** | **Strengthening** | Next `std` surface (`9927` and below) through `parity.rish` |
+| **`k <stamp>`** | **Strengthening** | Next `std` surface (`9926` and below) through `parity.rish` |
 | **Between `k` runs** | **Explicit width** | Phase 1 queue: ~~`tally/seed`~~ ~~`tally/gardens`~~ ~~`caravan/seed`~~ → `caravan/bounded` → `twin` → `chain` → `brushstroke/skate_grid.rye` |
 | **Metal pause** | **Aurora smoke** | `aurora/run.sh` in CI (`10024` Phase 2 after Caravan/Skate) |
 
@@ -126,7 +127,7 @@ Width and strengthening **do not block each other** — they touch different fil
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio (9927 and below) | `10023` Track B, `998` |
+| 1 | **Strengthening series** — next `std` surface through gate trio (9926 and below) | `10023` Track B, `998` |
 | 2 | **Explicit-width migration** — `usize` → `u32`/`u64` in authored `.rye` (parallel, one module per session) | `10024`, `992` |
 | 3 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 4 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
@@ -215,7 +216,7 @@ Phase 2 vocabulary sweep is **closed**. Policy at `161112`: warm names enter bes
 - **Compare:** baseline `vendor/zig-toolchain/lib` vs strengthened `rye/lib` — same test, same pinned Zig (`RYE_ZIG`).
 - **Invoke:** `rye run rye/tests/<name>.rye` on both arms (`RYE_LIB` for baseline); exercises the real bridge path.
 - **Hold:** exit code + stdout/stderr identical — assertions change what code *says*, never what it *does*.
-- **Witnesses:** 75 programs, all GREEN (9928 mem.span latest).
+- **Witnesses:** 76 programs, all GREEN (9927 ShakeLike.update latest).
 
 ## The Through-Line
 
