@@ -39,7 +39,7 @@ These are the simple systems that run today. Everything ahead grows from them.
 - **Comlink hosted wire** — sealed datagram over localhost UDP (`comlink/hosted_wire.rye`); virtio-net is next (`10016`).
 - **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of`; gate trio 71/71 GREEN.
 - **Skate text grid** — monospace 8×8 glyphs on Brushstroke Wayland seed; headless selftest green (`10023` Track A).
-- **Strengthening passes 9979–9918** — `trimStart` … mem.rotate. Each through the gate; witness count 17 → 85.
+- **Strengthening passes 9979–9917** — `trimStart` … mem.replace. Each through the gate; witness count 17 → 86.
 - **Explicit-width policy** — TAME supplement aligned with Tiger Style (`210812`); baseline `992`; charter `10024`.
 - **Garden memory policy** — authored `.rye` uses `init.garden.allocator()`, never `ArenaAllocator`; no std `GardenAllocator` rename; owned wrapper at `rye.garden` / `tally/heap-garden.rye` when built (`inherited-names.md`, TAME rules).
 

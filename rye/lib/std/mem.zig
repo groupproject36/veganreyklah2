@@ -4489,12 +4489,14 @@ test rotate {
 pub fn replace(comptime T: type, input: []const T, needle: []const T, replacement: []const T, output: []T) usize {
     // Empty needle will loop until output buffer overflows.
     assert(needle.len > 0);
+    const expected_len = replacementSize(T, input, needle, replacement);
+    assert(expected_len <= output.len);
 
     var i: usize = 0;
     var slide: usize = 0;
     var replacements: usize = 0;
     while (slide < input.len) {
-        if (mem.startsWith(T, input[slide..], needle)) {
+        if (startsWith(T, input[slide..], needle)) {
             @memcpy(output[i..][0..replacement.len], replacement);
             i += replacement.len;
             slide += needle.len;
@@ -4504,6 +4506,26 @@ pub fn replace(comptime T: type, input: []const T, needle: []const T, replacemen
             i += 1;
             slide += 1;
         }
+    }
+
+    // Postcondition: wrote exactly the size replacementSize promised (pairs with startsWith 9939).
+    assert(i == expected_len);
+    const max_replace_check: usize = 128;
+    if (input.len <= 64 and expected_len <= max_replace_check) {
+        var verify_slide: usize = 0;
+        var verify_i: usize = 0;
+        while (verify_slide < input.len) {
+            if (startsWith(T, input[verify_slide..], needle)) {
+                assert(eql(T, output[verify_i..][0..replacement.len], replacement));
+                verify_i += replacement.len;
+                verify_slide += needle.len;
+            } else {
+                assert(output[verify_i] == input[verify_slide]);
+                verify_i += 1;
+                verify_slide += 1;
+            }
+        }
+        assert(verify_i == expected_len);
     }
 
     return replacements;
