@@ -3,7 +3,7 @@
 **Stamp:** `20260620.210812`
 **Policy:** `context/TAME_STYLE.md` (Rye supplement)
 **Charter:** `expanding-prompts/10024_explicit_width_audit.md`
-**Status:** Phase 1b underway (`015712`) — `caravan/bounded.rye` on `u32`; `caravan/twin` next
+**Status:** Phase 1b underway (`020512`) — `caravan/twin.rye` on `u32`; `caravan/chain` next
 
 ---
 
@@ -28,7 +28,7 @@
 | `brushstroke/skate_grid.rye` | 29 | display | 1 | `cols`/`rows`/pixel loops → `u32`; cast at `[]u8` stride |
 | `comlink/hosted_wire.rye` | 12 | wire | 2 | datagram offsets → `u64` / `u32` per frame spec |
 | `caravan/chain.rye` | 12 | supervision | 1 | stage indices bounded by chain depth |
-| `caravan/twin.rye` | 12 | supervision | 1 | child slot indices |
+| `caravan/twin.rye` | 0 | supervision | 1 | **Done** `020512` |
 | `aurora/src/deciding.rye` | 11 | metal | 2 | MMIO offsets → `u64`; small counters → `u32` |
 | `aurora/src/posted.rye` | 11 | metal | 2 | mailbox layout — wire widths |
 | `aurora/src/relay.rye` | 8 | metal | 2 | relay buffer walks |

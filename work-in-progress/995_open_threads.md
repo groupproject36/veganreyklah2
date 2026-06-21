@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `015712`: keys README; `caravan/bounded.rye` widths; 77 witnesses.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `020512`: keys visual note; `caravan/twin.rye` widths; 77 witnesses.*
 
 **Language:** EN
-**Version:** `20260621.015712` (Rye chronological stamp)
+**Version:** `20260621.020512` (Rye chronological stamp)
 **Last updated:** 2026-06-21
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,7 +12,8 @@
 
 ## What Just Landed (this session)
 
-- **Keys policy clarified (`015712`).** `gpg_signing_06462132` (master) and `rye_signing_DBF853` (sandbox) are distinct fingerprints — not duplicates. `context/keys/README.md` + `PUBKEYS.md` note.
+- **Keys visual note (`020512`).** Armored blocks look alike; `sha256sum` / `gpg --import-show` confirm different material (`0646…` vs `DBF8…`).
+- **Explicit-width Phase 1b (`020512`).** `caravan/twin.rye`: Region + twin supervision → `u32`.
 - **Explicit-width Phase 1b (`015712`).** `caravan/bounded.rye`: Region + supervision counts → `u32`; `bufLenU32` at slice seam.
 - **Strengthening pass 9926 (`015612`).** `mem.sliceAsBytes` byte-view length postconditions; witness `mem_slice_as_bytes_test`; 77/77 witnesses GREEN.
 - **Strengthening pass 9927 (`015112`).** SHA3 `ShakeLike.update` sponge cursor postconditions; witness `sha3_shake_update_test`; 76/76 witnesses GREEN.
@@ -121,7 +122,7 @@
 | When | Strand | Next step |
 |------|--------|-----------|
 | **`k <stamp>`** | **Strengthening** | Next `std` surface (`9925` and below) through `parity.rish` |
-| **Between `k` runs** | **Explicit width** | Phase 1 queue: ~~`tally/seed`~~ ~~`tally/gardens`~~ ~~`caravan/seed`~~ ~~`caravan/bounded`~~ → `caravan/twin` → `chain` → `brushstroke/skate_grid.rye` |
+| **Between `k` runs** | **Explicit width** | Phase 1 queue: ~~`tally/*`~~ ~~`caravan/seed`~~ ~~`caravan/bounded`~~ ~~`caravan/twin`~~ → `caravan/chain` → `brushstroke/skate_grid.rye` |
 | **Metal pause** | **Aurora smoke** | `aurora/run.sh` in CI (`10024` Phase 2 after Caravan/Skate) |
 
 Width and strengthening **do not block each other** — they touch different files. Prefer **one width module** when not on a `k` strengthening pass.
@@ -136,7 +137,7 @@ Width and strengthening **do not block each other** — they touch different fil
 | 4 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
 | 5 | **Aurora metal lane** — freestanding integration smoke | `991`, `aurora/run.sh` |
 
-**Explicit-width migration** *(opened `210812`, Phase 1 underway `211712`)* — Tiger Style asks for explicitly sized types. **Policy:** `u32` bounded in-memory, `u64` wire-persistent, `usize` only at slice seams. **Done:** `tally/seed.rye`, `tally/gardens.rye`, `caravan/seed.rye`, `caravan/bounded.rye`. **Next:** `caravan/twin.rye` → `chain`. Charter `10024`; inventory `992`.
+**Explicit-width migration** *(opened `210812`, Phase 1 underway `211712`)* — Tiger Style asks for explicitly sized types. **Policy:** `u32` bounded in-memory, `u64` wire-persistent, `usize` only at slice seams. **Done:** `tally/seed.rye`, `tally/gardens.rye`, `caravan/seed.rye`, `caravan/bounded.rye`, `caravan/twin.rye`. **Next:** `caravan/chain.rye` → Skate grid. Charter `10024`; inventory `992`.
 
 **Aurora metal lane** *(opened `200312`)* — parallel to the main mem/string arc, not a fork of it. Aurora's freestanding stages (`aurora/src/*.rye`, `riscv64-freestanding-none`) lean on **crypto** and a thin **mem** slice, not `std.os` or hosted I/O.
 

@@ -15,47 +15,56 @@
 
 const std = @import("std");
 
-const caravan_twin_version = "20260620.021612";
+const caravan_twin_version = "20260621.020512";
+
+fn bufLenU32(buf: []const u8) u32 {
+    std.debug.assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
 
 const Region = struct {
     buf: []u8,
-    pos: usize,
+    pos: u32,
 
     fn init(buf: []u8) Region {
         std.debug.assert(buf.len > 0);
         const r = Region{ .buf = buf, .pos = 0 };
-        std.debug.assert(r.pos <= r.buf.len);
+        std.debug.assert(r.pos <= bufLenU32(r.buf));
         return r;
     }
 
-    fn alloc(self: *Region, n: usize) error{OutOfBounds}![]u8 {
-        std.debug.assert(self.pos <= self.buf.len);
-        if (n > self.buf.len - self.pos) return error.OutOfBounds;
-        const slice = self.buf[self.pos .. self.pos + n];
+    fn alloc(self: *Region, n: u32) error{OutOfBounds}![]u8 {
+        const cap = bufLenU32(self.buf);
+        std.debug.assert(self.pos <= cap);
+        if (n > cap - self.pos) return error.OutOfBounds;
+        const start: usize = @intCast(self.pos);
+        const end: usize = @intCast(self.pos + n);
+        std.debug.assert(end <= self.buf.len);
+        const slice = self.buf[start..end];
         self.pos += n;
-        std.debug.assert(self.pos <= self.buf.len);
+        std.debug.assert(self.pos <= cap);
         return slice;
     }
 
     fn clear(self: *Region) void {
         self.pos = 0;
-        std.debug.assert(self.pos <= self.buf.len);
+        std.debug.assert(self.pos <= bufLenU32(self.buf));
     }
 
-    fn remaining(self: *const Region) usize {
-        return self.buf.len - self.pos;
+    fn remaining(self: *const Region) u32 {
+        return bufLenU32(self.buf) - self.pos;
     }
 };
 
 const ChildId = enum { a, b };
 
-const child_a_budget: usize = 128;
-const child_b_budget: usize = 192;
+const child_a_budget: u32 = 128;
+const child_b_budget: u32 = 192;
 const max_child_budget = @max(child_a_budget, child_b_budget);
 
-const planned_failures_a: usize = 1;
-const planned_failures_b: usize = 0;
-const max_restarts_per_child: usize = 5;
+const planned_failures_a: u32 = 1;
+const planned_failures_b: u32 = 0;
+const max_restarts_per_child: u32 = 5;
 
 pub fn main(init: std.process.Init) !u8 {
     const io = init.io;
@@ -77,7 +86,7 @@ fn parseChildId(name: []const u8) ?ChildId {
     return null;
 }
 
-fn budgetFor(child: ChildId) usize {
+fn budgetFor(child: ChildId) u32 {
     return switch (child) {
         .a => child_a_budget,
         .b => child_b_budget,
@@ -145,9 +154,9 @@ fn superviseChild(
     io: std.Io,
     self_path: []const u8,
     child: ChildId,
-    planned_failures: usize,
-) !usize {
-    var restarts: usize = 0;
+    planned_failures: u32,
+) !u32 {
+    var restarts: u32 = 0;
 
     while (true) {
         std.debug.assert(restarts <= max_restarts_per_child);
