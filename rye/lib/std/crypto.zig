@@ -1,6 +1,7 @@
 //! Cryptography.
 
 const std = @import("std.zig");
+const assert = std.debug.assert;
 
 pub const timing_safe = @import("crypto/timing_safe.zig");
 
@@ -412,7 +413,17 @@ test "issue #4532: no index out of bounds" {
 /// Sets a slice to zeroes.
 /// Prevents the store from being optimized out.
 pub fn secureZero(comptime T: type, s: []volatile T) void {
-    @memset(s, std.mem.zeroes(T));
+    const zero = std.mem.zeroes(T);
+    @memset(s, zero);
+    // Postcondition: every byte of the backing memory is zero (works for any T).
+    const byte_len = s.len * @sizeOf(T);
+    if (byte_len > 0) {
+        const bytes: [*]volatile u8 = @ptrCast(s.ptr);
+        var i: usize = 0;
+        while (i < byte_len) : (i += 1) {
+            assert(bytes[i] == 0);
+        }
+    }
 }
 
 test secureZero {

@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `012812`: pass 9930 mem.trim; 73 witnesses.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `013112`: pass 9929 crypto.secureZero; 74 witnesses.*
 
 **Language:** EN
-**Version:** `20260621.012812` (Rye chronological stamp)
+**Version:** `20260621.013112` (Rye chronological stamp)
 **Last updated:** 2026-06-21
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,7 +12,7 @@
 
 ## What Just Landed (this session)
 
-- **Strengthening pass 9930 (`012812`).** `mem.trim` postconditions + witness `mem_trim_test`; completes trim family with `trimStart` (9979) and `trimEnd` (9988); 73/73 witnesses GREEN.
+- **Strengthening pass 9929 (`013112`).** `crypto.secureZero` byte-level wipe postconditions; witness `crypto_secure_zero_test`; 74/74 witnesses GREEN.
 - **Explicit-width Phase 1 (`211712`).** `tally/seed.rye` + `tally/gardens.rye`: `Region.pos`, `alloc`, `remaining`, `Gardens.count` → `u32`; `bufLenU32` at slice seam. Rules in `.cursor`, `.claude`, `context/specs/tame-style.md`.
 - **Explicit-width audit (`210812`).** TAME supplement corrected — `u32`/`u64` in authored APIs, `usize` boundary-only. Charter `10024`; baseline `992`.
 - **Strengthening pass 9932 (`210412`).** `tokenizeScalar` / `tokenizeAny` / `tokenizeSequence` factory postconditions; witness `mem_tokenize_factory_test`; 71/71 witnesses GREEN.
@@ -113,7 +113,7 @@
 
 | When | Strand | Next step |
 |------|--------|-----------|
-| **`k <stamp>`** | **Strengthening** | Next `std` surface (`9929` and below) through `parity.rish` |
+| **`k <stamp>`** | **Strengthening** | Next `std` surface (`9928` and below) through `parity.rish` |
 | **Between `k` runs** | **Explicit width** | Phase 1 queue: ~~`tally/seed`~~ ~~`tally/gardens`~~ → `caravan/*` → `brushstroke/skate_grid.rye` |
 | **Metal pause** | **Aurora smoke** | `aurora/run.sh` in CI (`10024` Phase 2 after Caravan/Skate) |
 
@@ -212,7 +212,7 @@ Phase 2 vocabulary sweep is **closed**. Policy at `161112`: warm names enter bes
 - **Compare:** baseline `vendor/zig-toolchain/lib` vs strengthened `rye/lib` — same test, same pinned Zig (`RYE_ZIG`).
 - **Invoke:** `rye run rye/tests/<name>.rye` on both arms (`RYE_LIB` for baseline); exercises the real bridge path.
 - **Hold:** exit code + stdout/stderr identical — assertions change what code *says*, never what it *does*.
-- **Witnesses:** 72 programs, all GREEN (9931 mem window factory latest).
+- **Witnesses:** 73 programs, all GREEN (9930 mem.trim latest).
 
 ## The Through-Line
 
