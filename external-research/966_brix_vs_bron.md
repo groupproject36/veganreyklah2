@@ -113,12 +113,31 @@ The rule: **if a value is read many times or sent across a wire, Bron. If a valu
 
 ---
 
+## Why Bron Aligns with Zig and Tiger Style, Not with Clojure
+
+Rich Hickey's EDN (Extensible Data Notation) is the notation that honors Clojure's value model — maps, vectors, sets, keywords, all readable as data. EDN taught us that a notation should match the value model it serves. We carry that lesson forward.
+
+Yet Bron aligns with Zig and Tiger Style rather than with Clojure. Where EDN serves a Lisp — parenthesized, homoiconic, reader-macro-extensible — Bron serves a systems language whose values are explicitly sized, whose assertions guard every boundary, and whose discipline is TAME: safety first, performance second, joy third.
+
+| Design choice | EDN (Clojure) | Bron (Rye) |
+|--------------|---------------|------------|
+| Syntax | Parenthesized, nested, reader macros | Plain key-value, one field per line, no nesting in the seed |
+| Value model | Clojure's persistent data structures | Rye's one value model: string, integer, bool, list, record |
+| Extension | Reader macros (`#inst`, `#uuid`) | Reserved — grow by accretion, not by macro |
+| Philosophy | Homoiconicity — code is data | Separation — Brix is the code; Bron is the data |
+| Alignment | Functional, Lisp tradition | Systems, Tiger Style / TAME discipline |
+
+Bron is simpler than EDN on purpose. A systems notation does not need reader macros or nested maps in its seed form. It needs one field per line, stated types by convention, and a parser smaller than the format specification. The simplicity is earned — the same way Tiger Style says simplicity is the hardest revision.
+
+---
+
 ## Sources
 
 - Nix: nixos.org — expression language that evaluates to attribute sets
 - infuse: codeberg.org/amjoseph/infuse.nix — desugaring and monoid composition
 - SixOS: codeberg.org/amjoseph/sixos — declaration (Nix) meets supervision (s6)
 - ZON: github.com/ZON-Format/ZON — token-efficient notation for LLM workflows. MIT.
+- EDN: github.com/edn-format/edn — Rich Hickey's extensible data notation for Clojure.
 
 All read for concepts. The design decisions are our own.
 
