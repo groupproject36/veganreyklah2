@@ -18,7 +18,7 @@
 - **Strengthening pass 9914 (`033712`).** `mem.replaceScalar` snapshot postconditions; width audit on 5 affected files; witness `mem_replace_scalar_test`; 89/89 witnesses GREEN.
 - **Strengthening pass 9915 (`033412`).** `mem.replaceOwned` alloc-length + verify walk; width audit on 6 affected files; witness `mem_replace_owned_test`; 88/88 witnesses GREEN.
 - **Strengthening pass 9916 (`032712`).** `mem.replacementSize` walk + formula postconditions; width audit on 5 affected files; witness `mem_replacement_size_test`; 87/87 witnesses GREEN.
-- **Strengthening stdlib doc + width pass (`031812`).** All 82 `strengthening-compiler/` passes enriched with `## Rye std surface` signatures and `## Width notes`; crosswalk `992_strengthening_width_crosswalk.md`; enricher `tools/enrich_strengthening_docs.rye`; prompt `10025`. Named `mem` snapshot bounds → `u32`.
+- **Strengthening stdlib doc + width pass (`031812`).** All 82 `strengthening-compiler/` passes enriched with `## Rye std surface` signatures and `## Width notes`; crosswalk `993_strengthening_width_crosswalk.md`; enricher `tools/enrich_strengthening_docs.rye`; prompt `10025`. Named `mem` snapshot bounds → `u32`.
 - **Strengthening pass 9917 (`031512`).** `mem.replace` buffer-size and output-verify postconditions; witness `mem_replace_test`; 86/86 witnesses GREEN.
 - **Strengthening pass 9918 (`030912`).** `mem.rotate` left-rotate snapshot postconditions (len <= 64); witness `mem_rotate_test`; 85/85 witnesses GREEN.
 - **Strengthening pass 9919 (`030412`).** `mem.swap` runtime byte-exchange postconditions; witness `mem_swap_test`; 84/84 witnesses GREEN.

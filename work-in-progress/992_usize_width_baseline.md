@@ -26,7 +26,7 @@ Every pass in `strengthening-compiler/` now carries:
 
 **Auditor:** `tools/tame_usize_audit.rye` — shared by `tools/enrich_strengthening_docs.rye`
 
-**Crosswalk:** `992_strengthening_width_crosswalk.md` (86 passes, auto-indexed)
+**Crosswalk:** `993_strengthening_width_crosswalk.md` (86 passes, auto-indexed)
 **Lexicon:** `strengthening-compiler/0000_STRENGTHENING_LEXICON.md` — std-shaped tree with ✅ / `[ ]` audit column (`0000` ceiling · `9999` floor)
 **Enricher:** `tools/enrich_strengthening_docs.rye` — re-run after each new `k` pass (updates crosswalk + lexicon)
 **Prompt:** `expanding-prompts/10025_strengthening_stdlib_doc_width_pass.md`

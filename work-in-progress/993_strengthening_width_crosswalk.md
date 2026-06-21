@@ -1,4 +1,4 @@
-# 992b · Strengthening ↔ Width Crosswalk
+# 993 · Strengthening ↔ Width Crosswalk
 
 **Stamp:** `20260621.043312`
 **Parent:** `992_usize_width_baseline.md`

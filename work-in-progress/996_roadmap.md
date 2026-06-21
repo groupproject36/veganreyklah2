@@ -154,7 +154,7 @@ Strengthening through **9913**, explicit-width Tally Phase 1 on `u32`, parity **
 
 **Strengthening passes 9979–9913** (`143312`–`034412`): witness count 17 → 90, all green.
 
-**Strengthening stdlib doc pass (`031812`)** — 82 pass docs carry Rye `std` signatures + width notes; `992_strengthening_width_crosswalk.md`; `mem` snapshot bounds on `u32`.
+**Strengthening stdlib doc pass (`031812`)** — 82 pass docs carry Rye `std` signatures + width notes; `993_strengthening_width_crosswalk.md`; `mem` snapshot bounds on `u32`.
 
 **Version parser thread (`173212`–`174312`)** — documented in `995` Near build: accrete `std.RyeVersion` beside `SemanticVersion` when capability table or Tablecloth needs programmatic bounds; lexicographic compare on fixed-width stamps suffices until then.
 
