@@ -4796,7 +4796,10 @@ test "asBytes preserves pointer attributes" {
 
 /// Given any value, returns a copy of its bytes in an array.
 pub fn toBytes(value: anytype) [@sizeOf(@TypeOf(value))]u8 {
-    return asBytes(&value).*;
+    const result = asBytes(&value).*;
+    // Postcondition: array spans exactly one value (pairs with asBytes 9925 and bytesToValue).
+    assert(result.len == @sizeOf(@TypeOf(value)));
+    return result;
 }
 
 test toBytes {
