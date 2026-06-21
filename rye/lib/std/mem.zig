@@ -4665,8 +4665,29 @@ test replacementSize {
 
 /// Perform a replacement on an allocated buffer of pre-determined size. Caller must free returned memory.
 pub fn replaceOwned(comptime T: type, allocator: Allocator, input: []const T, needle: []const T, replacement: []const T) Allocator.Error![]T {
-    const output = try allocator.alloc(T, replacementSize(T, input, needle, replacement));
-    _ = replace(T, input, needle, replacement, output);
+    const expected_len = replacementSize(T, input, needle, replacement);
+    const output = try allocator.alloc(T, expected_len);
+    const replacements = replace(T, input, needle, replacement, output);
+    // Postcondition: allocation matches replacementSize (pairs with 9916–9917).
+    assert(output.len == expected_len);
+    const max_replace_owned_input: u32 = 64;
+    if (input.len <= @as(usize, max_replace_owned_input)) {
+        var slide: usize = 0;
+        var i: usize = 0;
+        while (slide < input.len) {
+            if (startsWith(T, input[slide..], needle)) {
+                assert(eql(T, output[i..][0..replacement.len], replacement));
+                i += replacement.len;
+                slide += needle.len;
+            } else {
+                assert(output[i] == input[slide]);
+                i += 1;
+                slide += 1;
+            }
+        }
+        assert(i == expected_len);
+        _ = replacements;
+    }
     return output;
 }
 
