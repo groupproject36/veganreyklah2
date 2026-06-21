@@ -10,7 +10,37 @@
 
 ## Rye std surface
 
-**`std.crypto.sha3`** — see `rye/lib/std` (signature not auto-located).
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..crypto.update`**
+
+```zig
+pub fn update(d: *Self, b: []const u8) void {
+        var off: usize = 0;
+
+        // Partial buffer exists from previous update. Copy into buffer then hash.
+        if (d.buf_len != 0 and d.buf_len + b.len >= 64) {
+            off += 64 - d.buf_len;
+            @memcpy(d.buf[d.buf_len..][0..off], b[0..off]);
+
+            d.round(&d.buf);
+            d.buf_len = 0;
+        }
+
+        // Full middle blocks.
+        while (off + 64 <= b.len) : (off += 64) {
+            d.round(b[off..][0..64]);
+        }
+
+        // Copy any remainder for next pass.
+        const b_slice = b[off..];
+        @memcpy(d.buf[d.buf_len..][0..b_slice.len], b_slice);
+        d.buf_len += @as(u8, @intCast(b_slice.len));
+
+        // Md5 uses the bottom 64-bits for length padding
+        d.total_len +%= b.len;
+    }
+```
 
 ## Width notes
 
@@ -22,21 +52,77 @@
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+
+
+
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std...crypto.update`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| `std...crypto.update` | — | Live `pub fn` not located — cannot run Tiger/TAME audit | pending |
+
+### Witness `rye/tests/sha3_shake_update_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/crypto/sha3.zig` | `sha3` — Phase 4 `usize` seam policy applied | done |
-| `rye/tests/sha3_shake_update_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
-| `strengthening-compiler/9927_sha3_shake_update.md` | pass record + audited surfaces | done |
-| `992_strengthening_width_crosswalk.md` | lexicon row 9927 | done |
+| `misc` | `update` — Phase 4 `usize` seam policy applied | pending |
+| `rye/tests/sha3_shake_update_test.rye` | witness program | pending |
+| `tools/parity.rish` | witness registered | pending |
+| `strengthening-compiler/9927_sha3_shake_update.md` | pass record + audited surfaces | pending |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | pending |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9927 | pending |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [ ] `std...crypto.update` — [`misc`](../misc)
 
-- [x] `std.crypto.sha3` — [`rye/lib/std/crypto/sha3.zig`](../rye/lib/std/crypto/sha3.zig)
+```zig
+pub fn update(d: *Self, b: []const u8) void {
+        var off: usize = 0;
+
+        // Partial buffer exists from previous update. Copy into buffer then hash.
+        if (d.buf_len != 0 and d.buf_len + b.len >= 64) {
+            off += 64 - d.buf_len;
+            @memcpy(d.buf[d.buf_len..][0..off], b[0..off]);
+
+            d.round(&d.buf);
+            d.buf_len = 0;
+        }
+
+        // Full middle blocks.
+        while (off + 64 <= b.len) : (off += 64) {
+            d.round(b[off..][0..64]);
+        }
+
+        // Copy any remainder for next pass.
+        const b_slice = b[off..];
+        @memcpy(d.buf[d.buf_len..][0..b_slice.len], b_slice);
+        d.buf_len += @as(u8, @intCast(b_slice.len));
+
+        // Md5 uses the bottom 64-bits for length padding
+        d.total_len +%= b.len;
+    }
+```
 
 ## Postconditions
 

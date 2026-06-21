@@ -20,7 +20,9 @@
 
 **Policy lives in** `context/TAME_STYLE.md` (Rye supplement, `210812`). **Baseline inventory** lives in `work-in-progress/992_usize_width_baseline.md`.
 
-**Strengthening and width are parallel tracks.** Strengthening passes (`9931` and below) keep earning `std` surfaces through parity. Width migration touches authored `.rye` first, then wire formats, then Rishi internals; inherited `rye/lib/std` keeps `usize` until a function is already open for strengthening — never a mass rewrite.
+**Strengthening and width are parallel tracks.** Strengthening passes (`9931` and below) keep earning `std` surfaces through parity on **vendor Zig baseline** until fork F3; then witnesses re-base to **Rye spec**. Width migration touches authored `.rye` first, then wire formats, then Rishi internals.
+
+**Language fork (`051312`):** Rye will ban `usize` in authored types — research `external-research/967_literal_usize_ban_language_fork.md`, design `active-designing/970_explicit_width_in_rye.md`. Interim seam policy: `968`.
 
 ## Phased Migration
 

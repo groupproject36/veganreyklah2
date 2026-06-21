@@ -91,42 +91,14 @@ And because `rye run` builds in Debug, the assertions are **live** every time we
 
 ## Rye std surface
 
-**`std.mem.eql`**
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..mem.eql`**
 
 ```zig
-pub fn eql(comptime T: type, a: []const T, b: []const T) bool
-```
-
-**`std.mem.endsWith`**
-
-```zig
-pub fn endsWith(comptime T: type, haystack: []const T, needle: []const T) bool
-```
-
-**`std.fs.path.dirname`**
-
-```zig
-pub fn dirname(path: []const u8) ?[]const u8
-```
-
-**`std.mem.trim`**
-
-```zig
-pub fn trim(comptime T: type, slice: []const T, values_to_strip: []const T) []const T
-```
-
-**`std.mem.indexOfScalar`** — see `rye/lib/std` (signature not auto-located).
-
-**`std.fmt.parseInt`**
-
-```zig
-pub fn parseInt(comptime T: type, buf: []const u8, base: u8) ParseIntError!T
-```
-
-**`std.mem.findScalar`**
-
-```zig
-pub fn findScalar(comptime T: type, slice: []const T, value: T) ?usize
+pub fn eql(set: Set, other_set: Set) bool {
+                return std.mem.eql(usize, &set.ints, &other_set.ints);
+            }
 ```
 
 ## Width notes
@@ -187,30 +159,49 @@ pub fn findScalar(comptime T: type, slice: []const T, value: T) ?usize
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std..mem.eql`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### Witness `rye/tests/call_paths_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/mem.zig` | `eql` — Phase 4 `usize` seam policy applied | done |
-| `rye/lib/std/mem.zig` | `endsWith` — Phase 4 `usize` seam policy applied | done |
-| `rye/lib/std/fs/path.zig` | `path.dirname` — Phase 4 `usize` seam policy applied | done |
-| `rye/lib/std/mem.zig` | `trim` — Phase 4 `usize` seam policy applied | done |
-| `rye/lib/std/mem.zig` | `indexOfScalar` — Phase 4 `usize` seam policy applied | done |
-| `rye/lib/std/fmt.zig` | `parseInt` — Phase 4 `usize` seam policy applied | done |
-| `rye/lib/std/mem.zig` | `findScalar` — inherited `usize` seam; assertions only | done |
+| `misc` | `eql` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/call_paths_test.rye` | witness program | done |
 | `tools/parity.rish` | witness registered | done |
 | `strengthening-compiler/9996_stdlib_call_paths.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9996 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [x] `std..mem.eql` — [`misc`](../misc)
 
-- [x] `std.mem.eql` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
-- [x] `std.mem.endsWith` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
-- [x] `std.fs.path.dirname` — [`rye/lib/std/fs/path.zig`](../rye/lib/std/fs/path.zig)
-- [x] `std.mem.trim` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
-- [x] `std.mem.indexOfScalar` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
-- [x] `std.fmt.parseInt` — [`rye/lib/std/fmt.zig`](../rye/lib/std/fmt.zig)
-- [x] `std.mem.findScalar` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+```zig
+pub fn eql(set: Set, other_set: Set) bool {
+                return std.mem.eql(usize, &set.ints, &other_set.ints);
+            }
+```

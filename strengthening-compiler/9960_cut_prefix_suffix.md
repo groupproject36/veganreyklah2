@@ -10,10 +10,45 @@
 
 ## Rye std surface
 
-**`std.mem.cutPrefix`**
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..mem.cutPrefix`**
 
 ```zig
-pub fn cutPrefix(comptime T: type, slice: []const T, prefix: []const T) ?[]const T
+pub fn cutPrefix(comptime T: type, slice: []const T, prefix: []const T) ?[]const T {
+    if (!startsWith(T, slice, prefix)) return null;
+    const rest = slice[prefix.len..];
+    // Postcondition: rest is the tail after a verified prefix.
+    assert(prefix.len <= slice.len);
+    assert(rest.len + prefix.len == slice.len);
+    return rest;
+}
+```
+
+**`std..mem.cutSuffix`**
+
+```zig
+pub fn cutSuffix(comptime T: type, slice: []const T, suffix: []const T) ?[]const T {
+    if (!endsWith(T, slice, suffix)) return null;
+    const rest = slice[0 .. slice.len - suffix.len];
+    // Postcondition: rest is the head before a verified suffix.
+    assert(suffix.len <= slice.len);
+    assert(rest.len + suffix.len == slice.len);
+    return rest;
+}
+```
+
+**`std.mem.cutSuffix`**
+
+```zig
+pub fn cutSuffix(comptime T: type, slice: []const T, suffix: []const T) ?[]const T {
+    if (!endsWith(T, slice, suffix)) return null;
+    const rest = slice[0 .. slice.len - suffix.len];
+    // Postcondition: rest is the head before a verified suffix.
+    assert(suffix.len <= slice.len);
+    assert(rest.len + suffix.len == slice.len);
+    return rest;
+}
 ```
 
 ## Width notes
@@ -26,21 +61,100 @@ pub fn cutPrefix(comptime T: type, slice: []const T, prefix: []const T) ?[]const
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std..mem.cutPrefix`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### `std..mem.cutSuffix`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### `std.mem.cutSuffix`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### Witness `rye/tests/cut_prefix_suffix_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/mem.zig` | `cutPrefix` — Phase 4 `usize` seam policy applied | done |
+| `misc` | `cutPrefix` — Phase 4 `usize` seam policy applied | done |
+| `misc` | `cutSuffix` — Phase 4 `usize` seam policy applied | done |
+| `rye/lib/std/mem.zig` | `cutSuffix` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/cut_prefix_suffix_test.rye` | witness program | done |
 | `tools/parity.rish` | witness registered | done |
 | `strengthening-compiler/9960_cut_prefix_suffix.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9960 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [x] `std..mem.cutPrefix` — [`misc`](../misc)
 
-- [x] `std.mem.cutPrefix` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+```zig
+pub fn cutPrefix(comptime T: type, slice: []const T, prefix: []const T) ?[]const T {
+    if (!startsWith(T, slice, prefix)) return null;
+    const rest = slice[prefix.len..];
+    // Postcondition: rest is the tail after a verified prefix.
+    assert(prefix.len <= slice.len);
+    assert(rest.len + prefix.len == slice.len);
+    return rest;
+}
+```
+
+- [x] `std..mem.cutSuffix` — [`misc`](../misc)
+
+```zig
+pub fn cutSuffix(comptime T: type, slice: []const T, suffix: []const T) ?[]const T {
+    if (!endsWith(T, slice, suffix)) return null;
+    const rest = slice[0 .. slice.len - suffix.len];
+    // Postcondition: rest is the head before a verified suffix.
+    assert(suffix.len <= slice.len);
+    assert(rest.len + suffix.len == slice.len);
+    return rest;
+}
+```
+
+- [x] `std.mem.cutSuffix` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
+```zig
+pub fn cutSuffix(comptime T: type, slice: []const T, suffix: []const T) ?[]const T {
+    if (!endsWith(T, slice, suffix)) return null;
+    const rest = slice[0 .. slice.len - suffix.len];
+    // Postcondition: rest is the head before a verified suffix.
+    assert(suffix.len <= slice.len);
+    assert(rest.len + suffix.len == slice.len);
+    return rest;
+}
+```
 
 ## Postconditions
 

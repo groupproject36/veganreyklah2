@@ -13,6 +13,24 @@
 
 Migrate struct fields and counters to `u32`/`u64` per `10024`; keep `usize` only at `buf[0..n]` slice seams with `bufLenU32` helpers.
 
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### Authored `tally/gardens.rye`
+
+| Width locus | Type | Policy | Status |
+|-------------|------|--------|--------|
+| `tally/gardens.rye` struct fields | Tier A `u32`/`u64` | Authored API — migrate per `10024` | done |
+| `buf[0..n]` slice seams | inherited `usize` | `bufLenU32` at boundary only | done |
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
@@ -21,12 +39,12 @@ Migrate struct fields and counters to `u32`/`u64` per `10024`; keep `usize` only
 | `rye/tests/tally_gardens_test.rye` | witness program | done |
 | `tools/parity.rish` | witness registered | done |
 | `strengthening-compiler/9989_tally_gardens.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9989 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
-
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
 - [x] `tally/gardens.rye` — [`tally/gardens.rye`](../tally/gardens.rye)
 
 ## What we built

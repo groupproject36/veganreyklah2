@@ -10,10 +10,24 @@
 
 ## Rye std surface
 
-**`std.process.run`**
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..process.run`**
 
 ```zig
-pub fn run(gpa: Allocator, io: Io, options: RunOptions) RunError!RunResult
+pub fn run(
+            self: *Self,
+            expression: []const u8,
+            allocator: std.mem.Allocator,
+            context: Context,
+            initial_value: ?usize,
+        ) Error!?Value {
+            if (initial_value) |i| try self.stack.append(allocator, .{ .generic = i });
+            var stream: std.Io.Reader = .fixed(expression);
+            while (try self.step(&stream, allocator, context)) {}
+            if (self.stack.items.len == 0) return null;
+            return self.stack.items[self.stack.items.len - 1];
+        }
 ```
 
 ## Width notes
@@ -26,21 +40,63 @@ pub fn run(gpa: Allocator, io: Io, options: RunOptions) RunError!RunResult
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std..process.run`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### Witness `rye/tests/process_run_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/process.zig` | `run` — Phase 4 `usize` seam policy applied | done |
+| `misc` | `run` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/process_run_test.rye` | witness program | done |
 | `tools/parity.rish` | witness registered | done |
 | `strengthening-compiler/9981_process_run.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9981 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [x] `std..process.run` — [`misc`](../misc)
 
-- [x] `std.process.run` — [`rye/lib/std/process.zig`](../rye/lib/std/process.zig)
+```zig
+pub fn run(
+            self: *Self,
+            expression: []const u8,
+            allocator: std.mem.Allocator,
+            context: Context,
+            initial_value: ?usize,
+        ) Error!?Value {
+            if (initial_value) |i| try self.stack.append(allocator, .{ .generic = i });
+            var stream: std.Io.Reader = .fixed(expression);
+            while (try self.step(&stream, allocator, context)) {}
+            if (self.stack.items.len == 0) return null;
+            return self.stack.items[self.stack.items.len - 1];
+        }
+```
 
 ## Postconditions
 

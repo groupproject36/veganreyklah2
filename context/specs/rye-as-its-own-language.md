@@ -29,7 +29,7 @@ A dialect, though, is bound to its parent's choices. It inherits what it is give
 - **Growth without breakage.** Accretion over revision, enduring names, chronological versioning, a runtime kept honest. Rye never takes away what it has given.
 - **A joy to work in.** Clarity, the habit of saying why, the right nouns and verbs — TAME's third value, real and pursued.
 - **Open-hardware cohesion.** Rye treats RISC-V as solid ground — an instruction set we can read, own, and reason about — rather than chasing every closed target. Better, here, means better-aligned with a hardware future we can trust.
-- **A tended standard library.** Ours, strengthened pass by pass, every divergence proven by the gates. The library grows truer over time, by hand and by proof.
+- **A tended standard library.** Ours, strengthened pass by pass, every divergence proven by the gates — evolving toward **Rye-native explicit widths** (`970`), not perpetual Zig-shaped seams.
 
 Held honestly to these axes, Rye means to be objectively better — and to keep earning that judgment, pass by pass, rather than to assume it.
 

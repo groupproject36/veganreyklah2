@@ -12,10 +12,78 @@ Postcondition lands on the **scalar tail loop** only — vectorized paths stay l
 
 ## Rye std surface
 
-**`std.mem.findScalarPos`**
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..mem.findScalarPos`**
 
 ```zig
-pub fn findScalarPos(comptime T: type, slice: []const T, start_index: usize, value: T) ?usize
+pub fn findScalarPos(comptime T: type, slice: []const T, start_index: usize, value: T) ?usize {
+    if (start_index >= slice.len) return null;
+
+    var i: usize = start_index;
+    if (use_vectors_for_comparison and
+        !std.debug.inValgrind() and // https://github.com/ziglang/zig/issues/17717
+        !@inComptime() and
+        (@typeInfo(T) == .int or @typeInfo(T) == .float) and std.math.isPowerOfTwo(@bitSizeOf(T)))
+    {
+        if (std.simd.suggestVectorLength(T)) |block_len| {
+            // For Intel Nehalem (2009) and AMD Bulldozer (2012) or later, unaligned loads on aligned data result
+            // in the same execution as aligned loads. We ignore older arch's here and don't bother pre-aligning.
+            //
+            // Use `std.simd.suggestVectorLength(T)` to get the same alignment as used in this function
+            // however this usually isn't necessary unless your arch has a performance penalty due to this.
+            //
+            // This may differ for other arch's. Arm for example costs a cycle when loading across a cache
+            // line so explicit alignment prologues may be worth exploration.
+
+            // Unrolling here is ~10% improvement. We can then do one bounds check every 2 blocks
+            // instead of one which adds up.
+            const Block = @Vector(block_len, T);
+            if (i + 2 * block_len < slice.len) {
+                const mask: Block = @splat(value);
+                while (true) {
+                    inline for (0..2) |_| {
+                        const block: Block = slice[i..][0..block_len].*;
+                        const matches = block == mask;
+                        if (@reduce(.Or, matches)) {
+                            return i + std.simd.firstTrue(matches).?;
+                        }
+                        i += block_len;
+                    }
+                    if (i + 2 * block_len >= slice.len) break;
+                }
+            }
+
+            // {block_len, block_len / 2} check
+            inline for (0..2) |j| {
+                const block_x_len = block_len / (1 << j);
+                comptime if (block_x_len < 4) break;
+
+                const BlockX = @Vector(block_x_len, T);
+                if (i + block_x_len < slice.len) {
+                    const mask: BlockX = @splat(value);
+                    const block: BlockX = slice[i..][0..block_x_len].*;
+                    const matches = block == mask;
+                    if (@reduce(.Or, matches)) {
+                        return i + std.simd.firstTrue(matches).?;
+                    }
+                    i += block_x_len;
+                }
+            }
+        }
+    }
+
+    for (slice[i..], i..) |c, j| {
+        if (c == value) {
+            // Postcondition: a found index lands inside the slice at the sought value.
+            assert(j < slice.len);
+            assert(slice[j] == value);
+            assert(j >= start_index);
+            return j;
+        }
+    }
+    return null;
+}
 ```
 
 ## Width notes
@@ -28,21 +96,117 @@ pub fn findScalarPos(comptime T: type, slice: []const T, start_index: usize, val
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std..mem.findScalarPos`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### Witness `rye/tests/find_scalar_pos_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/mem.zig` | `findScalarPos` — inherited `usize` seam; assertions only | done |
+| `misc` | `findScalarPos` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/find_scalar_pos_test.rye` | witness program | done |
 | `tools/parity.rish` | witness registered | done |
 | `strengthening-compiler/9974_find_scalar_pos.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9974 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [x] `std..mem.findScalarPos` — [`misc`](../misc)
 
-- [x] `std.mem.findScalarPos` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+```zig
+pub fn findScalarPos(comptime T: type, slice: []const T, start_index: usize, value: T) ?usize {
+    if (start_index >= slice.len) return null;
+
+    var i: usize = start_index;
+    if (use_vectors_for_comparison and
+        !std.debug.inValgrind() and // https://github.com/ziglang/zig/issues/17717
+        !@inComptime() and
+        (@typeInfo(T) == .int or @typeInfo(T) == .float) and std.math.isPowerOfTwo(@bitSizeOf(T)))
+    {
+        if (std.simd.suggestVectorLength(T)) |block_len| {
+            // For Intel Nehalem (2009) and AMD Bulldozer (2012) or later, unaligned loads on aligned data result
+            // in the same execution as aligned loads. We ignore older arch's here and don't bother pre-aligning.
+            //
+            // Use `std.simd.suggestVectorLength(T)` to get the same alignment as used in this function
+            // however this usually isn't necessary unless your arch has a performance penalty due to this.
+            //
+            // This may differ for other arch's. Arm for example costs a cycle when loading across a cache
+            // line so explicit alignment prologues may be worth exploration.
+
+            // Unrolling here is ~10% improvement. We can then do one bounds check every 2 blocks
+            // instead of one which adds up.
+            const Block = @Vector(block_len, T);
+            if (i + 2 * block_len < slice.len) {
+                const mask: Block = @splat(value);
+                while (true) {
+                    inline for (0..2) |_| {
+                        const block: Block = slice[i..][0..block_len].*;
+                        const matches = block == mask;
+                        if (@reduce(.Or, matches)) {
+                            return i + std.simd.firstTrue(matches).?;
+                        }
+                        i += block_len;
+                    }
+                    if (i + 2 * block_len >= slice.len) break;
+                }
+            }
+
+            // {block_len, block_len / 2} check
+            inline for (0..2) |j| {
+                const block_x_len = block_len / (1 << j);
+                comptime if (block_x_len < 4) break;
+
+                const BlockX = @Vector(block_x_len, T);
+                if (i + block_x_len < slice.len) {
+                    const mask: BlockX = @splat(value);
+                    const block: BlockX = slice[i..][0..block_x_len].*;
+                    const matches = block == mask;
+                    if (@reduce(.Or, matches)) {
+                        return i + std.simd.firstTrue(matches).?;
+                    }
+                    i += block_x_len;
+                }
+            }
+        }
+    }
+
+    for (slice[i..], i..) |c, j| {
+        if (c == value) {
+            // Postcondition: a found index lands inside the slice at the sought value.
+            assert(j < slice.len);
+            assert(slice[j] == value);
+            assert(j >= start_index);
+            return j;
+        }
+    }
+    return null;
+}
+```
 
 ## Postcondition
 

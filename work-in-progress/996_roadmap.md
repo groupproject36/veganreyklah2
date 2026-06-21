@@ -3,8 +3,8 @@
 *A living plan for the work ahead, shaped by one law we hold close: a complex system that works grows from a simpler system that worked. So this roadmap never points straight at the finished, intricate whole. It lays out horizons — what runs now, what comes next, what composes from those, and the ambitious ends — and for each larger system it names the smaller working ones it is made of. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260620.203612` (Rye chronological stamp)
-**Last updated:** 2026-06-20
+**Version:** `20260621.051312` (Rye chronological stamp)
+**Last updated:** 2026-06-21
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, the joy of the craft; and Gall's Law, that working wholes grow from working parts
@@ -40,7 +40,7 @@ These are the simple systems that run today. Everything ahead grows from them.
 - **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of`; gate trio 71/71 GREEN.
 - **Skate text grid** — monospace 8×8 glyphs on Brushstroke Wayland seed; headless selftest green (`10023` Track A).
 - **Strengthening passes 9979–9913** — `trimStart` … mem.collapseRepeats. Each through the gate; witness count 17 → 90.
-- **Explicit-width policy** — TAME supplement aligned with Tiger Style (`210812`); baseline `992`; charter `10024`.
+- **Explicit-width policy** — TAME supplement aligned with Tiger Style (`210812`); baseline `992`; charter `10024`. **Fork `051312`:** literal `usize` ban in Rye types — research `967`, design `970`.
 - **Garden memory policy** — authored `.rye` uses `init.garden.allocator()`, never `ArenaAllocator`; no std `GardenAllocator` rename; owned wrapper at `rye.garden` / `tally/heap-garden.rye` when built (`inherited-names.md`, TAME rules).
 
 ---
@@ -73,8 +73,9 @@ Each is a thing that runs on its own, added by degrees, behind the gates.
 - [x] **Strengthening 9979–9913** — everyday `std` surfaces through the gate (`trimStart` … mem.collapseRepeats; see `strengthening-compiler/9913`–`9987`).
 - [ ] **Device wire (virtio-net)** — two QEMU guests (`10016`).
 - [ ] **Rye chronological version parser** — accrete `std.RyeVersion` beside `SemanticVersion` (`parse` / `format` / `order` for `YYYYMMDD.HHMMSS`); unblocks Caravan capability min-version and Tablecloth policy (`rye-versioning-style.md`, `995`).
-- [ ] **Explicit-width migration** — `usize` → `u32`/`u64` in authored `.rye`; inherited `std` at strengthen touch only (`10024`, `992`; pilot `tally/seed.rye`)
-- [ ] **Continue the strengthening series** — the next `std` surfaces our tools depend on, each through the gate trio, each recorded in the strengthening-compiler stack.
+- [ ] **Explicit-width migration** — `u32`/`u64` in authored `.rye` (Phase 1b queue); Zig-ground `std` seam audit interim (`968`)
+- [ ] **Rye width fork** — no `usize` in Rye types; `u32` slice len; compiler + `std` rewrite (`967`, `970`, `992` F1–F5)
+- [ ] **Continue the strengthening series** — finish Zig-ground arc (`9912` and below); then re-base parity to Rye spec
 
 ---
 

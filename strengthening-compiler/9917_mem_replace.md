@@ -10,10 +10,21 @@
 
 ## Rye std surface
 
-**`std.mem.replace`**
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..mem.replace`**
 
 ```zig
-pub fn replace(comptime T: type, input: []const T, needle: []const T, replacement: []const T, output: []T) usize
+pub fn replace(af: *Atomic, io: Io) ReplaceError!void {
+    assert(af.file_exists); // Wrong value for `CreateFileAtomicOptions.replace`.
+    if (af.file_open) {
+        af.file.close(io);
+        af.file_open = false;
+    }
+    const tmp_sub_path = std.fmt.hex(af.file_basename_hex);
+    try af.dir.rename(&tmp_sub_path, af.dir, af.dest_sub_path, io);
+    af.file_exists = false;
+}
 ```
 
 ## Width notes
@@ -26,21 +37,59 @@ pub fn replace(comptime T: type, input: []const T, needle: []const T, replacemen
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std..mem.replace`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### Witness `rye/tests/mem_replace_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/mem.zig` | `replace` — max_replace_input, max_replace_check `u32`; public `usize` unchanged | done |
+| `misc` | `replace` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/mem_replace_test.rye` | witness program | done |
 | `tools/parity.rish` | witness registered | done |
 | `strengthening-compiler/9917_mem_replace.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9917 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [x] `std..mem.replace` — [`misc`](../misc)
 
-- [x] `std.mem.replace` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+```zig
+pub fn replace(af: *Atomic, io: Io) ReplaceError!void {
+    assert(af.file_exists); // Wrong value for `CreateFileAtomicOptions.replace`.
+    if (af.file_open) {
+        af.file.close(io);
+        af.file_open = false;
+    }
+    const tmp_sub_path = std.fmt.hex(af.file_basename_hex);
+    try af.dir.rename(&tmp_sub_path, af.dir, af.dest_sub_path, io);
+    af.file_exists = false;
+}
+```
 
 ## Postconditions
 

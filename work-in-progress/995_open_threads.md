@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `040612`: width audits shipped — lexicon 102/102; committed and pushed.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `051312`: Rye forks to literal `usize` ban — research `967`, design `970`.*
 
 **Language:** EN
-**Version:** `20260621.040612` (Rye chronological stamp)
+**Version:** `20260621.051312` (Rye chronological stamp)
 **Last updated:** 2026-06-21
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,12 +12,14 @@
 
 ## What Just Landed (this session)
 
-- **Width audit completion (`040412`).** All **86** strengthening passes now carry `done` width-audit tables and `[x]` audited-surface checklists. Lexicon **`102/102` surfaces ✅ · `86/86` passes**. Enricher `complete_pending_width_audits()` + six witness aliases for divergent pass stems.
-- **Lexicon width-audit checkmarks (`035812`).** `0000_STRENGTHENING_LEXICON.md` — ✅ / `[ ]` per surface with pass doc links; enricher syncs `## Audited surfaces` + `## Width audit` on every pass doc.
+- **Literal `usize` ban — language fork (`051312`).** Decision recorded: Rye will have **no `usize` in authored types**; `u32`/`u64` slices and indices; Zig bridge is bootstrap; parity re-bases to Rye spec. Research: `external-research/967_literal_usize_ban_language_fork.md`. Siloed design: `active-designing/970_explicit_width_in_rye.md`. `968` remains the interim seam manual for Zig-ground strengthenings.
+- **968 safety walkthrough (`050312`).** How and why each allowed seam pattern is safe under Tiger/TAME.
+- **Strengthening tools in Rye (`043312`).** `tools/tame_usize_audit.rye` + `tools/enrich_strengthening_docs.rye`.
+- **Full implementation in pass writings (`040912`).** Live `pub fn` bodies in `## Rye std surface` and `## Audited surfaces`.
 - **Strengthening pass 9914 (`033712`).** `mem.replaceScalar` snapshot postconditions; width audit on 5 affected files; witness `mem_replace_scalar_test`; 89/89 witnesses GREEN.
 - **Strengthening pass 9915 (`033412`).** `mem.replaceOwned` alloc-length + verify walk; width audit on 6 affected files; witness `mem_replace_owned_test`; 88/88 witnesses GREEN.
 - **Strengthening pass 9916 (`032712`).** `mem.replacementSize` walk + formula postconditions; width audit on 5 affected files; witness `mem_replacement_size_test`; 87/87 witnesses GREEN.
-- **Strengthening stdlib doc + width pass (`031812`).** All 82 `strengthening-compiler/` passes enriched with `## Rye std surface` signatures and `## Width notes`; crosswalk `992_strengthening_width_crosswalk.md`; enricher `tools/enrich_strengthening_docs.py`; prompt `10025`. Named `mem` snapshot bounds → `u32`.
+- **Strengthening stdlib doc + width pass (`031812`).** All 82 `strengthening-compiler/` passes enriched with `## Rye std surface` signatures and `## Width notes`; crosswalk `992_strengthening_width_crosswalk.md`; enricher `tools/enrich_strengthening_docs.rye`; prompt `10025`. Named `mem` snapshot bounds → `u32`.
 - **Strengthening pass 9917 (`031512`).** `mem.replace` buffer-size and output-verify postconditions; witness `mem_replace_test`; 86/86 witnesses GREEN.
 - **Strengthening pass 9918 (`030912`).** `mem.rotate` left-rotate snapshot postconditions (len <= 64); witness `mem_rotate_test`; 85/85 witnesses GREEN.
 - **Strengthening pass 9919 (`030412`).** `mem.swap` runtime byte-exchange postconditions; witness `mem_swap_test`; 84/84 witnesses GREEN.
@@ -132,27 +134,29 @@
 
 ## Threads Still Open
 
-**Recommended build braid** *(oriented `211712`)* — two parallel strands, one green step per session:
+**Recommended build braid** *(reoriented `051312`)* — three strands, one green step per session:
 
 | When | Strand | Next step |
 |------|--------|-----------|
-| **`k <stamp>`** | **Strengthening** | Next `std` surface (`9912` and below) through `parity.rish` |
-| **Between `k` runs** | **Explicit width** | Phase 1 queue: ~~`tally/*`~~ ~~`caravan/seed`~~ ~~`caravan/bounded`~~ ~~`caravan/twin`~~ → `caravan/chain` → `brushstroke/skate_grid.rye` |
-| **Metal pause** | **Aurora smoke** | `aurora/run.sh` in CI (`10024` Phase 2 after Caravan/Skate) |
+| **`k <stamp>`** | **Strengthening (Zig-ground)** | Next `std` surface (`9912` and below) through `parity.rish` — **last era of vendor baseline** |
+| **Between `k` runs** | **Authored width** | Phase 1b: `caravan/chain` → `brushstroke/skate_grid.rye` — all `u32`/`u64`, zero `usize` in published APIs |
+| **Parallel (design)** | **Language fork** | `970` → `width-audit.rish` → compiler spike (reject `usize` in `.rye`) |
 
-Width and strengthening **do not block each other** — they touch different files. Prefer **one width module** when not on a `k` strengthening pass.
+Strengthening and authored width **do not block each other**. The fork **re-points** strengthening and parity after the current arc holds green — it does not cancel today's `k` passes.
 
 **Main track — Rye · Rishi · strengthening:** `expanding-prompts/10023_main_track_rye_rishi_strengthening.md` (`044412`). Run this for the current build order; `10010` is a reserved stub only.
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio (9912 and below) | `10023` Track B, `998` |
-| 2 | **Explicit-width migration** — `usize` → `u32`/`u64` in authored `.rye` (parallel, one module per session) | `10024`, `992` |
-| 3 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
-| 4 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
+| 1 | **Strengthening series** — finish Zig-ground arc (`9912` and below) through gate trio | `10023` Track B, `998` |
+| 2 | **Authored explicit width** — `u32`/`u64` in `.rye` we publish (Phase 1b queue) | `10024`, `992` Phase 1b |
+| 3 | **Language fork** — literal `usize` ban; `970` → F1 compiler spike | `967`, `970`, `rye-as-its-own-language` |
+| 4 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 5 | **Aurora metal lane** — freestanding integration smoke | `991`, `aurora/run.sh` |
 
-**Explicit-width migration** *(opened `210812`, Phase 1 underway `211712`)* — Tiger Style asks for explicitly sized types. **Policy:** `u32` bounded in-memory, `u64` wire-persistent, `usize` only at slice seams. **Done:** `tally/seed.rye`, `tally/gardens.rye`, `caravan/seed.rye`, `caravan/bounded.rye`, `caravan/twin.rye`. **Next:** `caravan/chain.rye` → Skate grid. Charter `10024`; inventory `992`.
+**Explicit-width migration** *(opened `210812`)* — **authored `.rye`:** `u32` in-memory, `u64` wire, **no `usize` in APIs we publish** (fork makes this law). **Done:** `tally/*`, `caravan/seed`, `bounded`, `twin`. **Next:** `caravan/chain` → Skate grid. **Interim Zig `std`:** seam audit per `968` until fork F3. Charter `10024`; inventory `992`.
+
+**Language fork** *(opened `051312`)* — Rye OS builds from scratch; gratitude converts to Rye; Zig is guest, not core. Research `967`; design `970`. Finish current parity arc green, then re-base gate to Rye spec.
 
 **Aurora metal lane** *(opened `200312`)* — parallel to the main mem/string arc, not a fork of it. Aurora's freestanding stages (`aurora/src/*.rye`, `riscv64-freestanding-none`) lean on **crypto** and a thin **mem** slice, not `std.os` or hosted I/O.
 

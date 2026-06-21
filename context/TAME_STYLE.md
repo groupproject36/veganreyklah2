@@ -7,7 +7,7 @@ type: reference
 # TAME Style — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-06-21 (`014512` — document stack; Tiger-aligned filename; naming defers to 996)
+**Last updated:** 2026-06-21 (`043312` — usize policy aligned with Tiger; tools in Rye)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Status:** Active — grow by supplement, earned when the language is ready
 
@@ -93,7 +93,7 @@ Rye carries the family. The safety Rye offers is the safety every module written
 
 Use explicitly sized integer types: `u8`, `u16`, `u32`, `u64`, `i8`, `i16`, `i32`, `i64`. Use `f32` or `f64` for floating-point. Never use `c_int`, `c_uint`, or `anyopaque` without a stated, commented reason.
 
-**`usize` is a boundary type, not a design type.** Tiger Style asks us to set aside architecture-specific widths so behavior stays exact across targets — especially RISC-V (`riscv64`) and hosted x86_64. Our inherited Zig `std` still speaks `usize` at slice and pointer edges; we honor that at the seam and convert explicitly everywhere we own the contract.
+**`usize` is a boundary type, not a design type.** This is the same policy Tiger Style states — *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* (`gratitude/TIGER_STYLE.md` § Safety). TAME voices it for Rye: set aside architecture-specific widths so behavior stays exact across targets — especially RISC-V (`riscv64`) and hosted x86_64. Our inherited Zig `std` still speaks `usize` at slice and pointer edges; we honor that at the seam and convert explicitly everywhere we own the contract.
 
 | Width | Role in authored Rye |
 |-------|----------------------|
@@ -108,7 +108,7 @@ const max_frame_bytes: u32 = 4096;
 pos: u32, // invariant: pos <= max_frame_bytes
 ```
 
-Full audit charter and phased migration: `expanding-prompts/10024_explicit_width_audit.md`, baseline `work-in-progress/992_usize_width_baseline.md`.
+Full audit charter and phased migration: `expanding-prompts/10024_explicit_width_audit.md`, baseline `work-in-progress/992_usize_width_baseline.md`, research `external-research/968_usize_boundary_not_design.md`. Strengthening audit tooling: `tools/tame_usize_audit.rye`.
 
 **At the slice seam**, convert explicitly:
 

@@ -117,7 +117,11 @@ This pass advances Rye's clock to `20260618.072512`, the stamp beside the SHA3 w
 
 ## Rye std surface
 
-**`std.crypto.keccak`** — see `rye/lib/std` (signature not auto-located).
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std.crypto.keccak`**
+
+*see `rye/lib/std` — `crypto.keccak` not auto-located*
 
 ## Width notes
 
@@ -129,18 +133,47 @@ This pass advances Rye's clock to `20260618.072512`, the stamp beside the SHA3 w
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+
+
+
+
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std.crypto.keccak`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| `std.crypto.keccak` | — | Live `pub fn` not located — cannot run Tiger/TAME audit | pending |
+
+### Witness `rye/tests/sha3_512_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/crypto/keccak_p.zig` | `keccak` — Phase 4 `usize` seam policy applied | done |
-| `rye/tests/sha3_512_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
-| `strengthening-compiler/9997_keccak_sponge.md` | pass record + audited surfaces | done |
-| `992_strengthening_width_crosswalk.md` | lexicon row 9997 | done |
+| `rye/lib/std/crypto/keccak_p.zig` | `keccak` — Phase 4 `usize` seam policy applied | pending |
+| `rye/tests/sha3_512_test.rye` | witness program | pending |
+| `tools/parity.rish` | witness registered | pending |
+| `strengthening-compiler/9997_keccak_sponge.md` | pass record + audited surfaces | pending |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | pending |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9997 | pending |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
-
-- [x] `std.crypto.keccak` — [`rye/lib/std/crypto/keccak_p.zig`](../rye/lib/std/crypto/keccak_p.zig)
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [ ] `std.crypto.keccak` — [`rye/lib/std/crypto/keccak_p.zig`](../rye/lib/std/crypto/keccak_p.zig)

@@ -10,7 +10,99 @@
 
 ## Rye std surface
 
-**`std.mem.split`** — see `rye/lib/std` (signature not auto-located).
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..mem.splitBackwardsScalar`**
+
+```zig
+pub fn splitBackwardsScalar(comptime T: type, buffer: []const T, delimiter: T) SplitBackwardsIterator(T, .scalar) {
+    const it: SplitBackwardsIterator(T, .scalar) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiter,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
+
+**`std..mem.splitBackwardsAny`**
+
+```zig
+pub fn splitBackwardsAny(comptime T: type, buffer: []const T, delimiters: []const T) SplitBackwardsIterator(T, .any) {
+    const it: SplitBackwardsIterator(T, .any) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiters,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
+
+**`std..mem.splitBackwardsSequence`**
+
+```zig
+pub fn splitBackwardsSequence(comptime T: type, buffer: []const T, delimiter: []const T) SplitBackwardsIterator(T, .sequence) {
+    assert(delimiter.len != 0);
+    const it: SplitBackwardsIterator(T, .sequence) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiter,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
+
+**`std.mem.splitBackwardsScalar`**
+
+```zig
+pub fn splitBackwardsScalar(comptime T: type, buffer: []const T, delimiter: T) SplitBackwardsIterator(T, .scalar) {
+    const it: SplitBackwardsIterator(T, .scalar) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiter,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
+
+**`std.mem.splitBackwardsAny`**
+
+```zig
+pub fn splitBackwardsAny(comptime T: type, buffer: []const T, delimiters: []const T) SplitBackwardsIterator(T, .any) {
+    const it: SplitBackwardsIterator(T, .any) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiters,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
+
+**`std.mem.splitBackwardsSequence`**
+
+```zig
+pub fn splitBackwardsSequence(comptime T: type, buffer: []const T, delimiter: []const T) SplitBackwardsIterator(T, .sequence) {
+    assert(delimiter.len != 0);
+    const it: SplitBackwardsIterator(T, .sequence) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiter,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
 
 ## Width notes
 
@@ -22,21 +114,177 @@
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std..mem.splitBackwardsScalar`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### `std..mem.splitBackwardsAny`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### `std..mem.splitBackwardsSequence`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### `std.mem.splitBackwardsScalar`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### `std.mem.splitBackwardsAny`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### `std.mem.splitBackwardsSequence`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### Witness `rye/tests/split_backwards_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/mem.zig` | `split` — Phase 4 `usize` seam policy applied | done |
+| `misc` | `splitBackwardsScalar` — Phase 4 `usize` seam policy applied | done |
+| `misc` | `splitBackwardsAny` — Phase 4 `usize` seam policy applied | done |
+| `misc` | `splitBackwardsSequence` — Phase 4 `usize` seam policy applied | done |
+| `rye/lib/std/mem.zig` | `splitBackwardsScalar` — Phase 4 `usize` seam policy applied | done |
+| `rye/lib/std/mem.zig` | `splitBackwardsAny` — Phase 4 `usize` seam policy applied | done |
+| `rye/lib/std/mem.zig` | `splitBackwardsSequence` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/split_backwards_test.rye` | witness program | done |
 | `tools/parity.rish` | witness registered | done |
 | `strengthening-compiler/9962_split_backwards.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9962 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [x] `std..mem.splitBackwardsScalar` — [`misc`](../misc)
 
-- [x] `std.mem.split` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+```zig
+pub fn splitBackwardsScalar(comptime T: type, buffer: []const T, delimiter: T) SplitBackwardsIterator(T, .scalar) {
+    const it: SplitBackwardsIterator(T, .scalar) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiter,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
+
+- [x] `std..mem.splitBackwardsAny` — [`misc`](../misc)
+
+```zig
+pub fn splitBackwardsAny(comptime T: type, buffer: []const T, delimiters: []const T) SplitBackwardsIterator(T, .any) {
+    const it: SplitBackwardsIterator(T, .any) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiters,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
+
+- [x] `std..mem.splitBackwardsSequence` — [`misc`](../misc)
+
+```zig
+pub fn splitBackwardsSequence(comptime T: type, buffer: []const T, delimiter: []const T) SplitBackwardsIterator(T, .sequence) {
+    assert(delimiter.len != 0);
+    const it: SplitBackwardsIterator(T, .sequence) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiter,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
+
+- [x] `std.mem.splitBackwardsScalar` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
+```zig
+pub fn splitBackwardsScalar(comptime T: type, buffer: []const T, delimiter: T) SplitBackwardsIterator(T, .scalar) {
+    const it: SplitBackwardsIterator(T, .scalar) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiter,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
+
+- [x] `std.mem.splitBackwardsAny` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
+```zig
+pub fn splitBackwardsAny(comptime T: type, buffer: []const T, delimiters: []const T) SplitBackwardsIterator(T, .any) {
+    const it: SplitBackwardsIterator(T, .any) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiters,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
+
+- [x] `std.mem.splitBackwardsSequence` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
+```zig
+pub fn splitBackwardsSequence(comptime T: type, buffer: []const T, delimiter: []const T) SplitBackwardsIterator(T, .sequence) {
+    assert(delimiter.len != 0);
+    const it: SplitBackwardsIterator(T, .sequence) = .{
+        .index = buffer.len,
+        .buffer = buffer,
+        .delimiter = delimiter,
+    };
+    assert(it.index.? == buffer.len);
+    assert(it.rest().len == buffer.len);
+    return it;
+}
+```
 
 ## Postconditions
 

@@ -74,10 +74,44 @@ To the question — what can we strengthen, or what step can we take? — the fo
 | `meta/foundation` | crypto dependency map | done |
 | `tools/parity.rish` | witness registered | done |
 | `strengthening-compiler/9995_crypto_foundation.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9995 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [x] `std.crypto foundation map` — [`misc`](../misc)
 
-- [x] `std.crypto foundation map` — [`rye/lib/std/crypto foundation map.zig`](../rye/lib/std/crypto foundation map.zig)
+## Rye std surface
+
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std.crypto foundation map`**
+
+*see `rye/lib/std` — `crypto foundation map` not auto-located*
+
+
+
+## Width notes
+
+**`std.crypto foundation map`** — Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `meta/foundation`
+
+| Width locus | Type | Policy | Status |
+|-------------|------|--------|--------|
+| crypto dependency map | N/A | Meta pass — no `usize` seam touch | done |

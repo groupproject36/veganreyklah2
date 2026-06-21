@@ -1,0 +1,105 @@
+//! Extract surface names from pass docs.
+
+const std = @import("std");
+const constants = @import("constants.rye");
+const scan_text = @import("scan_text.rye");
+const surfaces = @import("surfaces.rye");
+const zig_lookup = @import("zig_lookup.rye");
+
+fn appendUnique(a: std.mem.Allocator, names: *std.ArrayListUnmanaged([]const u8), n: []const u8) !void {
+    for (names.items) |x| {
+        if (std.mem.eql(u8, x, n)) return;
+    }
+    try names.append(a, try a.dupe(u8, n));
+}
+
+fn surfacesFromSurfaceSection(a: std.mem.Allocator, section: []const u8, sources: ?*const zig_lookup.ZigSources) ![]const []const u8 {
+    const prose = try scan_text.stripFencedCode(section, a);
+    defer a.free(prose);
+    var names = std.ArrayListUnmanaged([]const u8).empty;
+    defer names.deinit(a);
+    try scan_text.findStdRefNames(prose, a, &names);
+    if (sources) |s| {
+        var kept = std.ArrayListUnmanaged([]const u8).empty;
+        defer kept.deinit(a);
+        for (names.items) |n| {
+            if (zig_lookup.findFunctionBody(n, s) != null) try appendUnique(a, &kept, n);
+        }
+        return try kept.toOwnedSlice(a);
+    }
+    return try names.toOwnedSlice(a);
+}
+
+fn surfacesFromCoverLine(
+    a: std.mem.Allocator,
+    cover: []const u8,
+    stem: []const u8,
+    sources: ?*const zig_lookup.ZigSources,
+) ![]const []const u8 {
+    var names = std.ArrayListUnmanaged([]const u8).empty;
+    defer names.deinit(a);
+    try scan_text.findStdRefNames(cover, a, &names);
+    const prefix = surfaces.modulePrefixForStem(stem);
+    var fns = std.ArrayListUnmanaged([]const u8).empty;
+    defer fns.deinit(a);
+    try scan_text.findBacktickFns(cover, a, &fns);
+    for (fns.items) |fn_name| {
+        if (constants.coverFnSkipped(fn_name)) continue;
+        const cand = try std.fmt.allocPrint(a, "{s}.{s}", .{ prefix, fn_name });
+        defer a.free(cand);
+        if (sources) |s| {
+            if (zig_lookup.findFunctionBody(cand, s) == null) continue;
+        }
+        try appendUnique(a, &names, cand);
+    }
+    return try names.toOwnedSlice(a);
+}
+
+pub fn extractSurfacesFromDoc(
+    a: std.mem.Allocator,
+    text: []const u8,
+    name: []const u8,
+    stem: []const u8,
+    sources: ?*const zig_lookup.ZigSources,
+) ![]const []const u8 {
+    if (constants.authoredModule(name)) |auth| {
+        const mod = try a.dupe(u8, auth.mod);
+        const slice = try a.alloc([]const u8, 1);
+        slice[0] = mod;
+        return slice;
+    }
+    if (constants.metaPass(name)) |meta| {
+        const label = try a.dupe(u8, meta.label);
+        const slice = try a.alloc([]const u8, 1);
+        slice[0] = label;
+        return slice;
+    }
+    var names = std.ArrayListUnmanaged([]const u8).empty;
+    errdefer names.deinit(a);
+    if (std.mem.indexOf(u8, text, constants.surface_section) != null) {
+        const after = text[(std.mem.indexOf(u8, text, constants.surface_section) orelse 0) + constants.surface_section.len ..];
+        const section = blk: {
+            const n = std.mem.indexOf(u8, after, "\n## ");
+            break :blk if (n) |i| after[0..i] else after;
+        };
+        const from_sec = try surfacesFromSurfaceSection(a, section, sources);
+        defer a.free(from_sec);
+        for (from_sec) |n| try appendUnique(a, &names, n);
+    }
+    if (std.mem.indexOf(u8, text, "## What this pass covers") != null) {
+        const block = text[(std.mem.indexOf(u8, text, "## What this pass covers") orelse 0) + "## What this pass covers".len ..];
+        const section = blk: {
+            const n = std.mem.indexOf(u8, block, "\n## ");
+            break :blk if (n) |i| block[0..i] else block;
+        };
+        var first = std.mem.trim(u8, section, " \t\n");
+        if (std.mem.indexOf(u8, first, "\n")) |nl| first = first[0..nl];
+        if (std.mem.indexOf(u8, first, " — ")) |dash| first = std.mem.trim(u8, first[0..dash], " \t");
+        if (std.mem.indexOf(u8, first, ". Pairs with")) |p| first = std.mem.trim(u8, first[0..p], " \t");
+        const from_cover = try surfacesFromCoverLine(a, first, stem, sources);
+        defer a.free(from_cover);
+        for (from_cover) |n| try appendUnique(a, &names, n);
+    }
+    if (names.items.len == 0) return try surfaces.filenameGuess(a, stem);
+    return try names.toOwnedSlice(a);
+}

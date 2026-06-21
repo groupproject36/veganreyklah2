@@ -1,9 +1,10 @@
 # 992 · `usize` Width Baseline — inventory before migration
 
-**Stamp:** `20260621.040612`
-**Policy:** `context/TAME_STYLE.md` (Rye supplement)
+**Stamp:** `20260621.051312`
+**Policy:** `context/TAME_STYLE.md` (Rye supplement) · `gratitude/TIGER_STYLE.md` (Tiger source)
 **Charter:** `expanding-prompts/10024_explicit_width_audit.md`
-**Status:** Phase 1b underway — `caravan/chain` next; **Phase 4 width audit complete** `040412` — all 86 passes audited
+**Fork:** `external-research/967_literal_usize_ban_language_fork.md` · `active-designing/970_explicit_width_in_rye.md`
+**Status:** Phase 1b — `caravan/chain` / Skate grid; Phase 4 seam audit on Zig-ground `std` (interim); **Fork F0 decided `051312`**
 
 ---
 
@@ -11,14 +12,23 @@
 
 Every pass in `strengthening-compiler/` now carries:
 
-- **`## Rye std surface`** — live signature excerpt from `rye/lib/std`
+- **`## Rye std surface`** — live strengthened `pub fn` from `rye/lib/std`
 - **`## Width notes`** — inherited `usize` seam vs named `u32`/`u64` bounds
-- **`## Audited surfaces`** — `[x]` / `[ ]` checklist per strengthened function
-- **`## Width audit (affected files)`** — file table; **all 86 passes `done`** as of `040412`
+- **`## usize explicit audit`** — Tiger/TAME policy table per surface + witness (`tools/tame_usize_audit.rye`):
+  - **Tier C (inherited `std`)** — public `usize` signatures documented, not violations (`10024` rule 3)
+  - **`u32` named bounds** — design width (`max_*: u32`), not `usize` (Tiger Style)
+  - **Seam widen** — `@as(usize, u32_bound)` at slice compare only
+  - **Seam narrow** — `@intCast` paired with `assert` (`10024` rule 2)
+  - **`fail`** — `max_*: usize`, authored `usize` fields/params we publish
+  - **Tier B witness** — `.rye` test: `usize` only at `buf[0..n]` edge
+- **`## Audited surfaces`** — `[x]` / `[ ]` per function (checkmark = zero `fail` in usize audit)
+- **`## Width audit (affected files)`** — file table; usize audit + witness must pass for full sign-off
+
+**Auditor:** `tools/tame_usize_audit.rye` — shared by `tools/enrich_strengthening_docs.rye`
 
 **Crosswalk:** `992_strengthening_width_crosswalk.md` (86 passes, auto-indexed)
 **Lexicon:** `strengthening-compiler/0000_STRENGTHENING_LEXICON.md` — std-shaped tree with ✅ / `[ ]` audit column (`0000` ceiling · `9999` floor)
-**Enricher:** `tools/enrich_strengthening_docs.py` — re-run after each new `k` pass (updates crosswalk + lexicon)
+**Enricher:** `tools/enrich_strengthening_docs.rye` — re-run after each new `k` pass (updates crosswalk + lexicon)
 **Prompt:** `expanding-prompts/10025_strengthening_stdlib_doc_width_pass.md`
 
 Named snapshot bounds in strengthened `mem` (`max_reverse_check`, `max_rotate_check`, `max_replace_*`) are **`u32`** with comparison at the `usize` slice seam — public Zig signatures unchanged.
@@ -100,11 +110,22 @@ const n: u32 = @intCast(buf.len);
 
 - [x] **Phase 0** — policy, baseline, living docs (`210812`)
 - [x] **Phase 1a** — `tally/seed.rye` + `tally/gardens.rye` (`211712`)
-- [ ] **Phase 1b** — `caravan/seed.rye` → `bounded` → `twin` → `chain`
+- [ ] **Phase 1b** — `caravan/chain` → `brushstroke/skate_grid.rye` (~~seed, bounded, twin~~ done)
 - [ ] **Phase 2** — Aurora + Comlink wire layouts
 - [ ] **Phase 3** — Rishi interpreter
-- [ ] **Phase 4** — std at strengthen touch *(doc pass `031812` complete; per-function `u32` bounds in mem snapshot paths)*
+- [x] **Phase 4 (interim)** — Zig-ground `std` seam audit + strengthen touch (`031812`–`043312`; see `968`)
 - [ ] **Phase 5** — `width-audit.rish` in CI
+
+## Language fork checklist (post–`usize` ban — `967` / `970`)
+
+- [x] **F0 — Decide** — literal ban in Rye types; research + siloed design (`051312`)
+- [ ] **F1 — Type story** — `[]T` with `u32` len; compiler spike rejects `usize` in `.rye`
+- [ ] **F2 — Authored corpus** — zero `usize` in published `.rye`; width gate required
+- [ ] **F3 — `rye/lib` rewrite** — Rye-native `std` signatures; witnesses re-based
+- [ ] **F4 — Bridge sunset** — self-hosted `rye run` without Zig for our tree
+- [ ] **F5 — Guest Zig** — interop lane documented for Rye OS
+
+Phase 4 seam policy **sunsets** when F3 completes. Until then, both tracks run in parallel: finish Zig-ground strengthening green; migrate authored `.rye` toward F2.
 
 ---
 

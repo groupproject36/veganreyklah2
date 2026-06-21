@@ -10,10 +10,24 @@
 
 ## Rye std surface
 
-**`std.crypto.secureZero`**
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..crypto.secureZero`**
 
 ```zig
-pub fn secureZero(self: *Self) void
+pub fn secureZero(comptime T: type, s: []volatile T) void {
+    const zero = std.mem.zeroes(T);
+    @memset(s, zero);
+    // Postcondition: every byte of the backing memory is zero (works for any T).
+    const byte_len = s.len * @sizeOf(T);
+    if (byte_len > 0) {
+        const bytes: [*]volatile u8 = @ptrCast(s.ptr);
+        var i: usize = 0;
+        while (i < byte_len) : (i += 1) {
+            assert(bytes[i] == 0);
+        }
+    }
+}
 ```
 
 ## Width notes
@@ -26,21 +40,63 @@ pub fn secureZero(self: *Self) void
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std..crypto.secureZero`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### Witness `rye/tests/crypto_secure_zero_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/crypto.zig` | `secureZero` — Phase 4 `usize` seam policy applied | done |
+| `misc` | `secureZero` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/crypto_secure_zero_test.rye` | witness program | done |
 | `tools/parity.rish` | witness registered | done |
 | `strengthening-compiler/9929_crypto_secure_zero.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9929 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [x] `std..crypto.secureZero` — [`misc`](../misc)
 
-- [x] `std.crypto.secureZero` — [`rye/lib/std/crypto.zig`](../rye/lib/std/crypto.zig)
+```zig
+pub fn secureZero(comptime T: type, s: []volatile T) void {
+    const zero = std.mem.zeroes(T);
+    @memset(s, zero);
+    // Postcondition: every byte of the backing memory is zero (works for any T).
+    const byte_len = s.len * @sizeOf(T);
+    if (byte_len > 0) {
+        const bytes: [*]volatile u8 = @ptrCast(s.ptr);
+        var i: usize = 0;
+        while (i < byte_len) : (i += 1) {
+            assert(bytes[i] == 0);
+        }
+    }
+}
+```
 
 ## Postconditions
 

@@ -10,10 +10,37 @@
 
 ## Rye std surface
 
-**`std.mem.sliceAsBytes`**
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..mem.sliceAsBytes`**
 
 ```zig
-pub fn sliceAsBytes(slice: anytype) SliceAsBytesReturnType(@TypeOf(slice))
+pub fn sliceAsBytes(slice: anytype) SliceAsBytesReturnType(@TypeOf(slice)) {
+    const Slice = @TypeOf(slice);
+    const elem_size = @sizeOf(std.meta.Elem(Slice));
+
+    // a slice of zero-bit values always occupies zero bytes
+    if (elem_size == 0) {
+        const result = &[0]u8{};
+        assert(result.len == 0);
+        return result;
+    }
+
+    // let's not give an undefined pointer to @ptrCast
+    // it may be equal to zero and fail a null check
+    if (slice.len == 0 and std.meta.sentinel(Slice) == null) {
+        const result = &[0]u8{};
+        assert(result.len == 0);
+        return result;
+    }
+
+    const cast_target = CopyPtrAttrs(Slice, .many, u8);
+    const byte_len = slice.len * elem_size;
+    const result = @as(cast_target, @ptrCast(slice))[0..byte_len];
+    // Postcondition: byte view spans exactly one element width per item (pairs with asBytes).
+    assert(result.len == byte_len);
+    return result;
+}
 ```
 
 ## Width notes
@@ -26,21 +53,76 @@ pub fn sliceAsBytes(slice: anytype) SliceAsBytesReturnType(@TypeOf(slice))
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std..mem.sliceAsBytes`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+
+### Witness `rye/tests/mem_slice_as_bytes_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/mem.zig` | `sliceAsBytes` — Phase 4 `usize` seam policy applied | done |
+| `misc` | `sliceAsBytes` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/mem_slice_as_bytes_test.rye` | witness program | done |
 | `tools/parity.rish` | witness registered | done |
 | `strengthening-compiler/9926_mem_slice_as_bytes.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9926 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [x] `std..mem.sliceAsBytes` — [`misc`](../misc)
 
-- [x] `std.mem.sliceAsBytes` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+```zig
+pub fn sliceAsBytes(slice: anytype) SliceAsBytesReturnType(@TypeOf(slice)) {
+    const Slice = @TypeOf(slice);
+    const elem_size = @sizeOf(std.meta.Elem(Slice));
+
+    // a slice of zero-bit values always occupies zero bytes
+    if (elem_size == 0) {
+        const result = &[0]u8{};
+        assert(result.len == 0);
+        return result;
+    }
+
+    // let's not give an undefined pointer to @ptrCast
+    // it may be equal to zero and fail a null check
+    if (slice.len == 0 and std.meta.sentinel(Slice) == null) {
+        const result = &[0]u8{};
+        assert(result.len == 0);
+        return result;
+    }
+
+    const cast_target = CopyPtrAttrs(Slice, .many, u8);
+    const byte_len = slice.len * elem_size;
+    const result = @as(cast_target, @ptrCast(slice))[0..byte_len];
+    // Postcondition: byte view spans exactly one element width per item (pairs with asBytes).
+    assert(result.len == byte_len);
+    return result;
+}
+```
 
 ## Postconditions
 

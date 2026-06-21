@@ -22,7 +22,7 @@ Not a parity witness pass — a **documentation and width audit** pass:
 2. **`992_strengthening_width_crosswalk.md`** — machine-readable index linking pass number → doc → function → width tier.
 3. **`992_usize_width_baseline.md`** — extended with Phase 4 strengthening subsection and link to crosswalk.
 4. **Named internal bounds** in already-strengthened `mem` functions — `max_*_check` constants become `u32` with `assert` at the slice seam (no public signature changes).
-5. **`tools/enrich_strengthening_docs.py`** — rerunnable enricher for future passes.
+5. **`tools/enrich_strengthening_docs.rye`** — rerunnable enricher for future passes.
 
 ## Discipline
 
@@ -47,7 +47,7 @@ Not a parity witness pass — a **documentation and width audit** pass:
 | Width charter | `10024` |
 | Baseline inventory | `992_usize_width_baseline.md` |
 | Strengthening method | `9999_STRENGTHENING.md` |
-| Enricher script | `tools/enrich_strengthening_docs.py` |
+| Enricher script | `tools/enrich_strengthening_docs.rye` |
 
 ---
 

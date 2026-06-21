@@ -91,7 +91,7 @@ These safety rules will change how you write code, for good. Here is how we live
 
 **Put a limit on everything.** In reality, everything has a limit, so our code says so. Every loop and every queue carries a fixed upper bound, which keeps infinite loops and tail-latency spikes away and lets us fail fast, catching trouble early. Where a loop runs forever by design, such as an event loop, we assert that fact plainly.
 
-**Use explicitly sized types** like `u32` everywhere, and set aside the architecture-specific `usize`. Exact sizes keep behavior exact.
+**Use explicitly sized types** like `u32` everywhere, and set aside the architecture-specific `usize`. Exact sizes keep behavior exact. **`usize` is a boundary type, not a design type** — the same rule Tiger Style states, voiced here for Rye: pick `u32` for in-memory counts and indices bounded by a named constant; pick `u64` for wire-persistent sizes; reserve `usize` only at the immediate Zig slice seam (`buf.len`, `[]T` you do not own, inherited `std` APIs). Do not publish `usize` in struct fields, parameters, or return types we author. Pair every `@intCast` with a narrow assert. Operational detail: `context/TAME_STYLE.md`; strengthening audit: `tools/tame_usize_audit.rye`.
 
 **Assertions are how we discover bugs early and often.** They detect programmer errors — the unexpected kind. Operating errors are expected, and we handle those. An assertion failure means the code itself is wrong, and the only correct response is to crash, which turns a silent correctness bug into a loud liveness bug we can find. Assertions multiply the power of fuzzing.
 

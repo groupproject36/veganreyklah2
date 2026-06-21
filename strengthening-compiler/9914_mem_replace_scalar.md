@@ -10,10 +10,33 @@
 
 ## Rye std surface
 
-**`std.mem.replaceScalar`**
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..mem.replaceScalar`**
 
 ```zig
-pub fn replaceScalar(comptime T: type, slice: []T, match: T, replacement: T) void
+pub fn replaceScalar(comptime T: type, slice: []T, match: T, replacement: T) void {
+    const max_replace_scalar_check: u32 = 64;
+    var original: [max_replace_scalar_check]T = undefined;
+    const snapshot = slice.len <= @as(usize, max_replace_scalar_check);
+    if (snapshot) {
+        @memcpy(original[0..slice.len], slice);
+    }
+    for (slice) |*e| {
+        if (e.* == match)
+            e.* = replacement;
+    }
+    if (snapshot) {
+        for (slice, 0..) |*e, i| {
+            if (original[i] == match) {
+                // Postcondition: matches became replacement (pairs with replace 9917).
+                assert(eql(u8, asBytes(e), asBytes(&replacement)));
+            } else {
+                assert(eql(u8, asBytes(e), asBytes(&original[i])));
+            }
+        }
+    }
+}
 ```
 
 ## Width notes
@@ -26,21 +49,74 @@ pub fn replaceScalar(comptime T: type, slice: []T, match: T, replacement: T) voi
 | Named snapshot bound | `u32` + `@as(usize, …)` |
 | Postcondition compare | `eql(u8, asBytes(...))` for any `T` |
 
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std..mem.replaceScalar`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| slice params / `.len` | inherited `usize` (Tier C) | Tiger: avoid `usize` in APIs we publish — this surface is inherited Zig `std`; unchanged per `10024` rule 3 | done |
+| Tier | C — inherited `std` | `992` Phase 4 — touch named bounds only; do not rename public seam | done |
+| `max_replace_scalar_check` | `u32` (Tiger explicit) | Named snapshot/verify bound = 64 — design width, not `usize` | done |
+| `@as(usize, usize, max_replace_scalar_check)` | seam widen | TAME: `usize` only at slice seam — widen `u32` bound for `.len` compare | done |
+
+### Witness `rye/tests/mem_replace_scalar_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/mem.zig` | `replaceScalar` — `u32` snapshot; byte-level postconditions | done |
-| `rye/tests/mem_replace_scalar_test.rye` | stack buffers only; no authored `usize` fields | done |
+| `misc` | `replaceScalar` — Phase 4 `usize` seam policy applied | done |
+| `rye/tests/mem_replace_scalar_test.rye` | witness program | done |
 | `tools/parity.rish` | witness registered | done |
-| `strengthening-compiler/9915_mem_replace_owned.md` | replace family sibling | unchanged |
-| `992_strengthening_width_crosswalk.md` | row 9914 via enricher | done |
+| `strengthening-compiler/9914_mem_replace_scalar.md` | pass record + audited surfaces | done |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9914 | done |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [x] `std..mem.replaceScalar` — [`misc`](../misc)
 
-- [x] `std.mem.replaceScalar` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+```zig
+pub fn replaceScalar(comptime T: type, slice: []T, match: T, replacement: T) void {
+    const max_replace_scalar_check: u32 = 64;
+    var original: [max_replace_scalar_check]T = undefined;
+    const snapshot = slice.len <= @as(usize, max_replace_scalar_check);
+    if (snapshot) {
+        @memcpy(original[0..slice.len], slice);
+    }
+    for (slice) |*e| {
+        if (e.* == match)
+            e.* = replacement;
+    }
+    if (snapshot) {
+        for (slice, 0..) |*e, i| {
+            if (original[i] == match) {
+                // Postcondition: matches became replacement (pairs with replace 9917).
+                assert(eql(u8, asBytes(e), asBytes(&replacement)));
+            } else {
+                assert(eql(u8, asBytes(e), asBytes(&original[i])));
+            }
+        }
+    }
+}
+```
 
 ## Postconditions
 

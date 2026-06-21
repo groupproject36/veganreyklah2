@@ -10,10 +10,49 @@
 
 ## Rye std surface
 
-**`std.mem.replacementSize`**
+Live implementation from `rye/lib/std` (strengthened):
+
+**`std..mem.replacementSize`**
 
 ```zig
-pub fn replacementSize(comptime T: type, input: []const T, needle: []const T, replacement: []const T) usize
+pub fn replacementSize(comptime T: type, input: []const T, needle: []const T, replacement: []const T) usize {
+    // Empty needle will loop forever.
+    assert(needle.len > 0);
+
+    var i: usize = 0;
+    var size: usize = input.len;
+    while (i < input.len) {
+        if (startsWith(T, input[i..], needle)) {
+            size = size - needle.len + replacement.len;
+            i += needle.len;
+        } else {
+            i += 1;
+        }
+    }
+
+    // Postcondition: consumed the full input (pairs with replace 9917).
+    assert(i == input.len);
+    const max_replacement_size_input: u32 = 64;
+    if (input.len <= @as(usize, max_replacement_size_input)) {
+        var reps: usize = 0;
+        var j: usize = 0;
+        while (j < input.len) {
+            if (startsWith(T, input[j..], needle)) {
+                reps += 1;
+                j += needle.len;
+            } else {
+                j += 1;
+            }
+        }
+        const delta = @as(isize, @intCast(replacement.len)) - @as(isize, @intCast(needle.len));
+        const expected = @as(usize, @intCast(
+            @as(isize, @intCast(input.len)) + @as(isize, @intCast(reps)) * delta,
+        ));
+        assert(size == expected);
+    }
+
+    return size;
+}
 ```
 
 ## Width notes
@@ -26,21 +65,138 @@ pub fn replacementSize(comptime T: type, input: []const T, needle: []const T, re
 | Named verify bound (`max_replacement_size_input`) | `u32` + `@as(usize, …)` |
 | Replacement-count delta math | `isize` bridge for `replacement.len - needle.len` |
 
+
+
+
+
+
+## usize explicit audit
+
+Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) § Safety).
+
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../context/TAME_STYLE.md), [`10024`](../expanding-prompts/10024_explicit_width_audit.md), [`992`](../work-in-progress/992_usize_width_baseline.md).
+
+Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
+### `std...mem.replacementSize`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| `std...mem.replacementSize` | — | Live `pub fn` not located — cannot run Tiger/TAME audit | pending |
+
+### `std..mem.replacementSize`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| `std..mem.replacementSize` | — | Live `pub fn` not located — cannot run Tiger/TAME audit | pending |
+
+### Witness `rye/tests/mem_replacement_size_test.rye`
+
+| Check | Type | Tiger/TAME policy | Status |
+|-------|------|-------------------|--------|
+| Tier | B — witness `.rye` | `992` — `usize` only at `buf[0..n]` slice edge | done |
+| witness body | slice edge only | Stack buffers + `.len` at seam — no authored `usize` fields | done |
+
+
 ## Width audit (affected files)
 
 | File | Audit | Status |
 |------|-------|--------|
-| `rye/lib/std/mem.zig` | `replacementSize` — `u32` verify bound; `isize` delta; public `usize` unchanged | done |
-| `rye/tests/mem_replacement_size_test.rye` | witness uses std test vectors only; no authored `usize` fields | done |
-| `tools/parity.rish` | witness registered | done |
-| `strengthening-compiler/9917_mem_replace.md` | sibling pass; calls `replacementSize` in precondition | unchanged |
-| `992_strengthening_width_crosswalk.md` | row 9916 added via enricher | done |
+| `misc` | `replacementSize` — Phase 4 `usize` seam policy applied | pending |
+| `misc` | `replacementSize` — co-strengthened in this pass | pending |
+| `rye/tests/mem_replacement_size_test.rye` | witness program | pending |
+| `tools/parity.rish` | witness registered | pending |
+| `strengthening-compiler/9916_mem_replacement_size.md` | pass record + audited surfaces | pending |
+| `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | pending |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9916 | pending |
 
 ## Audited surfaces
 
-Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+Checkmark requires **`## usize explicit audit`** all `done`, zero `fail` (Tiger/TAME — [`992`](../work-in-progress/992_usize_width_baseline.md)). Full implementation from `rye/lib/std`:
+- [ ] `std...mem.replacementSize` — [`misc`](../misc)
 
-- [x] `std.mem.replacementSize` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+```zig
+pub fn replacementSize(comptime T: type, input: []const T, needle: []const T, replacement: []const T) usize {
+    // Empty needle will loop forever.
+    assert(needle.len > 0);
+
+    var i: usize = 0;
+    var size: usize = input.len;
+    while (i < input.len) {
+        if (startsWith(T, input[i..], needle)) {
+            size = size - needle.len + replacement.len;
+            i += needle.len;
+        } else {
+            i += 1;
+        }
+    }
+
+    // Postcondition: consumed the full input (pairs with replace 9917).
+    assert(i == input.len);
+    const max_replacement_size_input: u32 = 64;
+    if (input.len <= @as(usize, max_replacement_size_input)) {
+        var reps: usize = 0;
+        var j: usize = 0;
+        while (j < input.len) {
+            if (startsWith(T, input[j..], needle)) {
+                reps += 1;
+                j += needle.len;
+            } else {
+                j += 1;
+            }
+        }
+        const delta = @as(isize, @intCast(replacement.len)) - @as(isize, @intCast(needle.len));
+        const expected = @as(usize, @intCast(
+            @as(isize, @intCast(input.len)) + @as(isize, @intCast(reps)) * delta,
+        ));
+        assert(size == expected);
+    }
+
+    return size;
+}
+```
+
+- [ ] `std..mem.replacementSize` — [`misc`](../misc)
+
+```zig
+pub fn replacementSize(comptime T: type, input: []const T, needle: []const T, replacement: []const T) usize {
+    // Empty needle will loop forever.
+    assert(needle.len > 0);
+
+    var i: usize = 0;
+    var size: usize = input.len;
+    while (i < input.len) {
+        if (startsWith(T, input[i..], needle)) {
+            size = size - needle.len + replacement.len;
+            i += needle.len;
+        } else {
+            i += 1;
+        }
+    }
+
+    // Postcondition: consumed the full input (pairs with replace 9917).
+    assert(i == input.len);
+    const max_replacement_size_input: u32 = 64;
+    if (input.len <= @as(usize, max_replacement_size_input)) {
+        var reps: usize = 0;
+        var j: usize = 0;
+        while (j < input.len) {
+            if (startsWith(T, input[j..], needle)) {
+                reps += 1;
+                j += needle.len;
+            } else {
+                j += 1;
+            }
+        }
+        const delta = @as(isize, @intCast(replacement.len)) - @as(isize, @intCast(needle.len));
+        const expected = @as(usize, @intCast(
+            @as(isize, @intCast(input.len)) + @as(isize, @intCast(reps)) * delta,
+        ));
+        assert(size == expected);
+    }
+
+    return size;
+}
+```
 
 ## Postconditions
 
