@@ -14,7 +14,7 @@
 
 ## Our Own Ground
 
-This is a clean room. We name only our own modules: **Bron** (the data notation), **Brix** (the composing language that uses Bron), **Rishi** (the shell that reads and writes Bron), **Tablecloth** (the store), **Mantra** (the history), **Comlink** (the wire), and **Pond** (the enclosure). The insight that minimal syntax reduces token cost enters as a principle from our research; the notation is ours.
+This is a clean room. We name only our own modules: **Bron** (the data notation), **Brix** (the composing language that uses Bron), **Rishi** (the shell that reads and writes Bron), **Mantra** (the history), **Comlink** (the wire), and **Pond** (the enclosure). The insight that minimal syntax reduces token cost enters as a principle from our research; the notation is ours.
 
 ---
 

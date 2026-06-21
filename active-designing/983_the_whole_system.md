@@ -71,11 +71,11 @@ Brix declares what a system is made of. A `.brix` file names the project and the
 
 Brix is to our system what content-addressed reproducible composition is to a build: same inputs, same output, every time. The descriptor feeds Caravan's supervisor — Brix declares what services to start and what capabilities each receives; Caravan enforces what the declaration named. Declaration meets supervision; each stays simple.
 
-### Tablecloth — The Store
+### Tablecloth — The Database
 
-Tablecloth is the content-addressed store. A blob is named by its SHA3-256 digest; writing a blob under a name that already exists does nothing; reading one by name returns the exact bytes that name was given. The store grows by accretion, never by revision. Hard bounds: memory and disk budgets stated at construction, enforced at the edge. Single writer, MVCC readers. Narrow API: `put(blob) → hash`, `get(hash) → blob?`, and metadata query (`external-research/975_tablecloth_tame_datastore.md`).
+Tablecloth is the general-purpose database and object storage module — our answer to what MySQL, Postgres, SQLite, and Turbopuffer provide. It stores structured data, serves queries, and holds objects for applications. Tablecloth is NOT Brix's build store; Brix has its own content-addressed artifact cache (currently inside Mantra's `.mantra/blobs/`, the same way Nix has `/nix/store`). Tablecloth serves applications; Brix serves the system composition.
 
-Tablecloth is Brix's substrate: the content-addressed storage that makes a Brix build reproducible. Tablecloth stores; Brix composes.
+Tablecloth's design inherits the TAME-aligned principles from our datastore research (`975`): write-once content-addressed identity, hard stated bounds, single-writer ACID, MVCC reads, and a narrow API surface. Its scope is broader than a build store — it is the database layer Pond applications use to persist and query data.
 
 ### Mantra — The Version Control
 
@@ -126,7 +126,7 @@ The sealed datagram across two harts (proven in Aurora) is the first wire. The d
                       │                    │
                       ├── Tally (memory)   ├── Rishi (shell)
                       ├── Brix (compose)   ├── Mantra (history)
-                      ├── Tablecloth (store)     ├── Brushstroke (surface)
+                      ├── Tablecloth (database)  ├── Brushstroke (surface)
                       └── Comlink (net)    └── (applications)
 
   ← All written in Rye, all sharing one value model →
@@ -160,7 +160,8 @@ Every module has a seed. Every seed already runs — vocabulary in `976_what_we_
 | Caravan | `seed.rye` → `bounded` → `twin` → `chain` | Running |
 | Tally | `seed.rye` + `gardens.rye` named regions | Running |
 | Brix | `.brix` descriptor | Running |
-| Tablecloth | `.mantra/blobs/`, content-addressed store | Running (inside Mantra) |
+| Tablecloth | General-purpose database + object storage | Designed (future) |
+| Bron | Data notation (`.bron`) — Brix uses Bron syntax | Running (`.brix` files) |
 | Mantra | Weave + LCS diff + commit chain | Running |
 | Rishi | Shell with typed values; gate trio in `.rish` | Running |
 | Brushstroke | `seed.rye` + `wayland_seed.rye` — frame from values | Running |

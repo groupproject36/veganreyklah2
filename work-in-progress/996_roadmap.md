@@ -14,7 +14,7 @@
 
 ## The Vision
 
-**Rye OS** — a system that belongs wholly to the one who runs it. One language (Rye), one value model, one kernel (Caravan), one compositor (Brushstroke), one shell (Rishi), one version history (Mantra), one network (Comlink), one store (Tablecloth), one composition language (Brix), one memory model (Tally), one boot (Aurora), one enclosure (Pond). Each module individually simple; together they compose a desktop, a forge, a network, and a boot — on x86_64 today and RISC-V as the horizon.
+**Rye OS** — a system that belongs wholly to the one who runs it. One language (Rye), one value model, one kernel (Caravan), one compositor (Brushstroke), one shell (Rishi), one version history (Mantra), one network (Comlink), one database (Tablecloth), one composition language (Brix), one data notation (Bron), one memory model (Tally), one boot (Aurora), one enclosure (Pond). Each module individually simple; together they compose a desktop, a forge, a network, and a boot — on x86_64 today and RISC-V as the horizon.
 
 Rye is its own language — not a Zig derivative forever. The compiler fork is the primary track: no `usize`, `u32` slice lengths, self-hosted compiler, Rye-native std (`967`, `970`).
 
@@ -31,7 +31,8 @@ The full design lives in `active-designing/983_the_whole_system.md`. This roadma
 | **Caravan** | seed → bounded → twin → chain | Hosted, asserted |
 | **Tally** | seed + named gardens (blob/diff/frame) | 15 invariants |
 | **Brix** | `.brix` descriptor, 10 tracked bricks | Read by Mantra |
-| **Tablecloth** | `.mantra/blobs/` content-addressed store | Inside Mantra |
+| **Tablecloth** | General-purpose database + object storage | Designed (future) |
+| **Bron** | Data notation (`.bron`) — plain key-value, token-efficient | Used by `.brix` |
 | **Mantra** | Weave + commit chain + add-all + log | 9/9 bricks wove |
 | **Rishi** | Shell: typed values, file I/O, `lines`, `starts-with`, `split`, `join`, `trim`, `slice`, `ends-with`, `contains`, `index-of` | Gate trio in `.rish` |
 | **Brushstroke** | Hosted seed + Wayland seed (one window) | Frame from values |
@@ -92,8 +93,8 @@ Each milestone is *made of* the working seeds above.
 
 - [ ] **Pond GUI** — Rishi REPL + Mantra in a Brushstroke/Skate window on x86_64 AMD
 - [ ] **Comlink v1** — typed, content-named, sealed message delivery between identities
-- [ ] **Brix v1** — lawful composition combinator backed by Tablecloth
-- [ ] **Tablecloth v1** — general-purpose content-addressed store
+- [ ] **Brix v1** — lawful composition combinator with its own content-addressed build store (like Nix's `/nix/store`)
+- [ ] **Tablecloth v1** — general-purpose database + object storage for Pond applications (our MySQL/Postgres/Turbopuffer)
 - [ ] **Caravan v1** — supervision tree with capability table
 - [ ] **Pond v1** — Caravan isolation + Tally bounds as a policy value
 - [ ] **The Forge** — Mantra served, Brushstroke drawn, Comlink replicated (`982`)
