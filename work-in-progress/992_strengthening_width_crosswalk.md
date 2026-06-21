@@ -8,6 +8,7 @@ Auto-generated index of every strengthening pass, its primary surface, and width
 
 | Pass | Doc | Primary surface | `usize` in signature | Width phase |
 |------|-----|-----------------|----------------------|-------------|
+| 9916 | `9916_mem_replacement_size.md` | `std.mem.replacementSize` | yes seam | Phase 4 |
 | 9917 | `9917_mem_replace.md` | `std.mem.replace` | yes seam | Phase 4 |
 | 9918 | `9918_mem_rotate.md` | `std.mem.rotate` | yes seam | Phase 4 |
 | 9919 | `9919_mem_swap.md` | `std.mem.swap` | internal seam | Phase 4 |

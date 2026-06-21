@@ -4618,12 +4618,33 @@ pub fn replacementSize(comptime T: type, input: []const T, needle: []const T, re
     var i: usize = 0;
     var size: usize = input.len;
     while (i < input.len) {
-        if (mem.startsWith(T, input[i..], needle)) {
+        if (startsWith(T, input[i..], needle)) {
             size = size - needle.len + replacement.len;
             i += needle.len;
         } else {
             i += 1;
         }
+    }
+
+    // Postcondition: consumed the full input (pairs with replace 9917).
+    assert(i == input.len);
+    const max_replacement_size_input: u32 = 64;
+    if (input.len <= @as(usize, max_replacement_size_input)) {
+        var reps: usize = 0;
+        var j: usize = 0;
+        while (j < input.len) {
+            if (startsWith(T, input[j..], needle)) {
+                reps += 1;
+                j += needle.len;
+            } else {
+                j += 1;
+            }
+        }
+        const delta = @as(isize, @intCast(replacement.len)) - @as(isize, @intCast(needle.len));
+        const expected = @as(usize, @intCast(
+            @as(isize, @intCast(input.len)) + @as(isize, @intCast(reps)) * delta,
+        ));
+        assert(size == expected);
     }
 
     return size;
