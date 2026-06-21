@@ -4903,12 +4903,20 @@ pub fn bytesAsSlice(comptime T: type, bytes: anytype) BytesAsSliceReturnType(T, 
     // let's not give an undefined pointer to @ptrCast
     // it may be equal to zero and fail a null check
     if (bytes.len == 0 or @sizeOf(T) == 0) {
-        return &[0]T{};
+        const result = &[0]T{};
+        assert(result.len == 0);
+        return result;
     }
 
+    const elem_size = @sizeOf(T);
+    assert(bytes.len % elem_size == 0);
     const cast_target = CopyPtrAttrs(@TypeOf(bytes), .many, T);
-
-    return @as(cast_target, @ptrCast(bytes))[0..@divExact(bytes.len, @sizeOf(T))];
+    const elem_len = @divExact(bytes.len, elem_size);
+    const result = @as(cast_target, @ptrCast(bytes))[0..elem_len];
+    // Postcondition: typed slice length matches byte length (pairs with sliceAsBytes 9926).
+    assert(result.len == elem_len);
+    assert(result.len * elem_size == bytes.len);
+    return result;
 }
 
 test bytesAsSlice {
