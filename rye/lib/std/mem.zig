@@ -980,9 +980,15 @@ pub fn span(ptr: anytype) Span(@TypeOf(ptr)) {
     const l = len(ptr);
     const ptr_info = @typeInfo(Result).pointer;
     if (ptr_info.sentinel()) |s| {
-        return ptr[0..l :s];
+        const result = ptr[0..l :s];
+        // Postcondition: span length matches len and closes on the sentinel (pairs with len 9942).
+        assert(result.len == l);
+        assert(ptr[l] == s);
+        return result;
     } else {
-        return ptr[0..l];
+        const result = ptr[0..l];
+        assert(result.len == l);
+        return result;
     }
 }
 
