@@ -39,7 +39,7 @@ These are the simple systems that run today. Everything ahead grows from them.
 - **Comlink hosted wire** — sealed datagram over localhost UDP (`comlink/hosted_wire.rye`); virtio-net is next (`10016`).
 - **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of`; gate trio 71/71 GREEN.
 - **Skate text grid** — monospace 8×8 glyphs on Brushstroke Wayland seed; headless selftest green (`10023` Track A).
-- **Strengthening passes 9979–9921** — `trimStart` … mem.reverse. Each through the gate; witness count 17 → 82.
+- **Strengthening passes 9979–9920** — `trimStart` … mem.reverseIterator. Each through the gate; witness count 17 → 83.
 - **Explicit-width policy** — TAME supplement aligned with Tiger Style (`210812`); baseline `992`; charter `10024`.
 - **Garden memory policy** — authored `.rye` uses `init.garden.allocator()`, never `ArenaAllocator`; no std `GardenAllocator` rename; owned wrapper at `rye.garden` / `tally/heap-garden.rye` when built (`inherited-names.md`, TAME rules).
 
@@ -70,7 +70,7 @@ Each is a thing that runs on its own, added by degrees, behind the gates.
 - [x] **Comlink hosted wire** — sealed datagram over localhost UDP (`comlink/hosted_wire.rye`; `10014` Track D).
 - [x] **Rishi string builtins** — `length`, `trim`, `slice`, `lines`, `starts-with`, `ends-with`, `split`, `join`, `contains`, infix `index-of` (`10023` Track C).
 - [x] **Skate text grid** — monospace glyph rendering on the Wayland seed (`skate_grid.rye`, `font8x8_data.rye`, `wayland_seed.rye`; `10023` Track A).
-- [x] **Strengthening 9979–9922** — everyday `std` surfaces through the gate (`trimStart` … mem.bytesAsValue; see `strengthening-compiler/9922`–`9987`).
+- [x] **Strengthening 9979–9920** — everyday `std` surfaces through the gate (`trimStart` … mem.reverseIterator; see `strengthening-compiler/9920`–`9987`).
 - [ ] **Device wire (virtio-net)** — two QEMU guests (`10016`).
 - [ ] **Rye chronological version parser** — accrete `std.RyeVersion` beside `SemanticVersion` (`parse` / `format` / `order` for `YYYYMMDD.HHMMSS`); unblocks Caravan capability min-version and Tablecloth policy (`rye-versioning-style.md`, `995`).
 - [ ] **Explicit-width migration** — `usize` → `u32`/`u64` in authored `.rye`; inherited `std` at strengthen touch only (`10024`, `992`; pilot `tally/seed.rye`)
@@ -128,7 +128,7 @@ The far ends. Each is named with the simpler working systems it is composed of, 
 
 **Highest-leverage build threads (ordered):**
 
-1. **Strengthening series** — next `std` surface (`9921` and below; `998`) — invoke with **`k <stamp>`**
+1. **Strengthening series** — next `std` surface (`9919` and below; `998`) — invoke with **`k <stamp>`**
 2. **Explicit-width migration** — Phase 1 queue: Caravan family next (`10024`, `992`; Tally **done**)
 3. **Rishi** — builtins as gates need them
 4. **Comlink virtio-net** — device wire (`10016`)
@@ -143,15 +143,15 @@ The Pond GUI (`10009`, `986`) composes when Brushstroke + Skate + Mantra + Rishi
 
 ### What to Build Next, and Why
 
-Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, **TAME document stack (`014512`)**, **SemanticVersion** trio, **mem** compare/copy/sentinel arc, **timing_safe.eql (9937)** on the metal path, **Keccak/SHAKE `@memcpy` (9936 + 9935)** on the metal path, mem iterators through **WindowIterator (9954)**, mem.join (9961), cut family (9958–9960), **split factories (9934 + 9933)**, **tokenize factories (9932)**, **window factory (9931)**, **mem.trim (9930)**, **crypto.secureZero (9929)**, **mem.span (9928)**, **ShakeLike.update (9927)**, **mem.sliceAsBytes (9926)**, **mem.asBytes (9925)**, **mem.bytesAsSlice (9924)**, **mem.toBytes (9923)**, **mem.bytesAsValue (9922)**, **Tally explicit widths (`211712`)**, **`caravan/seed` widths (`014512`)**, **`caravan/bounded` widths (`015712`)**, **`caravan/twin` widths (`020512`)** — done. **Strengthening (`9921`)** via `k`; **width Phase 1** continues `caravan/chain` → Skate between `k` runs. **Freestanding smoke** on Aurora metal lane; **RyeVersion** beside capability table.
+Tally v1 gardens, Brix minimum, Mantra repo chain, Rishi gate trio, Caravan chain, Brushstroke Wayland, Comlink hosted wire, Skate glyph grid, path naming family, garden-memory policy, **TAME document stack (`014512`)**, **SemanticVersion** trio, **mem** compare/copy/sentinel arc, **timing_safe.eql (9937)** on the metal path, **Keccak/SHAKE `@memcpy` (9936 + 9935)** on the metal path, mem iterators through **WindowIterator (9954)**, mem.join (9961), cut family (9958–9960), **split factories (9934 + 9933)**, **tokenize factories (9932)**, **window factory (9931)**, **mem.trim (9930)**, **crypto.secureZero (9929)**, **mem.span (9928)**, **ShakeLike.update (9927)**, **mem.sliceAsBytes (9926)**, **mem.asBytes (9925)**, **mem.bytesAsSlice (9924)**, **mem.toBytes (9923)**, **mem.bytesAsValue (9922)**, **mem.reverse (9921)**, **mem.reverseIterator (9920)**, **Tally explicit widths (`211712`)**, **`caravan/seed` widths (`014512`)**, **`caravan/bounded` widths (`015712`)**, **`caravan/twin` widths (`020512`)** — done. **Strengthening (`9919`)** via `k`; **width Phase 1** continues `caravan/chain` → Skate between `k` runs. **Freestanding smoke** on Aurora metal lane; **RyeVersion** beside capability table.
 
 ---
 
 ## The Steps Just Taken
 
-Strengthening through **9922**, explicit-width Tally Phase 1 on `u32`, parity **81/81** green.
+Strengthening through **9920**, explicit-width Tally Phase 1 on `u32`, parity **83/83** green.
 
-**Strengthening passes 9979–9922** (`143312`–`023612`): witness count 17 → 81, all green.
+**Strengthening passes 9979–9920** (`143312`–`024512`): witness count 17 → 83, all green.
 
 **Version parser thread (`173212`–`174312`)** — documented in `995` Near build: accrete `std.RyeVersion` beside `SemanticVersion` when capability table or Tablecloth needs programmatic bounds; lexicographic compare on fixed-width stamps suffices until then.
 

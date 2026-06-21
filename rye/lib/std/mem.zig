@@ -4367,14 +4367,18 @@ pub fn ReverseIterator(comptime T: type) type {
     return struct {
         ptr: Pointer,
         index: usize,
+        len: usize,
         pub fn next(self: *@This()) ?Element {
             if (self.index == 0) return null;
             self.index -= 1;
+            // Postcondition: cursor stays inside the source slice (pairs with reverse 9921).
+            assert(self.index < self.len);
             return self.ptr[self.index];
         }
         pub fn nextPtr(self: *@This()) ?ElementPointer {
             if (self.index == 0) return null;
             self.index -= 1;
+            assert(self.index < self.len);
             return &self.ptr[self.index];
         }
     };
@@ -4382,7 +4386,14 @@ pub fn ReverseIterator(comptime T: type) type {
 
 /// Iterates over a slice in reverse.
 pub fn reverseIterator(slice: anytype) ReverseIterator(@TypeOf(slice)) {
-    return .{ .ptr = slice.ptr, .index = slice.len };
+    const result = ReverseIterator(@TypeOf(slice)){
+        .ptr = slice.ptr,
+        .index = slice.len,
+        .len = slice.len,
+    };
+    // Postcondition: cursor starts at the end, ready to walk backward (pairs with reverse 9921).
+    assert(result.index == result.len);
+    return result;
 }
 
 test reverseIterator {
