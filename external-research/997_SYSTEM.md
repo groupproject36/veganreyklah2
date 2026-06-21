@@ -192,6 +192,7 @@ So TAME is more than a label. It is a small daily reminder that strength and gen
 - **`../gratitude/libqrencode/`** — Fukuchi Kentaro's QR encoder library. The tool our key-card script builds from source for scannable identity cards. **LGPL-2.1**. Gitlink only — we compile its CLI into gitignored `tools/.build/`; we do not link it into Rye binaries.
 - **River** (Isaac Freund) — a non-monolithic Wayland compositor in Zig. GPL-3.0. Studied through public documentation and Wayland protocol specs only; not cloned, not incorporated. The design that informs our **Brushstroke** compositor surface.
 - **Ghostty** (Mitchell Hashimoto) — a GPU-accelerated terminal emulator with a clean backend seam. MIT. The design that informs our terminal, **Skate**.
+- **`../gratitude/zon/`** — Roni Bhakta's ZON (Zero Overhead Notation), a token-efficient serialization format for LLM workflows. 35–50% fewer tokens than JSON through tabular encoding and minimal delimiters. MIT. The design pressure that confirmed our own **Bron** notation: minimal syntax, human-readable, machine-parseable. Studied for the insight that format efficiency directly affects LLM cost.
 - **This note** — the one gratitude bridge between all these sources and our work.
 
 ---
@@ -275,7 +276,7 @@ MIT, ISC, Apache 2.0, and public domain — including **Zig**, **DVUI**, **Urbit
 | GPL-3.0 (gitlink / not cloned) | SixOS, ai-jail, Damus, River | Caravan+Brix vision, Pond enclosure, Comlink relay study, Brushstroke separation |
 | LGPL-2.1 (gitlink / local, not in Rye) | Nix, libqrencode | Brix composition, Tablecloth content-addressing; key-card tool only |
 | ISC (skarnet) | s6, skalibs | Caravan supervision, Tally bounded allocation |
-| Permissive | Zig, DVUI, Ghostty, Manyana, … | Rye ground, Brushstroke, Skate, Mantra weave |
+| Permissive | Zig, DVUI, Ghostty, Manyana, ZON, … | Rye ground, Brushstroke, Skate, Mantra weave, Bron notation |
 
 `external-research/` studies the world with attribution. `active-designing/` names only our own modules. `.cursor/rules/gratitude-licenses.mdc` and `.claude/rules/gratitude-licenses.md` carry the summary table for agents in Cursor and Zed; **this section** is the full Radiant record.
 
