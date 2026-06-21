@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `035112`: strengthening lexicon `0000` (std-shaped tree); 90 witnesses.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `040612`: width audits shipped — lexicon 102/102; committed and pushed.*
 
 **Language:** EN
-**Version:** `20260621.035112` (Rye chronological stamp)
+**Version:** `20260621.040612` (Rye chronological stamp)
 **Last updated:** 2026-06-21
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,7 +12,8 @@
 
 ## What Just Landed (this session)
 
-- **Strengthening pass 9913 (`034412`).** `mem.collapseRepeats` / `collapseRepeatsLen` snapshot postconditions; width audit on 5 affected files; witness `mem_collapse_repeats_test`; 90/90 witnesses GREEN.
+- **Width audit completion (`040412`).** All **86** strengthening passes now carry `done` width-audit tables and `[x]` audited-surface checklists. Lexicon **`102/102` surfaces ✅ · `86/86` passes**. Enricher `complete_pending_width_audits()` + six witness aliases for divergent pass stems.
+- **Lexicon width-audit checkmarks (`035812`).** `0000_STRENGTHENING_LEXICON.md` — ✅ / `[ ]` per surface with pass doc links; enricher syncs `## Audited surfaces` + `## Width audit` on every pass doc.
 - **Strengthening pass 9914 (`033712`).** `mem.replaceScalar` snapshot postconditions; width audit on 5 affected files; witness `mem_replace_scalar_test`; 89/89 witnesses GREEN.
 - **Strengthening pass 9915 (`033412`).** `mem.replaceOwned` alloc-length + verify walk; width audit on 6 affected files; witness `mem_replace_owned_test`; 88/88 witnesses GREEN.
 - **Strengthening pass 9916 (`032712`).** `mem.replacementSize` walk + formula postconditions; width audit on 5 affected files; witness `mem_replacement_size_test`; 87/87 witnesses GREEN.

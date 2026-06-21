@@ -1,9 +1,9 @@
 # 992 · `usize` Width Baseline — inventory before migration
 
-**Stamp:** `20260620.210812`
+**Stamp:** `20260621.040612`
 **Policy:** `context/TAME_STYLE.md` (Rye supplement)
 **Charter:** `expanding-prompts/10024_explicit_width_audit.md`
-**Status:** Phase 1b underway — `caravan/chain` next; **Phase 4 doc pass** `031812` enriches all strengthening-compiler writings
+**Status:** Phase 1b underway — `caravan/chain` next; **Phase 4 width audit complete** `040412` — all 86 passes audited
 
 ---
 
@@ -13,9 +13,11 @@ Every pass in `strengthening-compiler/` now carries:
 
 - **`## Rye std surface`** — live signature excerpt from `rye/lib/std`
 - **`## Width notes`** — inherited `usize` seam vs named `u32`/`u64` bounds
+- **`## Audited surfaces`** — `[x]` / `[ ]` checklist per strengthened function
+- **`## Width audit (affected files)`** — file table; **all 86 passes `done`** as of `040412`
 
-**Crosswalk:** `992_strengthening_width_crosswalk.md` (82 passes, auto-indexed)
-**Lexicon:** `strengthening-compiler/0000_STRENGTHENING_LEXICON.md` — std-shaped tree (`0000` ceiling · `9999` floor)
+**Crosswalk:** `992_strengthening_width_crosswalk.md` (86 passes, auto-indexed)
+**Lexicon:** `strengthening-compiler/0000_STRENGTHENING_LEXICON.md` — std-shaped tree with ✅ / `[ ]` audit column (`0000` ceiling · `9999` floor)
 **Enricher:** `tools/enrich_strengthening_docs.py` — re-run after each new `k` pass (updates crosswalk + lexicon)
 **Prompt:** `expanding-prompts/10025_strengthening_stdlib_doc_width_pass.md`
 

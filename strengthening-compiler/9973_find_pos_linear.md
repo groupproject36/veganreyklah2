@@ -26,6 +26,22 @@ pub fn findPosLinear(comptime T: type, haystack: []const T, start_index: usize, 
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+## Width audit (affected files)
+
+| File | Audit | Status |
+|------|-------|--------|
+| `rye/lib/std/mem.zig` | `findPosLinear` — inherited `usize` seam; assertions only | done |
+| `rye/tests/find_pos_linear_test.rye` | witness program | done |
+| `tools/parity.rish` | witness registered | done |
+| `strengthening-compiler/9973_find_pos_linear.md` | pass record + audited surfaces | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9973 | done |
+
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.mem.findPosLinear` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
 ## Postcondition
 
 On match:

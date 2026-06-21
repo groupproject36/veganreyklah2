@@ -26,6 +26,22 @@ pub fn copyForwards(comptime T: type, dest: []T, source: []const T) void
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+## Width audit (affected files)
+
+| File | Audit | Status |
+|------|-------|--------|
+| `rye/lib/std/mem.zig` | `copyForwards` — Phase 4 `usize` seam policy applied | done |
+| `rye/tests/mem_copy_forwards_test.rye` | witness program | done |
+| `tools/parity.rish` | witness registered | done |
+| `strengthening-compiler/9943_mem_copy_forwards.md` | pass record + audited surfaces | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9943 | done |
+
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.mem.copyForwards` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
 ## Postcondition
 
 When source and destination do not overlap:

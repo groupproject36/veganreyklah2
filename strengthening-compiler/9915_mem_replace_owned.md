@@ -37,6 +37,12 @@ pub fn replaceOwned(comptime T: type, allocator: Allocator, input: []const T, ne
 | `strengthening-compiler/9917_mem_replace.md` | sibling; fills buffer | unchanged |
 | `992_strengthening_width_crosswalk.md` | row 9915 via enricher | done |
 
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.mem.replaceOwned` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
 ## Postconditions
 
 `output.len == replacementSize(...)`. When `input.len <= 64`, independent verify walk confirms each emitted span in the allocated slice.

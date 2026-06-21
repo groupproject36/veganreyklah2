@@ -128,3 +128,19 @@ This pass advances Rye's clock to `20260618.072512`, the stamp beside the SHA3 w
 | Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
+## Width audit (affected files)
+
+| File | Audit | Status |
+|------|-------|--------|
+| `rye/lib/std/crypto/keccak_p.zig` | `keccak` — Phase 4 `usize` seam policy applied | done |
+| `rye/tests/sha3_512_test.rye` | witness program | done |
+| `tools/parity.rish` | witness registered | done |
+| `strengthening-compiler/9997_keccak_sponge.md` | pass record + audited surfaces | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9997 | done |
+
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.crypto.keccak` — [`rye/lib/std/crypto/keccak_p.zig`](../rye/lib/std/crypto/keccak_p.zig)

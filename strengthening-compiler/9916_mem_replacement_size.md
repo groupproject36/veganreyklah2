@@ -36,6 +36,12 @@ pub fn replacementSize(comptime T: type, input: []const T, needle: []const T, re
 | `strengthening-compiler/9917_mem_replace.md` | sibling pass; calls `replacementSize` in precondition | unchanged |
 | `992_strengthening_width_crosswalk.md` | row 9916 added via enricher | done |
 
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.mem.replacementSize` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
 ## Postconditions
 
 Precondition: `needle.len > 0`. After walk, `i == input.len`. When `input.len <= 64`, `size == input.len + reps * (replacement.len - needle.len)` via `isize` delta.

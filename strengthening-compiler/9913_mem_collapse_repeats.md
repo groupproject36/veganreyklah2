@@ -42,6 +42,13 @@ pub fn collapseRepeats(comptime T: type, slice: []T, elem: T) []T
 | `strengthening-compiler/9914_mem_replace_scalar.md` | sibling path-normalization family | unchanged |
 | `992_strengthening_width_crosswalk.md` | row 9913 via enricher | done |
 
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.mem.collapseRepeatsLen` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+- [x] `std.mem.collapseRepeats` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
 ## Postconditions
 
 `read_idx == slice.len`, `write_idx <= slice.len`. When `slice.len <= 64`, independent expected walk matches collapsed prefix byte-for-byte.

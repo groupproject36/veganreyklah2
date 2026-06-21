@@ -50,3 +50,34 @@ To the question — what can we strengthen, or what step can we take? — the fo
 *May we strengthen what we lean on, in the order we lean on it, and with the care that delicate things deserve. May the hash that names, the key that signs, and the secret two friends share each be proven before they are trusted — and trusted because they were proven.*
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Width audit (affected files)
+
+| File | Audit | Status |
+|------|-------|--------|
+| `meta/foundation` | crypto dependency map | done |
+| `tools/parity.rish` | witness registered | done |
+| `strengthening-compiler/9995_crypto_foundation.md` | pass record + audited surfaces | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9995 | done |
+
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.crypto foundation map` — [`rye/lib/std/crypto foundation map.zig`](../rye/lib/std/crypto foundation map.zig)

@@ -26,6 +26,22 @@ pub fn replace(comptime T: type, input: []const T, needle: []const T, replacemen
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+## Width audit (affected files)
+
+| File | Audit | Status |
+|------|-------|--------|
+| `rye/lib/std/mem.zig` | `replace` — max_replace_input, max_replace_check `u32`; public `usize` unchanged | done |
+| `rye/tests/mem_replace_test.rye` | witness program | done |
+| `tools/parity.rish` | witness registered | done |
+| `strengthening-compiler/9917_mem_replace.md` | pass record + audited surfaces | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9917 | done |
+
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.mem.replace` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
 ## Postconditions
 
 Precondition: `replacementSize(...) <= output.len`. After the walk, write index equals `replacementSize`. When `input.len <= 64` and output fits in 128 elements, independent verify loop confirms each emitted span.

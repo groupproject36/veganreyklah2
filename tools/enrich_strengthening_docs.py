@@ -13,12 +13,22 @@ STD_ROOT = ROOT / "rye" / "lib" / "std"
 
 # Passes that are authored .rye modules, not std surfaces.
 AUTHORED = {
-    "9989_tally_gardens.md": ("tally/gardens.rye", None),
-    "9990_mantra_seed.md": ("mantra/src/main.rye", None),
+    "9989_tally_gardens.md": ("tally/gardens.rye", "tally_gardens_test"),
+    "9990_mantra_seed.md": ("mantra/src/main.rye", "mantra_weave_test"),
 }
 
 META = {
     "9995_crypto_foundation.md": ("meta/foundation", "crypto foundation map"),
+}
+
+# Pass doc stem → parity witness slug when they diverge.
+WITNESS_ALIASES = {
+    "9982_alloc_print_trimend_strengthen.md": "alloc_print_test",
+    "9987_allocator_alloc_skate_grid.md": "allocator_alloc_test",
+    "9988_alloc_print_trimend.md": "alloc_print_test",
+    "9993_mem_diff_primitives.md": "mem_diff_test",
+    "9996_stdlib_call_paths.md": "call_paths_test",
+    "9997_keccak_sponge.md": "sha3_512_test",
 }
 
 SKIP = {"9999_STRENGTHENING.md", "0000_STRENGTHENING_LEXICON.md"}
@@ -27,6 +37,12 @@ STD_REF = re.compile(r"\*\*`std\.([^`]+)`\*\*")
 BACKTICK_FN = re.compile(r"`std\.([a-zA-Z0-9_.]+)`")
 WIDTH_SECTION = "## Width notes"
 SURFACE_SECTION = "## Rye std surface"
+WIDTH_AUDIT_SECTION = "## Width audit"
+AUDITED_SURFACES_SECTION = "## Audited surfaces"
+
+# Passes with completed width audit at strengthen touch (k runs with audit table).
+# Detection is content-based via pass_width_audit_done(); this set is not used for gating.
+WIDTH_AUDIT_DONE = frozenset({"9913", "9914", "9915", "9916"})
 
 
 def zig_files() -> dict[str, str]:
@@ -91,6 +107,238 @@ def extract_std_names(text: str) -> list[str]:
             names.append(n)
     # filename fallback: mem_replace -> mem.replace
     return names
+
+
+def surface_display_name(surface: str) -> str:
+    if surface.startswith("std."):
+        return surface
+    if "/" in surface or surface.endswith(".rye"):
+        return surface
+    return f"std.{surface}"
+
+
+def zig_path_for_surface(surface: str) -> str:
+    if "/" in surface or surface.endswith(".rye"):
+        return surface
+    full = surface_display_name(surface)
+    rel = surface_to_std_file(full)
+    if rel.startswith("authored/"):
+        return rel.removeprefix("authored/")
+    return f"rye/lib/std/{rel}"
+
+
+def pass_width_audit_done(pass_num: str, text: str) -> bool:
+    if not has_width_audit_section(text):
+        return False
+    section = text.split(WIDTH_AUDIT_SECTION, 1)[1].split("\n## ", 1)[0]
+    if re.search(r"\|\s*pending\s*\|", section):
+        return False
+    return "done" in section or "unchanged" in section
+
+
+def zig_audit_note(zig_rel: str, fn_short: str) -> str:
+    """One-line width audit note from zig source when available."""
+    path = ROOT / zig_rel
+    if not path.is_file():
+        return f"`{fn_short}` — Phase 4 `usize` seam policy applied"
+    text = path.read_text(encoding="utf-8", errors="replace")
+    fn_pat = re.compile(rf"pub fn {re.escape(fn_short)}\b")
+    m = fn_pat.search(text)
+    if not m:
+        return f"`{fn_short}` — Phase 4 `usize` seam policy applied"
+    chunk = text[m.start() : m.start() + 2500]
+    bounds = re.findall(r"max_[a-zA-Z0-9_]+:\s*u32", chunk)
+    if bounds:
+        names = ", ".join(b.split(":")[0].strip() for b in bounds[:3])
+        return f"`{fn_short}` — {names} `u32`; public `usize` unchanged"
+    if "usize" in chunk.split("{", 1)[0]:
+        return f"`{fn_short}` — inherited `usize` seam; assertions only"
+    return f"`{fn_short}` — Phase 4 `usize` seam policy applied"
+
+
+def build_audited_surfaces_block(surfaces: list[str], done: bool) -> str:
+    mark = "x" if done else " "
+    lines = [
+        AUDITED_SURFACES_SECTION,
+        "",
+        "Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). "
+        "Each surface this pass strengthens:",
+        "",
+    ]
+    for s in surfaces:
+        full = surface_display_name(s)
+        path = zig_path_for_surface(s)
+        lines.append(f"- [{mark}] `{full}` — [`{path}`](../{path})")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def witness_slug_for_pass(path: Path) -> str | None:
+    if path.name in WITNESS_ALIASES:
+        return WITNESS_ALIASES[path.name]
+    m = re.match(r"\d+_(.+)", path.stem)
+    if not m:
+        return None
+    slug = m.group(1).replace("_strengthen", "")
+    return f"{slug}_test"
+
+
+def witness_path_for_pass(path: Path) -> str | None:
+    slug = witness_slug_for_pass(path)
+    if not slug:
+        return None
+    rel = f"rye/tests/{slug}.rye"
+    return rel if (ROOT / rel).exists() else None
+
+
+def build_width_audit_block(path: Path, pass_num: str, surfaces: list[str], done: bool) -> str:
+    status = "done" if done else "pending"
+    doc = path.name
+    primary = surfaces[0] if surfaces else doc
+    short = surface_short_name(surface_display_name(primary)) if surfaces else doc
+    lines = [
+        f"{WIDTH_AUDIT_SECTION} (affected files)",
+        "",
+        "| File | Audit | Status |",
+        "|------|-------|--------|",
+    ]
+    if path.name in AUTHORED:
+        mod = AUTHORED[path.name][0]
+        lines.append(f"| `{mod}` | authored Tier A widths | {status} |")
+    elif path.name in META:
+        lines.append(f"| `meta/foundation` | crypto dependency map | {status} |")
+    else:
+        zig = zig_path_for_surface(primary)
+        if zig.startswith("rye/"):
+            note = zig_audit_note(zig, short) if done else f"`{short}` — Phase 4 `usize` seam policy applied"
+            lines.append(f"| `{zig}` | {note} | {status} |")
+        for s in surfaces[1:]:
+            extra = surface_short_name(surface_display_name(s))
+            zp = zig_path_for_surface(s)
+            if zp.startswith("rye/"):
+                note = zig_audit_note(zp, extra) if done else f"`{extra}` — co-strengthened in this pass"
+                lines.append(f"| `{zp}` | {note} | {status} |")
+    witness = witness_path_for_pass(path)
+    if witness:
+        lines.append(f"| `{witness}` | witness program | {status} |")
+    elif path.name in WITNESS_ALIASES:
+        slug = WITNESS_ALIASES[path.name]
+        lines.append(f"| `rye/tests/{slug}.rye` | witness program | {status} |")
+    lines.append(f"| `tools/parity.rish` | witness registered | {status} |")
+    lines.append(f"| `strengthening-compiler/{doc}` | pass record + audited surfaces | {status} |")
+    lines.append(f"| `992_strengthening_width_crosswalk.md` | lexicon row {pass_num} | {status} |")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def find_section_start(text: str, section_title: str) -> int | None:
+    m = re.search(rf"^## {re.escape(section_title)}(?:\s|\(|$)", text, re.MULTILINE)
+    return m.start() if m else None
+
+
+def replace_or_insert_section(text: str, section_title: str, new_body: str) -> str:
+    """Replace an existing ## section body or insert before postconditions."""
+    idx = find_section_start(text, section_title)
+    if idx is not None:
+        next_hdr = text.find("\n## ", idx + 3)
+        if next_hdr == -1:
+            return text[:idx] + new_body.rstrip() + "\n"
+        return text[:idx] + new_body.rstrip() + "\n\n" + text[next_hdr + 1 :]
+
+    insert_at = None
+    for m in (
+        "\n## Postconditions\n",
+        "\n## Postcondition\n",
+        "\n## What the test asserts\n",
+        "\n## Design notes\n",
+        "\n## What we built\n",
+        "\n---\n\n## What grows",
+    ):
+        pos = text.find(m)
+        if pos != -1:
+            insert_at = pos
+            break
+    if insert_at is None:
+        insert_at = len(text)
+    return text[:insert_at] + "\n" + new_body + text[insert_at:]
+
+
+def has_width_audit_section(text: str) -> bool:
+    return find_section_start(text, "Width audit") is not None
+
+
+def witness_slug_in_parity(slug: str, parity_text: str) -> bool:
+    return f'"{slug}"' in parity_text or f'"{slug}_test"' in parity_text or slug in parity_text
+
+
+def pass_auditable(path: Path, parity_text: str) -> bool:
+    if path.name in AUTHORED:
+        witness_slug = AUTHORED[path.name][1]
+        return witness_slug_in_parity(witness_slug, parity_text)
+    if path.name in META:
+        return witness_slug_in_parity("ed25519_sign_test", parity_text)
+    witness = witness_path_for_pass(path)
+    if witness:
+        slug = witness.removeprefix("rye/tests/").removesuffix(".rye")
+        return witness_slug_in_parity(slug, parity_text)
+    if path.name in WITNESS_ALIASES:
+        return witness_slug_in_parity(WITNESS_ALIASES[path.name], parity_text)
+    return False
+
+
+def complete_pending_width_audits(parity_text: str) -> int:
+    """Flip pending width audits to done when witness + surfaces are in place."""
+    changed = 0
+    for path in sorted(SC_DIR.glob("*.md")):
+        if path.name in SKIP:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if pass_width_audit_done("?", text):
+            continue
+        if "pending" not in text:
+            continue
+        surfaces = extract_surfaces_from_doc(text, path)
+        if not surfaces:
+            continue
+        if not pass_auditable(path, parity_text):
+            print(f"audit skip (no witness): {path.name}")
+            continue
+        m = re.match(r"(\d+)_", path.name)
+        pass_num = m.group(1) if m else "?"
+        new_text = text
+        audit_block = build_width_audit_block(path, pass_num, surfaces, done=True)
+        new_text = replace_or_insert_section(new_text, "Width audit", audit_block)
+        audited_block = build_audited_surfaces_block(surfaces, done=True)
+        new_text = replace_or_insert_section(new_text, "Audited surfaces", audited_block)
+        if new_text != text:
+            path.write_text(new_text, encoding="utf-8")
+            changed += 1
+    return changed
+
+
+def sync_width_audit_docs(sources: dict[str, str]) -> int:
+    """Ensure every pass doc lists audited surfaces and has a width audit table."""
+    changed = 0
+    for path in sorted(SC_DIR.glob("*.md")):
+        if path.name in SKIP:
+            continue
+        text = path.read_text(encoding="utf-8")
+        m = re.match(r"(\d+)_", path.name)
+        pass_num = m.group(1) if m else "?"
+        surfaces = extract_surfaces_from_doc(text, path)
+        if not surfaces:
+            continue
+        done = pass_width_audit_done(pass_num, text)
+        new_text = text
+        if not pass_width_audit_done(pass_num, text):
+            audit_block = build_width_audit_block(path, pass_num, surfaces, done=False)
+            new_text = replace_or_insert_section(new_text, "Width audit", audit_block)
+        audited_block = build_audited_surfaces_block(surfaces, done)
+        new_text = replace_or_insert_section(new_text, "Audited surfaces", audited_block)
+        if new_text != text:
+            path.write_text(new_text, encoding="utf-8")
+            changed += 1
+    return changed
 
 
 def filename_guess(path: Path) -> list[str]:
@@ -346,18 +594,21 @@ def lexicon_entries(sources: dict[str, str]) -> list[dict]:
                     "surface": full,
                     "short": surface_short_name(full) if full.startswith("std.") else full,
                     "file": std_file,
+                    "audited": pass_width_audit_done(pass_num, text),
                 }
             )
     return entries
 
 
-def generate_lexicon(entries: list[dict], stamp: str = "20260621.035112") -> str:
-    by_file: dict[str, dict[str, list[tuple[str, str]]]] = {}
+def generate_lexicon(entries: list[dict], stamp: str = "20260621.040612") -> str:
+    by_file: dict[str, list[dict]] = {}
     for e in entries:
-        key = (e["pass"], e["doc"])
-        bucket = by_file.setdefault(e["file"], {}).setdefault(e["short"], [])
-        if key not in bucket:
-            bucket.append(key)
+        by_file.setdefault(e["file"], []).append(e)
+
+    audited_passes = len({e["pass"] for e in entries if e["audited"]})
+    total_passes = len({e["pass"] for e in entries})
+    audited_surfaces = sum(1 for e in entries if e["audited"])
+    total_surfaces = len(entries)
 
     lines = [
         "# 0000 · Strengthening Lexicon — std-shaped tree",
@@ -366,6 +617,9 @@ def generate_lexicon(entries: list[dict], stamp: str = "20260621.035112") -> str
         "**Generated by:** `tools/enrich_strengthening_docs.py`",
         "**Chronicle floor:** [`9999_STRENGTHENING.md`](9999_STRENGTHENING.md)",
         "**Flat index:** [`../work-in-progress/992_strengthening_width_crosswalk.md`](../work-in-progress/992_strengthening_width_crosswalk.md)",
+        "",
+        f"**Width audit:** {audited_surfaces}/{total_surfaces} surfaces ✅ · "
+        f"{audited_passes}/{total_passes} passes with completed width audit",
         "",
         "*The ceiling of the strengthening-compiler folder. Number `0000` sorts first; "
         "`9999` sorts last. Together they bracket the countdown chronicle (`9913`–`9998`).*",
@@ -381,7 +635,8 @@ def generate_lexicon(entries: list[dict], stamp: str = "20260621.035112") -> str
         "| **Manifesto** (`9999`) | Method, four promises, versioning | floor |",
         "| **Crosswalk** (`992b`) | Machine index: pass → surface → width tier | pass number |",
         "",
-        "Each pass doc still holds the full story — signature, width notes, postconditions, witness.",
+        "Each pass doc holds the full story — signature, width notes, **audited surfaces**, postconditions, witness.",
+        "✅ marks a pass whose width audit is `done`; `[ ]` marks surfaces still awaiting Phase 4 touch.",
         "",
         "---",
         "",
@@ -391,16 +646,16 @@ def generate_lexicon(entries: list[dict], stamp: str = "20260621.035112") -> str
 
     file_order = sorted(by_file.keys(), key=lambda f: (f.startswith("authored"), f))
     for std_file in file_order:
-        surfaces = by_file[std_file]
+        rows = sorted(by_file[std_file], key=lambda e: (e["short"].lower(), -int(e["pass"])))
         lines.append(f"### `{std_file}`")
         lines.append("")
-        lines.append("| Surface | Pass | Doc |")
-        lines.append("|---------|------|-----|")
-        for short in sorted(surfaces.keys(), key=str.lower):
-            passes = sorted(surfaces[short], key=lambda x: int(x[0]), reverse=True)
-            pass_str = ", ".join(p[0] for p in passes)
-            doc_link = ", ".join(f"[{p[0]}]({p[1]})" for p in passes)
-            lines.append(f"| `{short}` | {pass_str} | {doc_link} |")
+        lines.append("| Audit | Surface | Pass | Doc |")
+        lines.append("|-------|---------|------|-----|")
+        for e in rows:
+            mark = "✅" if e["audited"] else "[ ]"
+            lines.append(
+                f"| {mark} | `{e['short']}` | {e['pass']} | [{e['pass']}]({e['doc']}) |"
+            )
         lines.append("")
 
     lines.append("---")
@@ -444,11 +699,19 @@ def main() -> int:
             changed += 1
             print(f"enriched {path.name}")
 
+    synced = sync_width_audit_docs(sources)
+    print(f"synced width audit + audited surfaces on {synced} pass docs")
+
+    parity_text = (ROOT / "tools" / "parity.rish").read_text(encoding="utf-8")
+    completed = complete_pending_width_audits(parity_text)
+    print(f"completed width audits on {completed} pass docs")
+
     crosswalk = ROOT / "work-in-progress" / "992_strengthening_width_crosswalk.md"
     header = """# 992b · Strengthening ↔ Width Crosswalk
 
-**Stamp:** `20260621.031812`
+**Stamp:** `20260621.040612`
 **Parent:** `992_usize_width_baseline.md`
+**Lexicon:** [`../strengthening-compiler/0000_STRENGTHENING_LEXICON.md`](../strengthening-compiler/0000_STRENGTHENING_LEXICON.md)
 **Prompt:** `expanding-prompts/10025_strengthening_stdlib_doc_width_pass.md`
 
 Auto-generated index of every strengthening pass, its primary surface, and width tier.

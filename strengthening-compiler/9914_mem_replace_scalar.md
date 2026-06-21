@@ -36,6 +36,12 @@ pub fn replaceScalar(comptime T: type, slice: []T, match: T, replacement: T) voi
 | `strengthening-compiler/9915_mem_replace_owned.md` | replace family sibling | unchanged |
 | `992_strengthening_width_crosswalk.md` | row 9914 via enricher | done |
 
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.mem.replaceScalar` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
 ## Postconditions
 
 When `slice.len <= 64`, snapshot before mutation; after loop each index is either `replacement` (was `match`) or unchanged (`eql(u8, asBytes(...))`).

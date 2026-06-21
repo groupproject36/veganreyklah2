@@ -34,6 +34,22 @@ pub fn bufPrint(buf: []u8, comptime fmt: []const u8, args: anytype) BufPrintErro
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+## Width audit (affected files)
+
+| File | Audit | Status |
+|------|-------|--------|
+| `rye/lib/std/fmt.zig` | `bufPrint` — Phase 4 `usize` seam policy applied | done |
+| `rye/tests/buf_print_test.rye` | witness program | done |
+| `tools/parity.rish` | witness registered | done |
+| `strengthening-compiler/9986_buf_print.md` | pass record + audited surfaces | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9986 | done |
+
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.fmt.bufPrint` — [`rye/lib/std/fmt.zig`](../rye/lib/std/fmt.zig)
+
 ## What the test asserts
 
 - String interpolation matches expected text

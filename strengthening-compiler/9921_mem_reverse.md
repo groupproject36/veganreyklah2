@@ -26,6 +26,22 @@ pub fn reverse(comptime T: type, items: []T) void
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+## Width audit (affected files)
+
+| File | Audit | Status |
+|------|-------|--------|
+| `rye/lib/std/mem.zig` | `reverse` — max_reverse_check `u32`; public `usize` unchanged | done |
+| `rye/tests/mem_reverse_test.rye` | witness program | done |
+| `tools/parity.rish` | witness registered | done |
+| `strengthening-compiler/9921_mem_reverse.md` | pass record + audited surfaces | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9921 | done |
+
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.mem.reverse` — [`rye/lib/std/mem.zig`](../rye/lib/std/mem.zig)
+
 ## Postconditions
 
 When `items.len <= 64`, after reversal each element's bytes match the mirrored original (`eql(u8, asBytes(...))` — works for any `T` with defined layout, including structs used by `mem.sort`).

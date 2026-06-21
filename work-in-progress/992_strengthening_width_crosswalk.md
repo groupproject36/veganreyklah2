@@ -1,7 +1,8 @@
 # 992b · Strengthening ↔ Width Crosswalk
 
-**Stamp:** `20260621.031812`
+**Stamp:** `20260621.040412`
 **Parent:** `992_usize_width_baseline.md`
+**Lexicon:** [`../strengthening-compiler/0000_STRENGTHENING_LEXICON.md`](../strengthening-compiler/0000_STRENGTHENING_LEXICON.md)
 **Prompt:** `expanding-prompts/10025_strengthening_stdlib_doc_width_pass.md`
 
 Auto-generated index of every strengthening pass, its primary surface, and width tier.

@@ -13,6 +13,22 @@
 
 Migrate struct fields and counters to `u32`/`u64` per `10024`; keep `usize` only at `buf[0..n]` slice seams with `bufLenU32` helpers.
 
+## Width audit (affected files)
+
+| File | Audit | Status |
+|------|-------|--------|
+| `tally/gardens.rye` | authored Tier A widths | done |
+| `rye/tests/tally_gardens_test.rye` | witness program | done |
+| `tools/parity.rish` | witness registered | done |
+| `strengthening-compiler/9989_tally_gardens.md` | pass record + audited surfaces | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9989 | done |
+
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `tally/gardens.rye` — [`tally/gardens.rye`](../tally/gardens.rye)
+
 ## What we built
 
 Tally is the memory-management layer of the Rye family. Pass 9989 delivers Tally v1: the full `Gardens` model. The seed (`tally/seed.rye`, pass 9990) proved one `Region` with 13 asserted invariants. v1 names them.

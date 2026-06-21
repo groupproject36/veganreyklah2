@@ -13,6 +13,21 @@
 
 Migrate struct fields and counters to `u32`/`u64` per `10024`; keep `usize` only at `buf[0..n]` slice seams with `bufLenU32` helpers.
 
+## Width audit (affected files)
+
+| File | Audit | Status |
+|------|-------|--------|
+| `mantra/src/main.rye` | authored Tier A widths | done |
+| `tools/parity.rish` | witness registered | done |
+| `strengthening-compiler/9990_mantra_seed.md` | pass record + audited surfaces | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9990 | done |
+
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `mantra/src/main.rye` — [`mantra/src/main.rye`](../mantra/src/main.rye)
+
 ## What we built
 
 Mantra is the version-control layer of the Rye family. The seed is the smallest version that runs: one file, three commands, one weave.

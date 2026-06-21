@@ -32,6 +32,22 @@ pub fn writeStreamingAll(file: File, io: Io, bytes: []const u8) Writer.Error!voi
 | Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
 | Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
 
+## Width audit (affected files)
+
+| File | Audit | Status |
+|------|-------|--------|
+| `rye/lib/std/Io/File.zig` | `File.writeStreamingAll` — Phase 4 `usize` seam policy applied | done |
+| `rye/tests/write_streaming_all_test.rye` | witness program | done |
+| `tools/parity.rish` | witness registered | done |
+| `strengthening-compiler/9985_write_streaming_all.md` | pass record + audited surfaces | done |
+| `992_strengthening_width_crosswalk.md` | lexicon row 9985 | done |
+
+## Audited surfaces
+
+Width audit at strengthen touch ([`992` Phase 4](../work-in-progress/992_usize_width_baseline.md)). Each surface this pass strengthens:
+
+- [x] `std.Io.File.writeStreamingAll` — [`rye/lib/std/Io/File.zig`](../rye/lib/std/Io/File.zig)
+
 ## What the test asserts
 
 - Non-empty write round-trips through a temp file via `readFile`
