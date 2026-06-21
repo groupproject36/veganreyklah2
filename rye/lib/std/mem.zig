@@ -4228,6 +4228,8 @@ test findMinMax {
 
 /// Exchanges contents of two memory locations.
 pub fn swap(comptime T: type, noalias a: *T, noalias b: *T) void {
+    const orig_a = a.*;
+    const orig_b = b.*;
     if (@inComptime()) {
         // In comptime, accessing bytes of values with no defined layout is a compile error.
         const tmp = a.*;
@@ -4243,6 +4245,9 @@ pub fn swap(comptime T: type, noalias a: *T, noalias b: *T) void {
             ab.* = bb.*;
             bb.* = tmp;
         }
+        // Postcondition: locations exchange values (pairs with reverse 9921).
+        assert(eql(u8, asBytes(a), asBytes(&orig_b)));
+        assert(eql(u8, asBytes(b), asBytes(&orig_a)));
     }
 }
 
