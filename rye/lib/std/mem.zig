@@ -4454,9 +4454,24 @@ test reverseIterator {
 /// In-place rotation of the values in an array ([0 1 2 3] becomes [1 2 3 0] if we rotate by 1)
 /// Assumes 0 <= amount <= items.len
 pub fn rotate(comptime T: type, items: []T, amount: usize) void {
+    assert(amount <= items.len);
+    const max_rotate_check: usize = 64;
+    var original: [max_rotate_check]T = undefined;
+    const snapshot = items.len <= max_rotate_check;
+    if (snapshot) {
+        @memcpy(original[0..items.len], items);
+    }
     reverse(T, items[0..amount]);
     reverse(T, items[amount..]);
     reverse(T, items);
+    if (snapshot and items.len > 0) {
+        var j: usize = 0;
+        while (j < items.len) : (j += 1) {
+            const src = (j + amount) % items.len;
+            // Postcondition: left-rotate by amount (pairs with reverse 9921 and swap 9919).
+            assert(eql(u8, asBytes(&items[j]), asBytes(&original[src])));
+        }
+    }
 }
 
 test rotate {
