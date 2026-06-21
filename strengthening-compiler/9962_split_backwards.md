@@ -8,6 +8,20 @@
 
 **`SplitBackwardsIterator`** (`splitBackwardsScalar`, `splitBackwardsAny`, `splitBackwardsSequence`) — `next`, `first`, and `rest`. Mirrors forward `SplitIterator` strengthening (9993, 9963, 9968).
 
+## Rye std surface
+
+**`std.mem.split`** — see `rye/lib/std` (signature not auto-located).
+
+## Width notes
+
+**`std.mem.split`** — Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 **next** on every yielded field:

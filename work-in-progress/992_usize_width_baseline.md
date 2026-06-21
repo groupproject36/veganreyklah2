@@ -3,7 +3,22 @@
 **Stamp:** `20260620.210812`
 **Policy:** `context/TAME_STYLE.md` (Rye supplement)
 **Charter:** `expanding-prompts/10024_explicit_width_audit.md`
-**Status:** Phase 1b underway (`020512`) — `caravan/twin.rye` on `u32`; `caravan/chain` next
+**Status:** Phase 1b underway — `caravan/chain` next; **Phase 4 doc pass** `031812` enriches all strengthening-compiler writings
+
+---
+
+## Strengthening compiler ↔ width (Phase 4)
+
+Every pass in `strengthening-compiler/` now carries:
+
+- **`## Rye std surface`** — live signature excerpt from `rye/lib/std`
+- **`## Width notes`** — inherited `usize` seam vs named `u32`/`u64` bounds
+
+**Crosswalk:** `992_strengthening_width_crosswalk.md` (82 passes, auto-indexed)
+**Enricher:** `tools/enrich_strengthening_docs.py` — re-run after each new `k` pass
+**Prompt:** `expanding-prompts/10025_strengthening_stdlib_doc_width_pass.md`
+
+Named snapshot bounds in strengthened `mem` (`max_reverse_check`, `max_rotate_check`, `max_replace_*`) are **`u32`** with comparison at the `usize` slice seam — public Zig signatures unchanged.
 
 ---
 
@@ -85,7 +100,7 @@ const n: u32 = @intCast(buf.len);
 - [ ] **Phase 1b** — `caravan/seed.rye` → `bounded` → `twin` → `chain`
 - [ ] **Phase 2** — Aurora + Comlink wire layouts
 - [ ] **Phase 3** — Rishi interpreter
-- [ ] **Phase 4** — std only at strengthen touch
+- [ ] **Phase 4** — std at strengthen touch *(doc pass `031812` complete; per-function `u32` bounds in mem snapshot paths)*
 - [ ] **Phase 5** — `width-audit.rish` in CI
 
 ---

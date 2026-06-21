@@ -8,6 +8,24 @@
 
 **`std.mem.findLast`** (`lastIndexOf`) — unified backward sub-slice search. Delegates to `findLastLinear` (9972) or reverse Boyer-Moore-Horspool; complements `find` / `findPos` (9971).
 
+## Rye std surface
+
+**`std.mem.findLast`**
+
+```zig
+pub fn findLast(comptime T: type, haystack: []const T, needle: []const T) ?usize
+```
+
+## Width notes
+
+**`std.mem.findLast`** — Public signature inherits Zig `usize` for slice lengths and indices — keep at the inherited seam per `992` Phase 4. Narrow to `u32`/`u64` only for named bounds inside the body (`max_*_check`, loop counters) with `assert` before `@intCast`.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postcondition
 
 On reverse BMH match:

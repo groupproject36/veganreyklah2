@@ -83,3 +83,21 @@ Exit code: 0.
 | **9991** | **Dir.iterate name invariants + exhaustion state** |
 
 The four-pass strengthening frontier (9994–9991) is now complete. Mantra seed may begin.
+
+## Rye std surface
+
+**`std.Io.Dir.iterate`**
+
+```zig
+pub fn iterate(dir: Dir) Iterator
+```
+
+## Width notes
+
+**`std.Io.Dir.iterate`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |

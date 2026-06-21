@@ -8,6 +8,20 @@
 
 **`ShakeLike.squeeze` in `sha3.zig`** — slice bounds on the rate-sized buffer between sponge squeezes. Sits above `keccak_p` (`9936`) on every SHAKE/XOF call.
 
+## Rye std surface
+
+**`std.crypto.sha3`** — see `rye/lib/std` (signature not auto-located).
+
+## Width notes
+
+**`std.crypto.sha3`** — Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 - `self.offset <= self.buf.len` on entry and via `defer` on every return path

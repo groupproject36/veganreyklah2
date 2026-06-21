@@ -8,6 +8,20 @@
 
 **`SplitIterator.rest`** — returns the unprocessed tail without advancing. Mantra uses it after `next()` on tab-separated weave rows and newline-split lines.
 
+## Rye std surface
+
+**`std.mem.split`** — see `rye/lib/std` (signature not auto-located).
+
+## Width notes
+
+**`std.mem.split`** — Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postcondition
 
 ```zig

@@ -8,6 +8,24 @@
 
 **`std.mem.count`** and **`countScalar`** — tally non-overlapping needle occurrences (or scalar elements). Complements `findPos` (9971) and `contains` patterns in string builtins.
 
+## Rye std surface
+
+**`std.mem.count`**
+
+```zig
+pub fn count(comptime T: type, haystack: []const T, needle: []const T) usize
+```
+
+## Width notes
+
+**`std.mem.count`** — Public signature inherits Zig `usize` for slice lengths and indices — keep at the inherited seam per `992` Phase 4. Narrow to `u32`/`u64` only for named bounds inside the body (`max_*_check`, loop counters) with `assert` before `@intCast`.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 **count** — each match and final state:

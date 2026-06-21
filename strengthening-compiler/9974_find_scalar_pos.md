@@ -10,6 +10,24 @@
 
 Postcondition lands on the **scalar tail loop** only — vectorized paths stay lean per data-plane economy (9996); the tail loop is where small inputs and remainder scans complete.
 
+## Rye std surface
+
+**`std.mem.findScalarPos`**
+
+```zig
+pub fn findScalarPos(comptime T: type, slice: []const T, start_index: usize, value: T) ?usize
+```
+
+## Width notes
+
+**`std.mem.findScalarPos`** — Public signature inherits Zig `usize` for slice lengths and indices — keep at the inherited seam per `992` Phase 4. Narrow to `u32`/`u64` only for named bounds inside the body (`max_*_check`, loop counters) with `assert` before `@intCast`.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postcondition
 
 On match in the scalar tail:

@@ -4272,9 +4272,9 @@ inline fn reverseVector(comptime N: usize, comptime T: type, a: []T) [N]T {
 
 /// In-place order reversal of a slice
 pub fn reverse(comptime T: type, items: []T) void {
-    const max_reverse_check: usize = 64;
+    const max_reverse_check: u32 = 64;
     var original: [max_reverse_check]T = undefined;
-    const snapshot = items.len <= max_reverse_check;
+    const snapshot = items.len <= @as(usize, max_reverse_check);
     if (snapshot) {
         @memcpy(original[0..items.len], items);
     }
@@ -4455,9 +4455,9 @@ test reverseIterator {
 /// Assumes 0 <= amount <= items.len
 pub fn rotate(comptime T: type, items: []T, amount: usize) void {
     assert(amount <= items.len);
-    const max_rotate_check: usize = 64;
+    const max_rotate_check: u32 = 64;
     var original: [max_rotate_check]T = undefined;
-    const snapshot = items.len <= max_rotate_check;
+    const snapshot = items.len <= @as(usize, max_rotate_check);
     if (snapshot) {
         @memcpy(original[0..items.len], items);
     }
@@ -4510,8 +4510,9 @@ pub fn replace(comptime T: type, input: []const T, needle: []const T, replacemen
 
     // Postcondition: wrote exactly the size replacementSize promised (pairs with startsWith 9939).
     assert(i == expected_len);
-    const max_replace_check: usize = 128;
-    if (input.len <= 64 and expected_len <= max_replace_check) {
+    const max_replace_input: u32 = 64;
+    const max_replace_check: u32 = 128;
+    if (input.len <= @as(usize, max_replace_input) and expected_len <= @as(usize, max_replace_check)) {
         var verify_slide: usize = 0;
         var verify_i: usize = 0;
         while (verify_slide < input.len) {

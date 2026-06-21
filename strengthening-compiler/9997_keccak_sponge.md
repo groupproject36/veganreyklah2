@@ -114,3 +114,17 @@ This pass advances Rye's clock to `20260618.072512`, the stamp beside the SHA3 w
 ---
 
 *May the deepest functions we lean on say what they keep. May our checks rest where they are free and stay clear of where they are dear. And may the word `maybe`, newly ours, name every place the truth is allowed to vary — so the reader after us is never left to guess.*
+
+## Rye std surface
+
+**`std.crypto.keccak`** — see `rye/lib/std` (signature not auto-located).
+
+## Width notes
+
+**`std.crypto.keccak`** — Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |

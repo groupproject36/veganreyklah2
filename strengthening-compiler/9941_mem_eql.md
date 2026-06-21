@@ -8,6 +8,24 @@
 
 **`std.mem.eql`** — slice equality. Rishi compares names on every line; complements `findDiff` (9949) and `order` (9953). Builds on the `maybe` documentation from 9996 with return-path postconditions.
 
+## Rye std surface
+
+**`std.mem.eql`**
+
+```zig
+pub fn eql(comptime T: type, a: []const T, b: []const T) bool
+```
+
+## Width notes
+
+**`std.mem.eql`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 **Vector path (`eqlBytes`):**

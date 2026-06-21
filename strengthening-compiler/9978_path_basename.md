@@ -8,6 +8,24 @@
 
 **`std.fs.path.basename`** — returns the final path component. Complements `path.dirname` (9980) on the path pair the rye bridge and Pond policy will compose.
 
+## Rye std surface
+
+**`std.fs.path.basename`**
+
+```zig
+pub fn basename(path: []const u8) []const u8
+```
+
+## Width notes
+
+**`std.fs.path.basename`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postcondition
 
 At `basenameInner` return:

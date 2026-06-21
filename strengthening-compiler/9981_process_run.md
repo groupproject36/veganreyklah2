@@ -8,6 +8,24 @@
 
 **`std.process.run`** — spawns a child, collects stdout and stderr, waits for exit. Rishi's `run` builtin, `tools/parity.rish`, and `hosted_wire demo` all depend on it.
 
+## Rye std surface
+
+**`std.process.run`**
+
+```zig
+pub fn run(gpa: Allocator, io: Io, options: RunOptions) RunError!RunResult
+```
+
+## Width notes
+
+**`std.process.run`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 **Entry** (`process.zig`):

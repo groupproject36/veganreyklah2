@@ -5,6 +5,14 @@
 
 ---
 
+## Rye std surface
+
+**Authored:** `tally/gardens.rye` — not an inherited `std` function. Width migration is Tier A in `992`.
+
+## Width notes
+
+Migrate struct fields and counters to `u32`/`u64` per `10024`; keep `usize` only at `buf[0..n]` slice seams with `bufLenU32` helpers.
+
 ## What we built
 
 Tally is the memory-management layer of the Rye family. Pass 9989 delivers Tally v1: the full `Gardens` model. The seed (`tally/seed.rye`, pass 9990) proved one `Region` with 13 asserted invariants. v1 names them.

@@ -8,6 +8,24 @@
 
 **`std.mem.findLastNone`** (`lastIndexOfNone`) — find the last scalar not in a set. Pairs with `findNonePos` (9965) and `findLastAny` (9966).
 
+## Rye std surface
+
+**`std.mem.findLastNone`**
+
+```zig
+pub fn findLastNone(comptime T: type, slice: []const T, values: []const T) ?usize
+```
+
+## Width notes
+
+**`std.mem.findLastNone`** — Public signature inherits Zig `usize` for slice lengths and indices — keep at the inherited seam per `992` Phase 4. Narrow to `u32`/`u64` only for named bounds inside the body (`max_*_check`, loop counters) with `assert` before `@intCast`.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postcondition
 
 On match:

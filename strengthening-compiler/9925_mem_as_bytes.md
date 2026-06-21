@@ -8,6 +8,24 @@
 
 **`std.mem.asBytes`** — reinterprets a pointer to one value as its underlying bytes. Pairs with `sliceAsBytes` (9926).
 
+## Rye std surface
+
+**`std.mem.asBytes`**
+
+```zig
+pub fn asBytes(ptr: anytype) AsBytesReturnType(@TypeOf(ptr))
+```
+
+## Width notes
+
+**`std.mem.asBytes`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 Returned byte slice length equals `@sizeOf(@TypeOf(ptr.*))` (zero for zero-sized types).

@@ -8,6 +8,24 @@
 
 **`std.mem.join`** and **`joinMaybeZ`** — allocate and concatenate slices with a separator. Backs Rishi `join` and complements `path.join` (9983).
 
+## Rye std surface
+
+**`std.mem.join`**
+
+```zig
+pub fn join(allocator: Allocator, separator: []const u8, slices: []const []const u8) Allocator.Error![]u8
+```
+
+## Width notes
+
+**`std.mem.join`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postcondition
 
 After the memcpy loop:

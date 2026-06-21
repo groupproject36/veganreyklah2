@@ -8,6 +8,24 @@
 
 **`std.mem.len`** — length of sentinel-terminated many-item and `[*c]` pointers. Pairs with `sliceTo` (9945) and `findSentinel` (9952).
 
+## Rye std surface
+
+**`std.mem.len`**
+
+```zig
+pub fn len(value: anytype) usize
+```
+
+## Width notes
+
+**`std.mem.len`** — Public signature inherits Zig `usize` for slice lengths and indices — keep at the inherited seam per `992` Phase 4. Narrow to `u32`/`u64` only for named bounds inside the body (`max_*_check`, loop counters) with `assert` before `@intCast`.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 On return, the byte/element at the returned index is the sentinel (`0` for `[*c]`).

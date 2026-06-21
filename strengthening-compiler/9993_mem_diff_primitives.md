@@ -143,3 +143,17 @@ Eleven programs, all green. `mem_diff_test.rye` exercises copyForwards, startsWi
 ---
 
 *May these five functions carry Mantra's weave lines faithfully — never past the boundary, always within the buffer, each returned slice a true sub-slice of what we started with. May the copy fill the destination without exceeding it, and may the split yield nothing that was not there.*
+
+## Rye std surface
+
+**`std.mem.diff_primitives`** — see `rye/lib/std` (signature not auto-located).
+
+## Width notes
+
+**`std.mem.diff_primitives`** — Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |

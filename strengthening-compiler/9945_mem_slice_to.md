@@ -8,6 +8,24 @@
 
 **`std.mem.sliceTo`** and **`lenSliceTo`** (slice branch) — slice sentinel-terminated pointers and buffers up to a terminator. Pairs with `findSentinel` (9952) and `orderZ` (9952).
 
+## Rye std surface
+
+**`std.mem.sliceTo`**
+
+```zig
+pub fn sliceTo(ptr: anytype, comptime end: std.meta.Elem(@TypeOf(ptr))) SliceTo(@TypeOf(ptr), end)
+```
+
+## Width notes
+
+**`std.mem.sliceTo`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 **sliceTo** — returned slice length matches `lenSliceTo`.

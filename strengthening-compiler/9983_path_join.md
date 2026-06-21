@@ -20,6 +20,24 @@ At `join` cold wrapper — empty components are valid input (skipped, same as `f
 for (paths) |p| std.debug.maybe(p.len == 0);
 ```
 
+## Rye std surface
+
+**`std.fs.path.join`**
+
+```zig
+pub fn join(allocator: Allocator, paths: []const []const u8) ![]u8
+```
+
+## Width notes
+
+**`std.fs.path.join`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## What the test asserts
 
 - Multi-component join matches expected POSIX-style path

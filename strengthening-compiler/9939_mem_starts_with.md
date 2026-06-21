@@ -8,6 +8,24 @@
 
 **`std.mem.startsWith`** — prefix test on slices. The `rye` CLI and Mantra weave logic depend on it; builds on the `maybe` documentation from 9993 with return-path postconditions pairing `eql` (9941).
 
+## Rye std surface
+
+**`std.mem.startsWith`**
+
+```zig
+pub fn startsWith(comptime T: type, haystack: []const T, needle: []const T) bool
+```
+
+## Width notes
+
+**`std.mem.startsWith`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 - `false` when `needle.len > haystack.len` ⇒ length ordering stated

@@ -8,6 +8,24 @@
 
 **`std.mem.bytesAsValue`** — reinterprets bytes as a pointer to `T`, preserving pointer attributes. Pairs with `asBytes` (9925), `toBytes` (9923), and `bytesToValue`.
 
+## Rye std surface
+
+**`std.mem.bytesAsValue`**
+
+```zig
+pub fn bytesAsValue(comptime T: type, bytes: anytype) BytesAsValueReturnType(T, @TypeOf(bytes))
+```
+
+## Width notes
+
+**`std.mem.bytesAsValue`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 Slice inputs satisfy `bytes.len >= @sizeOf(T)`; one-item pointers satisfy `@sizeOf(child) >= @sizeOf(T)`.

@@ -8,6 +8,24 @@
 
 **`std.mem.toBytes`** — copies a value's underlying bytes into a fixed array. Pairs with `asBytes` (9925), `bytesToValue`, and the slice view family (9924–9926).
 
+## Rye std surface
+
+**`std.mem.toBytes`**
+
+```zig
+pub fn toBytes(value: anytype) [@sizeOf(@TypeOf(value))]u8
+```
+
+## Width notes
+
+**`std.mem.toBytes`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 Returned array length equals `@sizeOf(@TypeOf(value))`.

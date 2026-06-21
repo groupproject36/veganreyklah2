@@ -5,6 +5,14 @@
 
 ---
 
+## Rye std surface
+
+**Authored:** `mantra/src/main.rye` — not an inherited `std` function. Width migration is Tier A in `992`.
+
+## Width notes
+
+Migrate struct fields and counters to `u32`/`u64` per `10024`; keep `usize` only at `buf[0..n]` slice seams with `bufLenU32` helpers.
+
 ## What we built
 
 Mantra is the version-control layer of the Rye family. The seed is the smallest version that runs: one file, three commands, one weave.

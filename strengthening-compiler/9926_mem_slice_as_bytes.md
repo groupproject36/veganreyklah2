@@ -8,6 +8,24 @@
 
 **`std.mem.sliceAsBytes`** — reinterprets a typed slice as `[]u8` preserving pointer attributes. Pairs with `asBytes` on single items and the copy/compare mem arc.
 
+## Rye std surface
+
+**`std.mem.sliceAsBytes`**
+
+```zig
+pub fn sliceAsBytes(slice: anytype) SliceAsBytesReturnType(@TypeOf(slice))
+```
+
+## Width notes
+
+**`std.mem.sliceAsBytes`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 Returned byte slice length is `slice.len * @sizeOf(Elem)` on the main path; zero-bit elements and empty non-sentinel slices return `len == 0`.

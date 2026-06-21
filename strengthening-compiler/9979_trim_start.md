@@ -10,6 +10,24 @@
 
 Completes the trim family alongside `trim` (9996) and `trimEnd` (9982).
 
+## Rye std surface
+
+**`std.mem.trimStart`**
+
+```zig
+pub fn trimStart(comptime T: type, slice: []const T, values_to_strip: []const T) []const T
+```
+
+## Width notes
+
+**`std.mem.trimStart`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postcondition
 
 ```zig

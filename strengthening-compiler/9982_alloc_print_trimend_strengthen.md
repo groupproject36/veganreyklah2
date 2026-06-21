@@ -12,6 +12,38 @@ Pass 9988 added `rye/tests/alloc_print_test.rye` to the parity witnesses. This p
 
 2. **`std.mem.trimEnd`** — Rishi arithmetic parser (`findLastArithAdd`) and line trimming in the interpreter loop.
 
+## Rye std surface
+
+**`std.fmt.allocPrint`**
+
+```zig
+pub fn allocPrint(gpa: Allocator, comptime fmt: []const u8, args: anytype) Allocator.Error![]u8
+```
+
+**`std.mem.trimEnd`**
+
+```zig
+pub fn trimEnd(comptime T: type, slice: []const T, values_to_strip: []const T) []const T
+```
+
+## Width notes
+
+**`std.fmt.allocPrint`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
+**`std.mem.trimEnd`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 **allocPrint** (`fmt.zig`):

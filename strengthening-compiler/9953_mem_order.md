@@ -8,6 +8,24 @@
 
 **`std.mem.order`** and **`lessThan`** — lexicographic compare on slices. Backs `SemanticVersion` pre-release ordering and general string sorting.
 
+## Rye std surface
+
+**`std.mem.order`**
+
+```zig
+pub fn order(lhs: Alignment, rhs: Alignment) std.math.Order
+```
+
+## Width notes
+
+**`std.mem.order`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 **order** — on every return path:

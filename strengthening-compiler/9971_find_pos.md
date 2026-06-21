@@ -8,6 +8,24 @@
 
 **`std.mem.findPos`** (`indexOfPos`) — unified forward search from `start_index`. Delegates to `findScalarPos`, `findPosLinear`, or Boyer-Moore-Horspool; this pass adds cold-wrapper postconditions where the wrapper returns directly.
 
+## Rye std surface
+
+**`std.mem.findPos`**
+
+```zig
+pub fn findPos(comptime T: type, haystack: []const T, start_index: usize, needle: []const T) ?usize
+```
+
+## Width notes
+
+**`std.mem.findPos`** — Public signature inherits Zig `usize` for slice lengths and indices — keep at the inherited seam per `992` Phase 4. Narrow to `u32`/`u64` only for named bounds inside the body (`max_*_check`, loop counters) with `assert` before `@intCast`.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 - Empty needle: `assert(start_index <= haystack.len)`

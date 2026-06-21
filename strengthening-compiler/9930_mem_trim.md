@@ -8,6 +8,24 @@
 
 **`std.mem.trim`** — removes leading and trailing characters. Completes the trim witness family beside `trimStart` (9979) and `trimEnd` (9988); Rishi calls `trim` on every parsed line.
 
+## Rye std surface
+
+**`std.mem.trim`**
+
+```zig
+pub fn trim(comptime T: type, slice: []const T, values_to_strip: []const T) []const T
+```
+
+## Width notes
+
+**`std.mem.trim`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 - `begin <= end` and `end <= slice.len` (existing)

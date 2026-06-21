@@ -8,6 +8,24 @@
 
 **`std.mem.replace`** — replace every needle occurrence in input, writing to a caller buffer. Pairs with `startsWith` (9939) and `replacementSize`.
 
+## Rye std surface
+
+**`std.mem.replace`**
+
+```zig
+pub fn replace(comptime T: type, input: []const T, needle: []const T, replacement: []const T, output: []T) usize
+```
+
+## Width notes
+
+**`std.mem.replace`** — Public signature inherits Zig `usize` for slice lengths and indices — keep at the inherited seam per `992` Phase 4. Narrow to `u32`/`u64` only for named bounds inside the body (`max_*_check`, loop counters) with `assert` before `@intCast`.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 Precondition: `replacementSize(...) <= output.len`. After the walk, write index equals `replacementSize`. When `input.len <= 64` and output fits in 128 elements, independent verify loop confirms each emitted span.

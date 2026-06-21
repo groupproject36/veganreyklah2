@@ -110,3 +110,27 @@ Twelve programs, all green. The write-then-read round-trip produced identical ou
 ---
 
 *May every path that reaches the OS boundary be non-empty and within the declared limit. May the buffer that awaits a file's contents be ready to receive. May the door hold cleanly — a loud stop near the cause, and the room behind it clean.*
+
+## Rye std surface
+
+**`std.fs`** — see `rye/lib/std` (signature not auto-located).
+
+**`std.Io.Dir`** — see `rye/lib/std` (signature not auto-located).
+
+## Width notes
+
+**`std.fs`** — Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
+**`std.Io.Dir`** — Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |

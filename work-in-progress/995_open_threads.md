@@ -1,9 +1,9 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `031512`: pass 9917 mem.replace; 86 witnesses.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `031812`: strengthening stdlib doc + width pass; 86 witnesses; next `k` at 9916.*
 
 **Language:** EN
-**Version:** `20260621.031512` (Rye chronological stamp)
+**Version:** `20260621.031812` (Rye chronological stamp)
 **Last updated:** 2026-06-21
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
@@ -12,6 +12,7 @@
 
 ## What Just Landed (this session)
 
+- **Strengthening stdlib doc + width pass (`031812`).** All 82 `strengthening-compiler/` passes enriched with `## Rye std surface` signatures and `## Width notes`; crosswalk `992_strengthening_width_crosswalk.md`; enricher `tools/enrich_strengthening_docs.py`; prompt `10025`. Named `mem` snapshot bounds → `u32`. Strengthening **paused** at 9916 until next `k`.
 - **Strengthening pass 9917 (`031512`).** `mem.replace` buffer-size and output-verify postconditions; witness `mem_replace_test`; 86/86 witnesses GREEN.
 - **Strengthening pass 9918 (`030912`).** `mem.rotate` left-rotate snapshot postconditions (len <= 64); witness `mem_rotate_test`; 85/85 witnesses GREEN.
 - **Strengthening pass 9919 (`030412`).** `mem.swap` runtime byte-exchange postconditions; witness `mem_swap_test`; 84/84 witnesses GREEN.
@@ -140,7 +141,7 @@ Width and strengthening **do not block each other** — they touch different fil
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — next `std` surface through gate trio (9917 and below) | `10023` Track B, `998` |
+| 1 | **Strengthening series** — next `std` surface through gate trio (9916 and below) | `10023` Track B, `998` |
 | 2 | **Explicit-width migration** — `usize` → `u32`/`u64` in authored `.rye` (parallel, one module per session) | `10024`, `992` |
 | 3 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 4 | **TAME assertion backlog** — fix as code is touched | `994_style_audit.md` |
@@ -229,7 +230,7 @@ Phase 2 vocabulary sweep is **closed**. Policy at `161112`: warm names enter bes
 - **Compare:** baseline `vendor/zig-toolchain/lib` vs strengthened `rye/lib` — same test, same pinned Zig (`RYE_ZIG`).
 - **Invoke:** `rye run rye/tests/<name>.rye` on both arms (`RYE_LIB` for baseline); exercises the real bridge path.
 - **Hold:** exit code + stdout/stderr identical — assertions change what code *says*, never what it *does*.
-- **Witnesses:** 85 programs, all GREEN (9918 mem.rotate latest).
+- **Witnesses:** 86 programs, all GREEN (9917 mem.replace latest).
 
 ## The Through-Line
 

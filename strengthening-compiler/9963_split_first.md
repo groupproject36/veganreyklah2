@@ -8,6 +8,20 @@
 
 **`SplitIterator.first`** (via `splitScalar`, `splitAny`, `splitSequence`) — returns the first field and advances. Completes the split iterator quartet beside `next` (9993), `peek` (9969), and `rest` (9968).
 
+## Rye std surface
+
+**`std.mem.split`** — see `rye/lib/std` (signature not auto-located).
+
+## Width notes
+
+**`std.mem.split`** — Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postcondition
 
 After `next()` yields the first field:

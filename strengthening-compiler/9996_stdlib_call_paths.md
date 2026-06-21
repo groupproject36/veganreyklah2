@@ -88,3 +88,101 @@ And because `rye run` builds in Debug, the assertions are **live** every time we
 ---
 
 *May the small functions we lean on each day carry their invariants quietly and well. May every result stay within the bounds it promises, and may the gate stay green as our library grows a little more its own.*
+
+## Rye std surface
+
+**`std.mem.eql`**
+
+```zig
+pub fn eql(comptime T: type, a: []const T, b: []const T) bool
+```
+
+**`std.mem.endsWith`**
+
+```zig
+pub fn endsWith(comptime T: type, haystack: []const T, needle: []const T) bool
+```
+
+**`std.fs.path.dirname`**
+
+```zig
+pub fn dirname(path: []const u8) ?[]const u8
+```
+
+**`std.mem.trim`**
+
+```zig
+pub fn trim(comptime T: type, slice: []const T, values_to_strip: []const T) []const T
+```
+
+**`std.mem.indexOfScalar`** — see `rye/lib/std` (signature not auto-located).
+
+**`std.fmt.parseInt`**
+
+```zig
+pub fn parseInt(comptime T: type, buf: []const u8, base: u8) ParseIntError!T
+```
+
+**`std.mem.findScalar`**
+
+```zig
+pub fn findScalar(comptime T: type, slice: []const T, value: T) ?usize
+```
+
+## Width notes
+
+**`std.mem.eql`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
+**`std.mem.endsWith`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
+**`std.fs.path.dirname`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
+**`std.mem.trim`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
+**`std.mem.indexOfScalar`** — Authored module or iterator family — width migration lives in Tier A (`992`); std iterator indices remain `usize` until wrapped at our API.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
+**`std.fmt.parseInt`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
+**`std.mem.findScalar`** — Public signature inherits Zig `usize` for slice lengths and indices — keep at the inherited seam per `992` Phase 4. Narrow to `u32`/`u64` only for named bounds inside the body (`max_*_check`, loop counters) with `assert` before `@intCast`.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |

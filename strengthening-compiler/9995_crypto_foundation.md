@@ -48,3 +48,5 @@ To the question — what can we strengthen, or what step can we take? — the fo
 ---
 
 *May we strengthen what we lean on, in the order we lean on it, and with the care that delicate things deserve. May the hash that names, the key that signs, and the secret two friends share each be proven before they are trusted — and trusted because they were proven.*
+
+

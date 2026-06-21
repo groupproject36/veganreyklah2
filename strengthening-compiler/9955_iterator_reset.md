@@ -8,6 +8,24 @@
 
 **`SplitIterator.reset`**, **`SplitBackwardsIterator.reset`**, and **`TokenIterator.reset`** — restore initial cursor position for replay.
 
+## Rye std surface
+
+**`std.mem.Iterator.reset`**
+
+```zig
+pub fn reset(self: *Self) void
+```
+
+## Width notes
+
+**`std.mem.Iterator.reset`** — No `usize` in the public signature; internal slice walks still use `usize` at the seam where Zig slices require it.
+
+| Surface | Width policy |
+|---------|-------------|
+| Inherited params (`[]T`, `len`, indices) | `usize` — Zig seam |
+| Named snapshot/check bounds | prefer `u32` + `assert(len <= max)` |
+| Wire-persistent counts | `u64` when on the wire (`992` Phase 2) |
+
 ## Postconditions
 
 | Iterator | After reset |
