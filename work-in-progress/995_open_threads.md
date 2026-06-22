@@ -10,10 +10,20 @@
 
 ---
 
-## What Just Landed (this session)
+## What Just Landed (Opus Jun 21–22 session)
 
-- **Doc-stack cleanup (`051612`).** Redirect stubs for superseded research (`988`, `990`, `992`), executed prompts (`10013`, `10015`, `10025`); foundation stones `999_RESEARCH`, `999_DESIGN`, `9999_EXPANDING` document retired patterns (Bash gates, Python enricher, permanent seam-only `usize`). Main track `10023` reoriented.
-- **Literal `usize` ban — language fork (`051312`).** Research `967`, design `970`. `968` interim seam manual.
+- **ABSOLUTE `usize` ban (`070712`).** No exceptions, no seam casts, no boundary patterns. Every `usize` in authored `.rye` is technical debt. Gate: `tools/width-check.rish` (zero tolerance). Research `965`, siloed design `968`.
+- **Rishi `if/then/else` + `for-each` (`063112`).** Conditional execution and iteration with effects. All tests green. Parity 90/90 GREEN.
+- **Bron notation (`063112`).** Data format separated from Brix (composition language). Research `966`, siloed `969`. Brix evaluates to Bron; Bron is the universal data notation.
+- **Tablecloth redefined (`064312`).** General-purpose database (our MySQL/Postgres/Turbopuffer), NOT Brix's build store. Brix has its own content-addressed artifact cache.
+- **seL4/Redox + SixOS through TAME Rye lens (`232912`).** Research `964`, siloed `967`. Five Caravan improvements; SixOS insight carried into the microkernel — Brix declares what Caravan isolates, Tally bounds what Caravan protects.
+- **Seed Law (`235012`).** Siloed name for the growth principle: "a complex system that works grows from a seed that worked." Established in `976`.
+- **Policy drift resolved (`232912`).** Cursor's uncommitted edits that softened the usize ban reverted. Committed HEAD is authoritative.
+
+## What Landed Earlier (Cursor Composer + Opus combined)
+
+- **Doc-stack cleanup (`051612`).** Redirect stubs; retired patterns.
+- **Literal `usize` ban — language fork (`051312`).** Research `967`, design `970`.
 - **Full implementation in pass writings (`040912`).** Live `pub fn` bodies in `## Rye std surface` and `## Audited surfaces`.
 - **Strengthening pass 9914 (`033712`).** `mem.replaceScalar` snapshot postconditions; width audit on 5 affected files; witness `mem_replace_scalar_test`; 89/89 witnesses GREEN.
 - **Strengthening pass 9915 (`033412`).** `mem.replaceOwned` alloc-length + verify walk; width audit on 6 affected files; witness `mem_replace_owned_test`; 88/88 witnesses GREEN.

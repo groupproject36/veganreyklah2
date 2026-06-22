@@ -1,22 +1,28 @@
 # 976 · What We Mean by Seed
 
-*A siloed vocabulary brief: the word **seed** names the smallest living version of a module — the thing that runs, proves one honest claim, and grows by accretion toward the full design. Gall's Law made a noun. The first concrete seeds are named in `987`; the whole-system map carries them in `983`. This brief states what the word means on our own ground so every new seed reads true beside the ones already green.*
+*A siloed vocabulary brief: the word **seed** names the smallest living version of a module — the thing that runs, proves one honest claim, and grows by accretion toward the full design. The Seed Law made a noun. The first concrete seeds are named in `987`; the whole-system map carries them in `983`. This brief states what the word means on our own ground so every new seed reads true beside the ones already green.*
 
 **Language:** EN
-**Version:** `20260620.021912` (Rye chronological stamp)
-**Last updated:** 2026-06-20
+**Version:** `20260622.235012` (Rye chronological stamp)
+**Last updated:** 2026-06-22
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME — Gall's Law; correctness by construction (`990`); single-stranded composition (`995`)
+**Lens:** TAME — the Seed Law; correctness by construction (`990`); single-stranded composition (`995`)
 **Status:** Active Design (siloed)
 
 ---
 
 ## Our Own Ground
 
-This is a clean room. We name only our modules — **Rye**, **Rishi**, **Brix**, **Tablecloth**, **Mantra**, **Tally**, **Caravan**, **Aurora**, **Pond**, **Comlink**, **Brushstroke**, **Skate**, **Scribble** — together with **RISC-V** and **x86_64** where hardware matters. The insight that a complex system grows from a simpler one that already worked enters as a principle (Gall's Law). The gratitude for s6's supervision discipline and Urbit's loom lives in `../external-research/`; here we speak only what is ours.
+This is a clean room. We name only our modules — **Rye**, **Rishi**, **Brix**, **Mantra**, **Tally**, **Caravan**, **Aurora**, **Pond**, **Comlink**, **Brushstroke**, **Skate**, **Tablecloth** — together with **RISC-V** and **x86_64** where hardware matters.
 
 ---
+
+## The Seed Law
+
+**A complex system that works is grown from a simpler system that worked.**
+
+We call this the **Seed Law** — the principle that orders how every module in the family begins and grows. The gratitude for the insight lives in `../external-research/997_SYSTEM.md`; here we speak only the principle itself, in our own name.
 
 ## One Word, One Law
 
@@ -24,7 +30,7 @@ A **seed** is the smallest version of a module that **runs** and **proves** the 
 
 It is not a sketch. It is not a design doc awaiting code. It is not the finished module wearing a modest name. It is a program — usually `seed.rye` or a clearly named sibling — that a person can build, run, and watch succeed behind assertions or the parity gate.
 
-The law it embodies: **a complex system that works is grown from a simpler system that worked.** We do not open the whole Pond GUI, the whole microkernel, or the whole compositor in one pass. We open the seed, prove it green, and grow the next ring only from what already runs.
+The law it embodies: **a complex system that works is grown from a simpler system that worked — the Seed Law.** We do not open the whole Pond GUI, the whole microkernel, or the whole compositor in one pass. We open the seed, prove it green, and grow the next ring only from what already runs.
 
 ---
 

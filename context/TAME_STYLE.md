@@ -93,28 +93,27 @@ Rye carries the family. The safety Rye offers is the safety every module written
 
 Use explicitly sized integer types: `u8`, `u16`, `u32`, `u64`, `i8`, `i16`, `i32`, `i64`. Use `f32` or `f64` for floating-point. Never use `c_int`, `c_uint`, or `anyopaque` without a stated, commented reason.
 
-**North star (`051312`):** Rye forks to a **literal `usize` ban** in types we publish — see [`external-research/967_literal_usize_ban_language_fork.md`](../external-research/967_literal_usize_ban_language_fork.md) and [`active-designing/970_explicit_width_in_rye.md`](../active-designing/970_explicit_width_in_rye.md). Until fork F3, Zig-ground `std` uses the **interim seam** manual [`968`](../external-research/968_usize_boundary_not_design.md).
-
-**`usize` is a boundary type, not a design type** — interim on Zig ground; same rule Tiger Style states (*use explicitly-sized types like `u32`; avoid architecture-specific `usize`*). TAME voices it for Rye: set aside architecture-specific widths so behavior stays exact across targets — especially RISC-V (`riscv64`) and hosted x86_64. Our inherited Zig `std` still speaks `usize` at slice edges **until the fork**; we honor that at the seam and convert explicitly everywhere we own the contract.
+**`usize` is BANNED in Rye. No exceptions.** Every occurrence in authored `.rye` is technical debt to be eliminated by the compiler fork (F1–F5). See [`active-designing/968_the_compiler_fork.md`](../active-designing/968_the_compiler_fork.md) and [`active-designing/970_explicit_width_in_rye.md`](../active-designing/970_explicit_width_in_rye.md). The gate `tools/width-check.rish` enforces zero tolerance.
 
 | Width | Role in authored Rye |
 |-------|----------------------|
-| **`u32`** | In-memory counts, indices, and lengths **bounded by a named constant** (garden capacity, grid dimension, stack depth, frame size). Default width for “how many in this region.” |
-| **`u64`** | Wire-persistent sizes, timestamps, content offsets, and any quantity that must mean the same thing on every target without relying on `usize` width. |
-| **`usize`** | **Interim only (Zig-ground):** immediate slice boundary until fork F3 — see `968`. Not in APIs we publish long-term (`970`). |
+| **`u32`** | All in-memory counts, indices, and lengths **bounded by a named constant** (garden capacity, grid dimension, stack depth, frame size). Default width for “how many in this region.” |
+| **`u64`** | Wire-persistent sizes, timestamps, content offsets, and any quantity that must mean the same thing on every target. |
+| **`usize`** | **BANNED.** Every existing occurrence is technical debt. The compiler fork (F1) rejects it; the std rewrite (F3) eliminates it from `rye/lib`. |
 
-Do **not** store `usize` in struct fields, function parameters, or return types we publish. Name the bound when you pick `u32`:
+Name the bound when you pick `u32`:
 
 ```zig
 const max_frame_bytes: u32 = 4096;
 pos: u32, // invariant: pos <= max_frame_bytes
 ```
 
-Full audit charter and phased migration: `expanding-prompts/10024_explicit_width_audit.md`, baseline `work-in-progress/992_usize_width_baseline.md`, research `external-research/968_usize_boundary_not_design.md`. Strengthening audit tooling: `tools/tame_usize_audit.rye`.
+Width audit: `work-in-progress/992_usize_width_baseline.md`. Fork plan: `active-designing/968_the_compiler_fork.md`.
 
-**At the slice seam**, convert explicitly:
+**Existing Zig seam casts** (`const x: usize = @intCast(...)`) are **technical debt**, not an acceptable pattern:
 
 ```zig
+// DEBT — eliminated when Rye's slice type carries u32 len (fork F3)
 std.debug.assert(buf.len <= std.math.maxInt(u32));
 const cap: u32 = @intCast(buf.len);
 // ... arithmetic in u32 ...

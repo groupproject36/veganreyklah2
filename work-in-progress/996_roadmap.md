@@ -7,7 +7,7 @@
 **Last updated:** 2026-06-21
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME — safety, performance, joy; Gall's Law
+**Lens:** TAME — safety, performance, joy; the Seed Law
 **Status:** Living roadmap
 
 ---
