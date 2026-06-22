@@ -1,10 +1,10 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `051612`: doc-stack redirect stubs; retired Bash/Python/seam-forever patterns.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `232912`: absolute usize ban committed, compiler fork plan landed (965/968), Bron/Brix vocabulary settled, Tablecloth redefined as database, policy drift from Cursor reverted.*
 
 **Language:** EN
-**Version:** `20260621.051612` (Rye chronological stamp)
-**Last updated:** 2026-06-21
+**Version:** `20260622.232912` (Rye chronological stamp)
+**Last updated:** 2026-06-22
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 
