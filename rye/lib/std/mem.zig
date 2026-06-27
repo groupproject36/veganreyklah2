@@ -31,16 +31,37 @@ pub const Alignment = enum(math.Log2Int(usize)) {
     _,
 
     pub fn toByteUnits(a: Alignment) usize {
-        return @as(usize, 1) << @intFromEnum(a);
+        const result = @as(usize, 1) << @intFromEnum(a);
+        if (!@inComptime()) {
+            // Postcondition: log2 enum maps to a valid power-of-2 byte count (pairs with fromByteUnits 9892).
+            assert(isValidAlign(result));
+            assert(@ctz(result) == @intFromEnum(a));
+        }
+        return result;
     }
 
     pub fn fromByteUnits(n: usize) Alignment {
         assert(std.math.isPowerOfTwo(n));
-        return @enumFromInt(@ctz(n));
+        const result: Alignment = @enumFromInt(@ctz(n));
+        if (!@inComptime()) {
+            // Postcondition: byte count round-trips through toByteUnits (pairs with toByteUnits 9892).
+            assert(isValidAlign(n));
+            assert(result.toByteUnits() == n);
+        }
+        return result;
     }
 
     pub fn fromByteUnitsOptional(maybe_n: ?usize) ?Alignment {
-        return if (maybe_n) |n| .fromByteUnits(n) else null;
+        const result: ?Alignment = if (maybe_n) |n| fromByteUnits(n) else null;
+        if (!@inComptime()) {
+            if (maybe_n) |n| {
+                assert(result != null);
+                assert(result.?.toByteUnits() == n);
+            } else {
+                assert(result == null);
+            }
+        }
+        return result;
     }
 
     pub inline fn of(comptime T: type) Alignment {
@@ -48,36 +69,80 @@ pub const Alignment = enum(math.Log2Int(usize)) {
     }
 
     pub fn order(lhs: Alignment, rhs: Alignment) std.math.Order {
-        return std.math.order(@intFromEnum(lhs), @intFromEnum(rhs));
+        const result = std.math.order(@intFromEnum(lhs), @intFromEnum(rhs));
+        if (!@inComptime()) {
+            // Postcondition: log2 order agrees with byte-unit order (pairs with toByteUnits 9892).
+            const lb = lhs.toByteUnits();
+            const rb = rhs.toByteUnits();
+            switch (result) {
+                .lt => assert(lb < rb),
+                .gt => assert(lb > rb),
+                .eq => assert(lb == rb),
+            }
+        }
+        return result;
     }
 
     pub fn compare(lhs: Alignment, op: std.math.CompareOperator, rhs: Alignment) bool {
-        return std.math.compare(@intFromEnum(lhs), op, @intFromEnum(rhs));
+        const result = std.math.compare(@intFromEnum(lhs), op, @intFromEnum(rhs));
+        if (!@inComptime()) {
+            assert(result == std.math.compare(lhs.toByteUnits(), op, rhs.toByteUnits()));
+        }
+        return result;
     }
 
     pub fn max(lhs: Alignment, rhs: Alignment) Alignment {
-        return @enumFromInt(@max(@intFromEnum(lhs), @intFromEnum(rhs)));
+        const result: Alignment = @enumFromInt(@max(@intFromEnum(lhs), @intFromEnum(rhs)));
+        if (!@inComptime()) {
+            assert(result.toByteUnits() == @max(lhs.toByteUnits(), rhs.toByteUnits()));
+            assert(result == lhs or result == rhs);
+        }
+        return result;
     }
 
     pub fn min(lhs: Alignment, rhs: Alignment) Alignment {
-        return @enumFromInt(@min(@intFromEnum(lhs), @intFromEnum(rhs)));
+        const result: Alignment = @enumFromInt(@min(@intFromEnum(lhs), @intFromEnum(rhs)));
+        if (!@inComptime()) {
+            assert(result.toByteUnits() == @min(lhs.toByteUnits(), rhs.toByteUnits()));
+            assert(result == lhs or result == rhs);
+        }
+        return result;
     }
 
     /// Return next address with this alignment.
     pub fn forward(a: Alignment, address: usize) usize {
         const x = (@as(usize, 1) << @intFromEnum(a)) - 1;
-        return (address + x) & ~x;
+        const result = (address + x) & ~x;
+        if (!@inComptime()) {
+            const bytes = a.toByteUnits();
+            // Postcondition: enum forward agrees with alignForward (pairs with alignForward 9904).
+            assert(result == alignForward(usize, address, bytes));
+            assert(isAligned(result, bytes));
+        }
+        return result;
     }
 
     /// Return previous address with this alignment.
     pub fn backward(a: Alignment, address: usize) usize {
         const x = (@as(usize, 1) << @intFromEnum(a)) - 1;
-        return address & ~x;
+        const result = address & ~x;
+        if (!@inComptime()) {
+            const bytes = a.toByteUnits();
+            // Postcondition: enum backward agrees with alignBackward (pairs with alignBackward 9904).
+            assert(result == alignBackward(usize, address, bytes));
+            assert(isAligned(result, bytes));
+        }
+        return result;
     }
 
     /// Return whether address is aligned to this amount.
     pub fn check(a: Alignment, address: usize) bool {
-        return @ctz(address) >= @intFromEnum(a);
+        const result = @ctz(address) >= @intFromEnum(a);
+        if (!@inComptime()) {
+            // Postcondition: enum check agrees with isAlignedLog2 (pairs with isAligned 9902).
+            assert(result == isAlignedLog2(address, @intFromEnum(a)));
+        }
+        return result;
     }
 };
 
@@ -283,7 +348,35 @@ pub fn copyBackwards(comptime T: type, dest: []T, source: []const T) void {
 /// function used, examine closely - it may be a code smell.
 /// Zero initializes the type.
 /// This can be used to zero-initialize any type for which it makes sense. Structs will be initialized recursively.
-pub fn zeroes(comptime T: type) T {
+fn verifyZeroesPostcondition(comptime T: type, value: T) void {
+    const max_zeroes_check: u32 = 64;
+    if (@sizeOf(T) > @as(usize, max_zeroes_check)) return;
+    switch (@typeInfo(T)) {
+        .int, .comptime_int => assert(value == 0),
+        .float, .comptime_float => assert(value == 0),
+        .bool => assert(value == false),
+        .@"enum" => assert(@intFromEnum(value) == 0),
+        .optional, .null => assert(value == null),
+        .void => {},
+        .pointer => |ptr_info| switch (ptr_info.size) {
+            .slice => assert(value.len == 0),
+            .c => assert(value == null),
+            else => {},
+        },
+        .@"struct", .@"union" => {
+            assert(eql(u8, asBytes(&value), &[_]u8{0} ** @sizeOf(T)));
+        },
+        .array => |info| {
+            for (value) |elem| verifyZeroesPostcondition(info.child, elem);
+        },
+        .vector => |info| {
+            for (value) |elem| verifyZeroesPostcondition(info.child, elem);
+        },
+        else => {},
+    }
+}
+
+fn zeroesImpl(comptime T: type) T {
     switch (@typeInfo(T)) {
         .comptime_int, .int, .comptime_float, .float => {
             return @as(T, 0);
@@ -365,6 +458,14 @@ pub fn zeroes(comptime T: type) T {
             @compileError("Can't set a " ++ @typeName(T) ++ " to zero.");
         },
     }
+}
+
+/// Zero initializes the type.
+/// This can be used to zero-initialize any type for which it makes sense. Structs will be initialized recursively.
+pub fn zeroes(comptime T: type) T {
+    const result = zeroesImpl(T);
+    if (!@inComptime()) verifyZeroesPostcondition(T, result);
+    return result;
 }
 
 test zeroes {
@@ -473,6 +574,30 @@ test zeroes {
 /// Initializes all fields of the struct with their default value, or zero values if no default value is present.
 /// If the field is present in the provided initial values, it will have that value instead.
 /// Structs are initialized recursively.
+fn verifyZeroInitPostcondition(comptime T: type, comptime Init: type, init: Init, value: T) void {
+    const max_zero_init_check: u32 = 64;
+    if (@sizeOf(T) > @as(usize, max_zero_init_check)) return;
+    const struct_info = @typeInfo(T).@"struct";
+    const init_info = @typeInfo(Init).@"struct";
+    inline for (struct_info.fields) |field| {
+        if (field.is_comptime) continue;
+        if (init_info.is_tuple) continue;
+        if (@hasField(Init, field.name)) {
+            switch (@typeInfo(field.type)) {
+                .@"struct" => {},
+                else => assert(@field(value, field.name) == @field(init, field.name)),
+            }
+        } else if (field.defaultValue()) |val| {
+            assert(@field(value, field.name) == val);
+        } else {
+            switch (@typeInfo(field.type)) {
+                .@"struct", .array => {},
+                else => assert(@field(value, field.name) == zeroes(field.type)),
+            }
+        }
+    }
+}
+
 pub fn zeroInit(comptime T: type, init: anytype) T {
     const Init = @TypeOf(init);
 
@@ -524,6 +649,10 @@ pub fn zeroInit(comptime T: type, init: anytype) T {
                         }
                     }
 
+                    const max_zero_init_check: u32 = 64;
+                    if (!@inComptime() and @sizeOf(T) <= @as(usize, max_zero_init_check)) {
+                        verifyZeroInitPostcondition(T, Init, init, value);
+                    }
                     return value;
                 },
                 else => {
@@ -620,6 +749,33 @@ test zeroInit {
     }, nested_baz);
 }
 
+const max_sort_perm_check: comptime_int = 64;
+
+fn verifySortedPermutation(comptime T: type, original: []const T, sorted: []const T) void {
+    assert(original.len == sorted.len);
+    assert(original.len <= max_sort_perm_check);
+    var used: [max_sort_perm_check]bool = [_]bool{false} ** max_sort_perm_check;
+    for (original) |orig| {
+        var matched = false;
+        for (sorted, 0..) |item, j| {
+            if (!used[j] and eql(u8, asBytes(&orig), asBytes(&item))) {
+                used[j] = true;
+                matched = true;
+                break;
+            }
+        }
+        assert(matched);
+    }
+}
+
+fn isSortedContextRange(a: usize, b: usize, context: anytype) bool {
+    var i = a + 1;
+    while (i < b) : (i += 1) {
+        if (context.lessThan(i, i - 1)) return false;
+    }
+    return true;
+}
+
 /// Sorts a slice in-place using a stable algorithm (maintains relative order of equal elements).
 /// Average time complexity: O(n log n), worst case: O(n log n)
 /// Space complexity: O(log n) for recursive calls
@@ -632,7 +788,17 @@ pub fn sort(
     context: anytype,
     comptime lessThanFn: fn (@TypeOf(context), lhs: T, rhs: T) bool,
 ) void {
+    var original: [max_sort_perm_check]T = undefined;
+    const snapshot = items.len <= @as(usize, max_sort_perm_check);
+    if (snapshot) {
+        @memcpy(original[0..items.len], items);
+    }
     std.sort.block(T, items, context, lessThanFn);
+    if (!@inComptime()) {
+        // Postcondition: stable sort yields ascending order and preserves multiset (pairs with reverse 9921).
+        assert(std.sort.isSorted(T, items, context, lessThanFn));
+        if (snapshot) verifySortedPermutation(T, original[0..items.len], items);
+    }
 }
 
 /// Sorts a slice in-place using an unstable algorithm (does not preserve relative order of equal elements).
@@ -647,13 +813,28 @@ pub fn sortUnstable(
     context: anytype,
     comptime lessThanFn: fn (@TypeOf(context), lhs: T, rhs: T) bool,
 ) void {
+    var original: [max_sort_perm_check]T = undefined;
+    const snapshot = items.len <= @as(usize, max_sort_perm_check);
+    if (snapshot) {
+        @memcpy(original[0..items.len], items);
+    }
     std.sort.pdq(T, items, context, lessThanFn);
+    if (!@inComptime()) {
+        // Postcondition: unstable sort yields ascending order and preserves multiset (pairs with sort 9891).
+        assert(std.sort.isSorted(T, items, context, lessThanFn));
+        if (snapshot) verifySortedPermutation(T, original[0..items.len], items);
+    }
 }
 
 /// TODO: currently this just calls `insertionSortContext`. The block sort implementation
 /// in this file needs to be adapted to use the sort context.
 pub fn sortContext(a: usize, b: usize, context: anytype) void {
+    assert(a <= b);
     std.sort.insertionContext(a, b, context);
+    if (!@inComptime()) {
+        // Postcondition: stable index sort yields ascending order (pairs with sort 9891).
+        assert(isSortedContextRange(a, b, context));
+    }
 }
 
 /// Sorts a range [a, b) using an unstable algorithm with custom context.
@@ -663,7 +844,12 @@ pub fn sortContext(a: usize, b: usize, context: anytype) void {
 /// The context must provide lessThan(a_idx, b_idx) and swap(a_idx, b_idx) methods.
 /// Uses pattern-defeating quicksort (PDQ) algorithm.
 pub fn sortUnstableContext(a: usize, b: usize, context: anytype) void {
+    assert(a <= b);
     std.sort.pdqContext(a, b, context);
+    if (!@inComptime()) {
+        // Postcondition: unstable index sort yields ascending order (pairs with sortUnstable 9891).
+        assert(isSortedContextRange(a, b, context));
+    }
 }
 
 /// Compares two slices of numbers lexicographically. O(n).
@@ -1939,7 +2125,15 @@ test containsAtLeast {
 
 /// Deprecated in favor of `containsAtLeastScalar2`.
 pub fn containsAtLeastScalar(comptime T: type, list: []const T, minimum: usize, element: T) bool {
-    return containsAtLeastScalar2(T, list, element, minimum);
+    const result = containsAtLeastScalar2(T, list, element, minimum);
+    if (!@inComptime()) {
+        const max_scalar_check: u32 = 64;
+        if (minimum <= max_scalar_check and list.len <= @as(usize, max_scalar_check)) {
+            // Postcondition: agrees with countScalar threshold (pairs with containsAtLeastScalar2 9950).
+            assert(result == (countScalar(T, list, element) >= minimum));
+        }
+    }
+    return result;
 }
 
 /// Returns true if `element` appears at least `minimum` number of times in `list`.
@@ -2003,6 +2197,7 @@ pub fn readVarInt(comptime ReturnType: type, bytes: []const u8, endian: Endian) 
     const bits = @typeInfo(ReturnType).int.bits;
     const signedness = @typeInfo(ReturnType).int.signedness;
     const WorkType = std.meta.Int(signedness, @max(16, bits));
+    const ShiftType = math.Log2Int(WorkType);
     var result: WorkType = 0;
     switch (endian) {
         .big => {
@@ -2011,13 +2206,30 @@ pub fn readVarInt(comptime ReturnType: type, bytes: []const u8, endian: Endian) 
             }
         },
         .little => {
-            const ShiftType = math.Log2Int(WorkType);
             for (bytes, 0..) |b, index| {
                 result = result | (@as(WorkType, b) << @as(ShiftType, @intCast(index * 8)));
             }
         },
     }
-    return @truncate(result);
+    const truncated: ReturnType = @truncate(result);
+    // Postcondition: empty wire reads zero; bounded lengths re-walk to the same value.
+    if (bytes.len == 0) assert(truncated == 0);
+    const max_read_varint_check: u32 = 8;
+    if (bytes.len <= @as(usize, max_read_varint_check)) {
+        var expected: WorkType = 0;
+        switch (endian) {
+            .big => {
+                for (bytes) |b| expected = (expected << 8) | b;
+            },
+            .little => {
+                for (bytes, 0..) |b, index| {
+                    expected = expected | (@as(WorkType, b) << @as(ShiftType, @intCast(index * 8)));
+                }
+            },
+        }
+        assert(truncated == @as(ReturnType, @truncate(expected)));
+    }
+    return truncated;
 }
 
 test readVarInt {
@@ -2053,6 +2265,11 @@ pub fn readVarPackedInt(
     endian: std.builtin.Endian,
     signedness: std.builtin.Signedness,
 ) T {
+    const max_var_packed_bits_check: u32 = 64;
+    if (bit_count <= @as(usize, max_var_packed_bits_check)) {
+        // Precondition: field fits inside the byte buffer (pairs with writeVarPackedInt 9906).
+        assert(bit_offset + bit_count <= bytes.len * 8);
+    }
     const uN = std.meta.Int(.unsigned, @bitSizeOf(T));
     const iN = std.meta.Int(.signed, @bitSizeOf(T));
     const Log2N = std.math.Log2Int(T);
@@ -2117,9 +2334,16 @@ test readVarPackedInt {
 /// Reads an integer from memory with bit count specified by T.
 /// The bit count of T must be evenly divisible by 8.
 /// This function cannot fail and cannot cause undefined behavior.
-pub inline fn readInt(comptime T: type, buffer: *const [@divExact(@typeInfo(T).int.bits, 8)]u8, endian: Endian) T {
+pub fn readInt(comptime T: type, buffer: *const [@divExact(@typeInfo(T).int.bits, 8)]u8, endian: Endian) T {
     const value: T = @bitCast(buffer.*);
-    return if (endian == native_endian) value else @byteSwap(value);
+    const result = if (endian == native_endian) value else @byteSwap(value);
+    const byte_count = @divExact(@typeInfo(T).int.bits, 8);
+    const max_read_int_check: u32 = 8;
+    if (byte_count <= @as(usize, max_read_int_check)) {
+        // Postcondition: fixed-width read agrees with readVarInt wire decode (pairs with 9910).
+        assert(result == readVarInt(T, buffer[0..byte_count], endian));
+    }
+    return result;
 }
 
 test readInt {
@@ -2213,10 +2437,17 @@ pub const readPackedIntForeign = switch (native_endian) {
 /// Loads an integer from packed memory.
 /// Asserts that buffer contains at least bit_offset + @bitSizeOf(T) bits.
 pub fn readPackedInt(comptime T: type, bytes: []const u8, bit_offset: usize, endian: Endian) T {
-    switch (endian) {
-        .little => return readPackedIntLittle(T, bytes, bit_offset),
-        .big => return readPackedIntBig(T, bytes, bit_offset),
+    const result = switch (endian) {
+        .little => readPackedIntLittle(T, bytes, bit_offset),
+        .big => readPackedIntBig(T, bytes, bit_offset),
+    };
+    const bit_count: usize = @bitSizeOf(T);
+    const max_packed_bits_check: u32 = 64;
+    if (bit_count <= max_packed_bits_check) {
+        // Postcondition: field fits inside the byte buffer (pairs with writePackedInt 9907).
+        assert(bit_offset + bit_count <= bytes.len * 8);
     }
+    return result;
 }
 
 test readPackedInt {
@@ -2244,8 +2475,14 @@ test "comptime read/write int" {
 /// Writes an integer to memory, storing it in twos-complement.
 /// This function always succeeds, has defined behavior for all inputs, but
 /// the integer bit width must be divisible by 8.
-pub inline fn writeInt(comptime T: type, buffer: *[@divExact(@typeInfo(T).int.bits, 8)]u8, value: T, endian: Endian) void {
+pub fn writeInt(comptime T: type, buffer: *[@divExact(@typeInfo(T).int.bits, 8)]u8, value: T, endian: Endian) void {
     buffer.* = @bitCast(if (endian == native_endian) value else @byteSwap(value));
+    const byte_count = @divExact(@typeInfo(T).int.bits, 8);
+    const max_write_int_check: u32 = 8;
+    if (byte_count <= @as(usize, max_write_int_check)) {
+        // Postcondition: written buffer round-trips through readInt (pairs with readVarInt 9910).
+        assert(readInt(T, buffer, endian) == value);
+    }
 }
 
 test writeInt {
@@ -2372,6 +2609,12 @@ pub fn writePackedInt(comptime T: type, bytes: []u8, bit_offset: usize, value: T
         .little => writePackedIntLittle(T, bytes, bit_offset, value),
         .big => writePackedIntBig(T, bytes, bit_offset, value),
     }
+    const bit_count: usize = @bitSizeOf(T);
+    const max_packed_bits_check: u32 = 64;
+    if (bit_count > 0 and bit_count <= max_packed_bits_check) {
+        // Postcondition: written field round-trips through readPackedInt (pairs with readInt 9909).
+        assert(readPackedInt(T, bytes, bit_offset, endian) == value);
+    }
 }
 
 test writePackedInt {
@@ -2435,6 +2678,12 @@ pub fn writeVarPackedInt(bytes: []u8, bit_offset: usize, bit_count: usize, value
     const tail_mask = (@as(u8, 0xff) << following_bits) >> following_bits;
     write_bytes[@as(usize, @intCast(i))] &= ~tail_mask;
     write_bytes[@as(usize, @intCast(i))] |= @as(u8, @intCast(@as(uN, @bitCast(remaining)) & tail_mask));
+    const max_var_packed_bits_check: u32 = 64;
+    if (bit_count > 0 and bit_count <= @as(usize, max_var_packed_bits_check)) {
+        const signedness = @typeInfo(T).int.signedness;
+        // Postcondition: written bits round-trip through readVarPackedInt (pairs with readPackedInt 9907).
+        assert(readVarPackedInt(T, bytes, bit_offset, bit_count, endian, signedness) == value);
+    }
 }
 
 test writeVarPackedInt {
@@ -2447,8 +2696,45 @@ test writeVarPackedInt {
 
 /// Swap the byte order of all the members of the fields of a struct
 /// (Changing their endianness)
+fn verifyByteSwappedFields(comptime S: type, original: S, swapped: S) void {
+    switch (@typeInfo(S)) {
+        .@"struct" => |struct_info| {
+            if (struct_info.backing_integer) |Int| {
+                assert(@as(Int, @bitCast(swapped)) == @byteSwap(@as(Int, @bitCast(original))));
+            } else inline for (std.meta.fields(S)) |f| {
+                verifyByteSwappedFields(f.type, @field(original, f.name), @field(swapped, f.name));
+            }
+        },
+        .@"union" => {
+            const BackingInt = std.meta.Int(.unsigned, @bitSizeOf(S));
+            assert(@as(BackingInt, @bitCast(swapped)) == @byteSwap(@as(BackingInt, @bitCast(original))));
+        },
+        .array => |info| {
+            for (original, swapped) |o, s| {
+                verifyByteSwappedFields(info.child, o, s);
+            }
+        },
+        .int => assert(swapped == @byteSwap(original)),
+        .float => |float_info| {
+            const Int = std.meta.Int(.unsigned, float_info.bits);
+            assert(@as(Int, @bitCast(swapped)) == @byteSwap(@as(Int, @bitCast(original))));
+        },
+        .@"enum" => assert(@intFromEnum(swapped) == @byteSwap(@intFromEnum(original))),
+        .bool => assert(swapped == original),
+        else => {},
+    }
+}
+
+/// Swap the byte order of all the members of the fields of a struct
+/// (Changing their endianness)
 pub fn byteSwapAllFields(comptime S: type, ptr: *S) void {
+    const max_byteswap_fields_check: u32 = 64;
+    var original: S = undefined;
+    const snapshot = @sizeOf(S) <= @as(usize, max_byteswap_fields_check);
+    if (snapshot) original = ptr.*;
     byteSwapAllFieldsAligned(S, .of(S), ptr);
+    // Postcondition: each field matches independent @byteSwap of snapshot (pairs with byteSwapAllElements 9908).
+    if (snapshot) verifyByteSwappedFields(S, original, ptr.*);
 }
 
 /// Swap the byte order of all the members of the fields of a struct
@@ -2587,6 +2873,12 @@ test byteSwapAllFields {
 /// Handles structs, unions, arrays, enums, floats, and integers recursively.
 /// Useful for converting between little-endian and big-endian representations.
 pub fn byteSwapAllElements(comptime Elem: type, slice: []Elem) void {
+    const max_byteswap_check: u32 = 64;
+    var original: [max_byteswap_check]Elem = undefined;
+    const snapshot = slice.len <= @as(usize, max_byteswap_check);
+    if (snapshot) {
+        @memcpy(original[0..slice.len], slice);
+    }
     for (slice) |*elem| {
         switch (@typeInfo(@TypeOf(elem.*))) {
             .@"struct", .@"union", .array => byteSwapAllFields(@TypeOf(elem.*), elem),
@@ -2600,6 +2892,26 @@ pub fn byteSwapAllElements(comptime Elem: type, slice: []Elem) void {
             else => {
                 elem.* = @byteSwap(elem.*);
             },
+        }
+    }
+    // Postcondition: scalar elements match independent @byteSwap of snapshot (pairs with readInt 9909).
+    if (snapshot) {
+        switch (@typeInfo(Elem)) {
+            .int => {
+                for (slice, 0..) |elem, i| assert(elem == @byteSwap(original[i]));
+            },
+            .float => |float_info| {
+                const Int = std.meta.Int(.unsigned, float_info.bits);
+                for (slice, 0..) |elem, i| {
+                    assert(@as(Int, @bitCast(elem)) == @byteSwap(@as(Int, @bitCast(original[i]))));
+                }
+            },
+            .@"enum" => {
+                for (slice, 0..) |elem, i| {
+                    assert(@intFromEnum(elem) == @byteSwap(@intFromEnum(original[i])));
+                }
+            },
+            else => {},
         }
     }
 }
@@ -3993,6 +4305,21 @@ pub fn concatMaybeSentinel(allocator: Allocator, comptime T: type, slices: []con
         buf[buf.len - 1] = sentinel;
     }
 
+    // Postcondition: buffer size matches computed total; slices packed in order (pairs with join 9961).
+    assert(buf.len == total_len);
+    assert(buf_index + @as(usize, @intFromBool(s != null)) == total_len);
+    const max_concat_check: u32 = 64;
+    if (total_len <= @as(usize, max_concat_check)) {
+        var off: usize = 0;
+        for (slices) |slice| {
+            assert(eql(T, buf[off..][0..slice.len], slice));
+            off += slice.len;
+        }
+        if (s) |sentinel| {
+            assert(buf[buf.len - 1] == sentinel);
+        }
+    }
+
     // No need for shrink since buf is exactly the correct size.
     return buf;
 }
@@ -4090,6 +4417,10 @@ pub fn min(comptime T: type, slice: []const T) T {
     for (slice[1..]) |item| {
         best = @min(best, item);
     }
+    const max_minmax_check: u32 = 64;
+    if (slice.len <= @as(usize, max_minmax_check)) {
+        for (slice) |item| assert(best <= item);
+    }
     return best;
 }
 
@@ -4106,6 +4437,10 @@ pub fn max(comptime T: type, slice: []const T) T {
     var best = slice[0];
     for (slice[1..]) |item| {
         best = @max(best, item);
+    }
+    const max_minmax_check: u32 = 64;
+    if (slice.len <= @as(usize, max_minmax_check)) {
+        for (slice) |item| assert(best >= item);
     }
     return best;
 }
@@ -4126,6 +4461,13 @@ pub fn minMax(comptime T: type, slice: []const T) struct { T, T } {
     for (slice[1..]) |item| {
         running_minimum = @min(running_minimum, item);
         running_maximum = @max(running_maximum, item);
+    }
+    const max_minmax_check: u32 = 64;
+    if (slice.len <= @as(usize, max_minmax_check)) {
+        for (slice) |item| {
+            assert(running_minimum <= item);
+            assert(running_maximum >= item);
+        }
     }
     return .{ running_minimum, running_maximum };
 }
@@ -4163,6 +4505,13 @@ pub fn findMin(comptime T: type, slice: []const T) usize {
             index = i + 1;
         }
     }
+    // Postcondition: index is the first position of the minimum value.
+    assert(index < slice.len);
+    assert(slice[index] == best);
+    const max_minmax_check: u32 = 64;
+    if (slice.len <= @as(usize, max_minmax_check)) {
+        for (slice) |item| assert(best <= item);
+    }
     return index;
 }
 
@@ -4185,6 +4534,13 @@ pub fn findMax(comptime T: type, slice: []const T) usize {
             best = item;
             index = i + 1;
         }
+    }
+    // Postcondition: index is the first position of the maximum value.
+    assert(index < slice.len);
+    assert(slice[index] == best);
+    const max_minmax_check: u32 = 64;
+    if (slice.len <= @as(usize, max_minmax_check)) {
+        for (slice) |item| assert(best >= item);
     }
     return index;
 }
@@ -4215,6 +4571,18 @@ pub fn findMinMax(comptime T: type, slice: []const T) struct { usize, usize } {
         if (item > maxVal) {
             maxVal = item;
             maxIdx = i + 1;
+        }
+    }
+    // Postcondition: indices point at the first min and first max in the slice.
+    assert(minIdx < slice.len);
+    assert(maxIdx < slice.len);
+    assert(slice[minIdx] == minVal);
+    assert(slice[maxIdx] == maxVal);
+    const max_minmax_check: u32 = 64;
+    if (slice.len <= @as(usize, max_minmax_check)) {
+        for (slice) |item| {
+            assert(minVal <= item);
+            assert(maxVal >= item);
         }
     }
     return .{ minIdx, maxIdx };
@@ -4754,50 +5122,112 @@ test replaceOwned {
 
 /// Converts a little-endian integer to host endianness.
 pub fn littleToNative(comptime T: type, x: T) T {
-    return switch (native_endian) {
+    const result = switch (native_endian) {
         .little => x,
         .big => @byteSwap(x),
     };
+    if (!@inComptime()) {
+        // Postcondition: little wire value maps to host layout (pairs with nativeToLittle 9889).
+        switch (native_endian) {
+            .little => assert(result == x),
+            .big => assert(result == @byteSwap(x)),
+        }
+    }
+    return result;
 }
 
 /// Converts a big-endian integer to host endianness.
 pub fn bigToNative(comptime T: type, x: T) T {
-    return switch (native_endian) {
+    const result = switch (native_endian) {
         .little => @byteSwap(x),
         .big => x,
     };
+    if (!@inComptime()) {
+        // Postcondition: big wire value maps to host layout (pairs with nativeToBig 9889).
+        switch (native_endian) {
+            .little => assert(result == @byteSwap(x)),
+            .big => assert(result == x),
+        }
+    }
+    return result;
 }
 
 /// Converts an integer from specified endianness to host endianness.
 pub fn toNative(comptime T: type, x: T, endianness_of_x: Endian) T {
-    return switch (endianness_of_x) {
+    const result = switch (endianness_of_x) {
         .little => littleToNative(T, x),
         .big => bigToNative(T, x),
     };
+    if (!@inComptime()) {
+        // Postcondition: agrees with explicit host mapping (pairs with readInt 9909).
+        const expected = switch (endianness_of_x) {
+            .little => switch (native_endian) {
+                .little => x,
+                .big => @byteSwap(x),
+            },
+            .big => switch (native_endian) {
+                .little => @byteSwap(x),
+                .big => x,
+            },
+        };
+        assert(result == expected);
+    }
+    return result;
 }
 
 /// Converts an integer which has host endianness to the desired endianness.
 pub fn nativeTo(comptime T: type, x: T, desired_endianness: Endian) T {
-    return switch (desired_endianness) {
+    const result = switch (desired_endianness) {
         .little => nativeToLittle(T, x),
         .big => nativeToBig(T, x),
     };
+    if (!@inComptime()) {
+        // Postcondition: agrees with explicit wire mapping (pairs with writeInt 9909).
+        const expected = switch (desired_endianness) {
+            .little => switch (native_endian) {
+                .little => x,
+                .big => @byteSwap(x),
+            },
+            .big => switch (native_endian) {
+                .little => @byteSwap(x),
+                .big => x,
+            },
+        };
+        assert(result == expected);
+    }
+    return result;
 }
 
 /// Converts an integer which has host endianness to little endian.
 pub fn nativeToLittle(comptime T: type, x: T) T {
-    return switch (native_endian) {
+    const result = switch (native_endian) {
         .little => x,
         .big => @byteSwap(x),
     };
+    if (!@inComptime()) {
+        // Postcondition: host value maps to little wire layout (pairs with littleToNative 9889).
+        switch (native_endian) {
+            .little => assert(result == x),
+            .big => assert(result == @byteSwap(x)),
+        }
+    }
+    return result;
 }
 
 /// Converts an integer which has host endianness to big endian.
 pub fn nativeToBig(comptime T: type, x: T) T {
-    return switch (native_endian) {
+    const result = switch (native_endian) {
         .little => @byteSwap(x),
         .big => x,
     };
+    if (!@inComptime()) {
+        // Postcondition: host value maps to big wire layout (pairs with bigToNative 9889).
+        switch (native_endian) {
+            .little => assert(result == @byteSwap(x)),
+            .big => assert(result == x),
+        }
+    }
+    return result;
 }
 
 /// Returns the number of elements that, if added to the given pointer, align it
@@ -4815,8 +5245,11 @@ pub fn alignPointerOffset(ptr: anytype, align_to: usize) ?usize {
         @compileError("expected many item pointer, got " ++ @typeName(T));
 
     // Do nothing if the pointer is already well-aligned.
-    if (align_to <= info.pointer.alignment orelse @alignOf(info.pointer.child))
+    if (align_to <= info.pointer.alignment orelse @alignOf(info.pointer.child)) {
+        // Postcondition: no offset needed when pointer alignment already satisfies align_to (pairs with alignPointer 9903).
+        assert(@mod(@intFromPtr(ptr), align_to) == 0);
         return 0;
+    }
 
     // Calculate the aligned base address with an eye out for overflow.
     const addr = @intFromPtr(ptr);
@@ -4829,7 +5262,11 @@ pub fn alignPointerOffset(ptr: anytype, align_to: usize) ?usize {
     const delta = ov[0] - addr;
     const pointee_size = @sizeOf(info.pointer.child);
     if (delta % pointee_size != 0) return null;
-    return delta / pointee_size;
+    const element_offset = delta / pointee_size;
+    // Postcondition: byte delta reaches alignForward boundary (pairs with alignForward 9904).
+    assert(addr + delta == alignForward(usize, addr, align_to));
+    assert(@mod(addr + delta, align_to) == 0);
+    return element_offset;
 }
 
 /// Aligns a given pointer value to a specified alignment factor.
@@ -4841,7 +5278,10 @@ pub fn alignPointerOffset(ptr: anytype, align_to: usize) ?usize {
 pub fn alignPointer(ptr: anytype, align_to: usize) ?@TypeOf(ptr) {
     const adjust_off = alignPointerOffset(ptr, align_to) orelse return null;
     // Avoid the use of ptrFromInt to avoid losing the pointer provenance info.
-    return @alignCast(ptr + adjust_off);
+    const result: @TypeOf(ptr) = @alignCast(ptr + adjust_off);
+    // Postcondition: aligned address matches alignForward on integer address (pairs with alignPointerOffset 9903).
+    assert(@intFromPtr(result) == alignForward(usize, @intFromPtr(ptr), align_to));
+    return result;
 }
 
 test alignPointer {
@@ -5054,7 +5494,21 @@ test "bytesAsValue preserves pointer attributes" {
 /// Given a pointer to an array of bytes, returns a value of the specified type backed by a
 /// copy of those bytes.
 pub fn bytesToValue(comptime T: type, bytes: anytype) T {
-    return bytesAsValue(T, bytes).*;
+    const ptr = bytesAsValue(T, bytes);
+    const result = ptr.*;
+    const max_bytes_to_value_check: u32 = 64;
+    if (!@inComptime() and @sizeOf(T) <= @as(usize, max_bytes_to_value_check)) {
+        // Postcondition: copy agrees with bytesAsValue view and input prefix (pairs with bytesAsValue 9922).
+        assert(eql(u8, asBytes(&result), asBytes(ptr)));
+        switch (@typeInfo(@TypeOf(bytes))) {
+            .pointer => |info| switch (info.size) {
+                .slice => assert(eql(u8, asBytes(&result), bytes[0..@sizeOf(T)])),
+                else => {},
+            },
+            else => {},
+        }
+    }
+    return result;
 }
 test bytesToValue {
     const deadbeef_bytes = switch (native_endian) {
@@ -5307,7 +5761,17 @@ pub fn absorbSentinel(slice: anytype) AbsorbSentinelReturnType(@TypeOf(slice)) {
     if (info.sentinel_ptr == null) {
         return slice;
     } else {
-        return slice.ptr[0 .. slice.len + 1];
+        const result = slice.ptr[0 .. slice.len + 1];
+        const max_absorb_sentinel_check: u32 = 64;
+        if (!@inComptime() and slice.len <= @as(usize, max_absorb_sentinel_check)) {
+            // Postcondition: absorbed slice extends by one sentinel element (pairs with span 9942).
+            assert(result.ptr == slice.ptr);
+            assert(result.len == slice.len + 1);
+            if (std.meta.sentinel(@TypeOf(slice))) |s| {
+                assert(result[slice.len] == s);
+            }
+        }
+        return result;
     }
 }
 
@@ -5340,7 +5804,12 @@ pub fn alignForwardAnyAlign(comptime T: type, addr: T, alignment: T) T {
     if (isValidAlignGeneric(T, alignment))
         return alignForward(T, addr, alignment);
     assert(alignment != 0);
-    return alignBackwardAnyAlign(T, addr + (alignment - 1), alignment);
+    const result = alignBackwardAnyAlign(T, addr + (alignment - 1), alignment);
+    // Postcondition: least multiple of alignment not below addr (pairs with alignBackwardAnyAlign 9900).
+    assert(@mod(result, alignment) == 0);
+    assert(result >= addr);
+    assert(result - addr < alignment);
+    return result;
 }
 
 /// Round an address up to the next (or current) aligned address.
@@ -5348,7 +5817,12 @@ pub fn alignForwardAnyAlign(comptime T: type, addr: T, alignment: T) T {
 /// Asserts that rounding up the address does not cause integer overflow.
 pub fn alignForward(comptime T: type, addr: T, alignment: T) T {
     assert(isValidAlignGeneric(T, alignment));
-    return alignBackward(T, addr + (alignment - 1), alignment);
+    const result = alignBackward(T, addr + (alignment - 1), alignment);
+    // Postcondition: result is the least aligned address not below addr (pairs with alignBackward 9904).
+    assert(@mod(result, alignment) == 0);
+    assert(result >= addr);
+    assert(result - addr < alignment);
+    return result;
 }
 
 /// Rounds an address up to the next alignment boundary using log2 representation.
@@ -5356,7 +5830,18 @@ pub fn alignForward(comptime T: type, addr: T, alignment: T) T {
 /// More efficient when alignment is known to be a power of 2.
 pub fn alignForwardLog2(addr: usize, log2_alignment: u8) usize {
     const alignment = @as(usize, 1) << @as(math.Log2Int(usize), @intCast(log2_alignment));
-    return alignForward(usize, addr, alignment);
+    const result = alignForward(usize, addr, alignment);
+    // Postcondition: forward result sits on the log2 boundary (pairs with isAlignedLog2 9902).
+    assert(isAlignedLog2(result, log2_alignment));
+    return result;
+}
+
+const max_deopt_check: comptime_int = 64;
+
+fn verifyDeoptMemoryUnchanged(before: []const u8, after: []const u8) void {
+    assert(before.len == after.len);
+    assert(before.len <= max_deopt_check);
+    assert(eql(u8, before, after));
 }
 
 /// Force an evaluation of the expression; this tries to prevent
@@ -5373,6 +5858,7 @@ pub fn doNotOptimizeAway(val: anytype) void {
         .@"enum" => doNotOptimizeAway(@intFromEnum(val)),
         .bool => doNotOptimizeAway(@intFromBool(val)),
         .int => {
+            const snap = val;
             const bits = t.int.bits;
             if (bits <= max_gp_register_bits and builtin.zig_backend != .stage2_c) {
                 const val2 = @as(
@@ -5383,18 +5869,27 @@ pub fn doNotOptimizeAway(val: anytype) void {
                     :
                     : [_] "r" (val2),
                 );
+                // Postcondition: scalar barrier does not alter the passed value (pairs with crypto timing paths).
+                assert(val == snap);
             } else doNotOptimizeAway(&val);
         },
         .float => {
+            const snap = val;
             // https://github.com/llvm/llvm-project/issues/159200
             if ((t.float.bits == 32 or t.float.bits == 64) and builtin.zig_backend != .stage2_c and !builtin.cpu.arch.isLoongArch()) {
                 asm volatile (""
                     :
                     : [_] "rm" (val),
                 );
+                assert(val == snap);
             } else doNotOptimizeAway(&val);
         },
-        .pointer => {
+        .pointer => |p| {
+            const nbytes: usize = if (p.size == .one) @sizeOf(p.child) else 0;
+            var snap: [max_deopt_check]u8 = undefined;
+            if (nbytes != 0 and nbytes <= max_deopt_check) {
+                @memcpy(snap[0..nbytes], asBytes(val));
+            }
             if (builtin.zig_backend == .stage2_c) {
                 doNotOptimizeAwayC(val);
             } else {
@@ -5403,10 +5898,17 @@ pub fn doNotOptimizeAway(val: anytype) void {
                     : [_] "m" (val),
                     : .{ .memory = true });
             }
+            if (nbytes != 0 and nbytes <= max_deopt_check) {
+                verifyDeoptMemoryUnchanged(snap[0..nbytes], asBytes(val)[0..nbytes]);
+            }
         },
         .array => {
-            if (t.array.len * @sizeOf(t.array.child) <= 64) {
+            const nbytes = t.array.len * @sizeOf(t.array.child);
+            if (nbytes <= max_deopt_check) {
+                var snap: [max_deopt_check]u8 = undefined;
+                @memcpy(snap[0..nbytes], asBytes(&val)[0..nbytes]);
                 for (val) |v| doNotOptimizeAway(v);
+                verifyDeoptMemoryUnchanged(snap[0..nbytes], asBytes(&val)[0..nbytes]);
             } else doNotOptimizeAway(&val);
         },
         else => doNotOptimizeAway(&val),
@@ -5416,11 +5918,19 @@ pub fn doNotOptimizeAway(val: anytype) void {
 /// .stage2_c doesn't support asm blocks yet, so use volatile stores instead
 var deopt_target: if (builtin.zig_backend == .stage2_c) u8 else void = undefined;
 fn doNotOptimizeAwayC(ptr: anytype) void {
+    const nbytes = @sizeOf(@TypeOf(ptr.*));
+    var snap: [max_deopt_check]u8 = undefined;
+    if (nbytes <= max_deopt_check) {
+        @memcpy(snap[0..nbytes], asBytes(ptr));
+    }
     const dest = @as(*volatile u8, @ptrCast(&deopt_target));
     for (asBytes(ptr)) |b| {
         dest.* = b;
     }
     dest.* = 0;
+    if (nbytes <= max_deopt_check) {
+        verifyDeoptMemoryUnchanged(snap[0..nbytes], asBytes(ptr)[0..nbytes]);
+    }
 }
 
 test doNotOptimizeAway {
@@ -5469,29 +5979,47 @@ pub fn alignBackwardAnyAlign(comptime T: type, addr: T, alignment: T) T {
     if (isValidAlignGeneric(T, alignment))
         return alignBackward(T, addr, alignment);
     assert(alignment != 0);
-    return addr - @mod(addr, alignment);
+    const result = addr - @mod(addr, alignment);
+    // Postcondition: greatest multiple of alignment not above addr (pairs with alignForwardAnyAlign 9900).
+    assert(@mod(result, alignment) == 0);
+    assert(result <= addr);
+    assert(addr - result < alignment);
+    return result;
 }
 
 /// Round an address down to the previous (or current) aligned address.
 /// The alignment must be a power of 2 and greater than 0.
 pub fn alignBackward(comptime T: type, addr: T, alignment: T) T {
     assert(isValidAlignGeneric(T, alignment));
-    // 000010000 // example alignment
-    // 000001111 // subtract 1
-    // 111110000 // binary not
-    return addr & ~(alignment - 1);
+    const result = addr & ~(alignment - 1);
+    // Postcondition: result is the greatest aligned address not above addr (pairs with alignForward 9904).
+    assert(result <= addr);
+    assert(@mod(result, alignment) == 0);
+    assert(addr - result < alignment);
+    return result;
 }
 
 /// Returns whether `alignment` is a valid alignment, meaning it is
 /// a positive power of 2.
 pub fn isValidAlign(alignment: usize) bool {
-    return isValidAlignGeneric(usize, alignment);
+    const result = isValidAlignGeneric(usize, alignment);
+    // Postcondition: native usize path agrees with u64 widening (pairs with isValidAlignGeneric 9898).
+    if (!@inComptime()) assert(result == isValidAlignGeneric(u64, @as(u64, alignment)));
+    return result;
 }
 
 /// Returns whether `alignment` is a valid alignment, meaning it is
 /// a positive power of 2.
 pub fn isValidAlignGeneric(comptime T: type, alignment: T) bool {
-    return alignment > 0 and std.math.isPowerOfTwo(alignment);
+    const result = alignment > 0 and std.math.isPowerOfTwo(alignment);
+    // Postcondition: valid alignments have exactly one bit set (pairs with alignForward 9904 POT precondition).
+    if (!@inComptime() and result) {
+        const U = std.meta.Int(.unsigned, @bitSizeOf(T));
+        const bits = @as(U, @bitCast(alignment));
+        assert(bits > 0);
+        assert(bits & (bits -% 1) == 0);
+    }
+    return result;
 }
 
 /// Returns true if i is aligned to the given alignment.
@@ -5501,27 +6029,40 @@ pub fn isAlignedAnyAlign(i: usize, alignment: usize) bool {
     if (isValidAlign(alignment))
         return isAligned(i, alignment);
     assert(alignment != 0);
-    return 0 == @mod(i, alignment);
+    const result = 0 == @mod(i, alignment);
+    // Postcondition: agrees with alignBackwardAnyAlign fixed point (pairs with alignForwardAnyAlign 9900).
+    assert(result == (alignBackwardAnyAlign(usize, i, alignment) == i));
+    return result;
 }
 
 /// Returns true if addr is aligned to 2^log2_alignment.
 /// More efficient than `isAligned` when alignment is known to be a power of 2.
 /// log2_alignment must be < @bitSizeOf(usize).
 pub fn isAlignedLog2(addr: usize, log2_alignment: u8) bool {
-    return @ctz(addr) >= log2_alignment;
+    const result = @ctz(addr) >= log2_alignment;
+    const alignment = @as(usize, 1) << @as(math.Log2Int(usize), @intCast(log2_alignment));
+    // Postcondition: log2 fast path agrees with isAligned (pairs with isAlignedGeneric 9902).
+    assert(result == isAligned(addr, alignment));
+    return result;
 }
 
 /// Given an address and an alignment, return true if the address is a multiple of the alignment
 /// The alignment must be a power of 2 and greater than 0.
 pub fn isAligned(addr: usize, alignment: usize) bool {
-    return isAlignedGeneric(u64, addr, alignment);
+    const result = isAlignedGeneric(u64, addr, alignment);
+    // Postcondition: widening path agrees with native usize check (pairs with isAlignedGeneric 9902).
+    assert(result == isAlignedGeneric(usize, addr, alignment));
+    return result;
 }
 
 /// Generic version of `isAligned` that works with any integer type.
 /// Returns true if addr is aligned to the given alignment.
 /// Alignment must be a power of 2 and greater than 0.
 pub fn isAlignedGeneric(comptime T: type, addr: T, alignment: T) bool {
-    return alignBackward(T, addr, alignment) == addr;
+    const result = alignBackward(T, addr, alignment) == addr;
+    // Postcondition: agrees with modulus on power-of-2 boundary (pairs with alignBackward 9904).
+    assert(result == (@mod(addr, alignment) == 0));
+    return result;
 }
 
 test isAligned {
@@ -5569,7 +6110,13 @@ pub fn alignInBytes(bytes: []u8, comptime new_alignment: usize) ?[]align(new_ali
         error.Overflow => return null,
     };
     const alignment_offset = begin_address_aligned - begin_address;
-    return @alignCast(bytes[alignment_offset .. alignment_offset + new_length]);
+    const result: []align(new_alignment) u8 = @alignCast(bytes[alignment_offset .. alignment_offset + new_length]);
+    // Postcondition: largest aligned sub-slice starts at alignForward boundary (pairs with alignForward 9904).
+    assert(@intFromPtr(result.ptr) == begin_address_aligned);
+    assert(isAligned(@intFromPtr(result.ptr), new_alignment));
+    assert(result.len == new_length);
+    assert(result.len <= bytes.len);
+    return result;
 }
 
 /// Returns the largest sub-slice within the given slice that conforms to the new alignment,
@@ -5581,7 +6128,14 @@ pub fn alignInSlice(slice: anytype, comptime new_alignment: usize) ?AlignedSlice
     const Element = @TypeOf(slice[0]);
     const slice_length_bytes = aligned_bytes.len - (aligned_bytes.len % @sizeOf(Element));
     const aligned_slice = bytesAsSlice(Element, aligned_bytes[0..slice_length_bytes]);
-    return @alignCast(aligned_slice);
+    const Result = AlignedSlice(@TypeOf(slice), new_alignment);
+    const result: Result = @alignCast(aligned_slice);
+    // Postcondition: typed sub-slice covers whole elements on an aligned pointer (pairs with alignInBytes 9901).
+    assert(slice_length_bytes <= aligned_bytes.len);
+    assert(slice_length_bytes % @sizeOf(Element) == 0);
+    assert(isAligned(@intFromPtr(result.ptr), new_alignment));
+    assert(@intFromPtr(result.ptr) == @intFromPtr(aligned_bytes.ptr));
+    return result;
 }
 
 test "read/write(Var)PackedInt" {

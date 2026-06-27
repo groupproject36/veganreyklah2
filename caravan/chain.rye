@@ -14,35 +14,44 @@
 
 const std = @import("std");
 
-const caravan_chain_version = "20260620.032012";
+const caravan_chain_version = "20260622.235512";
+
+fn bufLenU32(buf: []const u8) u32 {
+    std.debug.assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
 
 const Region = struct {
     buf: []u8,
-    pos: usize,
+    pos: u32,
 
     fn init(buf: []u8) Region {
         std.debug.assert(buf.len > 0);
         const r = Region{ .buf = buf, .pos = 0 };
-        std.debug.assert(r.pos <= r.buf.len);
+        std.debug.assert(r.pos <= bufLenU32(r.buf));
         return r;
     }
 
-    fn alloc(self: *Region, n: usize) error{OutOfBounds}![]u8 {
-        std.debug.assert(self.pos <= self.buf.len);
-        if (n > self.buf.len - self.pos) return error.OutOfBounds;
-        const slice = self.buf[self.pos .. self.pos + n];
+    fn alloc(self: *Region, n: u32) error{OutOfBounds}![]u8 {
+        const cap = bufLenU32(self.buf);
+        std.debug.assert(self.pos <= cap);
+        if (n > cap - self.pos) return error.OutOfBounds;
+        const start: usize = @intCast(self.pos);
+        const end: usize = @intCast(self.pos + n);
+        std.debug.assert(end <= self.buf.len);
+        const slice = self.buf[start..end];
         self.pos += n;
-        std.debug.assert(self.pos <= self.buf.len);
+        std.debug.assert(self.pos <= cap);
         return slice;
     }
 
     fn clear(self: *Region) void {
         self.pos = 0;
-        std.debug.assert(self.pos <= self.buf.len);
+        std.debug.assert(self.pos <= bufLenU32(self.buf));
     }
 
-    fn remaining(self: *const Region) usize {
-        return self.buf.len - self.pos;
+    fn remaining(self: *const Region) u32 {
+        return bufLenU32(self.buf) - self.pos;
     }
 };
 
@@ -50,10 +59,10 @@ const Stage = enum { wake, prove };
 
 const chain: [2]Stage = .{ .wake, .prove };
 
-const prove_budget: usize = 160;
-const planned_failures_wake: usize = 0;
-const planned_failures_prove: usize = 1;
-const max_restarts_per_stage: usize = 5;
+const prove_budget: u32 = 160;
+const planned_failures_wake: u32 = 0;
+const planned_failures_prove: u32 = 1;
+const max_restarts_per_stage: u32 = 5;
 
 pub fn main(init: std.process.Init) !u8 {
     const io = init.io;
@@ -75,7 +84,7 @@ fn parseStage(name: []const u8) ?Stage {
     return null;
 }
 
-fn plannedFailures(stage: Stage) usize {
+fn plannedFailures(stage: Stage) u32 {
     return switch (stage) {
         .wake => planned_failures_wake,
         .prove => planned_failures_prove,
@@ -132,13 +141,15 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
     std.debug.print("caravan chain: supervisor alive. version {s}\n", .{caravan_chain_version});
     std.debug.print("caravan chain: stages wake → prove (chain-loading)\n", .{});
 
-    var total_restarts: usize = 0;
+    var total_restarts: u32 = 0;
+    var stage_index: u32 = 0;
 
-    for (chain, 0..) |stage, index| {
-        std.debug.assert(index < chain.len);
+    for (chain) |stage| {
+        std.debug.assert(stage_index < chain.len);
         const restarts = try superviseStage(allocator, io, self_path, stage, plannedFailures(stage));
         total_restarts += restarts;
         std.debug.print("caravan chain: stage {s} green after {d} restart(s).\n", .{ @tagName(stage), restarts });
+        stage_index += 1;
     }
 
     std.debug.assert(total_restarts == planned_failures_wake + planned_failures_prove);
@@ -154,9 +165,9 @@ fn superviseStage(
     io: std.Io,
     self_path: []const u8,
     stage: Stage,
-    planned_failures: usize,
-) !usize {
-    var restarts: usize = 0;
+    planned_failures: u32,
+) !u32 {
+    var restarts: u32 = 0;
     const tag = @tagName(stage);
 
     while (true) {

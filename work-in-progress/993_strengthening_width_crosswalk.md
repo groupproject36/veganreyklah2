@@ -1,6 +1,6 @@
 # 993 · Strengthening ↔ Width Crosswalk
 
-**Stamp:** `20260621.055512`
+**Stamp:** `20260623.033012`
 **Parent:** `992_usize_width_baseline.md`
 **Lexicon:** `strengthening-compiler/0000_STRENGTHENING_LEXICON.md`
 
@@ -8,7 +8,7 @@
 
 ## Summary
 
-**90 witnesses.** All GREEN. All parity-confirmed.
+**116 witnesses.** All GREEN. All parity-confirmed.
 
 Of these, **86 are Phase 4** (inherited Zig `std` seam — `usize` documented, not changed) and **4 are authored** (Tier A — Tally, Mantra, Rishi, Skate). The full per-function detail lives in each pass's own document under `strengthening-compiler/`. The lexicon carries the std-shaped tree with audit status.
 
@@ -24,4 +24,4 @@ After every strengthening pass, re-run the enricher (`tools/enrich_strengthening
 
 ---
 
-*Ninety witnesses, each green. The seam is documented; the authored code stays narrow.*
+*One hundred sixteen witnesses, each green. The seam is documented; the authored code stays narrow.*

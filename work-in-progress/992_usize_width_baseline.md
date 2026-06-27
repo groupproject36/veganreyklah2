@@ -27,12 +27,12 @@ Where Zig's `std` currently forces `usize` (slice `.len`, `buf[i]`), the seam ca
 | File | `usize` hits | Status |
 |------|-------------|--------|
 | `rishi/src/main.rye` | 37 | Debt — largest file |
-| `brushstroke/skate_grid.rye` | 29 | Debt |
-| `caravan/chain.rye` | 12 | Debt |
+| `brushstroke/skate_grid.rye` | 18 (seam casts) | Phase 1b done (`235812`) |
+| `caravan/chain.rye` | 2 (seam casts) | Phase 1b done (`235512`) |
 | `comlink/hosted_wire.rye` | 12 | Debt |
 | `aurora/src/deciding.rye` | 11 | Debt |
 | `aurora/src/posted.rye` | 11 | Debt |
-| `brushstroke/wayland_seed.rye` | 9 | Debt |
+| `brushstroke/wayland_seed.rye` | 0 | Phase 1b done (`235812`) |
 | `aurora/src/relay.rye` | 8 | Debt |
 | `tally/gardens.rye` | 5 (seam casts) | Debt |
 | `mantra/src/main.rye` | 5 | Debt |

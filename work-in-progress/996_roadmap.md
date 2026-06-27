@@ -3,8 +3,8 @@
 *A living plan shaped by one law: a complex system that works grows from a simpler system that worked. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260621.061412` (Rye chronological stamp)
-**Last updated:** 2026-06-21
+**Version:** `20260623.033012` (Rye chronological stamp)
+**Last updated:** 2026-06-23
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; the Seed Law
@@ -40,7 +40,7 @@ The full design lives in `active-designing/983_the_whole_system.md`. This roadma
 | **Comlink** | Sealed datagram: shared-memory + localhost UDP | Full crypto stack |
 | **Pond** | Policy as a value (`pond.rish`) | Designed |
 
-**Strengthening:** 90 witnesses through the parity gate, all GREEN. Lexicon at `0000_STRENGTHENING_LEXICON.md`.
+**Strengthening:** 116 witnesses through the parity gate, all GREEN. Lexicon at `0000_STRENGTHENING_LEXICON.md`.
 
 **Gate trio:** `parity.rish` (behavior), `parity-selftest.rish` (proves RED), `additive-gate.rish` (shape). All in Rishi; no sh fallbacks.
 
@@ -54,7 +54,7 @@ The compiler fork is the destination. Everything else serves it or runs beside i
 |------|------|--------|
 | **F0** | Decide: literal `usize` ban in Rye types | Done |
 | **F1** | Compiler spike: reject `usize` in one witness | Next |
-| **F2** | Authored corpus: zero `usize` in published `.rye` | In progress (5/22 files) |
+| **F2** | Authored corpus: zero `usize` in published `.rye` | In progress — Phase 1b: `brushstroke/*` done; next `mantra/*` |
 | **F3** | Rye-native std: `rye/lib` with `u32`/`u64` signatures | After F2 |
 | **F4** | Bridge sunset: self-hosted `rye run` without Zig | After F3 |
 | **F5** | Guest Zig: interop lane for third-party code | After F4 |
@@ -69,11 +69,11 @@ Ordered by leverage. Each grows from what already runs.
 
 ### Build
 
-1. **Rishi builtins** — `if/else`, `for-each`, `trim` improvements. Every new module wants Rishi scripts; every script hits gaps.
+1. **Rishi builtins** — `if/then/else` and `for-each` landed (`063112`); trim improvements still open.
 2. **Skate text rendering** — grow the glyph grid into a usable terminal. Text on screen unlocks the Pond GUI.
 3. **Caravan capability table** — small Rye struct naming what each child may do (`984` step 5). The step toward the microkernel.
 4. **Comlink device wire** — sealed datagram over emulated `virtio-net` between two QEMU guests. The real network rung.
-5. **Width migration** — Phase 1b: `caravan/chain`, `brushstroke/*`, `mantra/*` to `u32`/`u64`.
+5. **Width migration** — Phase 1b: `brushstroke/*` done (`235812`); next `mantra/*`.
 
 ### Strengthen
 

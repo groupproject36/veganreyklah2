@@ -1,14 +1,126 @@
 # 995 · Open Threads — The System Takes Shape
 
-*A living snapshot of what has landed, what is closed, and what remains open. Updated at `232912`: absolute usize ban committed, compiler fork plan landed (965/968), Bron/Brix vocabulary settled, Tablecloth redefined as database, policy drift from Cursor reverted.*
+*A living snapshot of what has landed, what is closed, and what remains open. Updated at `033012`: strengthening pass 9887; parity 116/116.*
 
 **Language:** EN
-**Version:** `20260622.232912` (Rye chronological stamp)
-**Last updated:** 2026-06-22
+**Version:** `20260623.033012` (Rye chronological stamp)
+**Last updated:** 2026-06-23
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 
 ---
+
+## What Just Landed (this session)
+
+- **Strengthening pass 9887 (`033012`).** `mem.doNotOptimizeAway` — compiler deopt barrier: scalars match pre-call snapshot; pointer/array bytes unchanged when `size <= 64` (`verifyDeoptMemoryUnchanged`). Witness `mem_do_not_optimize_away_test`; parity **116/116 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9888 (`032712`).** `mem.containsAtLeastScalar` — deprecated wrapper over `containsAtLeastScalar2`: when `minimum <= 64` and `list.len <= 64`, postcondition agrees with `countScalar >= minimum`. Witness `mem_contains_at_least_scalar_test`; parity **115/115 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9889 (`031712`).** `mem.littleToNative` / `bigToNative` / `toNative` / `nativeTo` / `nativeToLittle` / `nativeToBig` — host ↔ wire integer endian: runtime postconditions assert `native_endian` + `@byteSwap` mapping (no mutual calls). Witness `mem_endian_host_test`; parity **114/114 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9890 (`030312`).** `mem.sortContext` / `sortUnstableContext` — index-based in-place sorting: `assert(a <= b)`; runtime postcondition `isSortedContextRange` on `[a, b)`. Witness `mem_sort_context_test`; parity **113/113 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9891 (`030012`).** `mem.sort` / `sortUnstable` — in-place slice sorting: runtime postcondition `std.sort.isSorted`; when `len <= 64`, multiset preserved via `verifySortedPermutation`. Witness `mem_sort_test`; parity **112/112 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9892 (`025712`).** `mem.Alignment.toByteUnits` / `fromByteUnits` / `fromByteUnitsOptional` / `order` / `compare` / `max` / `min` — log2 enum ↔ byte-unit conversion and ordering: round-trip on valid POT counts; compare ops agree on `toByteUnits()`. Witness `mem_alignment_byte_units_test`; parity **111/111 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9893 (`025012`).** `mem.Alignment.forward` / `backward` / `check` — enum-level address alignment: results match `alignForward` / `alignBackward` / `isAlignedLog2` on byte units; `forward` postcondition proves `isAligned` on result. Witness `mem_alignment_methods_test`; parity **110/110 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9894 (`024612`).** `mem.zeroInit` — partial struct init: explicit scalar fields match init; defaults match `defaultValue`; other scalars match `zeroes` when `@sizeOf(T) <= 64` at runtime. Witness `mem_zero_init_test`; parity **109/109 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9895 (`023212`).** `mem.zeroes` — runtime postcondition when `@sizeOf(T) <= 64`: scalars at zero/null/false; struct/union bytes all zero via `eql`; `@inComptime()` skips verify. Witness `mem_zeroes_test`; parity **108/108 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9896 (`022912`).** `mem.bytesToValue` — byte buffer to typed copy: when `@sizeOf(T) <= 64`, result bytes match `bytesAsValue` view and slice input prefix. Witness `mem_bytes_to_value_test`; parity **107/107 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9897 (`022712`).** `mem.absorbSentinel` — sentinel-terminated slice extends by one element: same pointer, `len + 1`, trailing element equals compile-time sentinel when `len <= 64`. Witness `mem_absorb_sentinel_test`; parity **106/106 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9898 (`020612`).** `mem.isValidAlign`/`isValidAlignGeneric` — power-of-2 alignment validation: runtime postcondition checks single-bit set; usize agrees with u64 widening; `@inComptime()` guard avoids comptime blowup in `debug_allocator`. Witness `mem_is_valid_align_test`; parity **105/105 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9899 (`020312`).** `mem.alignForwardLog2`/`isAlignedAnyAlign` — log2 forward round-up asserts result passes `isAlignedLog2`; arbitrary-alignment predicate agrees with `alignBackwardAnyAlign` fixed point (POT delegates to `isAligned`). Witness `mem_align_log2_any_align_test`; parity **104/104 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9900 (`020012`).** `mem.alignForwardAnyAlign`/`alignBackwardAnyAlign` — arbitrary positive alignment: backward yields greatest multiple ≤ addr; forward yields least multiple ≥ addr; power-of-2 delegates to 9904. Witness `mem_align_any_align_test`; parity **103/103 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9901 (`015612`).** `mem.alignInBytes`/`alignInSlice` — largest aligned sub-slice: byte path starts at `alignForward` boundary with computed length; typed path covers whole elements on same aligned pointer. Witness `mem_align_in_bytes_slice_test`; parity **102/102 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9902 (`013812`).** `mem.isAligned`/`isAlignedGeneric`/`isAlignedLog2` — alignment predicates: generic path agrees with `@mod`; usize path agrees with u64 widening; log2 ctz path agrees with `isAligned`. Witness `mem_is_aligned_test`; parity **101/101 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9903 (`013512`).** `mem.alignPointer`/`alignPointerOffset` — pointer bump alignment: offset zero when already aligned; byte delta reaches `alignForward` boundary; aligned pointer address equals `alignForward` on original. Witness `mem_align_pointer_test`; parity **100/100 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9904 (`004612`).** `mem.alignForward`/`alignBackward` — power-of-2 address rounding: backward yields greatest aligned address ≤ input within one step; forward yields least aligned address ≥ input within one step. Witness `mem_align_forward_backward_test`; parity **99/99 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9905 (`004312`).** `mem.byteSwapAllFields` — snapshot verify each int/float/enum field matches `@byteSwap` of original when `@sizeOf(S) <= 64` (`max_byteswap_fields_check: u32`); bool unchanged; nested structs verified recursively. Witness `mem_byte_swap_all_fields_test`; parity **98/98 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9906 (`004012`).** `mem.readVarPackedInt`/`writeVarPackedInt` — variable bit-count wire round-trip: `readVarPackedInt` asserts `bit_offset + bit_count <= bytes.len * 8` when `bit_count <= 64`; `writeVarPackedInt` round-trips through `readVarPackedInt` when `1 <= bit_count <= 64`. Witness `mem_read_write_var_packed_int_test`; parity **97/97 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9907 (`003712`).** `mem.readPackedInt`/`writePackedInt` — bit-field wire round-trip: `readPackedInt` asserts `bit_offset + bit_count <= bytes.len * 8` when `bit_count <= 64`; `writePackedInt` round-trips through `readPackedInt` when `1 <= bit_count <= 64`. Witness `mem_read_write_packed_int_test`; parity **96/96 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9908 (`003312`).** `mem.byteSwapAllElements` — snapshot verify scalar int/float/enum elements match `@byteSwap` of original when `len <= 64` (`max_byteswap_check: u32`). Witness `mem_byte_swap_all_elements_test`; parity **95/95 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9909 (`003112`).** `mem.readInt`/`writeInt` — fixed-width wire round-trip: `readInt` agrees with `readVarInt` when `byte_count <= 8`; `writeInt` round-trips through `readInt`. Witness `mem_read_write_int_test`; parity **94/94 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9910 (`002612`).** `mem.readVarInt` — empty wire reads zero; independent endian re-walk when `bytes.len <= 8` (`max_read_varint_check: u32`). Witness `mem_read_varint_test`; parity **93/93 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9911 (`002412`).** `mem.concat`/`concatWithSentinel`/`concatMaybeSentinel` — allocated length matches computed total; snapshot payload verify when `total_len <= 64` (`max_concat_check: u32`). Witness `mem_concat_test`; parity **92/92 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Strengthening pass 9912 (`001112`).** `mem.min`/`max`/`minMax` and `findMin`/`findMax`/`findMinMax` — index in-range + extremum snapshot verify (`max_minmax_check: u32 = 64`). Witness `mem_find_min_max_test`; parity **91/91 GREEN**.
+
+## What Just Landed (prior session)
+
+- **Phase 1b width — `brushstroke/skate_grid.rye` + `wayland_seed.rye` (`235812`).** Grid counts, indices, stride → `u32`; `bufLenU32` at text seam; 18 inherited slice-index seam casts in raster paths (same discipline as `caravan/*`). `wayland_seed` clean (0 `usize`). Skate grid test + wayland `selftest` GREEN; parity 90/90 GREEN. Roadmap `996` and baseline `992` updated.
+
+## What Just Landed (prior session)
+
+- **Phase 1b width — `caravan/chain.rye` (`235512`).** Region, supervision counts, and stage restarts → `u32`; `bufLenU32` at slice seam (2 inherited seam casts, same as `bounded`/`twin`). Chain-loading seed runs GREEN. Roadmap `996` and baseline `992` updated.
 
 ## What Just Landed (Opus Jun 21–22 session)
 
@@ -113,7 +225,7 @@
 - **Rishi arithmetic + stdout** — `+`/`-`/`*`/`/`, correct precedence, `say`.
 - **Tally seed** — one Region, 13 invariants.
 - **Tally v1 named gardens** — `Gardens`, blob/diff/frame, 15/15 GREEN.
-- **Strengthening 9994–9913** — through mem.collapseRepeats. 90 witnesses.
+- **Strengthening 9994–9887** — through mem.doNotOptimizeAway. 116 witnesses.
 - **Mantra seed** — weave, LCS diff, SHA3-256 store, init/add/status.
 - **Mantra for the repo (seed)** — commit chain, add-all walks `.brix`, log follows chain. 9/9 bricks.
 - **`init.garden` (phase 1)** — `std.process.Init.garden` renamed from upstream `arena`.
@@ -147,8 +259,8 @@
 
 | When | Strand | Next step |
 |------|--------|-----------|
-| **`k <stamp>`** | **Strengthening (Zig-ground)** | Next `std` surface (`9912` and below) through `parity.rish` — **last era of vendor baseline** |
-| **Between `k` runs** | **Authored width** | Phase 1b: `caravan/chain` → `brushstroke/skate_grid.rye` — all `u32`/`u64`, zero `usize` in published APIs |
+| **`k <stamp>`** | **Strengthening (Zig-ground)** | Next `std` surface (`9886` and below) through `parity.rish` — **last era of vendor baseline** |
+| **Between `k` runs** | **Authored width** | Phase 1b: `mantra/*` — `brushstroke/*` done (`235812`) |
 | **Parallel (design)** | **Language fork** | `970` → `width-audit.rish` → compiler spike (reject `usize` in `.rye`) |
 
 Strengthening and authored width **do not block each other**. The fork **re-points** strengthening and parity after the current arc holds green — it does not cancel today's `k` passes.
@@ -157,13 +269,13 @@ Strengthening and authored width **do not block each other**. The fork **re-poin
 
 | Priority | Thread | Anchor |
 |----------|--------|--------|
-| 1 | **Strengthening series** — finish Zig-ground arc (`9912` and below) through gate trio | `10023` Track B, `998` |
+| 1 | **Strengthening series** — finish Zig-ground arc (`9886` and below) through gate trio | `10023` Track B, `998` |
 | 2 | **Authored explicit width** — `u32`/`u64` in `.rye` we publish (Phase 1b queue) | `10024`, `992` Phase 1b |
 | 3 | **Language fork** — literal `usize` ban; `970` → F1 compiler spike | `967`, `970`, `rye-as-its-own-language` |
 | 4 | **Rishi** — builtins as gates and Pond policy need them | `10023` Track C |
 | 5 | **Aurora metal lane** — freestanding integration smoke | `991`, `aurora/run.sh` |
 
-**Explicit-width migration** *(opened `210812`)* — **authored `.rye`:** `u32` in-memory, `u64` wire, **no `usize` in APIs we publish** (fork makes this law). **Done:** `tally/*`, `caravan/seed`, `bounded`, `twin`. **Next:** `caravan/chain` → Skate grid. **Interim Zig `std`:** seam audit per `968` until fork F3. Charter `10024`; inventory `992`.
+**Explicit-width migration** *(opened `210812`)* — **authored `.rye`:** `u32` in-memory, `u64` wire, **no `usize` in APIs we publish** (fork makes this law). **Done:** `tally/*`, `caravan/*`, `brushstroke/skate_grid`, `brushstroke/wayland_seed`. **Next:** `mantra/*`. Charter `10024`; inventory `992`.
 
 **Language fork** *(opened `051312`)* — Rye OS builds from scratch; gratitude converts to Rye; Zig is guest, not core. Research `967`; design `970`. Finish current parity arc green, then re-base gate to Rye spec.
 
@@ -248,7 +360,7 @@ Phase 2 vocabulary sweep is **closed**. Policy at `161112`: warm names enter bes
 - **Compare:** baseline `vendor/zig-toolchain/lib` vs strengthened `rye/lib` — same test, same pinned Zig (`RYE_ZIG`).
 - **Invoke:** `rye run rye/tests/<name>.rye` on both arms (`RYE_LIB` for baseline); exercises the real bridge path.
 - **Hold:** exit code + stdout/stderr identical — assertions change what code *says*, never what it *does*.
-- **Witnesses:** 90 programs, all GREEN (9913 mem.collapseRepeats latest).
+- **Witnesses:** 116 programs, all GREEN (9887 mem.doNotOptimizeAway latest).
 
 ## The Through-Line
 

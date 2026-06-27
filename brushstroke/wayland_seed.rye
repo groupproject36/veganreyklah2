@@ -25,13 +25,13 @@ const c = @cImport({
     @cInclude("xdg-shell-client-protocol.h");
 });
 
-const wayland_seed_version = "20260620.050912";
+const wayland_seed_version = "20260622.235812";
 
 const window_width: i32 = 400;
 const window_height: i32 = 240;
-const max_lines = 8;
-const grid_cols = @as(usize, @intCast(@divExact(window_width, @as(i32, @intCast(skate.cell_w)))));
-const grid_rows = @as(usize, @intCast(@divExact(window_height, @as(i32, @intCast(skate.cell_h)))));
+const max_lines: u32 = 8;
+const grid_cols: u32 = @intCast(@divExact(window_width, @as(i32, @intCast(skate.cell_w))));
+const grid_rows: u32 = @intCast(@divExact(window_height, @as(i32, @intCast(skate.cell_h))));
 const skate_bg = skate.Color{ .r = 0x1a, .g = 0x1a, .b = 0x2e };
 const skate_fg = skate.Color{ .r = 0xe0, .g = 0xe0, .b = 0xe0 };
 
@@ -76,8 +76,9 @@ const Frame = struct {
 
     fn toGrid(self: Frame, allocator: std.mem.Allocator) !skate.Grid {
         var grid = try skate.Grid.init(allocator, grid_cols, grid_rows);
-        var i: usize = 0;
-        while (i < self.lines.len) : (i += 1) {
+        var i: u32 = 0;
+        const line_count: u32 = @intCast(self.lines.len);
+        while (i < line_count) : (i += 1) {
             grid.putLine(i, self.lines[i].text);
         }
         return grid;
@@ -222,13 +223,13 @@ const App = struct {
         try self.display.flush();
     }
 
-    fn fillBuffer(self: *App, pixels: []u8, stride: usize) void {
+    fn fillBuffer(self: *App, pixels: []u8, stride: u32) void {
         self.grid.rasterize(pixels, stride, window_width, window_height, skate_bg, skate_fg);
     }
 
     fn commitFrame(self: *App) !void {
-        const stride = @as(i32, window_width) * 4;
-        const size: usize = @intCast(stride * window_height);
+        const stride: i32 = window_width * 4;
+        const size: u32 = @intCast(stride * window_height);
 
         const fd = try posix.memfd_create("brushstroke-frame", 0);
         defer _ = std.c.close(fd);
@@ -236,7 +237,7 @@ const App = struct {
 
         const mapped = try posix.mmap(
             null,
-            size,
+            @intCast(size),
             .{ .READ = true, .WRITE = true },
             .{ .TYPE = .SHARED },
             fd,
@@ -298,7 +299,7 @@ const App = struct {
         try self.createSurface();
         try self.display.roundtrip();
 
-        var configure_waits: usize = 0;
+        var configure_waits: u32 = 0;
         while (!self.configured and configure_waits < 100) : (configure_waits += 1) {
             try self.dispatchOnce(50);
         }
@@ -306,7 +307,7 @@ const App = struct {
 
         try self.commitFrame();
 
-        var waits: usize = 0;
+        var waits: u32 = 0;
         while (!self.frame_done and waits < 100) : (waits += 1) {
             try self.dispatchOnce(50);
         }
@@ -327,9 +328,9 @@ fn runSelftest(garden: std.mem.Allocator, io: std.Io) !u8 {
     std.debug.assert(grid.cols == grid_cols);
     std.debug.assert(grid.rows == grid_rows);
 
-    const stride = @as(usize, @intCast(window_width)) * 4;
-    const size = stride * @as(usize, @intCast(window_height));
-    const pixels = try garden.alloc(u8, size);
+    const stride: u32 = @as(u32, @intCast(window_width)) * 4;
+    const size: u32 = stride * @as(u32, @intCast(window_height));
+    const pixels = try garden.alloc(u8, @intCast(size));
     grid.rasterize(pixels, stride, window_width, window_height, skate_bg, skate_fg);
 
     const lit = grid.litPixelCount(pixels, stride, window_width, window_height, skate_bg);
