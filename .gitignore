@@ -83,3 +83,11 @@ zig-cache/
 /*.gpg
 /*.sec
 /*.key
+
+# --- Regenerated and local-only reference (added 20260627-191712) ----------
+__pycache__/
+*.pyc
+/gratitude/nix/
+/gratitude/s6/
+/gratitude/skalibs/
+/gratitude/zon/
