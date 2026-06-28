@@ -65,6 +65,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20260628-120912` | [Kernel direction, Brix, and foundations — batch brief](20260628-120912_kernel-direction-brix-and-foundations.md) | Microkernel as Caravan direction (horizon); Brix clarification; foundation layer; revitalization practice |
 | `20260621-051612` | [10023 · Main Track — Rye, Rishi, and Strengthening](20260621-051612_main-track-rye-rishi-strengthening.md) | Expanded at `044412`; reoriented `051612`. Highest-priority threads from `995` and `996` — gate trio |
 | `20260621-051612` | [10025 · Strengthening Stdlib Doc + Width Pass — Redirect](20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) | Redirect stub — Executed (`031812`–`043312`) · stub (`051612`). |
 | `20260621-051612` | [10015 · Documentation and Almanac Sync — Redirect](20260621-051612_documentation-and-almanac-sync-redirect.md) | Redirect stub — Executed (`033912`) · stub (`051612`). |

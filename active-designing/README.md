@@ -47,6 +47,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260628-120912` | [Brix — the composer and the system around it](20260628-120912_brix-the-composer.md) | sixos mapping: Brix composes; bond overrides; Tablecloth holds; Mantra weaves; Comlink seals; Caravan supervises |
 | `20260628-071012` | [SLC-1 · Rishi-and-Mantra hosted shell](20260628-071012_slc-1-rishi-mantra-shell.md) | Hammock scope: four verbs (type, run, version, recall); history in `.mantra/`; terminal-complete first ring |
 | `20260628-043542` | [Thin frontend — direction adopted](20260628-043542_thin-frontend-slc-direction.md) | Rye as thin frontend; SLC order; strengthening arc complete |
 | `20260622-232912` | [967 · Caravan — Improving Upon the State of the Art](20260622-232912_caravan-kernel-improvements.md) | A siloed design brief for how Caravan's microkernel improves upon what formal verification and safe-language kernels achieved separately. Th |
