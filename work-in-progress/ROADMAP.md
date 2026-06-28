@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260628-124512` (Linengrow track; two tracks one spine)
-**Last updated:** 2026-06-28
+**Last updated:** 2026-06-28 (SLC-1 Step 1 landed)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -44,7 +44,7 @@ Correctness by construction in the kernel becomes trust by construction in the p
 | **Tablecloth** | General-purpose database + object storage | Designed (future) |
 | **Bron** | Data notation (`.bron`) | Used by `.brix` |
 | **Mantra** | Weave + commit chain + add-all + log | 9/9 bricks wove |
-| **Rishi** | Shell: typed values, file I/O, string builtins | Gate trio in `.rish` |
+| **Rishi** | Shell: typed values, file I/O, string builtins; **`repl` subcommand** (SLC-1 Step 1) | Gate trio + `slc1_repl_step1.rish` |
 | **Brushstroke** | Hosted seed + Wayland seed (one window) | Frame from values |
 | **Skate** | Text grid: 8×8 monospace on Wayland | Headless selftest |
 | **Comlink** | Sealed datagram: shared-memory + localhost UDP | Full crypto stack |
@@ -62,7 +62,7 @@ Grow running seeds into things a person can use *as-is*. See [`gratitude/Your cu
 
 | Ring | What | Status |
 |------|------|--------|
-| **SLC 1** | **Rishi + Mantra shell** — hosted, scriptable REPL with versioned history in a terminal (type → run → version → recall) | **Next north star** — scope [`20260628-071012`](../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md) |
+| **SLC 1** | **Rishi + Mantra shell** — hosted, scriptable REPL with versioned history in a terminal (type → run → version → recall) | **Step 1 done** — `rishi repl` + witness; Steps 2–3 next — scope [`20260628-071012`](../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md) |
 | **SLC 2** | **Pond GUI** — same loop in Brushstroke/Skate window on x86_64 | After Skate text rendering |
 | **Compose** | Comlink device wire → capability table → Comlink v1 → Brix v1 → Tablecloth → Forge | Horizon 2 |
 
@@ -101,6 +101,17 @@ Prior fork steps F0–F5 remain documented in [`active-designing/20260621-070712
 ## Horizon 1 — What to Build Next
 
 ### Build (SLC 1 first)
+
+**Gate before the SLC-1 merge:** `rishi/bin/rishi run tools/parity.rish` green once on metal (116 witnesses). New loop witness: `tools/slc1_repl_step1.rish` (register in parity when the suite is green).
+
+**SLC-1 build order** (granular; mirrors [`TASKS.md`](TASKS.md)):
+
+| Step | Verb | What lands | Witness |
+|------|------|------------|---------|
+| **1 — type + run** | Type, Run | `rishi repl`; prompt `rishi> `; in-process eval; shared `Env`; `:quit` / `:q` | `tools/slc1_repl_step1.rish` — binding carry-forward |
+| **2 — version** | Version | Session buffer; `.mantra/session.log` transcript; `:history`; lazy `mantra init`; `:version` → `mantra add` | HEAD advances; blob in `.mantra/blobs/` |
+| **3 — recall** | Recall | `:recall <n>` (optional `!<n>`); in-session buffer first | Prior line returns; versioned session durable via Step 2 |
+| **accept** | all four | README/ALMANAC meta-command docs; gate trio + width-check on touched seeds | Full loop on metal |
 
 1. **Rishi + Mantra shell loop** — scriptable hosted shell with versioned history; gates green; terminal-complete. Scope: [`20260628-071012`](../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md).
 2. **Rishi builtins** — trim improvements still open.
