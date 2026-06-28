@@ -22,7 +22,7 @@
 | File | Why |
 |------|-----|
 | `external-research/997_SYSTEM.md` | New section: Manyana + index entry |
-| `active-designing/983_the_whole_system.md` | Mantra section updated with CRDT weave provenance |
+| `active-designing/20260619-225712_the-whole-system.md` | Mantra section updated with CRDT weave provenance |
 | `session-logs/99960_20260619-225712.md` | This log |
 
 ---

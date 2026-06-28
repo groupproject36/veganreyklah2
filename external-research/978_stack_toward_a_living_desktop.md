@@ -148,7 +148,7 @@ The current Pond design (`987`, `995`) is already the right shape: Caravan's iso
 
 Pond gains Brushstroke as the surface layer. An application that runs in a Pond enclosure may also *draw* — through Brushstroke's single seam — to a native window or to a portable Wasm artifact. The enclosure is unchanged: isolated, bounded, policy-as-a-value. The surface adds the ability to show that enclosure to a person.
 
-The module list for `999_DESIGN.md` (the clean-room Tablecloth Principle) accretes Brushstroke as a first-class name alongside Pond. This was already presaged: `988_brushstroke.md` names it as "the surface of the family," and the external-research study (`980`) placed Brushstroke and Pond on the same trajectory.
+The module list for `README.md` (the clean-room Tablecloth Principle) accretes Brushstroke as a first-class name alongside Pond. This was already presaged: `988_brushstroke.md` names it as "the surface of the family," and the external-research study (`980`) placed Brushstroke and Pond on the same trajectory.
 
 **Pond and Brushstroke, together:**
 

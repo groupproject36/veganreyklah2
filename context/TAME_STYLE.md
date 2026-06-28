@@ -23,7 +23,7 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Voiced canon** | `external-research/996_TAME_STYLE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
 
-Read **996** for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/996_growing_a_language.md`.
+Read **996** for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/20260618-184912_growing-a-language.md`.
 
 Cursor and Claude rules (`.cursor/rules/tame-style.mdc`, `.claude/rules/tame-style.md`) point here.
 
@@ -93,7 +93,7 @@ Rye carries the family. The safety Rye offers is the safety every module written
 
 Use explicitly sized integer types: `u8`, `u16`, `u32`, `u64`, `i8`, `i16`, `i32`, `i64`. Use `f32` or `f64` for floating-point. Never use `c_int`, `c_uint`, or `anyopaque` without a stated, commented reason.
 
-**`usize` is BANNED in Rye. No exceptions.** Every occurrence in authored `.rye` is technical debt to be eliminated by the compiler fork (F1–F5). See [`active-designing/968_the_compiler_fork.md`](../active-designing/968_the_compiler_fork.md) and [`active-designing/970_explicit_width_in_rye.md`](../active-designing/970_explicit_width_in_rye.md). The gate `tools/width-check.rish` enforces zero tolerance.
+**`usize` is BANNED in Rye. No exceptions.** Every occurrence in authored `.rye` is technical debt to be eliminated by the compiler fork (F1–F5). See [`active-designing/20260621-070712_the-compiler-fork.md`](../active-designing/20260621-070712_the-compiler-fork.md) and [`active-designing/20260621-051312_explicit-width-in-rye.md`](../active-designing/20260621-051312_explicit-width-in-rye.md). The gate `tools/width-check.rish` enforces zero tolerance.
 
 | Width | Role in authored Rye |
 |-------|----------------------|
@@ -108,7 +108,7 @@ const max_frame_bytes: u32 = 4096;
 pos: u32, // invariant: pos <= max_frame_bytes
 ```
 
-Width audit: `work-in-progress/992_usize_width_baseline.md`. Fork plan: `active-designing/968_the_compiler_fork.md`.
+Width audit: `work-in-progress/992_usize_width_baseline.md`. Fork plan: `active-designing/20260621-070712_the-compiler-fork.md`.
 
 **Existing Zig seam casts** (`const x: usize = @intCast(...)`) are **technical debt**, not an acceptable pattern:
 

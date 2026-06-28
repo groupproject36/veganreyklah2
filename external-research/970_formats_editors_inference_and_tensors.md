@@ -1,6 +1,6 @@
 # 970 · Formats, Editors, Inference, and Tensors — What the Horizon Modules Inherit
 
-*Six open threads share one through-line: values that cross seams without losing their shape. This research reads JSON and Brix together, surveys markdown parsers in Zig and Rust, studies Zed's editor architecture and GPUI's permissive frame discipline, and reads Ollama, Tinygrad, PyTorch, and TensorFlow for what **Scribble**, **Lantern**, **Lattice**, and **Anvil** should become in tame Rye. The distilled design lives in silo at `../active-designing/978_scribble_lantern_and_lattice.md`.*
+*Six open threads share one through-line: values that cross seams without losing their shape. This research reads JSON and Brix together, surveys markdown parsers in Zig and Rust, studies Zed's editor architecture and GPUI's permissive frame discipline, and reads Ollama, Tinygrad, PyTorch, and TensorFlow for what **Scribble**, **Lantern**, **Lattice**, and **Anvil** should become in tame Rye. The distilled design lives in silo at `../active-designing/20260620-020712_scribble-lantern-and-lattice.md`.*
 
 **Language:** EN
 **Version:** `20260620.020712` (Rye chronological stamp)
@@ -165,7 +165,7 @@ Mantra views, Forge pages, and research itself are written in Markdown today. A 
 4. **Lattice before Lantern before Anvil** — numeric primitives, then local inference, then training scale.
 5. **Every module Pond-enclosed** — inference and tensors are high-risk; policy-as-a-value is non-negotiable.
 
-The siloed design brief at `../active-designing/978_scribble_lantern_and_lattice.md` states these modules on our own ground.
+The siloed design brief at `../active-designing/20260620-020712_scribble-lantern-and-lattice.md` states these modules on our own ground.
 
 ---
 

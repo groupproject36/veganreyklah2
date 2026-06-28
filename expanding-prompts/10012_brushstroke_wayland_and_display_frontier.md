@@ -58,7 +58,7 @@ Open the **display frontier** on x86_64: one Wayland client window, one static f
 
 ## Track B — Display Seam
 
-**Deliverable:** section in `active-designing/988_brushstroke.md` or `985` addendum — three wrappers:
+**Deliverable:** section in `active-designing/20260619-072600_brushstroke.md` or `985` addendum — three wrappers:
 
 - `Display.connect` — socket + registry roundtrip
 - `Display.Surface` — create, attach, commit lifecycle

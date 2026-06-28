@@ -22,6 +22,6 @@ Parity gate 49/49 GREEN after rename.
 | `tools/parity.rish` | `let witnesses`; gate messages |
 | `work-in-progress/995_open_threads.md` | Parity contract defines witnesses |
 | `work-in-progress/996_roadmap.md` | Living roadmap vocabulary |
-| `active-designing/998_strengthening_strategy.md` | Charter wording |
+| `active-designing/20260618-085812_strengthening-strategy.md` | Charter wording |
 | ~35 other docs/rules/READMEs | Vocabulary alignment |
 | `session-logs/99856_20260620-182621.md` | This log |

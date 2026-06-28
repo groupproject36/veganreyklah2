@@ -8,7 +8,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME Style (`../external-research/996_TAME_STYLE.md`); the method in `9999_STRENGTHENING.md`
-**Builds on:** `9993_mem_diff_primitives.md`, `../active-designing/985_native_system_interface.md`
+**Builds on:** `9993_mem_diff_primitives.md`, `../active-designing/20260619-160312_native-system-interface.md`
 **Status:** Applied to `rye/lib/std/Io/Dir.zig` — parity GREEN, 12 witnesses
 
 ---

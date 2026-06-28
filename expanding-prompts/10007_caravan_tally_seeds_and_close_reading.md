@@ -75,7 +75,7 @@ Output: `external-research/980` band or new `979_*` close-reading stack — **ac
 
 - **`996_roadmap.md`** — Horizon 1 gains explicit Caravan seed, Tally seed, and close-reading items; "What to Build Next" names **three parallel threads**.
 - **`995_open_threads.md`** — Promote seeds and close reading to co-equal with device-wire.
-- **`active-designing/987_the_first_seeds.md`** — Clean-room brief: mission, problem, opportunity, architecture, caveats, conclusion for the two seeds and the reading discipline.
+- **`active-designing/20260619-084412_the-first-seeds.md`** — Clean-room brief: mission, problem, opportunity, architecture, caveats, conclusion for the two seeds and the reading discipline.
 
 ## Discipline
 
@@ -87,7 +87,7 @@ Output: `external-research/980` band or new `979_*` close-reading stack — **ac
 ## Deliverables
 
 - This expanding prompt (`10007`).
-- `active-designing/987_the_first_seeds.md`.
+- `active-designing/20260619-084412_the-first-seeds.md`.
 - Updated `996_roadmap.md` and `995_open_threads.md`.
 - Session log `99995_20260619-084412.md`.
 

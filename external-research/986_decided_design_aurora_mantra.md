@@ -8,7 +8,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME Style (`996_TAME_STYLE.md`); systems lineage in `997_SYSTEM.md`
-**Reads back:** `993_aurora_boot_riscv.md`, `998_MANTRA.md`, through `../active-designing/995_single_stranded.md`, `../active-designing/996_growing_a_language.md`, and `../context/specs/rye-as-its-own-language.md`
+**Reads back:** `993_aurora_boot_riscv.md`, `998_MANTRA.md`, through `../active-designing/20260618-182412_single-stranded.md`, `../active-designing/20260618-184912_growing-a-language.md`, and `../context/specs/rye-as-its-own-language.md`
 
 ---
 

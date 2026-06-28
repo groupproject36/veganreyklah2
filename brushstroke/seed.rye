@@ -5,7 +5,7 @@
 //! tree that can drift from the truth. This seed is the smallest version that
 //! runs on hosted Linux: build a Frame value, redraw it to stdout, assert the
 //! invariants, and exit. Wayland and GPU backends grow from this through the
-//! seam described in active-designing/988_brushstroke.md.
+//! seam described in active-designing/20260619-072600_brushstroke.md.
 //!
 //! Build and run:
 //!   mkdir -p brushstroke/bin

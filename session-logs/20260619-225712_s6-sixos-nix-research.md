@@ -19,7 +19,7 @@
 
 6. Loaded all 16 active-designing documents via explore agent. Checked for Mandala/Wasmtime/River/Ghostty references.
 
-7. Wrote `active-designing/983_the_whole_system.md`: the complete system map — every module named and composed. Rye (language), Aurora (boot), Caravan (kernel), Tally (memory), Brix (composition), Silo (store), Mantra (version control), Rishi (shell), Pond (enclosure), Brushstroke (surface), Comlink (network). One value model throughout. Two platform tracks (x86_64 now, RISC-V horizon). Seed status table. Five invariants of the whole.
+7. Wrote `active-designing/20260619-225712_the-whole-system.md`: the complete system map — every module named and composed. Rye (language), Aurora (boot), Caravan (kernel), Tally (memory), Brix (composition), Silo (store), Mantra (version control), Rishi (shell), Pond (enclosure), Brushstroke (surface), Comlink (network). One value model throughout. Two platform tracks (x86_64 now, RISC-V horizon). Seed status table. Five invariants of the whole.
 
 8. Updated `995_open_threads.md` with all completions from this session. Version bumped.
 
@@ -42,7 +42,7 @@
 | `gratitude/nix/` | New: Eelco Dolstra's Nix package manager (shallow clone) |
 | `external-research/997_SYSTEM.md` | Updated: three new sections + index for s6, SixOS/infuse, Nix |
 | `external-research/974_s6_sixos_nix_infuse.md` | New: what Caravan, Brix, Tally inherit from each project |
-| `active-designing/983_the_whole_system.md` | New: the complete system — every module composed on its own ground |
+| `active-designing/20260619-225712_the-whole-system.md` | New: the complete system — every module composed on its own ground |
 | `rye/tests/alloc_print_test.rye` | New: parity test for allocPrint and trimEnd |
 | `tools/parity.sh` | Corpus grew to 16 (added alloc_print_test) |
 | `tools/parity.rish` | Corpus grew to 16 (added alloc_print_test) |

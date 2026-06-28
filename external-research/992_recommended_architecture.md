@@ -4,9 +4,9 @@
 
 The clean-room architecture for our core modules now lives in the design stack, revised as Rye, Brix, and the family grew.
 
-**Read instead:** [`../active-designing/997_recommended_architecture.md`](../active-designing/997_recommended_architecture.md)
+**Read instead:** [`../active-designing/20260618-184912_recommended-architecture.md`](../active-designing/20260618-184912_recommended-architecture.md)
 
-Whole-system map: [`../active-designing/983_the_whole_system.md`](../active-designing/983_the_whole_system.md)
+Whole-system map: [`../active-designing/20260619-225712_the-whole-system.md`](../active-designing/20260619-225712_the-whole-system.md)
 
 ---
 

@@ -9,7 +9,7 @@
 
 ## Thinking trace
 
-1. Read all new untracked files: `active-designing/987_the_first_seeds.md`, `expanding-prompts/10006` and `10007`, `work-in-progress/996_roadmap.md` and `995_open_threads.md`, session logs 99992–99997.
+1. Read all new untracked files: `active-designing/20260619-084412_the-first-seeds.md`, `expanding-prompts/10006` and `10007`, `work-in-progress/996_roadmap.md` and `995_open_threads.md`, session logs 99992–99997.
 
 2. Review through active-designing lens — Quarantine Principle holds in 987 (external sources abstracted, names stripped); 10006/10007 correctly name external things only in their proper spaces; seeds scoped by Gall's Law; one value model threaded through; "hosted first" discipline observed. One note: which seed first (Tally vs Caravan) was left open — named that explicitly for the next build turn.
 

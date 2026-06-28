@@ -37,8 +37,8 @@ pub fn main() void {
     std.debug.assert(!mem.startsWith(u8, "Ry", "Rye"));         // needle longer: false
 
     // --- endsWith ---
-    std.debug.assert(mem.endsWith(u8, "999_DESIGN.md", ".md"));  // normal suffix match
-    std.debug.assert(!mem.endsWith(u8, "999_DESIGN.md", ".rye")); // suffix mismatch
+    std.debug.assert(mem.endsWith(u8, "README.md", ".md"));  // normal suffix match
+    std.debug.assert(!mem.endsWith(u8, "README.md", ".rye")); // suffix mismatch
     std.debug.assert(mem.endsWith(u8, "abc", ""));               // empty needle: always true
     std.debug.assert(!mem.endsWith(u8, "", "abc"));              // needle longer than haystack
     std.debug.assert(mem.endsWith(u8, "Rye", "Rye"));            // equal-length exact match

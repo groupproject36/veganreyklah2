@@ -7,7 +7,7 @@
 **Last updated:** 2026-06-21
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Status:** Exploration — decision recorded; design siloed at `active-designing/970_explicit_width_in_rye.md`
+**Status:** Exploration — decision recorded; design siloed at `active-designing/20260621-051312_explicit-width-in-rye.md`
 
 **Prior art:** [`968_usize_boundary_not_design.md`](968_usize_boundary_not_design.md) (seam policy while on Zig ground) · [`996_TAME_STYLE.md`](996_TAME_STYLE.md) · [`../gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) · [`../context/specs/rye-as-its-own-language.md`](../context/specs/rye-as-its-own-language.md)
 
@@ -96,12 +96,12 @@ The cost is honest: we own the compiler, the std rewrite, and a new gate story. 
 | Topic | Lives in |
 |-------|----------|
 | Seam policy (interim) | `968_usize_boundary_not_design.md` |
-| Siloed design (clean room) | `active-designing/970_explicit_width_in_rye.md` |
+| Siloed design (clean room) | `active-designing/20260621-051312_explicit-width-in-rye.md` |
 | Rye is its own language | `context/specs/rye-as-its-own-language.md` |
 | Width migration inventory | `work-in-progress/992_usize_width_baseline.md` |
 | Living threads | `work-in-progress/995_open_threads.md` |
 | Roadmap | `work-in-progress/996_roadmap.md` |
-| Growing a language | `active-designing/996_growing_a_language.md` |
+| Growing a language | `active-designing/20260618-184912_growing-a-language.md` |
 
 ---
 

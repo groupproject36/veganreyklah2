@@ -18,7 +18,7 @@
 
 Rye is its own language — not a Zig derivative forever. The compiler fork is the primary track: no `usize`, `u32` slice lengths, self-hosted compiler, Rye-native std (`967`, `970`).
 
-The full design lives in `active-designing/983_the_whole_system.md`. This roadmap says what to build and in what order.
+The full design lives in `active-designing/20260619-225712_the-whole-system.md`. This roadmap says what to build and in what order.
 
 ---
 

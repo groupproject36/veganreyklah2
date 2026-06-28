@@ -8,8 +8,8 @@ The parity gate runs in **Rishi** (`tools/parity.rish`, `tools/additive-gate.ris
 
 | Topic | Path |
 |-------|------|
-| Rishi design (clean room) | [`../active-designing/989_the_faithful_hand.md`](../active-designing/989_the_faithful_hand.md) |
-| How we grow a language / Rishi on Rye | [`../active-designing/996_growing_a_language.md`](../active-designing/996_growing_a_language.md) |
+| Rishi design (clean room) | [`../active-designing/20260619-051312_the-faithful-hand.md`](../active-designing/20260619-051312_the-faithful-hand.md) |
+| How we grow a language / Rishi on Rye | [`../active-designing/20260618-184912_growing-a-language.md`](../active-designing/20260618-184912_growing-a-language.md) |
 | Operator README | [`../rishi/README.md`](../rishi/README.md) |
 | Shell survey (historical) | [`990_shell_scripting_tame.md`](990_shell_scripting_tame.md) — also deprecated; points at gates |
 

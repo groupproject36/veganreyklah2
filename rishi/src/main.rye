@@ -21,7 +21,7 @@
 //! It is the shell that runs
 //! the gate trio (`tools/parity.rish`, `tools/parity-selftest.rish`,
 //! `tools/additive-gate.rish`) and grows toward `examples/pond.rish`
-//! (see `active-designing/976_what_we_mean_by_seed.md`).
+//! (see `active-designing/20260622-235012_what-we-mean-by-seed.md`).
 //!
 //! Rishi is implemented in Rye and built against Rye's own standard library, so
 //! the language we are growing and the language we build it in are one and the

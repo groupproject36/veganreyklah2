@@ -6,6 +6,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260628-013229` | [reorg chunk 2 active-designing](20260628-013229_reorg-chunk-2-active-designing.md) | B — one-clock reorg (`reorg/one-clock`) |
 | `20260628-012631` | [reorg chunk 2 preview](20260628-012631_reorg-chunk-2-preview.md) | B — one-clock reorg (`reorg/one-clock`) |
 | `20260628-011308` | [one-clock rules close the loop](20260628-011308_rules-one-clock-loop.md) | B — one-clock reorg (`reorg/one-clock`) |
 | `20260628-010558` | [reorg chunk 1 one-clock](20260628-010558_reorg-chunk-1-one-clock.md) | B — one-clock reorg (`reorg/one-clock`) |

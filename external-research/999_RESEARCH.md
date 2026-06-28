@@ -23,11 +23,11 @@ When an exploration **lands** (mission complete) or **moves** to active-designin
 
 | Stub | Canonical home |
 |------|----------------|
-| `988_rishi_shell.md` | `active-designing/989_the_faithful_hand.md`, `rishi/README.md` |
+| `988_rishi_shell.md` | `active-designing/20260619-051312_the-faithful-hand.md`, `rishi/README.md` |
 | `990_shell_scripting_tame.md` | `tools/parity.rish`, gate trio |
-| `992_recommended_architecture.md` | `active-designing/997_recommended_architecture.md` |
+| `992_recommended_architecture.md` | `active-designing/20260618-184912_recommended-architecture.md` |
 
-**Width policy:** interim seam manual [`968`](968_usize_boundary_not_design.md); fork north star [`967`](967_literal_usize_ban_language_fork.md) + [`../active-designing/970_explicit_width_in_rye.md`](../active-designing/970_explicit_width_in_rye.md).
+**Width policy:** interim seam manual [`968`](968_usize_boundary_not_design.md); fork north star [`967`](967_literal_usize_ban_language_fork.md) + [`../active-designing/20260621-051312_explicit-width-in-rye.md`](../active-designing/20260621-051312_explicit-width-in-rye.md).
 
 **Retired patterns** (do not reintroduce in new research): Bash `parity.sh`, Python doc enrichers, permanent Tier C `usize` as destination, `init.arena` in prose (use `init.garden`).
 

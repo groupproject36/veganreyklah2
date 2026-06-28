@@ -149,7 +149,7 @@ Each seed is one **simple service** doing one job (`977`). Mantra **transforms**
 
 ## Relation to `987`
 
-`987_the_first_seeds.md` was counsel from a moment in time: plant Caravan, Tally, and close-reading in parallel with the device wire. **`976` is the vocabulary; `987` is the instance.** When someone says "plant a seed," they mean the law in this brief. When someone says "the Caravan seed," they mean `caravan/seed.rye`.
+`20260619-084412_the-first-seeds.md` was counsel from a moment in time: plant Caravan, Tally, and close-reading in parallel with the device wire. **`976` is the vocabulary; `987` is the instance.** When someone says "plant a seed," they mean the law in this brief. When someone says "the Caravan seed," they mean `caravan/seed.rye`.
 
 ---
 

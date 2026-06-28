@@ -44,7 +44,7 @@ rye/
 
 The lessons learned while building Rye live in their own home, `../rye-learning-process/`, with the growing reference in `998_ALMANAC.md` — gate trio, Caravan seeds, Brushstroke, strengthening, and Zig 0.16.0 I/O.
 
-Sibling modules built with `rye build` include **Rishi** (`../rishi/`), **Caravan** (`../caravan/`), **Tally** (`../tally/`), **Brushstroke** (`../brushstroke/`), **Mantra** (`../mantra/`), and **Aurora** (`../aurora/`). What *seed* means in this family is defined in `../active-designing/976_what_we_mean_by_seed.md`.
+Sibling modules built with `rye build` include **Rishi** (`../rishi/`), **Caravan** (`../caravan/`), **Tally** (`../tally/`), **Brushstroke** (`../brushstroke/`), **Mantra** (`../mantra/`), and **Aurora** (`../aurora/`). What *seed* means in this family is defined in `../active-designing/20260622-235012_what-we-mean-by-seed.md`.
 
 ---
 

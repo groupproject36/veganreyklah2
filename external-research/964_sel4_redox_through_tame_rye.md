@@ -117,10 +117,10 @@ This is Adam Joseph's SixOS insight carried into the kernel: declaration and sup
 - Redox: redox-os.org — Rust microkernel. ~20K SLOC, user-space drivers, URL resource naming.
 - SixOS + Nix infuse: codeberg.org/amjoseph/sixos, codeberg.org/amjoseph/infuse.nix — declaration meets supervision on a borrowed kernel.
 - Tiger Style: gratitude/TIGER_STYLE.md — explicit widths, assertions, safety first.
-- Caravan: active-designing/984_caravan_microkernel.md
-- Tally: active-designing/990_correctness_by_construction.md (bounded gardens)
-- Brix: active-designing/997_recommended_architecture.md (composition)
-- Aurora: active-designing/991_aurora.md
+- Caravan: active-designing/20260619-223712_caravan-microkernel.md
+- Tally: active-designing/20260619-051212_correctness-by-construction.md (bounded gardens)
+- Brix: active-designing/20260618-184912_recommended-architecture.md (composition)
+- Aurora: active-designing/20260618-225712_aurora.md
 
 ---
 
