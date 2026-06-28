@@ -9,9 +9,15 @@ At the end of **every** response — before finishing the turn — write a sessi
 
 ## Filename
 
-`<countdown>_<YYYYMMDD>-<HHMMSS>.md`, where the date and time are taken from the user's prompt (e.g. `99999_20260619-072600.md`).
+`YYYYMMDD-HHMMSS_short-slug.md` — hyphen stamp in the filename; dot form `YYYYMMDD.HHMMSS` in the file body when you write **Stamp:**.
 
-The countdown prefix starts at `99999` and **decreases by one** for each new log — next `99998`, then `99997`, and so on — so the folder sorts newest-first under plain alphabetical order, matching the project's count-down convention. To choose the next number, take the lowest prefix already in `session-logs/` and subtract one.
+Full naming law: `context/specs/20260627-102012_one-clock-naming-law.md`. Files sort ascending by stamp; the living index in `session-logs/README.md` reads newest first.
+
+When two logs share a second, add `_short-slug` from the header (or from **Prompt:** when H1s match). Derive a missing stamp from the file's first-commit date per the naming law.
+
+## Index
+
+After each new log, prepend a newest-first row to `session-logs/README.md`: stamp, linked title, and one line of meaning drawn from the header.
 
 ## Contents
 

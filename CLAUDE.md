@@ -11,7 +11,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 - `context/` — style guide, identity, durable specs (read before large decisions).
 - `active-designing/` — design in motion.
 - `expanding-prompts/` — intent expanded into runnable plans (counts upward from `10000`).
-- `session-logs/` — reasoning traces (counts **down** from `99999`; newest first by filename).
+- `session-logs/` — reasoning traces; one-clock filenames per `context/specs/20260627-102012_one-clock-naming-law.md` and `.claude/rules/session-logs.md` (newest-first index in `session-logs/README.md`).
 
 ## Working conventions
 
