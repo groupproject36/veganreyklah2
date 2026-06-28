@@ -22,7 +22,7 @@ Dated artifacts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living
 
 Each stock-taking writes a new **open-threads** snapshot stamped at the time of writing — the newest snapshot is the present truth. Once a snapshot is superseded, it graduates to [`archive/`](archive/) — out of the live folder, yet kept whole as an honest record of what was open, and when. Finished scaffolding and other superseded records graduate there too.
 
-The standing roadmap lives in [`ROADMAP.md`](ROADMAP.md) — living, unstamped.
+The standing roadmap lives in [`ROADMAP.md`](ROADMAP.md) — living, unstamped. The granular task list lives in [`TASKS.md`](TASKS.md) — edited in place; history accretes in `../session-logs/`.
 
 A snapshot is a faithful gathering, not a contract. An item leaves the next snapshot when it is **done**, **decided**, or **set down on purpose** — and that next snapshot says which, so even closure is remembered rather than merely vanishing.
 
