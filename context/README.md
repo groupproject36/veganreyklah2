@@ -17,6 +17,7 @@ Everything here lives inside the persistent project directory, so it survives ev
 - **`RADIANT_STYLE.md`** — the canonical voice. How we write and speak so every piece reads clearly, lands warmly, and carries well aloud.
 - **`TAME_STYLE.md`** — the operational code supplement (root + Rye / Brix / Rishi). Named like TigerBeetle's `docs/TIGER_STYLE.md`; pairs with `external-research/TAME_STYLE.md` and `gratitude/TIGER_STYLE.md`.
 - **`SIMPLE_LOVABLE_COMPLETE.md`** — how we ship. Simple, lovable, complete at every ring; our distillation of Jason Cohen's method, bound to how Rye OS grows. Source essay in `gratitude/`.
+- **`CIVIC_STYLE.md`** — how we design public benefit. Name the outcome you want, name what the reward measures, keep the two aligned — the civic companion to TAME, Radiant, and SLC.
 - **`REYA2.md`** — the identity note. Who Reya 2 is, how she works, and the larger why behind the project.
 - **`specs/`** — plain-English radiant specs. Each one records a decision in prose a reader can follow start to finish. Kebab-case filenames (`inherited-names.md`, …); landmark style guides live at the `context/` root.
 
@@ -36,23 +37,28 @@ When a chat or a file stops serving the project, name it gently and let it go. P
 
 ```
 ~/veganreyklah2/
-  context/        <- this home: style, identity, specs
+  ORGANIZING.md   <- filing guide: tree shape, placement test, one-clock law
+  context/        <- this home: disciplines, identity, specs
     RADIANT_STYLE.md
     TAME_STYLE.md
     SIMPLE_LOVABLE_COMPLETE.md
+    CIVIC_STYLE.md
     REYA2.md
     specs/
-  external-research/ <- counting-down research stack; open to other works, experimental and informal (999 is the foundation)
-  active-designing/  <- counting-down design stack; siloed to our own names + RISC-V, clear and intentional (999 is the foundation)
-  gratitude/      <- works we honor, kept whole and unmodified
-    sixos/        <- Adam Joseph's nix-os-without-systemd, from Codeberg
-    infuse.nix/   <- the composable override combinator SixOS leans on
-  vendor/         <- third-party source Rye builds on, kept local and unmodified
-    zig/          <- Zig 0.16.0 stable, cloned from Codeberg
-  ai-jail/        <- the sandbox wrapper source we run inside
-  projects/       <- working projects
-  .cursor/rules/  <- Cursor rules, including reya2.mdc
+  foundations/    <- why beneath the work: briefs, essays, weave, civic visions
+  linengrow/      <- civic-application track on the Rye OS spine
+  work-in-progress/ <- workbench: ROADMAP, TASKS, open threads
+  external-research/ <- study of the world with attribution
+  active-designing/  <- our design in motion
+  expanding-prompts/ <- runnable plans (from 10000)
+  session-logs/   <- reasoning traces; newest-first index
+  gratitude/      <- works we honor, kept whole
+  vendor/         <- third-party source, unmodified
+  rye/ rishi/ …   <- module homes
+  tools/          <- gates and witnesses
 ```
+
+Full tree: `ORGANIZING.md` at the repository root.
 
 ---
 
