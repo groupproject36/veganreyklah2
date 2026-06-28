@@ -28,8 +28,10 @@
 //! same — and a value here is, in time, a value there.
 //!
 //! Commands:
-//!   rishi version          Print the Rishi version.
-//!   rishi run <file.rish>  Read and run a single .rish script.
+//!   rishi                  Start the interactive REPL (same as `rishi repl`).
+//!   rishi repl               Interactive loop — type, run, with bindings carried forward.
+//!   rishi version            Print the Rishi version.
+//!   rishi run <file.rish>    Read and run a single .rish script.
 
 const std = @import("std");
 
@@ -115,17 +117,18 @@ const Env = struct {
 };
 
 pub fn main(init: std.process.Init) !u8 {
-    const garden = init.garden.allocator();
+    const garden = init.arena.allocator();
     const args = try init.minimal.args.toSlice(garden);
     if (args.len < 2) {
-        printUsage();
-        return 0;
+        return runRepl(init);
     }
 
     const command = args[1];
     if (std.mem.eql(u8, command, "version")) {
         std.debug.print("rishi {s}  (chronological: YYYYMMDD.HHMMSS, later is larger)\n", .{rishi_version});
         return 0;
+    } else if (std.mem.eql(u8, command, "repl")) {
+        return runRepl(init);
     } else if (std.mem.eql(u8, command, "run")) {
         return runFile(init, args);
     } else if (std.mem.eql(u8, command, "help") or std.mem.eql(u8, command, "--help")) {
@@ -143,14 +146,52 @@ fn printUsage() void {
         \\rishi {s} — the shell of the Rye ecosystem (first version)
         \\
         \\usage:
+        \\  rishi                  start the interactive REPL
+        \\  rishi repl             start the interactive REPL
         \\  rishi version          print the Rishi version
         \\  rishi run <file.rish>  read and run a single .rish script
         \\
     , .{rishi_version});
 }
 
+/// Interactive loop — read a line, evaluate it, carry bindings forward. Meta-
+/// commands begin with `:`; `:quit` ends the session cleanly.
+fn runRepl(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    var env = Env{};
+    var stdin_buffer: [4096]u8 = undefined;
+    var file_reader = std.Io.File.Reader.initStreaming(std.Io.File.stdin(), io, &stdin_buffer);
+    const reader = &file_reader.interface;
+
+    while (true) {
+        std.debug.print("rishi> ", .{});
+        const raw_line = reader.takeDelimiterInclusive('\n') catch |err| switch (err) {
+            error.EndOfStream => return 0,
+            else => return 1,
+        };
+        const line = std.mem.trim(u8, raw_line, " \t\r\n");
+        if (line.len == 0) continue;
+
+        if (line[0] == ':') {
+            if (std.mem.eql(u8, line, ":quit") or std.mem.eql(u8, line, ":q")) return 0;
+            std.debug.print("rishi: unknown meta-command '{s}'\n", .{line});
+            continue;
+        }
+
+        evalStatement(garden, io, &env, line) catch |err| {
+            if (err == error.AssertionFailed) {
+                // doAssert already named the broken fact.
+            } else {
+                std.debug.print("rishi: {s}\n  {s}\n", .{ @errorName(err), line });
+            }
+            continue;
+        };
+    }
+}
+
 fn runFile(init: std.process.Init, args: []const [:0]const u8) !u8 {
-    const garden = init.garden.allocator();
+    const garden = init.arena.allocator();
     const io = init.io;
 
     if (args.len < 3) {
@@ -183,7 +224,7 @@ fn interpret(allocator: std.mem.Allocator, io: std.Io, source: []const u8) u8 {
     var lines = std.mem.splitScalar(u8, source, '\n');
     while (lines.next()) |raw| {
         line_no += 1;
-        const line = std.mem.trim(u8, raw, " \t\r");
+        const line = std.mem.trim(u8, raw, " \t\r\n");
         if (line.len == 0 or line[0] == '#') continue;
         evalStatement(allocator, io, &env, line) catch |err| {
             if (err == error.AssertionFailed) {
