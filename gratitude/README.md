@@ -1,7 +1,7 @@
 # Gratitude
 
 **Language:** EN
-**Last updated:** 2026-06-19
+**Last updated:** 2026-06-28
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -24,6 +24,10 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
   - Source: <https://raw.githubusercontent.com/matthiasn/talk-transcripts/refs/heads/master/Hickey_Rich/LanguageSystem.md>
 - **`SimpleMadeEasy.md`** — Rich Hickey's 2011 talk distinguishing the *simple* (single-stranded, each thing about one thing) from the *easy* (near-at-hand and familiar), and urging us to build by composing free parts rather than braiding them together. It deepens our TAME sense that simplicity is earned, and it is honored in `../external-research/20260620-014412_system.md`. Cloned whole and unaltered.
   - Source: <https://raw.githubusercontent.com/matthiasn/talk-transcripts/refs/heads/master/Hickey_Rich/SimpleMadeEasy.md>
+- **`HammockDrivenDev.md`** — Rich Hickey's 2010 talk on hammock-driven development: analysis and design before implementation, stating problems plainly, loading the problem in waking mind so background mind can solve it, and discerning defects in your own solution before you build. It shapes how we run strengthening as analysis (not product) and how we adopt direction before consequence — honored in `../active-designing/20260628-043542_thin-frontend-slc-direction.md`.
+  - Source: <https://www.youtube.com/watch?v=f84n5oFoZBc> · transcript in this folder
+- **`Your customers hate MVPs. Make a SLC instead..html`** — Jason Cohen's essay on **Simple, Lovable, Complete** products: ship something small that a customer genuinely wants to use *as-is*, rather than an embarrassing minimum. It shapes our first deliverables — Rishi + Mantra shell, then Pond GUI — honored in `../active-designing/20260628-043542_thin-frontend-slc-direction.md` and `../work-in-progress/ROADMAP.md`.
+  - Source: <https://longform.asmartbear.com/slc/> (saved locally)
 - **`Systemantics.md`** — John Gall's *Systemantics* (later *The Systems Bible*), honored as a curated record of its key principles rather than the full book, which is copyrighted. Its keystone, Gall's Law — *a complex system that works grows from a simpler system that worked* — shapes how we grow every module, and it is honored in `../external-research/20260620-014412_system.md`. A principles summary drawn from public sources and clearly labeled, in place of a transcript.
   - Source: <https://en.wikipedia.org/wiki/Systemantics> (with the public summaries cited inside `Systemantics.md`)
 - **`sixos/`** — Adam Joseph's nixpkgs-based operating system that runs s6 in place of systemd. Its services-as-packages design and careful layering shape our thinking on the Caravan kernel, explored in `../external-research/20260617-195712_caravan-tally-networking.md` and `../external-research/20260617-195612_ownerboot-riscv-caravan.md`. Cloned whole and unmodified (rev `a984ac7`).
