@@ -1,14 +1,16 @@
-# 996 · The Roadmap — Growing the Whole from What Already Works
+# The Roadmap — Growing the Whole from What Already Works
 
 *A living plan shaped by one law: a complex system that works grows from a simpler system that worked. We build by growing, and we ship something simple that runs at every step.*
 
 **Language:** EN
-**Version:** `20260623.033012` (Rye chronological stamp)
-**Last updated:** 2026-06-23
+**Version:** `20260628-044300` (thin-frontend direction adopted)
+**Last updated:** 2026-06-28
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME — safety, performance, joy; the Seed Law
+**Lens:** TAME — safety, performance, joy; the Seed Law; SLC
 **Status:** Living roadmap
+
+**Direction:** [`active-designing/20260628-043542_thin-frontend-slc-direction.md`](../active-designing/20260628-043542_thin-frontend-slc-direction.md)
 
 ---
 
@@ -16,9 +18,9 @@
 
 **Rye OS** — a system that belongs wholly to the one who runs it. One language (Rye), one value model, one kernel (Caravan), one compositor (Brushstroke), one shell (Rishi), one version history (Mantra), one network (Comlink), one database (Tablecloth), one composition language (Brix), one data notation (Bron), one memory model (Tally), one boot (Aurora), one enclosure (Pond). Each module individually simple; together they compose a desktop, a forge, a network, and a boot — on x86_64 today and RISC-V as the horizon.
 
-Rye is its own language — not a Zig derivative forever. The compiler fork is the primary track: no `usize`, `u32` slice lengths, self-hosted compiler, Rye-native std (`967`, `970`).
+**Rye today** is a thin, honest frontend on pinned Zig 0.16.0 — `rye/lib/std` leaned upon through pristine symlinks, safety living in authored `.rye` (assertions at call sites, `width-check.rish`, the gate trio). The strengthening chronicle **completed** as analysis; it is record, not product.
 
-The full design lives in `active-designing/20260619-225712_the-whole-system.md`. This roadmap says what to build and in what order.
+The full design lives in [`active-designing/20260619-225712_the-whole-system.md`](../active-designing/20260619-225712_the-whole-system.md). This roadmap says what to build and in what order.
 
 ---
 
@@ -26,104 +28,100 @@ The full design lives in `active-designing/20260619-225712_the-whole-system.md`.
 
 | Module | Seed | Witnesses |
 |--------|------|-----------|
-| **Rye** | Self-hosting compiler, strengthened std | 90 parity GREEN |
+| **Rye** | Thin frontend over Zig; pristine `std` (re-fork proposed) | 116 behavior witnesses |
 | **Aurora** | Six-stage relay + deciding stage on RISC-V | Freestanding |
 | **Caravan** | seed → bounded → twin → chain | Hosted, asserted |
 | **Tally** | seed + named gardens (blob/diff/frame) | 15 invariants |
 | **Brix** | `.brix` descriptor, 10 tracked bricks | Read by Mantra |
 | **Tablecloth** | General-purpose database + object storage | Designed (future) |
-| **Bron** | Data notation (`.bron`) — plain key-value, token-efficient | Used by `.brix` |
+| **Bron** | Data notation (`.bron`) | Used by `.brix` |
 | **Mantra** | Weave + commit chain + add-all + log | 9/9 bricks wove |
-| **Rishi** | Shell: typed values, file I/O, `lines`, `starts-with`, `split`, `join`, `trim`, `slice`, `ends-with`, `contains`, `index-of` | Gate trio in `.rish` |
+| **Rishi** | Shell: typed values, file I/O, string builtins | Gate trio in `.rish` |
 | **Brushstroke** | Hosted seed + Wayland seed (one window) | Frame from values |
 | **Skate** | Text grid: 8×8 monospace on Wayland | Headless selftest |
 | **Comlink** | Sealed datagram: shared-memory + localhost UDP | Full crypto stack |
 | **Pond** | Policy as a value (`pond.rish`) | Designed |
 
-**Strengthening:** 116 witnesses through the parity gate, all GREEN. Lexicon at `0000_STRENGTHENING_LEXICON.md`.
+**Strengthening arc:** complete — chronicle + lexicon at `strengthening-compiler/0000_STRENGTHENING_LEXICON.md`; call-site harvest at [`20260628-044200_call-site-harvest.md`](20260628-044200_call-site-harvest.md).
 
-**Gate trio:** `parity.rish` (behavior), `parity-selftest.rish` (proves RED), `additive-gate.rish` (shape). All in Rishi; no sh fallbacks.
+**Gate trio:** `parity.rish` (differential — retires after std re-fork), `parity-selftest.rish`, `additive-gate.rish`. All in Rishi.
 
 ---
 
-## The Primary Track — Fork Rye from Zig
+## The Primary Track — Simple, Lovable, Complete wholes
 
-The compiler fork is the destination. Everything else serves it or runs beside it.
+Grow running seeds into things a person can use *as-is*. See [`gratitude/Your customers hate MVPs. Make a SLC instead..html`](../gratitude/Your%20customers%20hate%20MVPs.%20Make%20a%20SLC%20instead..html).
 
-| Step | What | Status |
+| Ring | What | Status |
 |------|------|--------|
-| **F0** | Decide: literal `usize` ban in Rye types | Done |
-| **F1** | Compiler spike: reject `usize` in one witness | Next |
-| **F2** | Authored corpus: zero `usize` in published `.rye` | In progress — Phase 1b: `brushstroke/*` done; next `mantra/*` |
-| **F3** | Rye-native std: `rye/lib` with `u32`/`u64` signatures | After F2 |
-| **F4** | Bridge sunset: self-hosted `rye run` without Zig | After F3 |
-| **F5** | Guest Zig: interop lane for third-party code | After F4 |
+| **SLC 1** | **Rishi + Mantra shell** — hosted, scriptable REPL with versioned history in a terminal (type → run → version → recall) | **Next north star** |
+| **SLC 2** | **Pond GUI** — same loop in Brushstroke/Skate window on x86_64 | After Skate text rendering |
+| **Compose** | Comlink device wire → capability table → Comlink v1 → Brix v1 → Tablecloth → Forge | Horizon 2 |
 
-The 90 parity witnesses are the specification F3 satisfies. The seam migration (Phases 1–5 in `992`) runs in parallel with F1–F2.
+**Authored width migration** (Phase 1b: `brushstroke/*` done; **`mantra/*` next**) continues — good Tiger on its own, enforced by `width-check.rish`; **not** fork-work.
+
+---
+
+## Horizon 3 — Deliberated horizons (not today's primary track)
+
+| Horizon | What |
+|---------|------|
+| **Language fork** | Self-hosted compiler, Rye-native `std` — revisited from a **mature whole** when RISC-V-first genuinely demands it ([`20260628-043542` direction](../active-designing/20260628-043542_thin-frontend-slc-direction.md)) |
+| **Whole machine** | Aurora on RISC-V, full desktop, Brushstroke web-portable, Rye OS on open silicon |
+| **Inference stack** | Lantern, Lattice, Anvil — after the living desktop composes |
+
+Prior fork steps F0–F5 remain documented in [`active-designing/20260621-070712_the-compiler-fork.md`](../active-designing/20260621-070712_the-compiler-fork.md) as **research**, not the active build order.
 
 ---
 
 ## Horizon 1 — What to Build Next
 
-Ordered by leverage. Each grows from what already runs.
+### Build (SLC 1 first)
 
-### Build
+1. **Rishi + Mantra shell loop** — scriptable hosted shell with versioned history; gates green; terminal-complete.
+2. **Rishi builtins** — trim improvements still open.
+3. **Width migration Phase 1b** — `mantra/*` next (decoupled from fork).
+4. **Caravan capability table** — small Rye struct naming what each child may do.
+5. **Comlink device wire** — sealed datagram over virtio-net between two QEMU guests.
+6. **Skate text rendering** — unlocks SLC 2 (Pond GUI).
 
-1. **Rishi builtins** — `if/then/else` and `for-each` landed (`063112`); trim improvements still open.
-2. **Skate text rendering** — grow the glyph grid into a usable terminal. Text on screen unlocks the Pond GUI.
-3. **Caravan capability table** — small Rye struct naming what each child may do (`984` step 5). The step toward the microkernel.
-4. **Comlink device wire** — sealed datagram over emulated `virtio-net` between two QEMU guests. The real network rung.
-5. **Width migration** — Phase 1b: `brushstroke/*` done (`235812`); next `mantra/*`.
+### Ground (thin frontend)
 
-### Strengthen
-
-6. **Continue the series** — prioritize functions the next code needs (Wayland helpers, UDP ops, text rendering primitives). Quality over quantity. Each pass includes width audit.
-7. **Fix the enricher** — `tools/enrich_strengthening_docs.rye` grabs wrong functions by bare name. Match by full module path; re-run on all 86 docs.
+7. **Std re-fork** — pristine symlink; plan at [`20260628-044300_std-refork-plan.md`](20260628-044300_std-refork-plan.md) (proposed; awaits approval).
 
 ### Study
 
-8. **Display-layer study** — Wayland protocol specs for Brushstroke. Ghostty (MIT) for Skate. River through public docs only (GPL-3.0).
-9. **Close reading** — packet format, commit rule, relay protocols from `gratitude/` before Comlink's format hardens.
+8. **Display-layer study** — Wayland specs; Ghostty (MIT) for Skate.
+9. **Close reading** — Comlink packet format from `gratitude/` before format hardens.
+
+**Retired from active track:** strengthening sweep; pass 9886 as chronicle continuation; "fork is the priority."
 
 ---
 
 ## Horizon 2 — Compose the Simples
 
-Each milestone is *made of* the working seeds above.
-
-- [ ] **Pond GUI** — Rishi REPL + Mantra in a Brushstroke/Skate window on x86_64 AMD
-- [ ] **Comlink v1** — typed, content-named, sealed message delivery between identities
-- [ ] **Brix v1** — lawful composition combinator with its own content-addressed build store (like Nix's `/nix/store`)
-- [ ] **Tablecloth v1** — general-purpose database + object storage for Pond applications (our MySQL/Postgres/Turbopuffer)
+- [ ] **Pond GUI** — SLC 2
+- [ ] **Comlink v1** — typed, content-named, sealed delivery
+- [ ] **Brix v1** — lawful composition + content-addressed store
+- [ ] **Tablecloth v1** — storage for Pond applications
 - [ ] **Caravan v1** — supervision tree with capability table
-- [ ] **Pond v1** — Caravan isolation + Tally bounds as a policy value
-- [ ] **The Forge** — Mantra served, Brushstroke drawn, Comlink replicated (`982`)
-- [ ] **The TAME Editor** — select-then-act in Skate, Brix settings, Rishi behavior (`980`)
-- [ ] **Comlink Remoting** — value-based state sync over UDP, roaming by key (`979`)
+- [ ] **Pond v1** — policy as value
+- [ ] **The Forge** — Mantra served, Brushstroke drawn, Comlink replicated
+- [ ] **The TAME Editor** — select-then-act in Skate
+- [ ] **Comlink Remoting** — value-based state sync over UDP
 - [ ] **Unified keys** — one owner seed deriving all keys
-
----
-
-## Horizon 3 — The Whole Machine
-
-- [ ] **Rye, self-hosted** — own compiler, own std, own width model, RISC-V first-class
-- [ ] **The full family** — every module composing through one value model
-- [ ] **The desktop** — Brushstroke compositor, Skate terminal, Rishi keybindings (`981`)
-- [ ] **Aurora on RISC-V** — verified boot from owner key to living system
-- [ ] **Brushstroke, web-portable** — `wasm32-freestanding` backend
-- [ ] **Rye OS** — the whole machine on open silicon, belonging wholly to the one who runs it
 
 ---
 
 ## The Discipline
 
-- **Ship something simple that runs at every step.**
+- **Ship something simple, lovable, and complete at every step.**
 - **Grow; never design the whole from scratch.**
 - **Prove each step through the gates.**
+- **Safety lives in authored code** — assert at call sites; pristine `std` you lean on.
 - **Keep it loose and single-stranded.**
-- **The fork is the priority — Rye becomes its own language.**
 - **Two-thirds implementation, one-third design.**
 
 ---
 
-*May we grow the whole from what already works, and trust each small running thing as it carries the next. May every horizon arrive by degrees, never by a leap. And may the system we are building stay simple enough, at every stage, to be loved, understood, and grown a little further tomorrow.*
+*May we grow the whole from what already works, and trust each small running thing as it carries the next. May every horizon arrive by degrees, never by a leap. And may the system we build stay simple enough, at every stage, to be loved, understood, and grown a little further tomorrow.*
