@@ -10,6 +10,10 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260628-142447` | [distilled essays into foundations](20260628-142447_distilled-essays-into-foundations.md) | Seven essays from zip + synthesis weave in foundations |
+| `20260628-141947` | [distilled essays placement blocked](20260628-141947_distilled-essays-placement-blocked.md) | Step 0 footing; seven essay files not on disk yet |
+| `20260628-141827` | [Claude rules session-logs alignment](20260628-141827_claude-rules-session-logs-alignment.md) | Sync `.claude` rules and `CLAUDE.md` with Cursor one-clock discipline |
+| `20260628-141717` | [session log hygiene complete](20260628-141717_session-log-hygiene-complete.md) | Amended alignment log into commit; pushed all remotes |
 | `20260628-131800` | [session logs one-clock alignment](20260628-131800_session-logs-one-clock-alignment.md) | Drop countdown prefix; fix headers, index, commit discipline |
 | `20260628-130000` | [Codeberg and groupproject36 push](20260628-130000_codeberg-gp36-push.md) | `main` to origin, gp36-codeberg, gp36-github |
 | `20260628-125200` | [Linengrow merge to main](20260628-125200_linengrow-merge-main.md) | Linengrow, TASKS, roadmap, foundations batch merged |
