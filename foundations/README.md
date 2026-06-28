@@ -19,6 +19,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 **Vision documents** — the larger civic horizon, adaptable to any community:
 
+- `20260628-124512_anywhere-we-are-found.md` — the unifying vision above both tracks: a free open-source OS given away, open hardware, regenerative communities, a decentralized ledger with USDsui, and the creator tools and access passes that Linengrow carries forward.
 - `the-aspiring-radiance-universal.md` — a regenerative policy design framework for every climate and community.
 - `the-regenerative-experiment-universal.md` — a literary vision of renewal across every landscape.
 
