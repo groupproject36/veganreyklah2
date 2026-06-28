@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260628-150206` | [Linengrow foundations vocabulary](20260628-150206_linengrow-foundations-vocabulary.md) | "foundations" replaces "primitives" in Linengrow voice |
 | `20260628-144120` | [Linengrow privacy-by-disclosure](20260628-144120_linengrow-privacy-by-disclosure.md) | ZK privacy model, fable, tools surface, SLC-L4 |
 | `20260628-144118` | [unifying vision in foundations](20260628-144118_unifying-vision-in-foundations.md) | *Anywhere We Go, We're Found* placed as vision document |
 | `20260628-142951` | [batch close handoff for Claude](20260628-142951_batch-close-handoff-for-claude.md) | Linengrow prose + rules sync pushed; collective summary |

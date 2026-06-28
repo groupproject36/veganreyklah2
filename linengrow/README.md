@@ -6,7 +6,7 @@
 
 ---
 
-Linengrow is the first whole built upon Rye OS — a transparent civic and social-commerce platform for vegan musicians and activist creators, where every sponsored post carries a visible label, every data sale carries a visible receipt, every contract carries a visible expiration, and every person owns their complete data in a portable server they can carry whenever they choose. Where Rye OS is the system, Linengrow is what the system is *for*: the place its primitives meet real people, real creators, and real communities.
+Linengrow is the first whole built upon Rye OS — a transparent civic and social-commerce platform for vegan musicians and activist creators, where every sponsored post carries a visible label, every data sale carries a visible receipt, every contract carries a visible expiration, and every person owns their complete data in a portable server they can carry whenever they choose. Where Rye OS is the system, Linengrow is what the system is *for*: the place its foundations meet real people, real creators, and real communities.
 
 This folder holds the vision. The build grows the SLC way — smallest lovable complete first — and its rings rest on the same modules Rye OS is already growing.
 
@@ -14,7 +14,7 @@ This folder holds the vision. The build grows the SLC way — smallest lovable c
 
 ## One Spine, Two Altitudes
 
-Linengrow shares Rye OS's architectural spine exactly: state as a pure fold over an append-only log of immutable signed facts, and five primitives beneath everything — keypair, signed event, log, projection, capability. The civic-platform thesis is a dependency, not a metaphor:
+Linengrow shares Rye OS's architectural spine exactly: state as a pure fold over an append-only log of immutable signed facts, and five foundations beneath everything — keypair, signed event, log, projection, capability. The civic-platform thesis is a dependency, not a metaphor:
 
 - The **keypair** that roots a Rye identity roots a Linengrow account; one owner seed, a whole presence derived.
 - The **signed event** that records a fact records a sponsorship, a data sale, a donation.
@@ -52,10 +52,10 @@ The full vision — a public benefit corporation, a computational data market, s
 | **SLC-L1** | **A verifiable receipt** — sign a transaction fact, append it to the log, produce a receipt anyone can verify | keypair + Mantra log + projection |
 | **SLC-L2** | **Sealed delivery** — a signed receipt sent identity to identity, under seal | Comlink |
 | **SLC-L3** | **Settlement** — a transaction settled on Sui with USDsui, its receipt verifiable on the ledger | Sui / Mysticeti |
-| **SLC-L4** | **The selective-disclosure pass** — a zero-knowledge credential that proves a claim without revealing the data behind it (verified creator, disclosed sponsorship, access granted) | keypair + Sui ZK primitives |
+| **SLC-L4** | **The selective-disclosure pass** — a zero-knowledge credential that proves a claim without revealing the data behind it (verified creator, disclosed sponsorship, access granted) | keypair + Sui ZK foundations |
 | **Horizon** | The data market, premium tiers, state-currency circulation, the PBC and its rounds | the business model, below |
 
-The first ring needs no ledger and no currency — only the primitives Rye OS already grows. A sanctuary receiving donations with cryptographic receipts is a complete, lovable, honest beginning, and everything larger grows from it.
+The first ring needs no ledger and no currency — only the foundations Rye OS already grows. A sanctuary receiving donations with cryptographic receipts is a complete, lovable, honest beginning, and everything larger grows from it.
 
 ---
 
