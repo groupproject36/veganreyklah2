@@ -1,6 +1,6 @@
 # Gratitude Licenses — Clean-Room Discipline
 
-**Canonical reference:** `external-research/997_SYSTEM.md` → section **Gratitude Licenses and the Clean Room** (full Radiant notes per project). Mirror: `.cursor/rules/gratitude-licenses.mdc`.
+**Canonical reference:** `external-research/20260620-014412_system.md` → section **Gratitude Licenses and the Clean Room** (full Radiant notes per project). Mirror: `.cursor/rules/gratitude-licenses.mdc`.
 
 `gratitude/` is a reading library, not a dependency. We study concepts; we never copy code.
 

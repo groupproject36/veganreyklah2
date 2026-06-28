@@ -1,6 +1,6 @@
 # 970 · Explicit Width in Rye — The Language Model
 
-*A siloed design brief for Rye's width model after the language fork: no `usize` in Rye-authored types; `u32` for bounded in-memory lengths and indices; `u64` for wire-persistent quantities; adapter types at foreign doors only. Research that motivated the fork lives in `../external-research/967_literal_usize_ban_language_fork.md`; the interim seam manual lives in `968`. This brief states what Rye **is**, on our own ground.*
+*A siloed design brief for Rye's width model after the language fork: no `usize` in Rye-authored types; `u32` for bounded in-memory lengths and indices; `u64` for wire-persistent quantities; adapter types at foreign doors only. Research that motivated the fork lives in `../external-research/20260621-051312_literal-usize-ban-language-fork.md`; the interim seam manual lives in `968`. This brief states what Rye **is**, on our own ground.*
 
 **Language:** EN
 **Version:** `20260621.051312` (Rye chronological stamp)

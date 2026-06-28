@@ -7,8 +7,8 @@
 **Last updated:** 2026-06-19
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME Style (`996_TAME_STYLE.md`); active-designing principles (one value model, simplicity, self-sovereignty)
-**Reads alongside:** `985_encrypted_networking_riscv.md`, `982_content_centric_messaging.md`, `984_devotional_social_layer.md`; `../SOURCE.md`; honored in `../gratitude/urbit`, `../gratitude/sui`, `../gratitude/nips`
+**Lens:** TAME Style (`TAME_STYLE.md`); active-designing principles (one value model, simplicity, self-sovereignty)
+**Reads alongside:** `20260618-195512_encrypted-networking-riscv.md`, `20260618-212112_content-centric-messaging.md`, `20260618-195612_devotional-social-layer.md`; `../SOURCE.md`; honored in `../gratitude/urbit`, `../gratitude/sui`, `../gratitude/nips`
 **Structure:** mission · problem · opportunity · architecture · metaphor and mechanism · caveats · longer horizon · conclusion
 
 ---

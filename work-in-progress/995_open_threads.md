@@ -155,7 +155,7 @@
 - **Explicit-width Phase 1b (`015712`).** `caravan/bounded.rye`: Region + supervision counts → `u32`; `bufLenU32` at slice seam.
 - **Strengthening pass 9926 (`015612`).** `mem.sliceAsBytes` byte-view length postconditions; witness `mem_slice_as_bytes_test`; 77/77 witnesses GREEN.
 - **Strengthening pass 9927 (`015112`).** SHA3 `ShakeLike.update` sponge cursor postconditions; witness `sha3_shake_update_test`; 76/76 witnesses GREEN.
-- **TAME document stack (`014512`).** Operational supplement → `context/TAME_STYLE.md` (TigerBeetle `TIGER_STYLE.md` filename pattern). Canon: `external-research/996_TAME_STYLE.md` + `gratitude/TIGER_STYLE.md`. Rules updated; `snake_case` defers to 996.
+- **TAME document stack (`014512`).** Operational supplement → `context/TAME_STYLE.md` (TigerBeetle `TIGER_STYLE.md` filename pattern). Canon: `external-research/TAME_STYLE.md` + `gratitude/TIGER_STYLE.md`. Rules updated; `snake_case` defers to 996.
 - **Explicit-width Phase 1b (`014512`).** `caravan/seed.rye`: `max_restarts`, `planned_failures`, `restarts` → `u32`.
 - **Strengthening pass 9928 (`013412`).** `mem.span` sentinel slice postconditions; witness `mem_span_test`; 75/75 witnesses GREEN.
 - **Strengthening pass 9929 (`013112`).** `crypto.secureZero` byte-level wipe postconditions; witness `crypto_secure_zero_test`; 74/74 witnesses GREEN.
@@ -240,7 +240,7 @@
 - **`additive-gate.rish`** — gate trio complete in Rishi. `.sh` fallbacks removed.
 - **`parity-selftest.rish`** — the gate proves RED.
 - **Brix + Tablecloth naming** — compose (Brix) vs store (Tablecloth) vs discipline (silo/siloed); prompt ladder `10018`–`10022`.
-- **TAME Style stack** — `gratitude/TIGER_STYLE.md` → `996_TAME_STYLE.md` → `context/TAME_STYLE.md` + agent rules.
+- **TAME Style stack** — `gratitude/TIGER_STYLE.md` → `TAME_STYLE.md` → `context/TAME_STYLE.md` + agent rules.
 - **GPL compliance** — gitlinks, River not cloned, clean-room boundary.
 - **Formats, editors, inference research (`970`).**
 - **Horizon modules siloed (`978`).** Scribble, Lantern, Lattice, Anvil.

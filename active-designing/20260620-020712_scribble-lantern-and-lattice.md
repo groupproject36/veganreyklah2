@@ -14,7 +14,7 @@
 
 ## Our Own Ground
 
-This is a clean room. We name only what is ours — **Scribble**, **Lantern**, **Lattice**, **Anvil**, **Brix**, **Tablecloth**, **Mantra**, **Brushstroke**, **Skate**, **Pond**, **Tally**, **Caravan**, **Rishi**, and **Rye** — together with **RISC-V** and **x86_64** where hardware matters. Markdown, JSON, tensors, and GPU text rendering enter as concepts. The close reading that named external teachers lives in `../external-research/970_formats_editors_inference_and_tensors.md`.
+This is a clean room. We name only what is ours — **Scribble**, **Lantern**, **Lattice**, **Anvil**, **Brix**, **Tablecloth**, **Mantra**, **Brushstroke**, **Skate**, **Pond**, **Tally**, **Caravan**, **Rishi**, and **Rye** — together with **RISC-V** and **x86_64** where hardware matters. Markdown, JSON, tensors, and GPU text rendering enter as concepts. The close reading that named external teachers lives in `../external-research/20260620-020712_formats-editors-inference-and-tensors.md`.
 
 ---
 

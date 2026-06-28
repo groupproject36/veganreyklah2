@@ -7,7 +7,7 @@
 **Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME Style (`../external-research/996_TAME_STYLE.md`)
+**Lens:** TAME Style (`../external-research/TAME_STYLE.md`)
 **Strengthening:** the second pass of this stack (see `9999_STRENGTHENING.md`); deepens `9998_sha3_512.md`
 **Status:** Applied to `rye/lib/std/crypto/keccak_p.zig` and `rye/lib/std/debug.zig` — parity and boundary sweep confirmed
 
@@ -109,7 +109,7 @@ This pass advances Rye's clock to `20260618.072512`, the stamp beside the SHA3 w
 ## Sources and Gratitude
 
 - **`9998_sha3_512.md`** — the first pass, which strengthened the SHA3-512 wrappers and named this deeper work as the step to come.
-- **TigerBeetle**, in `../gratitude/tigerbeetle/` — the source of `maybe` (the dual of `assert`) and of the control-plane / data-plane assertion economy that told us to keep these checks at the O(1) boundaries. The craft is theirs by example; the application to Rye's sponge is ours, recorded here. Both are folded into `../external-research/996_TAME_STYLE.md`.
+- **TigerBeetle**, in `../gratitude/tigerbeetle/` — the source of `maybe` (the dual of `assert`) and of the control-plane / data-plane assertion economy that told us to keep these checks at the O(1) boundaries. The craft is theirs by example; the application to Rye's sponge is ours, recorded here. Both are folded into `../external-research/TAME_STYLE.md`.
 
 ---
 

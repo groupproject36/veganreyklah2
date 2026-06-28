@@ -7,7 +7,7 @@
 **Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME Style (`../external-research/996_TAME_STYLE.md`); the method in `9999_STRENGTHENING.md`
+**Lens:** TAME Style (`../external-research/TAME_STYLE.md`); the method in `9999_STRENGTHENING.md`
 
 ---
 

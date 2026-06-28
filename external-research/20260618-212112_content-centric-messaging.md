@@ -7,8 +7,8 @@
 **Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME Style (`996_TAME_STYLE.md`); active-designing principles (one value model, simplicity, Gall's Law)
-**Reads alongside:** `985_encrypted_networking_riscv.md`, `984_devotional_social_layer.md`, `983_borrow_checking_and_correctness.md`, `994_caravan_tally_networking.md`; honored in `../gratitude/urbit`, `../gratitude/nips`
+**Lens:** TAME Style (`TAME_STYLE.md`); active-designing principles (one value model, simplicity, Gall's Law)
+**Reads alongside:** `20260618-195512_encrypted-networking-riscv.md`, `20260618-195612_devotional-social-layer.md`, `20260618-204012_borrow-checking-and-correctness.md`, `20260617-195712_caravan-tally-networking.md`; honored in `../gratitude/urbit`, `../gratitude/nips`
 **Sources distilled:** Curtis Yarvin, ["Urbit: functional programming from scratch"](https://moronlab.blogspot.com/2010/01/urbit-functional-programming-from.html) (2010); [Content-centric networking](http://en.wikipedia.org/wiki/Content-centric_networking) (Van Jacobson / PARC); [Clay marks](https://docs.urbit.org/urbit-os/kernel/clay/marks)
 **Structure:** mission · problem · opportunity · architecture · shape-casting and the RISC-V question · Landscape or relays · caveats · longer horizon · conclusion
 

@@ -1,6 +1,6 @@
 # TAME Style — Code
 
-**Canon:** `external-research/996_TAME_STYLE.md` (voiced Tiger Style) · **Source:** `gratitude/TIGER_STYLE.md`
+**Canon:** `external-research/TAME_STYLE.md` (voiced Tiger Style) · **Source:** `gratitude/TIGER_STYLE.md`
 **Operational supplement:** `context/TAME_STYLE.md`. Apply when writing or reviewing Rye source (`.rye`), Brix descriptors (`.brix`), Bron notation (`.bron`), and Rishi scripts (`.rish`).
 
 ## When this rule is active

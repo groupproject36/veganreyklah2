@@ -6,8 +6,8 @@
 **Version:** `20260617.195812` (Rye chronological stamp)
 **Last updated:** 2026-06-17
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Lens:** TAME Style (`996_TAME_STYLE.md`); systems lineage honored in `997_SYSTEM.md`
-**Builds on:** `995_ownerboot_riscv_caravan.md`, `994_caravan_tally_networking.md`
+**Lens:** TAME Style (`TAME_STYLE.md`); systems lineage honored in `20260620-014412_system.md`
+**Builds on:** `20260617-195612_ownerboot-riscv-caravan.md`, `20260617-195712_caravan-tally-networking.md`
 **Status:** Exploration
 
 ---
@@ -24,7 +24,7 @@ Aurora means dawn — first light, the waking of a machine. It gathers the most 
 
 ## The Essences We Carry
 
-Before the boot, the values. The companion note `997_SYSTEM.md` honors two thinkers; here we explain their essences directly, in our own voice, because Aurora is built from them.
+Before the boot, the values. The companion note `20260620-014412_system.md` honors two thinkers; here we explain their essences directly, in our own voice, because Aurora is built from them.
 
 The first essence is **a priority that orders every choice: safety, then performance, then the joy of the craft.** Joran Dirk Greef states it without flinching — irrevocably in that order — and adds the saving grace that it is not a zero-sum game. The three rise together when the design is right. Safety leads, because a boot guards the whole machine that follows it. Performance comes next, sought in the design phase where the largest wins live, long before anything can be measured. And the developer's joy comes third, far from least, because a boot that is legible, replayable, and trustworthy is a boot a person can love working on. Safety and joy are one discipline seen from two sides: the assertions that keep a boot correct are the very things that let us change it without fear.
 
@@ -113,9 +113,9 @@ The wager, stated once more, is simple and worth making. Urbit showed that a boo
 This exploration rests on primary sources, held here with thanks.
 
 - **The Urbit boot sequence** — the Core Academy lessons *Arvo I: The Main Sequence* and *Arvo II: The Boot Sequence*, covering the king and serf, pills (ivory, brass, solid, baby), the functional BIOS formula and the `+eden` first five events, the larval phase and breaking symmetry, metamorphosis, and the mature four-arm Arvo; together with the runtime notes on the from-source brass pill and fastboot.
-- **Joran Dirk Greef and TigerBeetle** — the priority order, safety, performance, and developer experience, irrevocably in that order yet not a zero-sum game, and the design-phase performance teaching. Honored more fully in `997_SYSTEM.md`.
-- **Rich Hickey, *The Language of the System*** (Clojure/conj 2012) — the flow model of transform, move, route, and remember; values with enduring names; the systems failure model; simple services; and program-to-program interfaces. Kept whole in `../gratitude/LanguageSystem.md` and honored in `997_SYSTEM.md`.
-- **RISC-V and ownerboot** — the RISC-V privilege relay, harts, control and status registers, and the Supervisor Binary Interface, and Adam Joseph's ownerboot, both developed in the companion piece `995_ownerboot_riscv_caravan.md`.
+- **Joran Dirk Greef and TigerBeetle** — the priority order, safety, performance, and developer experience, irrevocably in that order yet not a zero-sum game, and the design-phase performance teaching. Honored more fully in `20260620-014412_system.md`.
+- **Rich Hickey, *The Language of the System*** (Clojure/conj 2012) — the flow model of transform, move, route, and remember; values with enduring names; the systems failure model; simple services; and program-to-program interfaces. Kept whole in `../gratitude/LanguageSystem.md` and honored in `20260620-014412_system.md`.
+- **RISC-V and ownerboot** — the RISC-V privilege relay, harts, control and status registers, and the Supervisor Binary Interface, and Adam Joseph's ownerboot, both developed in the companion piece `20260617-195612_ownerboot-riscv-caravan.md`.
 
 ---
 

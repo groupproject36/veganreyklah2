@@ -6,7 +6,7 @@
 **Version:** `20260620.044112` (Rye chronological stamp)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME — hard bounds, narrow API; `external-research/975_tablecloth_tame_datastore.md`; `996` Tablecloth v1
+**Lens:** TAME — hard bounds, narrow API; `external-research/20260619-220012_tablecloth-tame-datastore.md`; `996` Tablecloth v1
 
 **Ladder:** `10018` → `10019` → `10020` → `10021` → **`10022`**
 

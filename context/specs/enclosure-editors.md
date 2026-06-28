@@ -287,7 +287,7 @@ User namespaces and bwrap behave as expected on NixOS; skip the Ubuntu AppArmor 
 ## Related
 
 - **`SOURCE.md`** — SSH, GPG, signing inside the sandbox, full Cursor launch.
-- **`external-research/987_pond_foundation.md`** — Pond re-grows ai-jail in Rye.
+- **`external-research/20260618-180812_pond-foundation.md`** — Pond re-grows ai-jail in Rye.
 - **`tools/enclosure.conf.example`** — fill-in template for this spec.
 
 ---

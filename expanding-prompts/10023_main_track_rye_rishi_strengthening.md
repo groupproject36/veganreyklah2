@@ -50,7 +50,7 @@
 
 | Doc | Role |
 |-----|------|
-| TAME stack | `gratitude/TIGER_STYLE.md` → `996_TAME_STYLE.md` → `context/TAME_STYLE.md` |
+| TAME stack | `gratitude/TIGER_STYLE.md` → `TAME_STYLE.md` → `context/TAME_STYLE.md` |
 | Width | `10024`, `992`, fork `967`/`970`, interim `968` |
 | Gates | `tools/parity.rish`, `additive-gate.rish`, `parity-selftest.rish` |
 | Enricher | `tools/enrich_strengthening_docs.rye` |

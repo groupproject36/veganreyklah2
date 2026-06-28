@@ -81,7 +81,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 | `20260618-085812` | [998 · A Strategy for Strengthening Rye, and the Next Step to Take](20260618-085812_strengthening-strategy.md) | The standing strategy for our strengthening work. We have taken our first passes by hand; this charter says how to take many more without lo |
 ## Redirect stubs
 
-When a design brief **supersedes** research or an executed prompt, the old file in another stack becomes a stub (see `../external-research/999_RESEARCH.md`). In **this** stack, revise briefs in place when the design matures (see [`20260618-085812_strengthening-strategy.md`](20260618-085812_strengthening-strategy.md)) rather than leaving duplicate architecture docs.
+When a design brief **supersedes** research or an executed prompt, the old file in another stack becomes a stub (see `../external-research/README.md`). In **this** stack, revise briefs in place when the design matures (see [`20260618-085812_strengthening-strategy.md`](20260618-085812_strengthening-strategy.md)) rather than leaving duplicate architecture docs.
 
 **Current width law:** [`20260621-051312_explicit-width-in-rye.md`](20260621-051312_explicit-width-in-rye.md) — literal `usize` ban in Rye types. Interim Zig-ground seam audit: research `968` until fork F3.
 

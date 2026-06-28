@@ -6,7 +6,7 @@
 **Version:** `20260620.210812` (Rye chronological stamp)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME · Tiger Style (`gratitude/TIGER_STYLE.md`, `external-research/996_TAME_STYLE.md`) · inherited-names · parity gate
+**Lens:** TAME · Tiger Style (`gratitude/TIGER_STYLE.md`, `external-research/TAME_STYLE.md`) · inherited-names · parity gate
 
 ---
 
@@ -22,7 +22,7 @@
 
 **Strengthening and width are parallel tracks.** Strengthening passes (`9931` and below) keep earning `std` surfaces through parity on **vendor Zig baseline** until fork F3; then witnesses re-base to **Rye spec**. Width migration touches authored `.rye` first, then wire formats, then Rishi internals.
 
-**Language fork (`051312`):** Rye will ban `usize` in authored types — research `external-research/967_literal_usize_ban_language_fork.md`, design `active-designing/20260621-051312_explicit-width-in-rye.md`. Interim seam policy: `968`.
+**Language fork (`051312`):** Rye will ban `usize` in authored types — research `external-research/20260621-051312_literal-usize-ban-language-fork.md`, design `active-designing/20260621-051312_explicit-width-in-rye.md`. Interim seam policy: `968`.
 
 ## Phased Migration
 
@@ -69,7 +69,7 @@
 | Topic | Lives in |
 |-------|----------|
 | Tiger source discipline | `gratitude/TIGER_STYLE.md` § Safety |
-| TAME voice | `external-research/996_TAME_STYLE.md` |
+| TAME voice | `external-research/TAME_STYLE.md` |
 | Inherited names / no std rename | `context/specs/inherited-names.md` |
 | Main track ordering | `10023` |
 | Style audit pattern | `994_style_audit.md` |

@@ -10,8 +10,8 @@
 //! Build and run it with `../run.sh`, which calls `rye build` to emit the
 //! freestanding ELF and `qemu-system-riscv64 -machine virt` to wake it. The
 //! fuller vision of Aurora lives in
-//! `../../external-research/993_aurora_boot_riscv.md`, read forward through
-//! `../../external-research/986_decided_design_aurora_mantra.md`.
+//! `../../external-research/20260617-195812_aurora-boot-riscv.md`, read forward through
+//! `../../external-research/20260618-190312_decided-design-aurora-mantra.md`.
 //!
 //! The addresses below belong to QEMU's `virt` machine: a 16550-style console
 //! UART whose transmit register sits at 0x1000_0000, and a test device at
@@ -59,7 +59,7 @@ export fn kmain() callconv(.c) noreturn {
 /// A bare-metal `assert`: with no standard library beneath us, the seed states
 /// its own. It vanishes from a release build exactly as `std.debug.assert` does
 /// — `unreachable` carries no cost there — yet names the one fact this code
-/// leans on, in the TAME habit. (See `../../external-research/996_TAME_STYLE.md`.)
+/// leans on, in the TAME habit. (See `../../external-research/TAME_STYLE.md`.)
 fn assert(ok: bool) void {
     if (!ok) unreachable;
 }

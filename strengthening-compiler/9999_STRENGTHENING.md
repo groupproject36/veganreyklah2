@@ -7,7 +7,7 @@
 **Last updated:** 2026-06-18
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME Style (`../external-research/996_TAME_STYLE.md`)
+**Lens:** TAME Style (`../external-research/TAME_STYLE.md`)
 **Status:** Living manifesto
 
 ---
@@ -60,7 +60,7 @@ Each strengthening follows the same path, and each document records it:
 
 ## How This Relates to TAME Style and to Versioning
 
-TAME Style (`../external-research/996_TAME_STYLE.md`) is the *how*: how we assert, how we pair and place and split our checks, how we weigh a check's cost against its safety. This stack is the *where* and the *when*: where each application of that discipline to the real standard library is recorded, and when each one entered Rye.
+TAME Style (`../external-research/TAME_STYLE.md`) is the *how*: how we assert, how we pair and place and split our checks, how we weigh a check's cost against its safety. This stack is the *where* and the *when*: where each application of that discipline to the real standard library is recorded, and when each one entered Rye.
 
 Versioning binds the two. Rye's first divergence was in naming — the chronological scheme itself. Its first divergence in substance was the strengthening at `9998`, stamped `20260618.070012`. Future passes that change what the library says, while keeping what it does, accrete onto that line: new stamps beside the old, each enduring, none erased.
 

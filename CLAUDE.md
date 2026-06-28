@@ -24,7 +24,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 
 - **Cursor** (host or ai-jail) reads `.cursor/rules/*.mdc` — including `gratitude-licenses.mdc` for clean-room discipline.
 - **Zed + Claude Agent** (this thread) reads this file and `.claude/rules/*.md` — including `gratitude-licenses.md`.
-- **Canonical license table:** `external-research/997_SYSTEM.md` → Gratitude Licenses and the Clean Room.
+- **Canonical license table:** `external-research/20260620-014412_system.md` → Gratitude Licenses and the Clean Room.
 
 ## Session logs
 

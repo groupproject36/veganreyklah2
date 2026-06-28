@@ -5,7 +5,7 @@
 **Language:** EN
 **Version:** `20260620.033912` (Rye chronological stamp)
 **Last updated:** 2026-06-20
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`); code in TAME Style (`../external-research/996_TAME_STYLE.md`)
+**Style:** Radiant (see `../context/RADIANT_STYLE.md`); code in TAME Style (`../external-research/TAME_STYLE.md`)
 **Status:** Living
 
 ---

@@ -45,7 +45,7 @@ The path is accretion, the same discipline we keep everywhere. Rye diverges by a
 
 With the destination settled, the family can take shape as decided design:
 
-- The Rye-ecosystem family — Rye, Tablecloth, Rishi, the orchestration language, and Mantra — can cross from open research into `active-designing`, sharing one value model. (See `../../external-research/989_voices_of_an_os.md`.)
+- The Rye-ecosystem family — Rye, Tablecloth, Rishi, the orchestration language, and Mantra — can cross from open research into `active-designing`, sharing one value model. (See `../../external-research/20260618-150112_voices-of-an-os.md`.)
 - Rishi can begin: a language of its own deserves a shell of its own. (See [`../active-designing/20260619-051312_the-faithful-hand.md`](../active-designing/20260619-051312_the-faithful-hand.md), [`../rishi/README.md`](../rishi/README.md), and [`../active-designing/20260618-184912_growing-a-language.md`](../active-designing/20260618-184912_growing-a-language.md).)
 
 ---

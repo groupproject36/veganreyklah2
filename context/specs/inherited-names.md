@@ -26,7 +26,7 @@ And there is a quieter reason. `arena` is a good, true name. It means the same t
 
 ## How `garden` Enters — by Being Built
 
-`garden` is not a fresh coat of paint for Zig's `arena`. It is the name of a thing we are making: **Tally**, our own region allocator, framed from the first as a garden (`../../external-research/994_caravan_tally_networking.md`). When Tally is real, `garden` is real in the code — natively, as our own owned name, standing beside the inherited `arena` rather than erasing it. A Rye program might reach for Zig's `arena` today and for Tally's garden tomorrow, and both names go on meaning exactly what they meant.
+`garden` is not a fresh coat of paint for Zig's `arena`. It is the name of a thing we are making: **Tally**, our own region allocator, framed from the first as a garden (`../../external-research/20260617-195712_caravan-tally-networking.md`). When Tally is real, `garden` is real in the code — natively, as our own owned name, standing beside the inherited `arena` rather than erasing it. A Rye program might reach for Zig's `arena` today and for Tally's garden tomorrow, and both names go on meaning exactly what they meant.
 
 We would add an alias only if it earned its keep, and only ever as an addition — `garden` could one day point at `arena` without the old name moving — yet we prefer the honest path: the warm name belongs to the thing we made, not to a borrowed thing relabeled.
 

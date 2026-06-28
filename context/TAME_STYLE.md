@@ -1,6 +1,6 @@
 ---
 name: TAME Style — Operational Supplement
-description: Checkable coding rules for Rye, Brix, and Rishi — root plus one supplement per language. Pairs with the voiced canon in external-research/996_TAME_STYLE.md.
+description: Checkable coding rules for Rye, Brix, and Rishi — root plus one supplement per language. Pairs with the voiced canon in external-research/TAME_STYLE.md.
 type: reference
 ---
 
@@ -20,10 +20,10 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | Layer | Path | Role |
 |-------|------|------|
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
-| **Voiced canon** | `external-research/996_TAME_STYLE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
+| **Voiced canon** | `external-research/TAME_STYLE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
 
-Read **996** for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/20260618-184912_growing-a-language.md`.
+Read **TAME_STYLE** for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/20260618-184912_growing-a-language.md`.
 
 Cursor and Claude rules (`.cursor/rules/tame-style.mdc`, `.claude/rules/tame-style.md`) point here.
 
@@ -124,7 +124,7 @@ return buf[start .. start + @as(usize, @intCast(n))];
 
 ### Naming (Tiger Style)
 
-**`snake_case`** for functions, variables, and file names — per `gratitude/TIGER_STYLE.md` and `external-research/996_TAME_STYLE.md`. The underscore is the closest thing we have to a space; descriptive names read aloud well.
+**`snake_case`** for functions, variables, and file names — per `gratitude/TIGER_STYLE.md` and `external-research/TAME_STYLE.md`. The underscore is the closest thing we have to a space; descriptive names read aloud well.
 
 - Name functions with a verb: `compute_diff`, `serialize_weave`, `load_weave`, `read_brix`.
 - Name constants in `snake_case` with units and qualifiers last when helpful: `max_depth`, `digest_hex_len`.

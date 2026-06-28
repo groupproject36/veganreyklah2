@@ -6,15 +6,15 @@
 **Version:** `20260617.195712` (Rye chronological stamp)
 **Last updated:** 2026-06-17
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Lens:** TAME Style (`996_TAME_STYLE.md`); honoring and systems lineage in `997_SYSTEM.md`
-**Prerequisite:** the names Rye, Tablecloth, Tally, and Caravan are introduced in `995_ownerboot_riscv_caravan.md`
+**Lens:** TAME Style (`TAME_STYLE.md`); honoring and systems lineage in `20260620-014412_system.md`
+**Prerequisite:** the names Rye, Tablecloth, Tally, and Caravan are introduced in `20260617-195612_ownerboot-riscv-caravan.md`
 **Status:** Exploration
 
 ---
 
 ## The Question We Are Chasing
 
-One question runs underneath everything here, and it is worth saying plainly before we begin. The four names at the heart of this study — the language **Rye**, the configuration language **Tablecloth**, the garden allocator **Tally**, and the kernel **Caravan** — are introduced, with their missions and goals, in the companion piece `995_ownerboot_riscv_caravan.md`. That piece grounds them in a boot; this one goes deeper, testing the same names against five living systems.
+One question runs underneath everything here, and it is worth saying plainly before we begin. The four names at the heart of this study — the language **Rye**, the configuration language **Tablecloth**, the garden allocator **Tally**, and the kernel **Caravan** — are introduced, with their missions and goals, in the companion piece `20260617-195612_ownerboot-riscv-caravan.md`. That piece grounds them in a boot; this one goes deeper, testing the same names against five living systems.
 
 Does the API of the Linux kernel itself follow TAME Style — the discipline we drew from Tiger Style and the commitment we drew from Rich Hickey's *Spec-ulation*? And how does that API compare to a different way of holding memory: the arena, which our Rye ecosystem frames as the garden allocator **Tally**, inside the kernel **Caravan**, shaped by s6 and TAME Style and aimed first at RISC-V emulation and x86_64 AMD hardware?
 

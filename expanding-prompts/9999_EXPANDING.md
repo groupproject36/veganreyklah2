@@ -25,7 +25,7 @@ Some topics ladder across several files with timestamps one minute apart — for
 
 ## Redirects and retired patterns
 
-**Executed prompts** become stubs — they keep their number and point at the deliverable (`10013` → `976`, `10015` → Almanac/READMEs). See stub table in [`../external-research/999_RESEARCH.md`](../external-research/999_RESEARCH.md).
+**Executed prompts** become stubs — they keep their number and point at the deliverable (`10013` → `976`, `10015` → Almanac/READMEs). See stub table in [`../external-research/README.md`](../external-research/README.md).
 
 **Current tooling (use these):**
 

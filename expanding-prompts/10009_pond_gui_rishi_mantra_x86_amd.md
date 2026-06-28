@@ -8,7 +8,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME; Gall's Law; one value model; x86_64 near, RISC-V horizon
-**Research base:** `../external-research/978_stack_toward_a_living_desktop.md`
+**Research base:** `../external-research/20260619-153612_stack-toward-a-living-desktop.md`
 
 ---
 

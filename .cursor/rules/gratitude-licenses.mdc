@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Gratitude Licenses — Clean-Room Discipline
 
-**Canonical reference:** `external-research/997_SYSTEM.md` → **Gratitude Licenses and the Clean Room** (full Radiant notes per project).
+**Canonical reference:** `external-research/20260620-014412_system.md` → **Gratitude Licenses and the Clean Room** (full Radiant notes per project).
 
 `gratitude/` is a reading library, not a dependency. We study concepts; we never copy code, documentation, or text into our own modules.
 

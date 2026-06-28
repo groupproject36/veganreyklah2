@@ -22,7 +22,7 @@ This is a clean room. We name only our modules — **Rye**, **Rishi**, **Brix**,
 
 **A complex system that works is grown from a simpler system that worked.**
 
-We call this the **Seed Law** — the principle that orders how every module in the family begins and grows. The gratitude for the insight lives in `../external-research/997_SYSTEM.md`; here we speak only the principle itself, in our own name.
+We call this the **Seed Law** — the principle that orders how every module in the family begins and grows. The gratitude for the insight lives in `../external-research/20260620-014412_system.md`; here we speak only the principle itself, in our own name.
 
 ## One Word, One Law
 

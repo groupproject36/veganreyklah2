@@ -55,7 +55,7 @@ So we pursue understanding, and let style follow from it.
 
 We build so that whole classes of error cannot occur, rather than building quickly and standing ready to chase them. This is the quiet center of TAME Style, and it orders everything else.
 
-Assertions, sized types, bounds on every loop and buffer, and — as Rye grows — borrow-checking-style guarantees over Tally's regions (see `983_borrow_checking_and_correctness.md`) are all one move: state what must be true up front, and let the compiler and the runtime make the untrue unrepresentable. An assertion is not a trap we hope to spring; it is a promise we keep, checked. The strengthening compiler works the same way — it states a function's invariants and proves, through the parity gate, that stating them changed nothing the code does.
+Assertions, sized types, bounds on every loop and buffer, and — as Rye grows — borrow-checking-style guarantees over Tally's regions (see `20260618-204012_borrow-checking-and-correctness.md`) are all one move: state what must be true up front, and let the compiler and the runtime make the untrue unrepresentable. An assertion is not a trap we hope to spring; it is a promise we keep, checked. The strengthening compiler works the same way — it states a function's invariants and proves, through the parity gate, that stating them changed nothing the code does.
 
 So we measure our work by whether a fault can occur at all, rather than by how fast we resolve one. We prepare for challenges — we name the invariant, prove the property, design the error class away — rather than brace to put out fires. The cheapest fault is the one the design made impossible; the next cheapest is the one an assertion stops loudly, near its cause, the moment it tries to be born. When a fault does slip through, we meet it calmly, learn from it, and fold the lesson back as a new thing made impossible — so the system grows more correct with every surprise, rather than merely more patched.
 
@@ -93,7 +93,7 @@ These safety rules will change how you write code, for good. Here is how we live
 
 **Use explicitly sized types** like `u32` everywhere, and set aside the architecture-specific `usize`. Exact sizes keep behavior exact.
 
-**North star (`051312`):** Rye forks to a **literal `usize` ban** — [`967_literal_usize_ban_language_fork.md`](../external-research/967_literal_usize_ban_language_fork.md), design [`970_explicit_width_in_rye.md`](../active-designing/20260621-051312_explicit-width-in-rye.md). Until fork F3, interim seam policy: [`968_usize_boundary_not_design.md`](../external-research/968_usize_boundary_not_design.md).
+**North star (`051312`):** Rye forks to a **literal `usize` ban** — [`20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md), design [`970_explicit_width_in_rye.md`](../active-designing/20260621-051312_explicit-width-in-rye.md). Until fork F3, interim seam policy: [`20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md).
 
 **Interim (Zig-ground era):** **`usize` is a boundary type, not a design type** — pick `u32` for in-memory counts bounded by a named constant; `u64` for wire-persistent sizes; reserve `usize` only at the immediate Zig slice seam until the fork lands. Do not publish `usize` in struct fields, parameters, or return types we author. Pair every `@intCast` with a narrow assert. Operational detail: `context/TAME_STYLE.md`; strengthening audit: `tools/tame_usize_audit.rye`.
 

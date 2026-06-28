@@ -15,7 +15,7 @@ Everything here lives inside the persistent project directory, so it survives ev
 ## What Lives Here
 
 - **`RADIANT_STYLE.md`** — the canonical voice. How we write and speak so every piece reads clearly, lands warmly, and carries well aloud.
-- **`TAME_STYLE.md`** — the operational code supplement (root + Rye / Brix / Rishi). Named like TigerBeetle's `docs/TIGER_STYLE.md`; pairs with `external-research/996_TAME_STYLE.md` and `gratitude/TIGER_STYLE.md`.
+- **`TAME_STYLE.md`** — the operational code supplement (root + Rye / Brix / Rishi). Named like TigerBeetle's `docs/TIGER_STYLE.md`; pairs with `external-research/TAME_STYLE.md` and `gratitude/TIGER_STYLE.md`.
 - **`REYA2.md`** — the identity note. Who Reya 2 is, how she works, and the larger why behind the project.
 - **`specs/`** — plain-English radiant specs. Each one records a decision in prose a reader can follow start to finish. Kebab-case filenames (`inherited-names.md`, …); landmark style guides live at the `context/` root.
 

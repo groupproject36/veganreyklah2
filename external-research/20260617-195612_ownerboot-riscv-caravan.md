@@ -6,8 +6,8 @@
 **Version:** `20260617.195612` (Rye chronological stamp)
 **Last updated:** 2026-06-17
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Lens:** TAME Style (`996_TAME_STYLE.md`); systems lineage honored in `997_SYSTEM.md`
-**Companion:** the deeper comparative study lives in `994_caravan_tally_networking.md`
+**Lens:** TAME Style (`TAME_STYLE.md`); systems lineage honored in `20260620-014412_system.md`
+**Companion:** the deeper comparative study lives in `20260617-195712_caravan-tally-networking.md`
 **Status:** Exploration
 
 ---
@@ -16,7 +16,7 @@
 
 This piece is the ground floor of the Rye ecosystem, and it is written to stand on its own. It introduces the four names we are growing — the language **Rye**, the configuration language **Tablecloth**, the allocator **Tally**, and the kernel **Caravan** — and then it grounds them in the most concrete place a system can begin: the reset vector of a real machine, where the first instruction runs and the whole edifice of trust is laid.
 
-We choose to start at the bottom on purpose. The names can sound abstract when first met, and a boot makes them touchable. By the end you will have watched Rye write firmware, Tablecloth configure it, Tally hand out the first bytes of memory, and Caravan receive a verified machine — so that the deeper comparative study in `994_caravan_tally_networking.md`, which examines these same names across five living systems, reads as familiar ground rather than fresh vocabulary.
+We choose to start at the bottom on purpose. The names can sound abstract when first met, and a boot makes them touchable. By the end you will have watched Rye write firmware, Tablecloth configure it, Tally hand out the first bytes of memory, and Caravan receive a verified machine — so that the deeper comparative study in `20260617-195712_caravan-tally-networking.md`, which examines these same names across five living systems, reads as familiar ground rather than fresh vocabulary.
 
 The thread that ties it all together is simple to say. A boot is a relay of trust across privilege levels, and each handoff is a small commitment: a stage promises the next stage a known machine, in a known state, with a bounded region of memory and a verified image to run. Honor those commitments with assertions and bounds and enduring names, and the boot becomes something an owner can trust, audit, and call their own. That same instinct — commitments kept, names that endure, growth without breakage — is the seed every one of our four names grows from.
 
@@ -183,7 +183,7 @@ This exploration rests on primary sources, held here with thanks.
 - **Ownerboot and SixOS** — Adam Joseph's ownerboot (its design of owner-held keys, write-protected flash, dual normal/fallback images, reproducible source-only builds, and kexec-style kernel upgrade) and SixOS, both from `codeberg.org/amjoseph`. SixOS rests in `../gratitude/sixos`.
 - **RISC-V boot and the SBI** — the RISC-V privilege model and boot relay (reset vector, ZSBL, DRAM-initializing first stage, M-mode SBI provider, the `mret`/`mepc`/`mstatus` handoff, harts, and the device tree), and the Supervisor Binary Interface calling convention (`ecall`, EID in `a7`, FID in `a6`, arguments in `a0`–`a5`, the `sbiret` error-and-value return) with its TIME, IPI, RFENCE, and HSM extensions. Drawn from the RISC-V SBI specification, the OpenSBI reference implementation and its deep-dive materials, and the QEMU `virt` machine boot flow.
 - **Verified and measured boot** — the distinction between signature-checking secure boot and hash-recording measured boot, the role of an immutable ROM as root of trust, and the RISC-V vector cryptography extension for early signature verification.
-- **The Rye ecosystem** — the Rye language, Tablecloth configuration language, Tally garden allocator, and Caravan kernel, introduced here and explored further across five living systems in the companion study `994_caravan_tally_networking.md`, themselves drawn through the TAME Style of `996_TAME_STYLE.md` and the systems lineage honored in `997_SYSTEM.md`.
+- **The Rye ecosystem** — the Rye language, Tablecloth configuration language, Tally garden allocator, and Caravan kernel, introduced here and explored further across five living systems in the companion study `20260617-195712_caravan-tally-networking.md`, themselves drawn through the TAME Style of `TAME_STYLE.md` and the systems lineage honored in `20260620-014412_system.md`.
 
 ---
 
