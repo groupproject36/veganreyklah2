@@ -27,7 +27,7 @@
 
 ### Ground
 - [x] **Grokipedia sweep** — Wikipedia links in our own markdown swapped where a comparable page exists; third-party clones left as-is.
-- [ ] **Merge the batch home** — when `design/foundations-and-kernel-horizon` settles, merge to `main` and push, so the living docs (ROADMAP, TASKS, Linengrow, foundations) reach the default tip.
+- [x] **Merge the batch home** — when `design/foundations-and-kernel-horizon` settles, merge to `main` and push, so the living docs (ROADMAP, TASKS, Linengrow, foundations) reach the default tip.
 
 ---
 
