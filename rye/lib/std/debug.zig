@@ -426,7 +426,7 @@ pub fn assert(ok: bool) void {
 /// the negative case is documented rather than merely absent. It does nothing at
 /// runtime — `ok or !ok` is always true — and stands as living documentation a
 /// reviewer can trust and a coverage tool could one day check. (A TAME Style
-/// idiom; see external-research/996_TAME_STYLE.md.)
+/// idiom; see external-research/TAME_STYLE.md.)
 pub fn maybe(ok: bool) void {
     @disableInstrumentation();
     assert(ok or !ok);
