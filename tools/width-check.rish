@@ -1,12 +1,17 @@
-# width-check.rish — verify .rye files have ZERO `usize` tokens.
+# width-check.rish — verify authored .rye carry zero literal `usize`.
 #
-# The F1 gate: Rye has no usize. Period. No seam casts, no boundary
-# patterns, no exceptions. Every `usize` in authored .rye is debt
-# to be eliminated by the compiler fork.
+# TAME Style (context/TAME_STYLE.md, Rye supplement): prefer fixed
+# widths; avoid architecture-specific `usize` in authored Rye. Use
+# `u32` for bounded in-memory counts and indices, `u64` for
+# wire-persistent sizes. At the inherited-std seam — calling Zig's std
+# through pristine symlinks — assert the bound and `@intCast`; that
+# lives in std-facing code, not in the authored .rye this check scans.
+#
+# The compiler fork is a deferred horizon, never the rationale here.
+# We keep authored .rye usize-free because explicit width is good
+# Tiger on its own merit.
 #
 # Usage: rishi run tools/width-check.rish
-#
-# Every authored .rye file is checked. When ALL pass, F2 is complete.
 
 let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "mantra/src/main.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/hosted_wire.rye" "aurora/src/deciding.rye"]
 
@@ -27,4 +32,4 @@ for-each violations as v do say "  FAIL: ${v.file}"
 for-each clean as c do say "  OK:   ${c.file}"
 
 if v_count == 0 then say "WIDTH CHECK GREEN: all ${total} files are usize-free."
-if v_count != 0 then say "WIDTH CHECK RED: ${v_count} file(s) still contain usize — debt for the compiler fork."
+if v_count != 0 then say "WIDTH CHECK RED: ${v_count} file(s) still contain usize — explicit-width debt in authored Rye."
