@@ -6,6 +6,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260628-021159` | [chunk 4 push and handoff](20260628-021159_chunk-4-push-handoff.md) | B — one-clock reorg (`reorg/one-clock`) |
 | `20260628-020948` | [reorg chunk 4 expanding-prompts](20260628-020948_reorg-chunk-4-expanding-prompts.md) | B — one-clock reorg (`reorg/one-clock`) |
 | `20260628-015112` | [chunk 3 push and handoff](20260628-015112_chunk-3-push-handoff.md) | B — one-clock reorg (`reorg/one-clock`) |
 | `20260628-014512` | [reorg chunk 3 external-research](20260628-014512_reorg-chunk-3-external-research.md) | B — one-clock reorg (`reorg/one-clock`) |
