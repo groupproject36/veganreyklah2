@@ -41,7 +41,7 @@ Gall's Law is the temper beneath our whole method: we grow each module from the 
 
 ## Sources
 
-- *Systemantics* — Wikipedia: <https://en.wikipedia.org/wiki/Systemantics>
+- *Systemantics* — Grokipedia: <https://grokipedia.com/page/Systemantics>
 - Gall's Law, in *hacker-laws*: <https://github.com/dwmkerr/hacker-laws>
 - Axioms summary: <https://biodigitaljazz.net/systemantics.html>
 - Book notes: <https://github.com/lorin/booknotes/blob/master/Systemantics.md>

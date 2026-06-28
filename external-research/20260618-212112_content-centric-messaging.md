@@ -9,7 +9,7 @@
 **Voice:** Reya 2
 **Lens:** TAME Style (`TAME_STYLE.md`); active-designing principles (one value model, simplicity, Gall's Law)
 **Reads alongside:** `20260618-195512_encrypted-networking-riscv.md`, `20260618-195612_devotional-social-layer.md`, `20260618-204012_borrow-checking-and-correctness.md`, `20260617-195712_caravan-tally-networking.md`; honored in `../gratitude/urbit`, `../gratitude/nips`
-**Sources distilled:** Curtis Yarvin, ["Urbit: functional programming from scratch"](https://moronlab.blogspot.com/2010/01/urbit-functional-programming-from.html) (2010); [Content-centric networking](http://en.wikipedia.org/wiki/Content-centric_networking) (Van Jacobson / PARC); [Clay marks](https://docs.urbit.org/urbit-os/kernel/clay/marks)
+**Sources distilled:** Curtis Yarvin, ["Urbit: functional programming from scratch"](https://moronlab.blogspot.com/2010/01/urbit-functional-programming-from.html) (2010); [Named data networking (CCN lineage)](https://grokipedia.com/page/Named_data_networking) (Van Jacobson / PARC); [Clay marks](https://docs.urbit.org/urbit-os/kernel/clay/marks)
 **Structure:** mission · problem · opportunity · architecture · shape-casting and the RISC-V question · Landscape or relays · caveats · longer horizon · conclusion
 
 ---
@@ -28,7 +28,7 @@ Curtis named the deeper version of this — the "big ball of mud" that grows unt
 
 Four threads point one direction, and a fifth — Curtis's — ties them.
 
-**Van Jacobson's content-centric networking** makes content "directly addressable and routable," with endpoints communicating by *named data* rather than IP addresses. Its security model "explicitly secures individual pieces of content rather than securing the connection," and a Content Object's name carries a cryptographic binding to its publisher, with an implicit final name equal to the *hash of the object* ([CCN](http://en.wikipedia.org/wiki/Content-centric_networking)). That is content-addressing as a networking principle — and it is exactly what Mantra already does for our history with SHA3-512.
+**Van Jacobson's content-centric networking** makes content "directly addressable and routable," with endpoints communicating by *named data* rather than IP addresses. Its security model "explicitly secures individual pieces of content rather than securing the connection," and a Content Object's name carries a cryptographic binding to its publisher, with an implicit final name equal to the *hash of the object* ([CCN](https://grokipedia.com/page/Named_data_networking)). That is content-addressing as a networking principle — and it is exactly what Mantra already does for our history with SHA3-512.
 
 **Ames** gives the working shape of it among people: encrypted by default, identity and address one and the same, messages typed and authenticated and delivered in order, exactly once, over plain UDP (`985`). The essence to keep is the discipline; the weight to leave is the galaxy hierarchy and the chain.
 
