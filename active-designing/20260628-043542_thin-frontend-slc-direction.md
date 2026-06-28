@@ -3,7 +3,7 @@
 **Stamp:** `20260628-043542`
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Lens:** TAME · Tiger · Gall · Hickey · SLC · Hammock
+**Lens:** TAME · Tiger · Gall · Hickey · [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md) · Hammock
 **Status:** Adopted — reshapes `work-in-progress/ROADMAP.md` spine; vision unchanged
 
 ---

@@ -1,7 +1,7 @@
 # Context Home
 
 **Language:** EN
-**Last updated:** 2026-06-16
+**Last updated:** 2026-06-28
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -16,6 +16,7 @@ Everything here lives inside the persistent project directory, so it survives ev
 
 - **`RADIANT_STYLE.md`** — the canonical voice. How we write and speak so every piece reads clearly, lands warmly, and carries well aloud.
 - **`TAME_STYLE.md`** — the operational code supplement (root + Rye / Brix / Rishi). Named like TigerBeetle's `docs/TIGER_STYLE.md`; pairs with `external-research/TAME_STYLE.md` and `gratitude/TIGER_STYLE.md`.
+- **`SIMPLE_LOVABLE_COMPLETE.md`** — how we ship. Simple, lovable, complete at every ring; our distillation of Jason Cohen's method, bound to how Rye OS grows. Source essay in `gratitude/`.
 - **`REYA2.md`** — the identity note. Who Reya 2 is, how she works, and the larger why behind the project.
 - **`specs/`** — plain-English radiant specs. Each one records a decision in prose a reader can follow start to finish. Kebab-case filenames (`inherited-names.md`, …); landmark style guides live at the `context/` root.
 
@@ -38,6 +39,7 @@ When a chat or a file stops serving the project, name it gently and let it go. P
   context/        <- this home: style, identity, specs
     RADIANT_STYLE.md
     TAME_STYLE.md
+    SIMPLE_LOVABLE_COMPLETE.md
     REYA2.md
     specs/
   external-research/ <- counting-down research stack; open to other works, experimental and informal (999 is the foundation)
