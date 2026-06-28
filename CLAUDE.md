@@ -28,7 +28,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 
 ## Session logs
 
-At the end of **every** response that changes the repo or records substantial reasoning, write a session log per `.claude/rules/session-logs.md`.
+At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename (`YYYYMMDD-HHMMSS_short-slug.md`), `**Stamp:**` in dot form, **Editor** and **Model** at the top, prepend a row to `session-logs/README.md`, and **commit the log in the same commit as the work** whenever possible.
 
 ## Enclosure
 

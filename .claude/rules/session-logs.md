@@ -16,11 +16,11 @@ After each new log, prepend a newest-first row to `session-logs/README.md`: stam
 
 ## Contents
 
-- **Editor and model** at the top — which editor produced this log and which model powered it. Example: `**Editor:** Claude Code (Zed) · **Model:** Claude Opus 4.6 (1M context)` or `**Editor:** Cursor Composer · **Model:** Claude Sonnet 4.6`. This lets either agent identify which logs came from the other.
+- **Editor and model** at the top — which editor produced this log and which model powered it. Example: `**Editor:** Cursor · **Model:** Composer` or `**Editor:** Claude Code (Zed) · **Model:** Claude Opus 4.6`. This lets either agent identify which logs came from the other.
 - The step-by-step **thinking trace** and reasoning followed during the response.
 - **Observations** about the changes, and any decisions or trade-offs taken.
 - A list of the **files** created, modified, or deleted, each with a one-line why.
 
 ## Spirit
 
-Write it plainly and honestly, in Radiant Style, so a future self or another agent can follow the work home. Commit the log alongside the changes it records.
+Write it plainly and honestly, in Radiant Style, so a future self or another agent can follow the work home. **Commit the log in the same commit as the work it records** whenever possible; a log-only follow-up commit is a last resort.
