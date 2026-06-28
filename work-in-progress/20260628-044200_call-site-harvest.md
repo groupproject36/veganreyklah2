@@ -118,3 +118,27 @@ The lexicon holds ~113 passes; most surfaces have **no** seed caller. After std 
 ## Next
 
 When touching a seed row above: read the pass doc, confirm the strengthened fn matches, then add TAME assertions in the `.rye` caller — not in `std`.
+
+## Seventeen divergent files — captured before symlink (Move 3)
+
+Read before `rye/lib/std` becomes a symlink. Strengthening assertions in these files **do not** graduate to overlay — harvest to call sites when touching seeds.
+
+| File | Diff stat | Chronicle / notes | Harvest |
+|------|-----------|-------------------|---------|
+| `Io/Dir.zig` |  1 file changed, 31 insertions(+), 2 deletions(-) | 9991 | verify pass doc vs diff; assert at call site |
+| `Io/File.zig` |  1 file changed, 2 insertions(+) | 9984–9985 | verify pass doc vs diff; assert at call site |
+| `Random/benchmark.zig` |  1 file changed, 2 insertions(+), 2 deletions(-) | benchmark or ancillary | verify pass doc vs diff; assert at call site |
+| `SemanticVersion.zig` |  1 file changed, 51 insertions(+), 11 deletions(-) | 9946–9948 | verify pass doc vs diff; assert at call site |
+| `crypto/benchmark.zig` |  1 file changed, 4 insertions(+), 4 deletions(-) | benchmark or ancillary | verify pass doc vs diff; assert at call site |
+| `crypto/keccak_p.zig` |  1 file changed, 28 insertions(+) | 9997 | verify pass doc vs diff; assert at call site |
+| `crypto/sha3.zig` |  1 file changed, 29 insertions(+) | 9994,9998 | verify pass doc vs diff; assert at call site |
+| `crypto/timing_safe.zig` |  1 file changed, 7 insertions(+), 2 deletions(-) | 9937 | verify pass doc vs diff; assert at call site |
+| `crypto.zig` |  1 file changed, 12 insertions(+), 1 deletion(-) | 9995 | verify pass doc vs diff; assert at call site |
+| `debug.zig` |  1 file changed, 12 insertions(+) | comments only | verify pass doc vs diff; assert at call site |
+| `fmt.zig` |  1 file changed, 13 insertions(+), 2 deletions(-) | 9986 | verify pass doc vs diff; assert at call site |
+| `fs/path.zig` |  1 file changed, 24 insertions(+), 4 deletions(-) | 9980–9983 | verify pass doc vs diff; assert at call site |
+| `hash/benchmark.zig` |  1 file changed, 2 insertions(+), 2 deletions(-) | benchmark or ancillary | verify pass doc vs diff; assert at call site |
+| `mem/Allocator.zig` |  1 file changed, 4 insertions(+), 1 deletion(-) | 9987 | verify pass doc vs diff; assert at call site |
+| `mem.zig` |  1 file changed, 1258 insertions(+), 127 deletions(-) | 9913–9998 (many mem passes) | ⚠ many surfaces — verify each (9941 mismatch known) |
+| `process.zig` |  1 file changed, 14 insertions(+), 2 deletions(-) | 9981 | verify pass doc vs diff; assert at call site |
+| `start.zig` |  1 file changed, 5 insertions(+), 5 deletions(-) | init seam | verify pass doc vs diff; assert at call site |

@@ -6,6 +6,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260628-051500` | [Move 3 std re-fork executed](20260628-051500_move-3-std-refork-executed.md) | Symlink pristine std; witness suite + overlay guard |
 | `20260628-044500` | [thin frontend four moves](20260628-044500_thin-frontend-four-moves.md) | Moves 1,2,4 done; Move 3 plan only |
 | `20260628-043542` | [thin frontend adopted](20260628-043542_thin-frontend-adopted.md) | Direction + four-move prompt prepared |
 | `20260628-031824` | [reorg arc closed](20260628-031824_reorg-arc-closed.md) | Confirmation on merged `main` |

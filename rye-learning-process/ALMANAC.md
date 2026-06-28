@@ -221,23 +221,23 @@ After that, the wire is a real device between two machines — virtio-net in QEM
 
 ## The Gate Trio in Rishi
 
-Strengthening is safe only while we can prove it. Three gates run in **Rishi** today — no `.sh` fallbacks:
+Safety rests on gates in **Rishi** — no `.sh` fallbacks:
 
 | Gate | Script | What it proves |
 |------|--------|----------------|
-| **Parity** | `tools/parity.rish` | Rye's strengthened `std` is behavior-identical to the baseline across **21** witness programs |
-| **Selftest** | `tools/parity-selftest.rish` | The parity gate turns **RED** on a deliberate SHA3 tamper |
-| **Additive** | `tools/additive-gate.rish` | The latest commit to `rye/lib/` changed only assertions, comments, and `maybe` markers |
+| **Witness suite** | `tools/parity.rish` | All **116** witness programs pass against pristine `std` (once per witness) |
+| **Std overlay guard** | `tools/parity-selftest.rish` | `rye/lib/std` stays a symlink to vendor; tamper on a copied tree is caught |
+| **Additive** | `tools/additive-gate.rish` | If `rye/lib/` changes, only assertions/comments/`maybe` (guards against re-fork) |
 
 Run from the repository root:
 
 ```sh
 rishi/bin/rishi run tools/parity.rish
 rishi/bin/rishi run tools/parity-selftest.rish
-rishi/bin/rishi run tools/additive-gate.rish   # after a std-touching commit
+rishi/bin/rishi run tools/additive-gate.rish   # after a rye/lib-touching commit
 ```
 
-`parity.rish` runs each witness `.rye` through `rye run` twice: baseline arm sets `RYE_LIB=vendor/zig-toolchain/lib`, strengthened arm uses default `rye/lib`. Same `RYE_ZIG`; only the std tree differs. Exit codes and combined output must match. The selftest builds a shadow copy of `rye/lib` with one tampered file (`sed -i` on the shadow) and confirms `rye run` catches the divergence. The additive gate pipes `git diff` through `tools/additive-classify.awk`. Each strengthening pass in `strengthening-compiler/` (9998 downward) records what was touched and expects these gates to stay green.
+**Thin frontend (2026-06-28):** `rye/lib/std` symlinks to `vendor/zig-toolchain/lib/std`. The old differential parity gate — baseline `RYE_LIB` vs strengthened `rye/lib` — **retired**; both arms would read the same bytes. `parity.rish` is now a **behavior regression suite**. The selftest ensures no one replaces the symlink with a copied tree without witnesses still catching behavioral drift. The strengthening chronicle (`strengthening-compiler/`) remains honest record; invariants belong at **call sites** in authored `.rye` per [`work-in-progress/20260628-044200_call-site-harvest.md`](../work-in-progress/20260628-044200_call-site-harvest.md).
 
 ---
 

@@ -43,7 +43,7 @@ The discipline is simple: if reading a line aloud would make a newcomer ask "so 
 | Stamp | Artifact | Meaning |
 |-------|----------|---------|
 | — | [`ROADMAP.md`](ROADMAP.md) | Living roadmap — standing plan |
-| `20260628-044300` | [Std re-fork plan](20260628-044300_std-refork-plan.md) | Proposed — pristine symlink; parity gate retires |
+| `20260628-044300` | [Std re-fork plan](20260628-044300_std-refork-plan.md) | **Executed** — pristine symlink; witness suite + overlay guard |
 | `20260628-044200` | [Call-site harvest](20260628-044200_call-site-harvest.md) | std surfaces seeds use; verify before assert |
 | `20260623-033012` | [Open threads](20260623-033012_open-threads.md) | Current snapshot — pre-direction; refresh next stock-taking |
 | `20260621-032327` | [Strengthening width crosswalk](20260621-032327_strengthening-width-crosswalk.md) | Pass-doc ↔ stdlib width reference |

@@ -28,7 +28,7 @@ The full design lives in [`active-designing/20260619-225712_the-whole-system.md`
 
 | Module | Seed | Witnesses |
 |--------|------|-----------|
-| **Rye** | Thin frontend over Zig; pristine `std` (re-fork proposed) | 116 behavior witnesses |
+| **Rye** | Thin frontend; `rye/lib/std` → vendor symlink | 116 witness regression suite |
 | **Aurora** | Six-stage relay + deciding stage on RISC-V | Freestanding |
 | **Caravan** | seed → bounded → twin → chain | Hosted, asserted |
 | **Tally** | seed + named gardens (blob/diff/frame) | 15 invariants |
@@ -44,7 +44,7 @@ The full design lives in [`active-designing/20260619-225712_the-whole-system.md`
 
 **Strengthening arc:** complete — chronicle + lexicon at `strengthening-compiler/0000_STRENGTHENING_LEXICON.md`; call-site harvest at [`20260628-044200_call-site-harvest.md`](20260628-044200_call-site-harvest.md).
 
-**Gate trio:** `parity.rish` (differential — retires after std re-fork), `parity-selftest.rish`, `additive-gate.rish`. All in Rishi.
+**Gate trio:** `parity.rish` (witness regression suite), `parity-selftest.rish` (std symlink guard), `additive-gate.rish`. All in Rishi.
 
 ---
 
@@ -87,7 +87,7 @@ Prior fork steps F0–F5 remain documented in [`active-designing/20260621-070712
 
 ### Ground (thin frontend)
 
-7. **Std re-fork** — pristine symlink; plan at [`20260628-044300_std-refork-plan.md`](20260628-044300_std-refork-plan.md) (proposed; awaits approval).
+7. **Std re-fork** — **done** (`20260628`) — pristine symlink; see [`20260628-044300_std-refork-plan.md`](20260628-044300_std-refork-plan.md).
 
 ### Study
 

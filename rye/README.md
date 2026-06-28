@@ -106,12 +106,12 @@ rye/bin/rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c 
 Rye's `std` grows by **strengthening** — assertions and `maybe` markers that state what the code already does, never changing behavior. Each pass is recorded in `../strengthening-compiler/` and proven by three **Rishi** gates (`../tools/*.rish`):
 
 ```sh
-rishi/bin/rishi run tools/parity.rish          # 16 witness programs, GREEN
-rishi/bin/rishi run tools/parity-selftest.rish # gate turns RED on tamper
-rishi/bin/rishi run tools/additive-gate.rish   # shape of std changes only
+rishi/bin/rishi run tools/parity.rish          # witness regression suite (116 programs)
+rishi/bin/rishi run tools/parity-selftest.rish # std must stay symlinked; tamper caught
+rishi/bin/rishi run tools/additive-gate.rish   # shape of std changes only (if any local patches)
 ```
 
-The parity gate compares Rye's `rye/lib` against the pristine toolchain `std` byte-for-byte on behavior. Details live in `../rye-learning-process/ALMANAC.md` under *The Gate Trio in Rishi*.
+`rye/lib/std` is a **symlink** to the pinned toolchain — pristine overlay, not a fork. `parity.rish` runs each witness once against that `std` (the old differential baseline-vs-strengthened gate retired). `parity-selftest.rish` guards against accidental re-copying `std` into the tree. Details live in `../rye-learning-process/ALMANAC.md` under *The Gate Trio in Rishi*.
 
 ---
 
