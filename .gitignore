@@ -38,6 +38,7 @@
 !/session-logs/
 !/.cursor/
 !/CLAUDE.md
+!/ORGANIZING.md
 !/.claude/
 
 # Claude Code grows this file when you approve shell commands in Zed; machine-local.

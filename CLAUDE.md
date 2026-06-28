@@ -8,7 +8,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 
 ## Context home
 
-- `context/` — style guide, identity, durable specs (read before large decisions).
+- `context/` — style guide, identity, durable specs, and the four disciplines (read before large decisions). Filing guide: `ORGANIZING.md`.
 - `active-designing/` — design in motion.
 - `expanding-prompts/` — intent expanded into runnable plans (counts upward from `10000`).
 - `session-logs/` — reasoning traces; one-clock filenames per `context/specs/20260627-102012_one-clock-naming-law.md` and `.claude/rules/session-logs.md` (newest-first index in `session-logs/README.md`).

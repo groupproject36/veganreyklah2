@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260628-151437` | [civic style and filing guide](20260628-151437_civic-style-and-filing-guide.md) | CIVIC_STYLE in context; ORGANIZING at root; placements confirmed |
 | `20260628-150400` | [Codeberg push retry](20260628-150400_codeberg-push-retry.md) | All four remotes synced at `6d0d960` |
 | `20260628-150206` | [Linengrow foundations vocabulary](20260628-150206_linengrow-foundations-vocabulary.md) | "foundations" replaces "primitives" in Linengrow voice |
 | `20260628-144120` | [Linengrow privacy-by-disclosure](20260628-144120_linengrow-privacy-by-disclosure.md) | ZK privacy model, fable, tools surface, SLC-L4 |
