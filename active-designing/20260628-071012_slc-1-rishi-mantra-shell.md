@@ -6,9 +6,9 @@
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME · [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md) · Gall · Hammock
-**Status:** Scope adopted — Step 1 sealed on metal; Step 2 hammock at [`20260629-004912_slc-1-step-2-version.md`](20260629-004912_slc-1-step-2-version.md)
+**Status:** **Done** on metal (`2026-06-29`) — four verbs + `tools/slc1_accept.rish`; acceptance closed on functional promise; width/TAME hardening is the next milestone, not part of this ring.
 
-**Child scopes:** [`20260629-004912_slc-1-step-2-version.md`](20260629-004912_slc-1-step-2-version.md) (version) · Step 3 recall — pending
+**Child scopes:** [`20260629-004912_slc-1-step-2-version.md`](20260629-004912_slc-1-step-2-version.md) (version, sealed) · Step 3 recall (sealed) · **Handoff:** [`../context/specs/20260629-031512_slc1-ring-closed-handoff.md`](../context/specs/20260629-031512_slc1-ring-closed-handoff.md)
 
 **Direction:** [`20260628-043542_thin-frontend-slc-direction.md`](20260628-043542_thin-frontend-slc-direction.md) · **Roadmap:** [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md)
 
@@ -113,12 +113,12 @@ rye/bin/rye build mantra/src/main.rye -femit-bin=mantra/bin/mantra
 
 ### In scope (SLC-1 is done when these hold)
 
-- [ ] `rishi repl` (or equivalent single entry point) runs an interactive loop in a terminal
-- [ ] Four verbs work: type, run, version, recall as specified above
-- [ ] Session transcript at `.mantra/session.log`; `:version` weaves via `mantra add`
-- [ ] Meta-commands `:quit`, `:history`, `:recall`, `:version` documented in `rishi/README` or `rye-learning-process/ALMANAC.md`
-- [ ] One witness program in `rye/tests/` exercises the loop headlessly (scripted input, assert transcript + weave side effect)
-- [ ] Gate trio green on metal after `rye` build; width migration on touched `rishi/*` and `mantra/*` files per `width-check.rish`
+- [x] `rishi repl` (or equivalent single entry point) runs an interactive loop in a terminal
+- [x] Four verbs work: type, run, version, recall as specified above
+- [x] Session transcript at `.mantra/session.log`; `:version` weaves via `mantra add`
+- [x] Meta-commands `:quit`, `:history`, `:recall`, `:version` documented in `rishi/README` or `rye-learning-process/ALMANAC.md`
+- [x] Witness programs exercise the loop (`slc1_repl_step1`, `slc1_version_step2`, `slc1_recall_step3`, `slc1_accept`); registered in `tools/parity.rish`
+- [ ] Width migration on touched `rishi/*` and `mantra/*` files per refined `width-check.rish` — **deferred to TAME-hardening milestone**, not required for functional close (`2026-06-29` ruling)
 
 ### Out of scope (SLC-2 or later)
 

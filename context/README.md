@@ -1,7 +1,7 @@
 # Context Home
 
 **Language:** EN
-**Last updated:** 2026-06-28
+**Last updated:** 2026-06-29
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -19,7 +19,7 @@ Everything here lives inside the persistent project directory, so it survives ev
 - **`SIMPLE_LOVABLE_COMPLETE.md`** — how we ship. Simple, lovable, complete at every ring; our distillation of Jason Cohen's method, bound to how Rye OS grows. Source essay in `gratitude/`.
 - **`CIVIC_STYLE.md`** — how we design public benefit. Name the outcome you want, name what the reward measures, keep the two aligned — the civic companion to TAME, Radiant, and SLC.
 - **`REYA2.md`** — the identity note. Who Reya 2 is, how she works, and the larger why behind the project.
-- **`specs/`** — plain-English radiant specs. Each one records a decision in prose a reader can follow start to finish. Kebab-case filenames (`inherited-names.md`, …); landmark style guides live at the `context/` root.
+- **`specs/`** — plain-English radiant specs. Each one records a decision in prose a reader can follow start to finish. Kebab-case filenames (`inherited-names.md`, …); landmark style guides live at the `context/` root. **`20260629-031512_slc1-ring-closed-handoff.md`** — continuity letter after SLC-1 seals; start here after a reset.
 
 A Cursor rule at `.cursor/rules/reya2.mdc` points every new session back here, so the name and the style stay constant across chats.
 
