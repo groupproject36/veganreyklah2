@@ -49,7 +49,7 @@ fn redraw(frame: Frame, io: std.Io) !void {
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const garden = init.garden.allocator();
+    const garden = init.arena.allocator();
     const io = init.io;
 
     // Build frame from values — immediate mode: compute fresh each call.

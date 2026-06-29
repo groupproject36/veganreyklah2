@@ -66,7 +66,7 @@ const max_restarts_per_stage: u32 = 5;
 
 pub fn main(init: std.process.Init) !u8 {
     const io = init.io;
-    const garden = init.garden.allocator();
+    const garden = init.arena.allocator();
     const args = try init.minimal.args.toSlice(garden);
 
     if (args.len >= 4 and std.mem.eql(u8, args[1], "child")) {

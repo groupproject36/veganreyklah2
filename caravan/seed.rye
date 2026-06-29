@@ -33,7 +33,7 @@ const planned_failures: u32 = 3;
 
 pub fn main(init: std.process.Init) !u8 {
     const io = init.io;
-    const allocator = init.garden.allocator();
+    const allocator = init.arena.allocator();
     const args = try init.minimal.args.toSlice(allocator);
 
     // Child mode: exit with the given code.

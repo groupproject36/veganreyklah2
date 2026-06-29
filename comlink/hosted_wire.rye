@@ -224,7 +224,7 @@ fn runDemo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const garden = init.garden.allocator();
+    const garden = init.arena.allocator();
     const io = init.io;
     const args = try init.minimal.args.toSlice(garden);
 

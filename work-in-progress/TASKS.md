@@ -25,7 +25,7 @@
   - [x] **1d — meta (minimal)** — `:quit` and `:q` end cleanly; other `:` lines report unknown meta-command.
   - [x] **1e — witness** — `tools/fixtures/slc1_repl_step1.input` + `tools/slc1_repl_step1.rish` assert binding carry-forward (`let x = 7` then `say "${x}"` → `7`).
   - [x] **1f — register** — `tools/slc1_repl_step1.rish` appended to `tools/parity.rish`.
-- [ ] **`init.garden` → `init.arena` harvest** — pristine `vendor/zig-toolchain` std uses `arena`; migrate remaining `.rye` call sites (18 noted in harvest) — `rishi/src/main.rye` and `rye/src/main.rye` done for this pass.
+- [x] **`init.garden` → `init.arena` harvest** — pristine `vendor/zig-toolchain` std uses `arena`; all authored `.rye` call sites migrated (`2026-06-29`). `brushstroke/wayland_seed.rye` link still needs Wayland dev headers on the host (unchanged).
 - [ ] **Width migration Phase 1b — `mantra/*`** — migrate authored widths to `u32`/`u64` per the supplement; `width-check.rish` green. Decoupled from any fork.
 
 ### Linengrow

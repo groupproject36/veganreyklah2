@@ -12,7 +12,7 @@ const lexicon = @import("enrich/lexicon.rye");
 const zig_lookup = @import("enrich/zig_lookup.rye");
 
 pub fn main(init: std.process.Init) !u8 {
-    const a = init.garden.allocator();
+    const a = init.arena.allocator();
     const io = init.io;
     const project_root = try root_mod.resolveRoot(a, io, init);
     defer a.free(project_root);
