@@ -1,6 +1,7 @@
 # Session log — TAME Style → TAME Guidance rename (Phase 1 complete)
 
-**Clock:** 2026-06-29
+**Stamp:** `20260629.033512`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 
@@ -29,5 +30,4 @@ Rule-currency fix from prior pass holds: agent rules and `context/TAME_GUIDANCE.
 | Living READMEs, specs, tools | Cross-reference sweep |
 | `work-in-progress/TASKS.md`, `ROADMAP.md` | TH-0 done; bench granular |
 | `expanding-prompts/20260629-032712_*` | Prompt filed |
-| `session-logs/99999_20260629-033512_tame-guidance-rename.md` | This log |
 | Deleted `TAME_STYLE.md` (root) | Stale duplicate |

@@ -10,6 +10,23 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260629-034512` | [session log hygiene — one-clock](20260629-034512_session-log-hygiene.md) | Drop countdown prefix on rename logs; README index catches up June 29 |
+| `20260629-034012` | [TAME Guidance rename pushed](20260629-034012_tame-guidance-push.md) | Four remotes at `98f8bf9` |
+| `20260629-033512` | [TAME Guidance rename](20260629-033512_tame-guidance-rename.md) | TH-0 done — living surfaces only; history honest |
+| `20260629-031512` | [SLC-1 handoff letter written](20260629-031512_slc1-handoff-written.md) | Continuity letter at `context/specs/` |
+| `20260629-031512` | [SLC-1 threshold pause](20260629-031512_slc1-threshold-pause.md) | Pause before handoff letter |
+| `20260629-030912` | [dev-loop scaffold and Rishi args](20260629-030912_dev-loop-and-rishi-args.md) | RS-1–RS-3 roadmapped beside TAME hardening |
+| `20260629-030512` | [Cursor ai-jail launcher](20260629-030512_cursor-jail-launcher.md) | `cursor-jail.sh` + `launch-cursor.rish` |
+| `20260629-024012` | [SLC-1 acceptance](20260629-024012_slc1-acceptance.md) | Four verbs proven; ring closed on functional promise |
+| `20260629-024012` | [SLC-1 Step 3 recall built](20260629-024012_slc1-step3-recall-built.md) | `:recall` and `!<n>` witness |
+| `20260629-024012` | [SLC-1 Step 2 commit and push](20260629-024012_slc1-step2-commit-push.md) | Step 2 shipped to remotes |
+| `20260629-023512` | [SLC-1 Step 2 version sealed](20260629-023512_slc1-step2-version-sealed.md) | `:version` + transcript on metal |
+| `20260629-020512` | [currency and Mantrapod visions filed](20260629-020512_foundations-visions-filed.md) | Foundations visions placed |
+| `20260629-015112` | [currency vision adoption blocked](20260629-015112_currency-vision-adoption-blocked.md) | Source not on disk yet |
+| `20260629-013542` | [Step 2 hammock spec filed](20260629-013542_step2-hammock-spec-filed.md) | Scope note for `:version` |
+| `20260629-013012` | [witness batch Phase 1 push](20260629-013012_witness-phase1-push.md) | Phase 1 witnesses + push |
+| `20260629-012942` | [Phase 1 init.arena harvest](20260629-012942_phase1-init-arena-harvest.md) | `init.garden` → `init.arena` at std seam |
+| `20260629-005112` | [ingest SLC-1 runbook](20260629-005112_ingest-slc1-runbook.md) | Gated runbook ingested |
 | `20260628-151437` | [civic style and filing guide](20260628-151437_civic-style-and-filing-guide.md) | CIVIC_STYLE in context; ORGANIZING at root; placements confirmed |
 | `20260628-150400` | [Codeberg push retry](20260628-150400_codeberg-push-retry.md) | All four remotes synced at `6d0d960` |
 | `20260628-150206` | [Linengrow foundations vocabulary](20260628-150206_linengrow-foundations-vocabulary.md) | "foundations" replaces "primitives" in Linengrow voice |
