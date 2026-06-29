@@ -25,6 +25,7 @@ For a batch hygiene pass or when the index may be stale, run `rye run tools/alig
 - The step-by-step **thinking trace** and reasoning followed during the response.
 - **Observations** about the changes, and any decisions or trade-offs taken.
 - A list of the **files** created, modified, or deleted, each with a one-line why.
+- **Next-step recommendation** — one explicit line at the close: *Recommend: keep going to …* when the next bench item is mechanical, single-module, and follows written policy; *Recommend: check in with Claude before …* when it crosses module seams, changes Rishi or value-model behavior, raises a design question no written policy answers, needs an unmade ruling, or reaches for horizon facts. Say why in a phrase.
 
 ## Spirit
 

@@ -61,3 +61,8 @@ say "witness suite: TH-2c hosted corpus bare assert…"
 let th2c = run ["rishi/bin/rishi" "run" "tools/tame_check_th2c.rish"]
 assert th2c.ok else "TH-2c hosted corpus bare assert witness failed"
 say "GREEN: TH-2c hosted corpus bare assert witness passed."
+
+say "witness suite: TH-3 Mantra width…"
+let th3 = run ["rishi/bin/rishi" "run" "tools/width_check_th3.rish"]
+assert th3.ok else "TH-3 Mantra width witness failed"
+say "GREEN: TH-3 Mantra width witness passed."

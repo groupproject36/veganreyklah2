@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-06-29 (TAME Guidance rename; `init.arena` at std seam)
+**Last updated:** 2026-06-29 (TH-3 seam policy; Mantra width exemplar)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Status:** Active — grow by supplement, earned when the language is ready
 
@@ -123,7 +123,16 @@ Use explicitly sized integer types: `u8`, `u16`, `u32`, `u64`, `i8`, `i16`, `i32
 |-------|----------------------|
 | **`u32`** | All in-memory counts, indices, and lengths **bounded by a named constant** (garden capacity, grid dimension, stack depth, frame size). Default width for "how many in this region." |
 | **`u64`** | Wire-persistent sizes, timestamps, content offsets, and any quantity that must mean the same thing on every target. |
-| **`usize`** | **Avoid** in authored Rye. At the inherited-std boundary only: assert `len <= maxInt(u32)` (or named bound), do arithmetic in `u32`, `@intCast` to `usize` for the Zig API call. |
+| **`usize`** | **Only at the cast site, never as an authored field or flowing variable.** At the inherited-std boundary: assert `len <= maxInt(u32)` (or named bound), do arithmetic in `u32`, `@intCast` to `usize` for the Zig API call. |
+
+**Three widths, one boundary rule.** Authored Rye holds counts and indices in fixed widths; `usize` appears only where Zig's slice and allocator APIs require it — at the cast, not in a variable that flows through the module.
+
+Two seam moves cover nearly everything:
+
+1. **Index a slice with an authored `u32`:** cast at the index — `buf[@intCast(pos)]` or `buf[@as(usize, pos)]`. Assert the value is in range first when the bound is not already guaranteed.
+2. **Take a std-provided length into authored arithmetic:** assert `len <= std.math.maxInt(u32)`, then `@intCast` down to `u32` — reuse Tally's `bufLenU32` shape rather than re-rolling the assert-and-cast at every call site.
+
+**Worked example:** Mantra's SLC-1 path (`mantra/src/diff.rye`, `main.rye`) — seven in-memory indices migrated to `u32` with seam casts at slice indices; `store.rye` and `weave.rye` were already clean. Comlink wire formats lean on **`u64`** at persistence boundaries; Rishi REPL buffers follow the same **`u32` + seam cast** pattern as Mantra in TH-5. Aurora freestanding code plays by its own bare-metal width rules — out of this pass.
 
 Name the bound when you pick `u32`:
 
@@ -132,7 +141,7 @@ const max_frame_bytes: u32 = 4096;
 pos: u32, // invariant: pos <= max_frame_bytes
 ```
 
-Width audit: [`work-in-progress/20260620-212126_usize-width-baseline.md`](../work-in-progress/20260620-212126_usize-width-baseline.md). Authored-width migration (Phase 1b, `mantra/*` next) continues — **decoupled** from any compiler fork.
+Width audit: [`work-in-progress/20260620-212126_usize-width-baseline.md`](../work-in-progress/20260620-212126_usize-width-baseline.md). **Mantra** is green under this policy (TH-3); **Rishi** and **Comlink** inherit the same rule in their own passes. **`width-check.rish`** stays out of the green parity suite until the global authored-`usize` count reaches zero.
 
 **Seam pattern at inherited `std` (correct, not debt):**
 

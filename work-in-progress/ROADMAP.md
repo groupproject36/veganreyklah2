@@ -115,7 +115,7 @@ Prior fork steps F0–F5 remain documented in [`active-designing/20260621-070712
 
 **SLC-1 is done** on its functional promise (`2026-06-29`). The **TAME-hardening milestone** is next — width-check refinement (ruling #1), `mantra/*` Phase 1b, `rishi/*` width pass, first `tame-check` lints, `.brix` mend — distinct from the loop close.
 
-1. **TAME hardening** — **TH-0–TH-2c done**; **TH-3** mantra width migration (**Claude strategy pause** before start); TH-4–TH-5; RS-1–RS-3 beside it in Rishi.
+1. **TAME hardening** — **TH-0–TH-3 done**; seam policy written in `TAME_GUIDANCE`; **TH-4** `.brix` mend next; TH-5 Rishi width; RS-1–RS-3 beside it in Rishi. Flip `width-check` into parity when global authored-`usize` count hits zero.
 2. **Rishi script arguments** — expose a `.rish` script's invocation arguments as an `args` value, so scripts read flags natively; a flag-parse helper follows. First beneficiary: `launch-cursor.rish` takes `--appimage` and `cursor-jail.sh` graduates out of POSIX shell. *(Near-term, after SLC-1 acceptance; travels with TAME-hardening — both live in Rishi.)*
 3. **Rishi builtins** — trim improvements still open.
 4. **Width migration Phase 1b** — `mantra/*` next (decoupled from fork).

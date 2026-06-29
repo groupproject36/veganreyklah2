@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-29 (TH-2c hosted bare assert + tame-check gate; TH-3 next — Claude strategy)
+**Last updated:** 2026-06-29 (TH-3 Mantra width + seam policy; TH-4 next)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -66,7 +66,7 @@ SLC-1 promised the four-verb loop; this milestone hardens the code beside it. Le
 - [x] **TH-2 — first `tame-check` lints** — `tools/tame-check.rish` + `tools/fixtures/tame_check_scan.sh`; unqualified-assert, no `Self = @This()`, tabs/trailing whitespace; informational; witness `tools/tame_check_th2.rish` (`2026-06-29`).
 - [x] **TH-2b — Mantra assert compliance** — bare `assert` throughout `mantra/*`; import-once binding; witness `tools/tame_check_th2b.rish` gates module clean (`2026-06-29`).
 - [x] **TH-2c — hosted modules bare assert** — Tally, Caravan, Rishi, Comlink, Brushstroke `seed.rye`; import-once binding; `tame-check` flipped to hard gate; witness `tools/tame_check_th2c.rish` (`2026-06-29`).
-- [ ] **TH-3 — `mantra/*` Phase 1b width** — `u32`/`u64` migration; green under refined `width-check`. **Pause for Claude strategy** before starting.
+- [x] **TH-3 — `mantra/*` Phase 1b width** — seven sites in `diff.rye` then `main.rye`; seam policy canonical in `TAME_GUIDANCE`; witness `tools/width_check_th3.rish`; global `width-check` still RED until Rishi/Comlink (`2026-06-29`).
 - [ ] **TH-4 — `.brix` dead-path mend** — replace stale WIP paths with `ROADMAP.md` / `TASKS.md`; stamp `20260629.004912`.
 - [ ] **TH-5 — `rishi/*` width pass** — explicit widths in shell seed; green under refined lint.
 
