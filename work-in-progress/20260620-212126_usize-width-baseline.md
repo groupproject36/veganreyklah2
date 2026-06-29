@@ -51,7 +51,7 @@ Re-run inventory: `tools/tame_usize_audit.rye` / `width-check.rish` after each m
 
 | Gate | Role | Status |
 |------|------|--------|
-| `tools/width-check.rish` | Substring scan for `usize` in authored `.rye` | Live — **unrefined** (flags seam casts; **TH-1** refines) |
+| `tools/width-check.rish` | Seam-aware scan for authored `usize` in published `.rye` | Live — **refined** (TH-1; blesses `@intCast` / `@as(usize` seam casts) |
 | `tools/tame-check.rish` | Assert style, whitespace, `Self = @This()` | **TH-2** — not built yet |
 
 Ruling #1 (approved): seam-aware `width-check` so sanctioned `@intCast` / `@as(usize` pass while authored `usize` still fails.

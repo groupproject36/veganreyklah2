@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260629-062412` | [TH-1 — seam-aware width-check lands](20260629-062412_th-1-width-check-seam.md) | Refined lint blesses `@intCast`/`@as(usize` seam casts; Tally exemplar passes; authored fixture still fails; parity witness registered. |
 | `20260629-042012` | [TH-0b ship: rules, rye aligner, width baseline](20260629-042012_th-0b-rules-aligner-baseline-ship.md) | Files |
 | `20260629-041512` | [dual-editor rules aligned to TAME Guidance](20260629-041512_dual-editor-rules-tame-alignment.md) | Observations |
 | `20260629-040112` | [align_session_logs ported to Rye](20260629-040112_align-session-logs-rye-port.md) | Rye fits the project pattern — `tame_usize_audit.rye` and `enrich_strengthening_docs.rye` already replaced Python tooling. |

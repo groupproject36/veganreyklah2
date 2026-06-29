@@ -117,7 +117,7 @@ Rye carries the family. The safety Rye offers is the safety every module written
 
 Use explicitly sized integer types: `u8`, `u16`, `u32`, `u64`, `i8`, `i16`, `i32`, `i64`. Use `f32` or `f64` for floating-point. Never use `c_int`, `c_uint`, or `anyopaque` without a stated, commented reason.
 
-**Prefer fixed widths; avoid `usize` in authored Rye.** Tiger Style: use explicitly-sized types like `u32` for everything; avoid architecture-specific `usize`. In authored `.rye`, `tools/width-check.rish` enforces zero literal `usize` in published corpus. At the **inherited-std seam** (calling Zig's `std` through pristine symlinks), assert the bound and cast — that is correct Tiger code, rather than debt awaiting a compiler fork.
+**Prefer fixed widths; avoid `usize` in authored Rye.** Tiger Style: use explicitly-sized types like `u32` for everything; avoid architecture-specific `usize`. In authored `.rye`, `tools/width-check.rish` flags authored `usize` while blessing sanctioned seam casts (`@intCast`, `@as(usize`). At the **inherited-std seam** (calling Zig's `std` through pristine symlinks), assert the bound and cast — that is correct Tiger code, rather than debt awaiting a compiler fork.
 
 | Width | Role in authored Rye |
 |-------|----------------------|
@@ -328,7 +328,7 @@ These are the machine-checkable rules — the lint surface. The discipline is th
 
 | Rule | Check |
 |------|-------|
-| **Zero `usize` in authored `.rye`** | `tools/width-check.rish` (live) |
+| **No authored `usize` in published `.rye`** (seam casts blessed) | `tools/width-check.rish` (live, TH-1) |
 | **Unqualified assert** | flag `std.debug.assert(` and `debug.assert(` in authored `.rye`; the import line is the one allowed mention |
 | **No `Self = @This()`** | flag the literal `Self = @This()`; the alias takes the real type name |
 | **No tabs, no trailing whitespace** | flag tab characters and lines ending in a space |
