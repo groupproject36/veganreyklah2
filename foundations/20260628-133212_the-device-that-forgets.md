@@ -15,6 +15,6 @@ Most devices are built to remember everything and to never let you leave. This o
 
 This forgetting is a kindness rather than a loss. A tool that keeps nothing cannot leak what it never held, and a tool that asks fresh intention for every task hands your attention back to you. What you wish to keep, you keep on purpose: you commit it, deliberately, to lasting paper — a page that needs no battery and answers to no one. The ephemeral and the permanent each take their proper place, with one clear, chosen act between them.
 
-The body of the tool is made to last as long as your care for it. Screens rest on soft mounts rather than rigid glue, so they bend instead of breaking. Seals close with screws and gaskets, so the thing can be opened, cleaned, and mended. Memory slides in and out like a book returned to a shelf. A device built this way becomes a companion across years, rather than a purchase repeated every season.
+The body of the tool is made to last as long as your care for it. Screens rest on soft mounts rather than rigid glue, so they bend instead of breaking. Seals close with screws and gaskets, so the thing can be opened, cleaned, and mended. Memory slides in and out like a book returned to a shelf. A device built this way becomes a companion across years, rather than a purchase repeated every season. The fuller pitch for that device — the Mantrapod — lives in [`20260629-020012_mantrapod-venture-pitch.md`](20260629-020012_mantrapod-venture-pitch.md).
 
 *May the tools we carry hold lightly, protect quietly, and give our attention back to us, whole.*
