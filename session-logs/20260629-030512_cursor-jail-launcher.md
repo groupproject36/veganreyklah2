@@ -1,6 +1,7 @@
 # Session log — Cursor ai-jail launcher (3.9.16)
 
 **Stamp:** `20260629.030512`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

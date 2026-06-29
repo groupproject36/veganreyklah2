@@ -1,6 +1,7 @@
 # Session log — Phase 1b width on brushstroke/*
 
 **Stamp:** `20260622.235812`
+**Editor:** (historical) · **Model:** (historical)
 **Strand:** A — Authored width (Phase 1b)
 
 ## Thinking trace

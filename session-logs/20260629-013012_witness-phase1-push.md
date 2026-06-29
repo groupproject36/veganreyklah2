@@ -1,7 +1,7 @@
 # Session log — witness batch, Phase 1, runbook rulings, push
 
-**Date:** 2026-06-29  
-**Agent:** Reya 2 (Cursor)
+**Stamp:** `20260629.013012`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

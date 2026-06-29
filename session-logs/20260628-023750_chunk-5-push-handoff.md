@@ -1,5 +1,7 @@
 # Chunk 5 push and handoff to chunk 6
 
+**Stamp:** `20260628.023750`
+**Editor:** Cursor · **Model:** Composer
 **Branch:** `reorg/one-clock` @ `469cfa3`
 
 ## Thinking trace

@@ -1,6 +1,7 @@
 # Session log — SLC-1 Step 2 commit and push
 
 **Stamp:** `20260629.024012`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

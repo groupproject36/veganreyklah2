@@ -1,7 +1,7 @@
 # Session log — Phase 1 ground, `init.arena` harvest
 
-**Date:** 2026-06-29  
-**Agent:** Reya 2 (Cursor)
+**Stamp:** `20260629.012942`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

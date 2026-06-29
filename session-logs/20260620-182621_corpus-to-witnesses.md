@@ -1,5 +1,8 @@
 # Session log · vocabulary · corpus → witnesses
 
+**Stamp:** `20260620.182621`
+**Editor:** (historical) · **Model:** (historical)
+
 ## Thinking trace
 
 User chose **witnesses** over corpus for the parity gate's collection of `.rye` test programs — each one witnesses that baseline and strengthened `std` agree.

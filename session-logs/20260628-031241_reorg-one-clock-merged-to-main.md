@@ -1,6 +1,7 @@
 # Reorg arc closed — `reorg/one-clock` fast-forwarded to `main`
 
-**Stamp:** `20260628-031241`  
+**Stamp:** `20260628.031241`
+**Editor:** Cursor · **Model:** Composer
 **Tip:** `f1e1565`
 
 ## Thinking trace

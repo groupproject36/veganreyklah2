@@ -1,5 +1,7 @@
 # Chunk 6 push — design surface complete
 
+**Stamp:** `20260628.024543`
+**Editor:** Cursor · **Model:** Composer
 **Branch:** `reorg/one-clock` @ `1709945`
 
 ## Thinking trace

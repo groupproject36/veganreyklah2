@@ -1,6 +1,8 @@
 # Reorg chunk 4 — `expanding-prompts/`
 
-**Branch:** `reorg/one-clock`  
+**Stamp:** `20260628.020948`
+**Editor:** Cursor · **Model:** Composer
+**Branch:** `reorg/one-clock`
 **Prompt:** `cursor-prompt_reorg-chunk-4_expanding-prompts.md`
 
 ## Thinking trace

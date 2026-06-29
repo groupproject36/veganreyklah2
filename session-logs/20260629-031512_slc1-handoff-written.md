@@ -1,6 +1,7 @@
 # Session log — SLC-1 handoff letter written
 
 **Stamp:** `20260629.031512`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

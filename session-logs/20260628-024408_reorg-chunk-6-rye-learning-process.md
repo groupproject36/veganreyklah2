@@ -1,7 +1,8 @@
 # Reorg chunk 6 — `rye-learning-process/`
 
-**Branch:** `reorg/one-clock`  
-**Stamp:** `20260628-024408`
+**Stamp:** `20260628.024408`
+**Editor:** Cursor · **Model:** Composer
+**Branch:** `reorg/one-clock`
 
 ## Thinking trace
 

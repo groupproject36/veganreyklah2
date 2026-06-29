@@ -1,5 +1,7 @@
 # Session log · archive inventory (read-only)
 
+**Stamp:** `20260627.194115`
+**Editor:** (historical) · **Model:** (historical)
 **Task:** Claude Step 1 — git inventory for archive freeze; change nothing.
 
 ## Thinking trace

@@ -1,6 +1,7 @@
 # Thin frontend — four moves (1, 2, 4 done; 3 proposed)
 
-**Stamp:** `20260628-044500`  
+**Stamp:** `20260628.044500`
+**Editor:** Cursor · **Model:** Composer
 **Prior:** [`20260628-043542_thin-frontend-adopted.md`](20260628-043542_thin-frontend-adopted.md) @ `1ba6149`
 
 ## Order

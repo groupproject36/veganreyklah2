@@ -1,6 +1,7 @@
 # Session log — reorg chunk 2 active-designing
 
 **Stamp:** `20260628.013229`
+**Editor:** Cursor · **Model:** Composer
 **Strand:** B — one-clock reorg (`reorg/one-clock`)
 
 ## Thinking trace

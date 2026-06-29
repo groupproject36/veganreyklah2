@@ -1,6 +1,7 @@
 # Session log — chunk 3 push and handoff
 
 **Stamp:** `20260628.015112`
+**Editor:** Cursor · **Model:** Composer
 **Strand:** B — one-clock reorg (`reorg/one-clock`)
 
 ## Thinking trace

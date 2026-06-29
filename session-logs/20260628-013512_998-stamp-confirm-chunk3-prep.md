@@ -1,6 +1,7 @@
 # Session log — 998 stamp confirm and chunk 3 prep
 
 **Stamp:** `20260628.013512`
+**Editor:** Cursor · **Model:** Composer
 **Strand:** B — one-clock reorg (`reorg/one-clock`)
 
 ## Thinking trace

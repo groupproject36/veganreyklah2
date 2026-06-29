@@ -1,4 +1,7 @@
-# Session log · 235812 — Composer 2.5 handoff prompt
+# Session log — composer handoff
+
+**Stamp:** `20260622.235812`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

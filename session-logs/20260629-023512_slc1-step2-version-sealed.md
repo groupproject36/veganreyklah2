@@ -1,6 +1,7 @@
 # Session log — SLC-1 Step 2 sealed
 
 **Stamp:** `20260629.023512`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

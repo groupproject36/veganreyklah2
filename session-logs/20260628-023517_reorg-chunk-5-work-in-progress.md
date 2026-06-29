@@ -1,7 +1,8 @@
 # Reorg chunk 5 — `work-in-progress/`
 
-**Branch:** `reorg/one-clock`  
-**Stamp:** `20260628-023517`
+**Stamp:** `20260628.023517`
+**Editor:** Cursor · **Model:** Composer
+**Branch:** `reorg/one-clock`
 
 ## Thinking trace
 

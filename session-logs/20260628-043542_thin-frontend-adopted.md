@@ -1,6 +1,7 @@
 # Thin frontend adopted — prompt and direction memo
 
-**Stamp:** `20260628-043542`
+**Stamp:** `20260628.043542`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

@@ -1,7 +1,7 @@
 # Session log — currency vision adoption blocked on source
 
-**Date:** 2026-06-29  
-**Agent:** Reya 2 (Cursor)
+**Stamp:** `20260629.015112`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

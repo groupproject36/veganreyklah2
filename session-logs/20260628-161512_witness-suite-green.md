@@ -1,7 +1,7 @@
 # Session log — witness suite green on metal
 
-**Date:** 2026-06-28  
-**Agent:** Reya 2 (Cursor)
+**Stamp:** `20260628.161512`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

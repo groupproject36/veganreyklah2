@@ -1,6 +1,7 @@
 # Session log — dev-loop scaffold and Rishi script args roadmapped
 
 **Stamp:** `20260629.030912`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

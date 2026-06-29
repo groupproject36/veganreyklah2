@@ -1,7 +1,7 @@
 # Session log — ingest gated SLC-1 runbook
 
-**Date:** 2026-06-29  
-**Agent:** Reya 2 (Cursor)
+**Stamp:** `20260629.005112`
+**Editor:** Cursor · **Model:** Composer
 
 ## Thinking trace
 

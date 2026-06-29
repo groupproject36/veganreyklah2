@@ -1,6 +1,7 @@
 # Session log — one-clock rules close the loop
 
 **Stamp:** `20260628.011308`
+**Editor:** Cursor · **Model:** Composer
 **Strand:** B — one-clock reorg (`reorg/one-clock`)
 
 ## Thinking trace

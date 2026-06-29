@@ -1,6 +1,7 @@
 # Session log — reorg chunk 3 mapping preview
 
 **Stamp:** `20260628.014307`
+**Editor:** Cursor · **Model:** Composer
 **Strand:** B — one-clock reorg (`reorg/one-clock`)
 
 ## Thinking trace
