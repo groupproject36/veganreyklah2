@@ -83,7 +83,7 @@ Host `/home/xy` tmpfs is full — keep `HOME` and caches on project disk.
 
 ## Open Ruling (surface, do not assume)
 
-**Garden vs arena lexicon:** pristine std uses `init.arena`; `context/TAME_STYLE.md` may still say `init.garden`. Recommendation unchanged: `arena` at the std seam; `garden` as Tally's future concept. Await Kaeden's word on a short `context/` lexicon note.
+**Garden vs arena lexicon:** pristine std uses `init.arena`; agent rules and `context/TAME_GUIDANCE.md` now match. `garden` remains the warm local binding and Tally's future concept; a short `context/` lexicon note awaits Kaeden's ruling.
 
 ---
 

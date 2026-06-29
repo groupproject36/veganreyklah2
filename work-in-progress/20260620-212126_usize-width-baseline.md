@@ -1,7 +1,7 @@
 # 992 · Width Baseline — `usize` Elimination
 
 **Stamp:** `20260621.070712`
-**Policy:** `context/TAME_STYLE.md` · `gratitude/TIGER_STYLE.md` · `active-designing/970`
+**Policy:** `context/TAME_GUIDANCE.md` · `gratitude/TIGER_STYLE.md` · `active-designing/970`
 **Status:** ABSOLUTE BAN. Every `usize` in authored `.rye` is debt. The compiler fork eliminates it.
 
 ---

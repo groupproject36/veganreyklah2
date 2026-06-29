@@ -1,13 +1,13 @@
 ---
-name: TAME Style — Operational Supplement
-description: Checkable coding rules for Rye, Brix, and Rishi — root plus one supplement per language. Pairs with the voiced canon in external-research/TAME_STYLE.md.
+name: TAME Guidance — Operational Supplement
+description: Checkable coding rules for Rye, Brix, and Rishi — root plus one supplement per language. Pairs with the voiced canon in external-research/TAME_GUIDANCE.md.
 type: reference
 ---
 
-# TAME Style — Operational Supplement
+# TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-06-28 (TigerStyle-alignment pass — idioms and lint surface drawn from TigerBeetle `src/tidy.zig` and `docs/TIGER_STYLE.md`)
+**Last updated:** 2026-06-29 (TAME Guidance rename; `init.arena` at std seam)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Status:** Active — grow by supplement, earned when the language is ready
 
@@ -15,17 +15,17 @@ type: reference
 
 ## Document Stack
 
-Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYLE.md` pattern (landmark guides at `context/TAME_STYLE.md`, beside `RADIANT_STYLE.md`):
+Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYLE.md` pattern (landmark guides at `context/TAME_GUIDANCE.md`, beside `RADIANT_STYLE.md`):
 
 | Layer | Path | Role |
 |-------|------|------|
 | **Source** | `gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole and unaltered |
-| **Voiced canon** | `external-research/TAME_STYLE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
+| **Voiced canon** | `external-research/TAME_GUIDANCE.md` | Our radiant adaptation; Safety, Performance, DX, and the full why |
 | **Operational supplement** | this document | Checkable root + Rye / Brix / Rishi rules for authors and agents |
 
-Read **TAME_STYLE** for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/20260618-184912_growing-a-language.md`.
+Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/20260618-184912_growing-a-language.md`.
 
-Cursor and Claude rules (`.cursor/rules/tame-style.mdc`, `.claude/rules/tame-style.md`) point here.
+Cursor and Claude rules (`.cursor/rules/tame-guidance.mdc`, `.claude/rules/tame-guidance.md`) point here.
 
 ---
 
@@ -151,7 +151,7 @@ return buf[start .. start + @as(usize, @intCast(n))];
 
 ### Naming (Tiger Style)
 
-**`snake_case`** for functions, variables, and file names — per `gratitude/TIGER_STYLE.md` and `external-research/TAME_STYLE.md`. The underscore is the closest thing we have to a space; descriptive names read aloud well.
+**`snake_case`** for functions, variables, and file names — per `gratitude/TIGER_STYLE.md` and `external-research/TAME_GUIDANCE.md`. The underscore is the closest thing we have to a space; descriptive names read aloud well.
 
 - Name functions with a verb: `compute_diff`, `serialize_weave`, `load_weave`, `read_brix`.
 - Name constants in `snake_case` with units and qualifiers last when helpful: `max_depth`, `digest_hex_len`.
@@ -244,21 +244,21 @@ const Region = struct {
 
 A mutation function on the struct asserts the invariant holds on entry and on exit.
 
-### Garden memory — never `ArenaAllocator` directly
+### Season memory — never `ArenaAllocator` directly
 
-In **authored** Rye programs (`.rye` seeds, tools, witness tests, Skate, Rishi source), reach for the process season allocator through **`init.garden`**, rather than through `std.heap.ArenaAllocator`:
+In **authored** Rye programs (`.rye` seeds, tools, witness tests, Skate, Rishi source), reach for the process season allocator through **`init.arena`** at the pristine std seam, rather than through `std.heap.ArenaAllocator`:
 
 ```zig
-const garden = init.garden.allocator();
+const garden = init.arena.allocator();
 ```
 
-Name the local `garden` (or `allocator` when the role is generic). Do not construct `ArenaAllocator` in our code, do not name the type in our APIs, and do not add `std.heap.GardenAllocator` as a rename of the inherited type.
+Name the local `garden` (warm vocabulary — Tally's future owned concept) or `allocator` when the role is generic. Do not construct `ArenaAllocator` in our code, do not name the type in our APIs, and do not add `std.heap.GardenAllocator` as a rename of the inherited type.
 
-**Why:** `ArenaAllocator` is Zig's inherited name — we keep it in `std` untouched (`context/specs/inherited-names.md`). Our warm vocabulary names what we own: `Init.garden` today; `rye.garden` or `tally/heap-garden.rye` when the owned wrapper graduates to Tally. Inherited `std` internals may still use `ArenaAllocator`; that is out of scope for authored programs.
+**Why:** `ArenaAllocator` is Zig's inherited name — we keep it in `std` untouched (`context/specs/inherited-names.md`). At the thin-frontend seam, Zig names the field `arena`; we honor that name in code. `garden` lives as a local binding and as Tally's future owned vocabulary (`rye.garden` or `tally/heap-garden.rye` when the wrapper graduates). Inherited `std` internals may still use `ArenaAllocator`; that is out of scope for authored programs.
 
 **Freestanding / no `Init`:** use `std.heap.FixedBufferAllocator`, Tally `Region`, or an explicit child allocator passed in — still not `ArenaAllocator` in authored code unless you are strengthening inherited `std` itself.
 
-**On static allocation.** TigerBeetle allocates all memory at startup and frees nothing after, a discipline its database domain rewards with zero latency spikes and no use-after-free. We adopt the spirit fully — bound everything, name every budget — and we adopt the letter where the domain matches: freestanding Aurora paths favor `FixedBufferAllocator` and Tally regions sized up front. For hosted seeds and tools, the bounded `init.garden` season is our deliberate, honest choice: a single arena, released at the end of its season, rather than per-call churn. We name this difference plainly rather than claim a rule we do not yet keep.
+**On static allocation.** TigerBeetle allocates all memory at startup and frees nothing after, a discipline its database domain rewards with zero latency spikes and no use-after-free. We adopt the spirit fully — bound everything, name every budget — and we adopt the letter where the domain matches: freestanding Aurora paths favor `FixedBufferAllocator` and Tally regions sized up front. For hosted seeds and tools, the bounded `init.arena` season is our deliberate, honest choice: a single arena, released at the end of its season, rather than per-call churn. We name this difference plainly rather than claim a rule we do not yet keep.
 
 ---
 

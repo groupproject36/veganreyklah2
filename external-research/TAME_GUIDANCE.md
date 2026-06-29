@@ -1,10 +1,10 @@
-# 996 · TAME Style
+# 996 · TAME Guidance
 
 *The coding style for Rye — safety, performance, and developer experience, in that order.*
 
 **Language:** EN
 **Version:** `20260618.204012` (Rye chronological stamp)
-**Last updated:** 2026-06-21 (`014512` — document stack cross-link)
+**Last updated:** 2026-06-29 (TAME Guidance rename — living canon title and paths)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Status:** Living
@@ -19,15 +19,15 @@ Three layers, one discipline:
 |-------|------|------|
 | **Source** | `../gratitude/TIGER_STYLE.md` | TigerBeetle team's guide, kept whole |
 | **Voiced canon** | this document | Our radiant adaptation; Safety, Performance, DX |
-| **Operational supplement** | `../context/TAME_STYLE.md` | Checkable root + Rye / Brix / Rishi rules for authors and agents |
+| **Operational supplement** | `../context/TAME_GUIDANCE.md` | Checkable root + Rye / Brix / Rishi rules for authors and agents |
 
-Read this document for *why* TAME feels the way it does. Read `context/TAME_STYLE.md` at the keyboard for *what to check*. Landmark filenames follow TigerBeetle's `docs/TIGER_STYLE.md` pattern.
+Read this document for *why* TAME feels the way it does. Read `context/TAME_GUIDANCE.md` at the keyboard for *what to check*. Landmark filenames follow TigerBeetle's `docs/TIGER_STYLE.md` pattern.
 
 ---
 
-## What TAME Style Is
+## What TAME Guidance Is
 
-TAME Style is how we write code for Rye, the language we are growing from Zig 0.16.0. It is a discipline and a delight at once — precise where safety asks for precision, warm in how it reads, and built to be spoken aloud as easily as it is followed. The engineering here is exact on purpose: limits, assertions, and sized types keep their sharp edges, because that sharpness is what keeps us safe. Everything else leads with what is, in a single clear voice.
+TAME Guidance is how we write code for Rye, the language we are growing from Zig 0.16.0. It is a discipline and a delight at once — precise where safety asks for precision, warm in how it reads, and built to be spoken aloud as easily as it is followed. The engineering here is exact on purpose: limits, assertions, and sized types keep their sharp edges, because that sharpness is what keeps us safe. Everything else leads with what is, in a single clear voice.
 
 ---
 
@@ -53,7 +53,7 @@ So we pursue understanding, and let style follow from it.
 
 ## Correctness, Not Firefighting
 
-We build so that whole classes of error cannot occur, rather than building quickly and standing ready to chase them. This is the quiet center of TAME Style, and it orders everything else.
+We build so that whole classes of error cannot occur, rather than building quickly and standing ready to chase them. This is the quiet center of TAME Guidance, and it orders everything else.
 
 Assertions, sized types, bounds on every loop and buffer, and — as Rye grows — borrow-checking-style guarantees over Tally's regions (see `20260618-204012_borrow-checking-and-correctness.md`) are all one move: state what must be true up front, and let the compiler and the runtime make the untrue unrepresentable. An assertion is not a trap we hope to spring; it is a promise we keep, checked. The strengthening compiler works the same way — it states a function's invariants and proves, through the parity gate, that stating them changed nothing the code does.
 
@@ -95,7 +95,7 @@ These safety rules will change how you write code, for good. Here is how we live
 
 **North star (`051312`):** Rye forks to a **literal `usize` ban** — [`20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md), design [`970_explicit_width_in_rye.md`](../active-designing/20260621-051312_explicit-width-in-rye.md). Until fork F3, interim seam policy: [`20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md).
 
-**Interim (Zig-ground era):** **`usize` is a boundary type, not a design type** — pick `u32` for in-memory counts bounded by a named constant; `u64` for wire-persistent sizes; reserve `usize` only at the immediate Zig slice seam until the fork lands. Do not publish `usize` in struct fields, parameters, or return types we author. Pair every `@intCast` with a narrow assert. Operational detail: `context/TAME_STYLE.md`; strengthening audit: `tools/tame_usize_audit.rye`.
+**Interim (Zig-ground era):** **`usize` is a boundary type, not a design type** — pick `u32` for in-memory counts bounded by a named constant; `u64` for wire-persistent sizes; reserve `usize` only at the immediate Zig slice seam until the fork lands. Do not publish `usize` in struct fields, parameters, or return types we author. Pair every `@intCast` with a narrow assert. Operational detail: `context/TAME_GUIDANCE.md`; strengthening audit: `tools/tame_usize_audit.rye`.
 
 **Assertions are how we discover bugs early and often.** They detect programmer errors — the unexpected kind. Operating errors are expected, and we handle those. An assertion failure means the code itself is wrong, and the only correct response is to crash, which turns a silent correctness bug into a loud liveness bug we can find. Assertions multiply the power of fuzzing.
 
@@ -268,7 +268,7 @@ So the next time you reach for a script, write `scripts/*.zig` rather than `scri
 
 ## The Last Stage
 
-At the end of the day: keep trying things, have fun, and remember — it is called TAME Style because the code stays calm and gentle, and because gentleness, held with discipline, is its own kind of strength.
+At the end of the day: keep trying things, have fun, and remember — it is called TAME Guidance because the code stays calm and gentle, and because gentleness, held with discipline, is its own kind of strength.
 
 > Our adventures and escapes were never managed by luck alone, and never for our sake alone. We are fine and capable, and we are small fellows in a wide and wonderful world. For that, we are thankful, and we laugh, and we get back to the work.
 

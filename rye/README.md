@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260620.033912` (Rye chronological stamp)
 **Last updated:** 2026-06-20
-**Style:** Radiant prose (see `../context/RADIANT_STYLE.md`); code in TAME Style (`../external-research/TAME_STYLE.md`)
+**Style:** Radiant prose (see `../context/RADIANT_STYLE.md`); code in TAME Guidance (`../external-research/TAME_GUIDANCE.md`)
 **Status:** Living
 
 ---
@@ -34,7 +34,7 @@ rye/
     std/                    <- our std: a copy of Zig 0.16.0's, under our care
     (others)                <- relative symlinks back to the pinned toolchain
   src/
-    main.rye                <- the `rye` command, itself a Rye program (TAME Style)
+    main.rye                <- the `rye` command, itself a Rye program (TAME Guidance)
   tests/
     sha3_512_test.rye       <- proves SHA3-512 parity with Zig 0.16.0
     version_test.rye        <- shows the backend version via builtin.zig_version

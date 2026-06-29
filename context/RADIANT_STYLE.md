@@ -43,7 +43,7 @@ We speak of building soundly, rather than of fixing what broke. The words we cho
 
 This is no denial of difficulty; hard problems stay hard. It is a choice of where to stand. The strongest engineering, like the warmest writing, leads with what will be true and builds so that it stays true — invariants named up front, error classes designed away. When a fault does arrive, we meet it plainly, learn from it, and fold the lesson back into the design as a new thing made impossible. The reactive word ("debug," "firefight," "patch") names the smallest, latest, most expensive part of the work; the affirmative word ("prepare," "prove," "prevent") names where the leverage truly lives.
 
-The engineering side of this stance lives in TAME Style, under *Correctness, Not Firefighting*.
+The engineering side of this stance lives in TAME Guidance, under *Correctness, Not Firefighting*.
 
 ---
 

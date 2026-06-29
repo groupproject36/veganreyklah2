@@ -9,7 +9,7 @@
 
 ## What This Decides
 
-Rye is its own language. It begins on the exact Zig 0.16.0 ground, and from there it grows into something separate — a language with its own standard library, and in time its own syntax and semantics, shaped by its own principles. Rye is no longer a dialect held forever close to its parent. It is a language of its own, and its north star is clear: to become, by the measures we hold, better than the ground it grew from — where "better" is named precisely, by the principles of TAME Style and of RISC-V.
+Rye is its own language. It begins on the exact Zig 0.16.0 ground, and from there it grows into something separate — a language with its own standard library, and in time its own syntax and semantics, shaped by its own principles. Rye is no longer a dialect held forever close to its parent. It is a language of its own, and its north star is clear: to become, by the measures we hold, better than the ground it grew from — where "better" is named precisely, by the principles of TAME Guidance and of RISC-V.
 
 ---
 

@@ -1,24 +1,24 @@
 ---
-description: TAME Style for Rye, Brix, and Rishi — invariants, bounds, garden memory
+description: TAME Guidance for Rye, Brix, and Rishi — invariants, bounds, garden memory
 globs: "**/*.{rye,rish,brix}"
 alwaysApply: false
 ---
 
-# TAME Style — Code
+# TAME Guidance — Code
 
-**Canon:** `external-research/TAME_STYLE.md` (voiced Tiger Style) · **Source:** `gratitude/TIGER_STYLE.md`
-**Operational supplement:** `context/TAME_STYLE.md` — apply when writing or reviewing Rye (`.rye`), Brix (`.brix`), and Rishi (`.rish`).
+**Canon:** `external-research/TAME_GUIDANCE.md` (voiced Tiger Style) · **Source:** `gratitude/TIGER_STYLE.md`
+**Operational supplement:** `context/TAME_GUIDANCE.md` — apply when writing or reviewing Rye (`.rye`), Brix (`.brix`), and Rishi (`.rish`).
 
 ## Core moves (root)
 
 - State invariants **before** implementing; `// invariant:` on every `assert`.
 - Bounds on everything; named errors; accrete never break; one value model.
 - **`snake_case`** for functions, variables, and file names (996 / Tiger Style).
-- **Explicit widths** — `u32` / `u64` in authored APIs; `usize` only at inherited slice boundaries (`context/TAME_STYLE.md`, `10024`).
+- **Explicit widths** — `u32` / `u64` in authored APIs; `usize` only at inherited slice boundaries (`context/TAME_GUIDANCE.md`, `10024`).
 
 ## Explicit widths (authored Rye)
 
-Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full table in `context/TAME_STYLE.md`.
+Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full table in `context/TAME_GUIDANCE.md`.
 
 - **`u32`** — in-memory counts, indices, lengths bounded by a named constant (`max_*`, garden capacity, grid cols).
 - **`u64`** — wire-persistent offsets, timestamps, cross-target sizes.
@@ -26,10 +26,10 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full 
 - **Never** `usize` in struct fields, public params, or return types we publish.
 - Charter: `expanding-prompts/20260620-210812_explicit-width-audit.md`; inventory: `work-in-progress/20260620-212126_usize-width-baseline.md`.
 
-## Garden memory (authored Rye)
+## Season memory (authored Rye)
 
 - **Never** use `std.heap.ArenaAllocator` directly in `.rye` we author (seeds, Rishi, Skate, witnesses, tools).
-- **Always** use `const garden = init.garden.allocator()` for the process season allocator.
+- **Always** use `const garden = init.arena.allocator()` at the pristine std seam (`init.arena` is Zig's field name; `garden` is the warm local binding).
 - Do **not** add `GardenAllocator` as a std rename — owned wrapper belongs at `rye.garden` / `tally/heap-garden.rye` when built.
 - Policy: `context/specs/inherited-names.md`.
 

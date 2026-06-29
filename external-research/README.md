@@ -35,13 +35,13 @@ When an exploration **lands** (mission complete) or **moves** to active-designin
 
 ## One clock, one order
 
-Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`README.md`, `TAME_STYLE.md`) carry no stamp. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`README.md`, `TAME_GUIDANCE.md`) carry no stamp. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
 ## Explorations (newest first)
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
-| *(living)* | [TAME Style](TAME_STYLE.md) | Living — voiced TAME style canon (philosophy and full why) |
+| *(living)* | [TAME Guidance](TAME_GUIDANCE.md) | Living — voiced TAME style canon (philosophy and full why) |
 | `20260622-232912` | [964 · seL4 and Redox Through the TAME Rye Lens — Can We Improve Upon Them?](20260622-232912_sel4-redox-through-tame-rye.md) | Research |
 | `20260621-070712` | [965 · The Rye Compiler Fork — How a Language Becomes Its Own](20260621-070712_rye-compiler-fork.md) | Research |
 | `20260621-064612` | [966 · Brix vs Bron — When to Compose and When to Notate](20260621-064612_brix-vs-bron.md) | Research |
@@ -60,7 +60,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 | `20260619-225212` | [974 · s6, SixOS, Nix, and infuse — What Caravan, Brix, and Tally Inherit](20260619-225212_s6-sixos-nix-infuse.md) | Research |
 | `20260619-220012` | [975 · Tablecloth — A TAME-Aligned Datastore: Close Reading of the Field](20260619-220012_tablecloth-tame-datastore.md) | What would a datastore look like if it were designed in the TAME order — correctness first, performance second, joy thir |
 | `20260619-171112` | [976 · Microkernel or Monolith? — What Caravan Can Learn from seL4 and Redox, and What TAME Demands](20260619-171112_microkernel-vs-monolith-for-caravan.md) | Research |
-| `20260619-155612` | [977 · POSIX at the Door — What the OS Interface Asks of TAME, and How River and Ghostty Show the Way](20260619-155612_posix-and-tame-style.md) | Research |
+| `20260619-155612` | [977 · POSIX at the Door — What the OS Interface Asks of TAME, and How River and Ghostty Show the Way](20260619-155612_posix-and-tame-guidance.md) | Research |
 | `20260619-153612` | [978 · The Stack Toward a Living Desktop — Mantra, Tally, Tablecloth, Aurora, and Pond Grown for a Rishi Shell](20260619-153612_stack-toward-a-living-desktop.md) | Research synthesis and forward design |
 | `20260619-153212` | [979 · Where Building Met Design — a Progress Map at the Turn](20260619-153212_where-building-met-design.md) | Survey |
 | `20260619-070612` | [980 · Brushstroke and the Documentation Surface — a Drawn Interface for Rye, and How the System Shows Itself](20260619-070612_brushstroke-and-the-docs-surface.md) | Two strands, woven into one rope. The first is a plain question: should we begin documenting Rye OS in earnest — Rishi's |

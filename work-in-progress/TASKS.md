@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-29 (SLC-1 done; dev-loop scaffold landed; Rishi script args roadmapped)
+**Last updated:** 2026-06-29 (TAME Guidance rename; TAME-hardening substeps queued)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -53,18 +53,26 @@
   - [x] **3a — `:recall <n>`** — `recallByIndex` + shared `runInputLine`; re-runs ring entry as if typed.
   - [x] **3b — `!<n>` alias** — shorthand via `recallByIndex` before the `:` meta block.
   - [x] **3c — witness** — `tools/slc1_recall_step3.rish` green; two `RE-RAN` prints prove re-run; registered in `parity.rish`.
-- [ ] **Rishi script arguments** — pass `args[3..]` from `rishi run <file> …` through to the interpreter and expose them to the script as an `args` list; assert the count bound; witness with a small flag-reading `.rish`. Then a `--flag value` parse helper. *Graduates `cursor-jail.sh` flag-handling into `launch-cursor.rish`.* *(Leads the near-term after SLC-1; travels with TAME-hardening — both live in Rishi.)*
-- [ ] **Launcher graduation** — once arguments land, `launch-cursor.rish` reads `--appimage PATH` natively; retire `cursor-jail.sh`'s flag layer into Rishi.
+- [ ] **Rishi script arguments** — see **RS-1** through **RS-3** under TAME hardening (travels beside it; both live in Rishi).
+- [ ] **Launcher graduation** — **RS-3** under TAME hardening.
 
 ### TAME hardening — next milestone (distinct from SLC-1 close)
 
 SLC-1 promised the four-verb loop; this milestone hardens the code beside it. Led by width-check refinement (ruling #1, already approved).
 
-- [ ] **Width-check refinement (ruling #1)** — replace substring scan with seam-aware rules so sanctioned casts (e.g. Tally `bufLenU32`) pass; unrefined gate today reads red on honest seam casts in Steps 2–3.
-- [ ] **Width migration Phase 1b — `mantra/*`** — migrate authored widths to `u32`/`u64` per the supplement; `width-check.rish` green. Decoupled from any fork.
-- [ ] **Width migration — `rishi/*`** — explicit widths in the shell seed; green under refined `width-check`.
-- [ ] **First TAME lints (Phase C)** — grow `tools/tame-check.rish`: unqualified-assert, no `Self = @This()`, no tabs / trailing whitespace.
-- [ ] **`.brix` dead-path mend** — stamp `20260629.004912` for Phase 6 when the mend lands.
+- [x] **TH-0 — TAME Style → TAME Guidance rename** — `git mv` living discipline docs and agent rules; living references updated; `init.arena` at std seam in rules; history (`session-logs/`, `strengthening-compiler/`, dated studies) left honest (`2026-06-29`).
+- [ ] **TH-1 — width-check refinement (ruling #1)** — seam-aware lint; sanctioned `@intCast` / `@as(usize` pass; authored `usize` still flagged; witness on Tally exemplar.
+- [ ] **TH-2 — first `tame-check` lints** — `tools/tame-check.rish` (unqualified-assert, no `Self = @This()`, tabs/trailing whitespace); informational at first.
+- [ ] **TH-2b — Mantra assert compliance** — bare `assert` throughout `mantra/*`; green under `tame-check`.
+- [ ] **TH-3 — `mantra/*` Phase 1b width** — `u32`/`u64` migration; green under refined `width-check`.
+- [ ] **TH-4 — `.brix` dead-path mend** — replace stale WIP paths with `ROADMAP.md` / `TASKS.md`; stamp `20260629.004912`.
+- [ ] **TH-5 — `rishi/*` width pass** — explicit widths in shell seed; green under refined lint.
+
+- [ ] **Rishi script arguments (RS-1)** — pass `args[3..]` through `rishi run`; expose `args` list to scripts; bounded count; witness flag-reading `.rish`.
+- [ ] **Rishi script arguments (RS-2)** — `--flag value` parse helper.
+- [ ] **Launcher graduation (RS-3)** — `launch-cursor.rish` reads `--appimage`; retire `cursor-jail.sh` flag layer.
+
+- [ ] **Aurora invariant notes (optional)** — say-why rationales beside `catch unreachable` in `aurora/src/seed.rye`; freestanding only; no width or assert lint.
 
 ### Rye OS — further rings
 - [ ] **Caravan capability table** — a small Rye struct naming what each child may do; the first true step toward the microkernel. Asserted; witnessed.

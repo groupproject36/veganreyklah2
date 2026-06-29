@@ -48,7 +48,7 @@ Recording a discovery is a small, glad ritual:
 
 - **Confirm it by running.** Write the finding only after real code has shown it true. The almanac holds knowledge that has earned its place.
 - **Name things honestly.** Call the toolchain and its APIs by their real names, since this folder exists to document how they actually behave.
-- **Write the prose in Radiant Style, and any code in TAME Style.** Words lead with what is; code asserts, bounds, and says why.
+- **Write the prose in Radiant Style, and any code in TAME Guidance.** Words lead with what is; code asserts, bounds, and says why.
 - **Say why it matters.** A finding is most useful when it carries the reason we needed it and the choice it informed.
 
 ---

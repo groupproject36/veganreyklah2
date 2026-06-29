@@ -1,7 +1,7 @@
 # Aurora — the dawn a machine wakes into
 
 **Version:** `20260619.035912` (Rye chronological stamp)
-**Style:** Radiant prose (see `../context/RADIANT_STYLE.md`); code in TAME Style (`../external-research/TAME_STYLE.md`)
+**Style:** Radiant prose (see `../context/RADIANT_STYLE.md`); code in TAME Guidance (`../external-research/TAME_GUIDANCE.md`)
 **Status:** Seed, relay, content-named hart, sealed datagram, the wire, and a sealed datagram posted across it — small, runnable, and growing
 
 ---

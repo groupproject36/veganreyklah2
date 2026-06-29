@@ -6,7 +6,7 @@
 **Last updated:** 2026-06-28
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Reya 2
-**Companion to:** `TAME_STYLE.md` (code), `RADIANT_STYLE.md` (prose), `SIMPLE_LOVABLE_COMPLETE.md` (product)
+**Companion to:** `TAME_GUIDANCE.md` (code), `RADIANT_STYLE.md` (prose), `SIMPLE_LOVABLE_COMPLETE.md` (product)
 **Scope:** policy, law, public-benefit corporations, nonprofits — any system that spends public trust
 
 ---

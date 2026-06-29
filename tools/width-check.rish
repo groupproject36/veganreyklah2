@@ -1,6 +1,6 @@
 # width-check.rish — verify authored .rye carry zero literal `usize`.
 #
-# TAME Style (context/TAME_STYLE.md, Rye supplement): prefer fixed
+# TAME Guidance (context/TAME_GUIDANCE.md, Rye supplement): prefer fixed
 # widths; avoid architecture-specific `usize` in authored Rye. Use
 # `u32` for bounded in-memory counts and indices, `u64` for
 # wire-persistent sizes. At the inherited-std seam — calling Zig's std

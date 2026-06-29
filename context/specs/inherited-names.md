@@ -1,7 +1,7 @@
 # Spec: Inherited Names Endure; Ours Are Added
 
 **Language:** EN
-**Last updated:** 2026-06-20
+**Last updated:** 2026-06-29
 **Decided:** Rye clock `20260618.210812`
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Decided
@@ -12,9 +12,9 @@
 
 When Rye inherits a name from Zig — `ArenaAllocator`, `std.heap.ArenaAllocator`, and the bulk of unmodified `std` internals — we **keep it**. We do not rename inherited types to match our metaphors. Our vocabulary enters as **new names for things we own**, set beside the inherited names rather than in their place.
 
-**Approved Rye divergence (2026-06-19):** the season allocator on `std.process.Init` is published as **`garden`**, not `arena`. Upstream Zig 0.16.0 calls this field `arena`; Rye's public API uses Tally's word. The backing type remains `*std.heap.ArenaAllocator` — inherited — and the doc comment in `process.zig` names both. Callers use `init.garden.allocator()`.
+**Approved Rye divergence (2026-06-19, superseded at the seam by harvest `2026-06-29`):** an earlier pass published the season allocator as **`garden`** on `Init`. The **`init.garden` → `init.arena` harvest** aligned authored seeds with pristine `vendor/zig-toolchain` std. **Today:** call `init.arena.allocator()` at the std seam; name the local binding `garden` when the warm vocabulary fits (Tally's future owned concept).
 
-So the answer to "should we rename everything `arena` to `garden`?" is *layered*: **`Init.garden` yes**; **`ArenaAllocator` no**; **local variables and our prose** should say `garden` where they mean the season allocator (open thread in `work-in-progress/20260623-033012_open-threads.md`).
+**Layered answer (current):** **`init.arena` yes** at the std seam; **`ArenaAllocator` no** as a name in authored code; **`garden` yes** as a local variable or Tally-owned type when we build it.
 
 ## Why
 
@@ -30,15 +30,15 @@ And there is a quieter reason. `arena` is a good, true name. It means the same t
 
 We would add an alias only if it earned its keep, and only ever as an addition — `garden` could one day point at `arena` without the old name moving — yet we prefer the honest path: the warm name belongs to the thing we made, not to a borrowed thing relabeled.
 
-## Authored code — reach for `init.garden`, not `ArenaAllocator`
+## Authored code — reach for `init.arena`, not `ArenaAllocator`
 
-**Decided (2026-06-20, `161112`):** programs we write (`.rye` seeds, Rishi, Skate, witnesses, tools) **never construct or name `std.heap.ArenaAllocator` directly**. Use the process season allocator:
+**Decided (2026-06-20, `161112`; seam updated `2026-06-29`):** programs we write (`.rye` seeds, Rishi, Skate, witnesses, tools) **never construct or name `std.heap.ArenaAllocator` directly**. Use the process season allocator at the pristine std seam:
 
 ```zig
-const garden = init.garden.allocator();
+const garden = init.arena.allocator();
 ```
 
-This is TAME discipline recorded in `context/TAME_STYLE.md` and enforced in Cursor/Claude rules.
+This is TAME discipline recorded in `context/TAME_GUIDANCE.md` and enforced in Cursor/Claude rules.
 
 **Do not** add `std.heap.GardenAllocator` as a type alias or thin rename of `ArenaAllocator`. That steals the name reserved for Tally and confuses inherited std with owned vocabulary.
 

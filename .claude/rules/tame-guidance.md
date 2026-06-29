@@ -1,7 +1,7 @@
-# TAME Style — Code
+# TAME Guidance — Code
 
-**Canon:** `external-research/TAME_STYLE.md` (voiced Tiger Style) · **Source:** `gratitude/TIGER_STYLE.md`
-**Operational supplement:** `context/TAME_STYLE.md`. Apply when writing or reviewing Rye source (`.rye`), Brix descriptors (`.brix`), Bron notation (`.bron`), and Rishi scripts (`.rish`).
+**Canon:** `external-research/TAME_GUIDANCE.md` (voiced Tiger Style) · **Source:** `gratitude/TIGER_STYLE.md`
+**Operational supplement:** `context/TAME_GUIDANCE.md`. Apply when writing or reviewing Rye source (`.rye`), Brix descriptors (`.brix`), Bron notation (`.bron`), and Rishi scripts (`.rish`).
 
 ## When this rule is active
 
@@ -41,10 +41,10 @@ The width-check gate (`tools/width-check.rish`) enforces this. Every authored `.
 | **Bron** | Data notation — plain key-value, one field per line. Parsed, not evaluated. Token-efficient. |
 | **Rishi** | `run` always returns `{ status, out, err }`. Check `status` before trusting `out`. `assert` as a pipeline gate. `if/then/else` for conditionals. `for-each` for iteration. |
 
-## Garden memory (Rye only)
+## Season memory (Rye only)
 
 - **Never** construct or name `std.heap.ArenaAllocator` in authored `.rye`.
-- **Always** reach for the season allocator via `const garden = init.garden.allocator()`.
+- **Always** reach for the season allocator via `const garden = init.arena.allocator()` — `init.arena` at the std seam; `garden` as the warm local name (Tally's future concept).
 - Full policy: `context/specs/inherited-names.md`.
 
 ## The priority order

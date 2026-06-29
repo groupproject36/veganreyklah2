@@ -59,7 +59,7 @@ export fn kmain() callconv(.c) noreturn {
 /// A bare-metal `assert`: with no standard library beneath us, the seed states
 /// its own. It vanishes from a release build exactly as `std.debug.assert` does
 /// — `unreachable` carries no cost there — yet names the one fact this code
-/// leans on, in the TAME habit. (See `../../external-research/TAME_STYLE.md`.)
+/// leans on, in the TAME habit. (See `../../external-research/TAME_GUIDANCE.md`.)
 fn assert(ok: bool) void {
     if (!ok) unreachable;
 }

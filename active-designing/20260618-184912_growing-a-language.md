@@ -1,6 +1,6 @@
 # 996 · How We Grow a Language — Rishi on Rye, and One Style for the Family
 
-*We have grown one language already, Rye, and the way we did it is a method we can reuse. This brief draws that method out plainly, applies it to Rishi — our shell, which stands on Rye the way Rye stands on its foundation — and settles how TAME Style is organized across a family of languages: one shared root, and a small supplement for each, created only when earned.*
+*We have grown one language already, Rye, and the way we did it is a method we can reuse. This brief draws that method out plainly, applies it to Rishi — our shell, which stands on Rye the way Rye stands on its foundation — and settles how TAME Guidance is organized across a family of languages: one shared root, and a small supplement for each, created only when earned.*
 
 **Language:** EN
 **Version:** `20260618.184912` (Rye chronological stamp)
@@ -59,11 +59,11 @@ And a quiet circle closes. Rye is strengthened, pass by pass; the parity gate gu
 
 ## One Style, Many Specializations
 
-Which brings us to the broader question: how should TAME Style be organized across a family of languages — Rye, Brix, Rishi, the orchestration language still to be named, and Mantra — without splintering into many styles that drift apart?
+Which brings us to the broader question: how should TAME Guidance be organized across a family of languages — Rye, Brix, Rishi, the orchestration language still to be named, and Mantra — without splintering into many styles that drift apart?
 
 The answer follows from the same truth that lets the languages share values: **one root, and a small supplement for each.**
 
-- **The root holds what is universal** — the priority order of safety, performance, and joy; the discipline of assertions, of marking the space that varies, of always saying why; growth by accretion and naming that endures; bounds on everything; and the shared value model itself. This is the TAME Style every member inherits, unchanged.
+- **The root holds what is universal** — the priority order of safety, performance, and joy; the discipline of assertions, of marking the space that varies, of always saying why; growth by accretion and naming that endures; bounds on everything; and the shared value model itself. This is the TAME Guidance every member inherits, unchanged.
 - **Each language adds only its own idioms**, in a supplement that begins, in effect, "everything in the root holds; here is what is specific to me":
   - **Rye** — explicitly sized types, compile-time assertions, the economy of where an expensive check earns its keep, functions kept short. The systems specifics.
   - **Brix** — declarative purity, the discipline of what may be deferred, composing by courses of simple bricks. *Describe, do not command.*
