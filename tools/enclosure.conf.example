@@ -1,4 +1,4 @@
-# enclosure.conf — paths and handle for tools/launch-cursor.sh and launch-zed.sh.
+# enclosure.conf — paths and handle for tools/cursor-jail.sh and launch-zed.sh.
 #
 # Copy to tools/enclosure.conf and fill in YOUR values. The real enclosure.conf
 # is gitignored; only this .example is committed, so SOURCE.md and the spec
@@ -10,7 +10,7 @@ HANDLE="youruser"                          # forge handle; labels state dirs men
 REPO="$HOME/yourrepo"                      # absolute path to the project root
 
 # Editor binaries (adjust after install)
-CURSOR_APPRUN="$REPO/squashfs-root/AppRun" # from: ./Cursor-*.AppImage --appimage-extract
+CURSOR_APPRUN="$REPO/squashfs-root/AppRun" # from: ./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage
 ZED_BIN="zed"                              # optional hint; script also checks ~/.local/bin/zed
 # ZED_APP="$HOME/.local/zed.app"           # optional; used if ZED_BIN is unset
 

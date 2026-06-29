@@ -80,10 +80,17 @@ zed --version
 
 ### Cursor (AppImage in the project)
 
-Already documented in `SOURCE.md` Step 6–9. From the repo root:
+Documented in `SOURCE.md` Step 6–9. From the repo root:
 
 ```bash
-./Cursor-*.AppImage --appimage-extract   # once → squashfs-root/
+./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage   # once → squashfs-root/
+./tools/cursor-jail.sh                                              # launch in ai-jail
+```
+
+Or from Rishi (edit `apprun` in `tools/launch-cursor.rish` if needed):
+
+```bash
+rishi/bin/rishi run tools/launch-cursor.rish
 ```
 
 ---
@@ -96,9 +103,10 @@ cd ~/yourrepo
 cp tools/enclosure.conf.example tools/enclosure.conf
 # Edit: HANDLE, REPO, paths to zed and Cursor AppRun
 
-cp tools/launch-cursor.sh.example tools/launch-cursor.sh
 cp tools/launch-zed.sh.example      tools/launch-zed.sh
-chmod +x tools/launch-cursor.sh tools/launch-zed.sh
+chmod +x tools/cursor-jail.sh tools/launch-zed.sh
+# Cursor: ./tools/cursor-jail.sh  (tracked; no personal copy required)
+# Optional: cp tools/launch-cursor.sh.example tools/launch-cursor.sh
 ```
 
 `tools/enclosure.conf` is gitignored. Only the `.example` files are tracked.
@@ -210,10 +218,17 @@ ai-jail --dry-run --private-home --no-docker -- zed --version
 ## Launch — Cursor in ai-jail (same project, different state)
 
 ```bash
-./tools/launch-cursor.sh
+./tools/cursor-jail.sh
 ```
 
-Equivalent:
+With a custom AppRun or a fresh extract:
+
+```bash
+./tools/cursor-jail.sh --appimage squashfs-root/AppRun
+./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage
+```
+
+Equivalent manual command:
 
 ```bash
 ai-jail --private-home --no-docker -- \

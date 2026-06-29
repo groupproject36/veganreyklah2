@@ -1,0 +1,17 @@
+# launch-cursor.rish — start Cursor inside ai-jail from the repository root.
+#
+# Edit apprun below to point at your AppRun, or pass flags via the shell driver:
+#   ./tools/cursor-jail.sh --appimage squashfs-root/AppRun
+#   ./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage
+#   ./tools/cursor-jail.sh --gpu
+#
+# Default launch (run from the repository root):
+#   rishi/bin/rishi run tools/launch-cursor.rish
+#
+# See: SOURCE.md Step 9
+
+let apprun = "squashfs-root/AppRun"
+
+let result = run ["sh" "tools/cursor-jail.sh" "--appimage" apprun]
+
+assert result.ok else "cursor-jail failed to start Cursor in ai-jail"

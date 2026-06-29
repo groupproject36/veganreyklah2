@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-29 (SLC-1 done — four verbs proven together)
+**Last updated:** 2026-06-29 (SLC-1 done; dev-loop scaffold landed; Rishi script args roadmapped)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -27,6 +27,7 @@
   - [x] **1f — register** — `tools/slc1_repl_step1.rish` appended to `tools/parity.rish`.
 - [x] **`init.garden` → `init.arena` harvest** — pristine `vendor/zig-toolchain` std uses `arena`; all authored `.rye` call sites migrated (`2026-06-29`). `brushstroke/wayland_seed.rye` link still needs Wayland dev headers on the host (unchanged).
 - [x] **SLC-1 acceptance** — `tools/slc1_accept.rish` green; four verbs in one session; parity 120; gate trio confirmed on metal (`2026-06-29`). Closed on the **functional promise** — type, run, version, recall. Width migration on touched files and `width-check` refinement remain the **TAME-hardening milestone** (below), not folded into SLC-1.
+- [x] **Cursor in ai-jail launcher** — `tools/cursor-jail.sh` + `tools/launch-cursor.rish` (tracked); `SOURCE.md` Step 6–9 and `enclosure-editors.md` updated; `squashfs-root/` and `.cursor-state/` gitignored; POSIX scaffold until Rishi script arguments graduate flag-handling (`2026-06-29`).
 
 ### Linengrow
 - [x] **Infuse the vision** — place the business model and venture pitch in `linengrow/`, with a README connecting Linengrow to the Rye OS spine (this pass).
@@ -52,6 +53,8 @@
   - [x] **3a — `:recall <n>`** — `recallByIndex` + shared `runInputLine`; re-runs ring entry as if typed.
   - [x] **3b — `!<n>` alias** — shorthand via `recallByIndex` before the `:` meta block.
   - [x] **3c — witness** — `tools/slc1_recall_step3.rish` green; two `RE-RAN` prints prove re-run; registered in `parity.rish`.
+- [ ] **Rishi script arguments** — pass `args[3..]` from `rishi run <file> …` through to the interpreter and expose them to the script as an `args` list; assert the count bound; witness with a small flag-reading `.rish`. Then a `--flag value` parse helper. *Graduates `cursor-jail.sh` flag-handling into `launch-cursor.rish`.* *(Leads the near-term after SLC-1; travels with TAME-hardening — both live in Rishi.)*
+- [ ] **Launcher graduation** — once arguments land, `launch-cursor.rish` reads `--appimage PATH` natively; retire `cursor-jail.sh`'s flag layer into Rishi.
 
 ### TAME hardening — next milestone (distinct from SLC-1 close)
 

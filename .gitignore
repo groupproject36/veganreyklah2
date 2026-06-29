@@ -69,11 +69,14 @@ zig-cache/
 /tools/secrets.env
 /tools/launch-cursor.sh
 /tools/launch-zed.sh
+# Tracked launchers (not gitignored): tools/cursor-jail.sh, tools/launch-cursor.rish
 /tools/.build/
 
 # --- Editor state inside the project (ai-jail durable ground) ---------------
 /.cursor-state/
 /.zed-state/
+/squashfs-root/                              # extracted Cursor AppImage — binary, not source
+/Cursor-*.AppImage                           # downloaded AppImages at repo root
 
 # --- Local key material — never tracked -------------------------------------
 # The allow-list above already excludes anything outside the project, but we

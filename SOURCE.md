@@ -1,7 +1,7 @@
 # SOURCE — From Nothing to a Signed, Sandboxed Home
 
 **Language:** EN
-**Version:** `20260618.190912` (Rye chronological stamp)
+**Version:** `20260629.030512` (Rye chronological stamp)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Reya 2, in the radiant voice, with **Kaeden Reyklah** as coauthor
 **Status:** Living guide
@@ -147,11 +147,14 @@ cargo install ai-jail            # or build from source; see github.com/akitaonr
 
 > **Host OS:** we recommend the **latest stable NixOS** for new setups — bubblewrap and ai-jail install cleanly via nixpkgs or the project's Nix flake (`nix profile install github:akitaonrails/ai-jail`). This guide still documents **Ubuntu 24.04 LTS** first while our own hosts are **in transition**; see `context/specs/enclosure-editors.md` for the NixOS map and dual-editor templates.
 
-Cursor ships as an AppImage; unpack it once so the sandbox can launch it:
+Cursor ships as an AppImage; unpack it once in the project folder so the sandbox can launch it:
 
 ```bash
-./Cursor-*.AppImage --appimage-extract     # creates ./squashfs-root
+cd ~/yourrepo
+./Cursor-3.9.16-x86_64.AppImage --appimage-extract   # once → squashfs-root/
 ```
+
+When you upgrade Cursor, extract the new AppImage the same way (or use `./tools/cursor-jail.sh --extract ./Cursor-*.AppImage`). The AppImage and `squashfs-root/` stay in the project directory and are not committed — only the launch scripts ship in git.
 
 ---
 
@@ -263,21 +266,49 @@ From inside your project folder, start Cursor in the sandbox. This grants the ed
 
 ```bash
 cd ~/yourrepo
+./tools/cursor-jail.sh
+```
+
+That runs the same command by hand:
+
+```bash
 ai-jail --private-home --no-docker -- ./squashfs-root/AppRun --no-sandbox \
   --user-data-dir="$PWD/.cursor-state/user-data" \
   --extensions-dir="$PWD/.cursor-state/extensions" "$PWD"
 ```
 
+**Options** (the tracked `tools/cursor-jail.sh` script):
+
+```bash
+./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage   # refresh squashfs-root
+./tools/cursor-jail.sh --appimage /path/to/squashfs-root/AppRun    # custom AppRun
+./tools/cursor-jail.sh --gpu                                        # GPU on GNOME Wayland
+```
+
+**From Rishi** — edit `apprun` at the top of `tools/launch-cursor.rish`, then:
+
+```bash
+rishi/bin/rishi run tools/launch-cursor.rish
+```
+
 `--no-sandbox` here disables Chromium's own sandbox, which cannot nest inside `bwrap`; the real boundary is ai-jail's namespaces plus Landlock and seccomp. The display passes through so the window appears; everything else stays sealed.
 
-For a **copy-and-fill** launch (your username, your paths), use the templates in `tools/`:
+For a **copy-and-fill** launch with `tools/enclosure.conf` (optional paths and `AIJAIL_BIN`):
 
 ```bash
 cp tools/enclosure.conf.example tools/enclosure.conf   # edit HANDLE, REPO, binary paths
+./tools/cursor-jail.sh
+```
+
+The older personal-copy pattern still works if you prefer it:
+
+```bash
 cp tools/launch-cursor.sh.example tools/launch-cursor.sh
 chmod +x tools/launch-cursor.sh
 ./tools/launch-cursor.sh
 ```
+
+`tools/launch-cursor.sh` stays gitignored; `tools/cursor-jail.sh` and `tools/launch-cursor.rish` are tracked for everyone who clones the repo.
 
 ---
 

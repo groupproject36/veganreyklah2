@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260628-124512` (Linengrow track; two tracks one spine)
-**Last updated:** 2026-06-29 (SLC-1 done — four verbs proven together)
+**Last updated:** 2026-06-29 (SLC-1 done; Rishi script arguments roadmapped)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -116,11 +116,12 @@ Prior fork steps F0–F5 remain documented in [`active-designing/20260621-070712
 **SLC-1 is done** on its functional promise (`2026-06-29`). The **TAME-hardening milestone** is next — width-check refinement (ruling #1), `mantra/*` Phase 1b, `rishi/*` width pass, first `tame-check` lints, `.brix` mend — distinct from the loop close.
 
 1. **TAME hardening** — width-check refinement, then `mantra/*` and `rishi/*` width passes; first `tame-check` lints; `.brix` dead-path mend.
-2. **Rishi builtins** — trim improvements still open.
-3. **Width migration Phase 1b** — `mantra/*` next (decoupled from fork).
-4. **Caravan capability table** — small Rye struct naming what each child may do.
-5. **Comlink device wire** — sealed datagram over virtio-net between two QEMU guests.
-6. **Skate text rendering** — unlocks SLC 2 (Pond GUI).
+2. **Rishi script arguments** — expose a `.rish` script's invocation arguments as an `args` value, so scripts read flags natively; a flag-parse helper follows. First beneficiary: `launch-cursor.rish` takes `--appimage` and `cursor-jail.sh` graduates out of POSIX shell. *(Near-term, after SLC-1 acceptance; travels with TAME-hardening — both live in Rishi.)*
+3. **Rishi builtins** — trim improvements still open.
+4. **Width migration Phase 1b** — `mantra/*` next (decoupled from fork).
+5. **Caravan capability table** — small Rye struct naming what each child may do.
+6. **Comlink device wire** — sealed datagram over virtio-net between two QEMU guests.
+7. **Skate text rendering** — unlocks SLC 2 (Pond GUI).
 
 ### Ground (thin frontend)
 
