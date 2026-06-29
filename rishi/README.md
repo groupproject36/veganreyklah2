@@ -1,7 +1,7 @@
 # Rishi — the shell of the Rye ecosystem
 
 **Version:** `20260620.153812` (Rye chronological stamp)
-**Last updated:** 2026-06-20
+**Last updated:** 2026-06-29
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** First version — small, runnable, and growing
 
@@ -73,6 +73,22 @@ supporting:
 - **`length`** — `length text` or `length list` returns byte length or element count.
 - **`trim`** — `trim text` removes leading and trailing whitespace.
 - **`slice`** — `slice text start end` returns a bounded substring `[start, end)`.
+
+## Interactive REPL (`rishi` / `rishi repl`)
+
+Start the loop with bare `rishi` or `rishi repl`. Each ordinary line is evaluated
+in-process; bindings carry forward. Meta-commands begin with `:` (or `!` for recall shorthand):
+
+| Command | What it does |
+|---------|----------------|
+| `:quit` / `:q` | End the session |
+| `:history` | List recent input lines, numbered from 1 |
+| `:version` | Write the session transcript to `.mantra/session.log` and weave it into Mantra (`mantra add`) |
+| `:recall <n>` | Re-run history entry *n* as if freshly typed |
+| `!<n>` | Shorthand for `:recall <n>` |
+
+The history ring holds the last 50 input lines (meta-commands are not stored).
+`RISHI_MANTRA` overrides the Mantra binary; default is `mantra` on `PATH`.
 
 A short example, `tests/hello.rish`:
 

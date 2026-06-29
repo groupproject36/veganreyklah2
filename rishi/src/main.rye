@@ -273,6 +273,58 @@ fn doVersion(garden: std.mem.Allocator, io: std.Io, init: std.process.Init, tran
     }
 }
 
+/// Run one ordinary input line as if freshly typed: record it to the
+/// transcript and the history ring, evaluate it, and report any error.
+/// The shared road for both the prompt and :recall.
+fn runInputLine(
+    garden: std.mem.Allocator,
+    io: std.Io,
+    env: *Env,
+    history: *History,
+    transcript: *Transcript,
+    line: []const u8,
+) !void {
+    transcriptAppendPromptLine(transcript, line);
+    const kept = try garden.dupe(u8, line); // the line may point into reused memory; keep our own
+    history.record(kept);
+    evalStatement(garden, io, env, line) catch |err| {
+        if (err == error.AssertionFailed) {
+            // doAssert already named the broken fact.
+        } else {
+            const err_name = @errorName(err);
+            std.debug.print("rishi: {s}\n  {s}\n", .{ err_name, line });
+            transcriptAppendError(transcript, err_name);
+        }
+    };
+}
+
+/// Re-run history entry *n* (1-based). User input is untrusted — empty ring,
+/// non-numeric, and out-of-range indices meet a friendly message and return.
+fn recallByIndex(
+    garden: std.mem.Allocator,
+    io: std.Io,
+    env: *Env,
+    history: *History,
+    transcript: *Transcript,
+    arg: []const u8,
+) !void {
+    if (history.count == 0) {
+        std.debug.print("rishi: no history yet to recall\n", .{});
+        return;
+    }
+    const n = std.fmt.parseInt(u32, arg, 10) catch {
+        std.debug.print("rishi: usage — :recall <n>, where 1 <= n <= {d}\n", .{history.count});
+        return;
+    };
+    if (n < 1 or n > history.count) {
+        std.debug.print("rishi: :recall out of range — choose 1 to {d}\n", .{history.count});
+        return;
+    }
+    // Capture before re-running: re-recording may shift the ring.
+    const target = history.items[n - 1];
+    try runInputLine(garden, io, env, history, transcript, target);
+}
+
 /// Interactive loop — read a line, evaluate it, carry bindings forward. Meta-
 /// commands begin with `:`; `:quit` ends the session cleanly.
 fn runRepl(init: std.process.Init) !u8 {
@@ -295,6 +347,13 @@ fn runRepl(init: std.process.Init) !u8 {
         const line = std.mem.trim(u8, raw_line, " \t\r\n");
         if (line.len == 0) continue;
 
+        if (line[0] == '!') {
+            transcriptAppendPromptLine(&transcript, line);
+            const arg = std.mem.trim(u8, line[1..], " \t");
+            try recallByIndex(garden, io, &env, &history, &transcript, arg);
+            continue;
+        }
+
         if (line[0] == ':') {
             transcriptAppendPromptLine(&transcript, line);
             if (std.mem.eql(u8, line, ":quit") or std.mem.eql(u8, line, ":q")) return 0;
@@ -312,24 +371,16 @@ fn runRepl(init: std.process.Init) !u8 {
                 };
                 continue;
             }
+            if (std.mem.startsWith(u8, line, ":recall ")) {
+                const arg = std.mem.trim(u8, line[":recall ".len..], " \t");
+                try recallByIndex(garden, io, &env, &history, &transcript, arg);
+                continue;
+            }
             std.debug.print("rishi: unknown meta-command '{s}'\n", .{line});
             continue;
         }
 
-        transcriptAppendPromptLine(&transcript, line);
-        const kept = try garden.dupe(u8, line);
-        history.record(kept);
-
-        evalStatement(garden, io, &env, line) catch |err| {
-            if (err == error.AssertionFailed) {
-                // doAssert already named the broken fact.
-            } else {
-                const err_name = @errorName(err);
-                std.debug.print("rishi: {s}\n  {s}\n", .{ err_name, line });
-                transcriptAppendError(&transcript, err_name);
-            }
-            continue;
-        };
+        try runInputLine(garden, io, &env, &history, &transcript, line);
     }
 }
 

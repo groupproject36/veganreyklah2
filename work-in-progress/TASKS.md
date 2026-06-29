@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-29 (SLC-1 Step 2 sealed; witness suite green)
+**Last updated:** 2026-06-29 (SLC-1 Step 3 sealed; acceptance in reach)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -17,7 +17,7 @@
 ## Now — In Flight and Immediate
 
 ### Rye OS
-- [x] **Run the witness suite on metal** — `rishi/bin/rishi run tools/parity.rish` green (116 `rye run` witnesses + SLC-1 repl + SLC-1 version); `parity-selftest.rish` green. Build with `HOME` on project disk (`/home/xy/veganreyklah2/.build-home`) — host tmpfs at `/home/xy` is full.
+- [x] **Run the witness suite on metal** — `rishi/bin/rishi run tools/parity.rish` green (116 `rye run` witnesses + SLC-1 repl + version + recall); `parity-selftest.rish` green. Build with `HOME` on project disk (`/home/xy/veganreyklah2/.build-home`) — host tmpfs at `/home/xy` is full.
 - [x] **SLC-1, Step 1 — the interactive loop** — `rishi repl` (bare `rishi` or `rishi repl`), in-process evaluator, bindings carried forward line to line; `:quit` / `:q`; witness `tools/slc1_repl_step1.rish` green.
   - [x] **1a — entry points** — bare `rishi` and `rishi repl` both start the loop; `rishi run` and `rishi version` unchanged.
   - [x] **1b — type** — fixed prompt `rishi> `; stdin via `takeDelimiterInclusive('\n')`; trim `\r\n` from each line.
@@ -48,11 +48,11 @@
   - [x] **2d — lazy init** — on first `:version`, ensure `.mantra/` exists (`mantra init` if needed).
   - [x] **2e — `:version`** — invoke `mantra add .mantra/session.log`; HEAD advances.
   - [x] **2f — witness** — `tools/slc1_version_step2.rish` green; registered in `parity.rish`.
-- [ ] **SLC-1, Step 3 — recall** — prior lines in-session; durable record is the weave from Step 2.
-  - [ ] **3a — `:recall <n>`** — copy buffer entry *n* to the prompt for edit or re-run.
-  - [ ] **3b — `!<n>` alias** — optional shorthand once meta-command table is stable.
-  - [ ] **3c — witness** — prior line returns after `:recall`; saved session readable after `:version` on fresh start (in-session recall is the SLC-1 bar; blob read-back is horizon unless demo needs it).
-- [ ] **SLC-1 acceptance** — type → run → version → recall closes on metal; gate trio green; pristine-`std` guard green; `rishi run`/`version` behavior unchanged; meta-commands documented in `rishi/README` or `rye-learning-process/ALMANAC.md`.
+- [x] **SLC-1, Step 3 — recall** — prior lines in-session; durable record is the weave from Step 2.
+  - [x] **3a — `:recall <n>`** — `recallByIndex` + shared `runInputLine`; re-runs ring entry as if typed.
+  - [x] **3b — `!<n>` alias** — shorthand via `recallByIndex` before the `:` meta block.
+  - [x] **3c — witness** — `tools/slc1_recall_step3.rish` green; two `RE-RAN` prints prove re-run; registered in `parity.rish`.
+- [ ] **SLC-1 acceptance** — type → run → version → recall closes on metal; gate trio green; pristine-`std` guard green; `rishi run`/`version` behavior unchanged; meta-commands documented in `rishi/README` (done) or `rye-learning-process/ALMANAC.md`.
 - [ ] **Caravan capability table** — a small Rye struct naming what each child may do; the first true step toward the microkernel. Asserted; witnessed.
 - [ ] **First TAME lints (Phase C)** — grow `tools/tame-check.rish` beside the `mantra/*` work, cheapest first, each with a witness: unqualified-assert (flag `std.debug.assert(` / `debug.assert(`), no `Self = @This()`, no tabs / trailing whitespace.
 - [ ] **Skate text rendering** — text on screen; unlocks SLC-2.

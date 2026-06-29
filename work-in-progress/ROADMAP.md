@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260628-124512` (Linengrow track; two tracks one spine)
-**Last updated:** 2026-06-29 (SLC-1 Step 2 sealed)
+**Last updated:** 2026-06-29 (SLC-1 Step 3 sealed)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -44,7 +44,7 @@ Correctness by construction in the kernel becomes trust by construction in the p
 | **Tablecloth** | General-purpose database + object storage | Designed (future) |
 | **Bron** | Data notation (`.bron`) | Used by `.brix` |
 | **Mantra** | Weave + commit chain + add-all + log | 9/9 bricks wove |
-| **Rishi** | Shell: typed values, file I/O, string builtins; **`repl`** with `:history`, `:version`, transcript + Mantra weave (SLC-1 Step 2) | Gate trio + `slc1_repl_step1.rish` + `slc1_version_step2.rish` |
+| **Rishi** | Shell: typed values, file I/O, string builtins; **`repl`** with `:history`, `:version`, `:recall`, `!<n>` (SLC-1 Step 3) | Gate trio + `slc1_repl_step1.rish` + `slc1_version_step2.rish` + `slc1_recall_step3.rish` |
 | **Brushstroke** | Hosted seed + Wayland seed (one window) | Frame from values |
 | **Skate** | Text grid: 8×8 monospace on Wayland | Headless selftest |
 | **Comlink** | Sealed datagram: shared-memory + localhost UDP | Full crypto stack |
@@ -52,7 +52,7 @@ Correctness by construction in the kernel becomes trust by construction in the p
 
 **Strengthening arc:** complete — chronicle + lexicon at `strengthening-compiler/0000_STRENGTHENING_LEXICON.md`; call-site harvest at [`20260628-044200_call-site-harvest.md`](20260628-044200_call-site-harvest.md).
 
-**Gate trio:** `parity.rish` (118 witnesses — 116 `rye run` + SLC-1 repl + SLC-1 version), `parity-selftest.rish` (std symlink guard), `additive-gate.rish` (structural std diff — applies when `rye/lib/` changes in HEAD). All in Rishi. **Status:** parity + selftest green on metal (`2026-06-29`).
+**Gate trio:** `parity.rish` (119 witnesses — 116 `rye run` + SLC-1 repl + version + recall), `parity-selftest.rish` (std symlink guard), `additive-gate.rish` (structural std diff — applies when `rye/lib/` changes in HEAD). All in Rishi. **Status:** parity + selftest green on metal (`2026-06-29`).
 
 ---
 
@@ -110,7 +110,7 @@ Prior fork steps F0–F5 remain documented in [`active-designing/20260621-070712
 |------|------|------------|---------|
 | **1 — type + run** | Type, Run | `rishi repl`; prompt `rishi> `; in-process eval; shared `Env`; `:quit` / `:q` | `tools/slc1_repl_step1.rish` — binding carry-forward |
 | **2 — version** | Version | Session buffer; `.mantra/session.log` transcript; `:history`; lazy `mantra init`; `:version` → `mantra add` | `tools/slc1_version_step2.rish` — HEAD advances; blob in `.mantra/blobs/` |
-| **3 — recall** | Recall | `:recall <n>` (optional `!<n>`); in-session buffer first | Prior line returns; versioned session durable via Step 2 |
+| **3 — recall** | Recall | `:recall <n>` and `!<n>`; in-session ring via `runInputLine` | `tools/slc1_recall_step3.rish` — prior line re-runs |
 | **accept** | all four | README/ALMANAC meta-command docs; gate trio + width-check on touched seeds | Full loop on metal |
 
 1. **Rishi + Mantra shell loop** — scriptable hosted shell with versioned history; gates green; terminal-complete. Scope: [`20260628-071012`](../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md).
