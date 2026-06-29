@@ -10,6 +10,10 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260629-211348` | [Yonder pass five — redirect stubs](20260629-211348_yonder-redirect-stubs.md) | three executed redirect stubs to yonder; paths fixed. |
+| `20260629-210920` | [TASKS sweep and main-track to yonder](20260629-210920_tasks-sweep-main-track-yonder.md) | TAME hardening collapsed in TASKS; main-track consumed. |
+| `20260629-210715` | [Yonder pass three — cursor prompts](20260629-210715_yonder-pass-three-cursor-prompts.md) | 19 consumed cursor prompts to yonder; width-audit charter kept. |
+| `20260629-210501` | [Yonder pass two — two moved, two kept](20260629-210501_yonder-pass-two.md) | relevance test; messenger and ownerboot horizons lifted. |
 | `20260629-204910` | [TH-7 width gate closes; yonder convention](20260629-204910_th7-width-gate-yonder-convention.md) | Aurora recognized not migrated; width-check blocking; yonder first four moves. |
 | `20260629-201352` | [RS-1–RS-3 and TH-6 — commit and four-remote push](20260629-201352_rs1-th6-commit-four-remote-push.md) | `92c6a37` on all four remotes; parity 131. |
 | `20260629-195640` | [TH-6 — Comlink hosted wire width](20260629-195640_th6-comlink-width.md) | u64 wire offsets; global width-check 11/12; Aurora remains. |

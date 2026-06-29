@@ -49,7 +49,7 @@
 
 ## Next Runs (ordered)
 
-See **`20260621-051612_main-track-rye-rishi-strengthening.md`** for the current build order.
+See **`yonder/20260621-051612_main-track-rye-rishi-strengthening.md`** for the historical main-track prompt (consumed); living plan: **`../work-in-progress/ROADMAP.md`** and **`../work-in-progress/TASKS.md`**.
 
 | Priority | Track | Milestone | Design anchor |
 |----------|-------|-----------|---------------|

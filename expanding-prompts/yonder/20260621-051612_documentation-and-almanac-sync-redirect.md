@@ -8,10 +8,10 @@ The learning layer was synced: gate trio, `init.garden`, Caravan chain, Brushstr
 
 | Topic | Path |
 |-------|------|
-| Almanac | [`../rye-learning-process/ALMANAC.md`](../rye-learning-process/ALMANAC.md) |
-| Rye | [`../rye/README.md`](../rye/README.md) |
-| Rishi | [`../rishi/README.md`](../rishi/README.md) |
-| Open threads | [`../work-in-progress/20260623-033012_open-threads.md`](../work-in-progress/20260623-033012_open-threads.md) |
+| Almanac | [`../../rye-learning-process/ALMANAC.md`](../../rye-learning-process/ALMANAC.md) |
+| Rye | [`../../rye/README.md`](../../rye/README.md) |
+| Rishi | [`../../rishi/README.md`](../../rishi/README.md) |
+| Open threads | [`../../work-in-progress/20260623-033012_open-threads.md`](../../work-in-progress/20260623-033012_open-threads.md) |
 
 **Retired patterns:** `tools/parity.sh`, `init.arena` in docs, pre-gate-trio READMEs.
 

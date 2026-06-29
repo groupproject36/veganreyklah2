@@ -21,6 +21,8 @@ Why keep them at all? Because a prompt well understood is half the work, and a p
 
 Dated prompts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living foundation. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
+**Consumed prompts** — including executed `cursor-*` bench passes — rest in [`yonder/`](yonder/) when the work they drove has landed. Session logs record the outcome; the prompt stays as an honest record of how the request was expanded.
+
 ## Redirects and retired patterns
 
 **Executed prompts** become redirect stubs at the stub-event stamp `20260621-051612` with distinct `-redirect` slugs. See also [`../external-research/README.md`](../external-research/README.md).
@@ -33,7 +35,7 @@ Dated prompts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living f
 | Additive gate | `tools/additive-gate.rish` |
 | Strengthening enricher | `tools/enrich_strengthening_docs.rye` |
 | Session log aligner | `tools/align_session_logs.rye` |
-| Width audit (planned) | `tools/width-audit.rish` ([`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md) Phase 5) |
+| Width audit (hosted gate) | `tools/width-check.rish` in `tools/parity.rish`; charter [`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md) |
 
 
 ### Topic routing (from retired `10010_reserved`)
@@ -41,8 +43,8 @@ Dated prompts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living f
 | Topic | Lives in |
 |-------|----------|
 | Tablecloth + Brix compose | [`20260620-043812_tablecloth-brix-split.md`](20260620-043812_tablecloth-brix-split.md) through [`20260620-044112_tablecloth-v1-seed.md`](20260620-044112_tablecloth-v1-seed.md) |
-| Main track (Rye · Rishi · strengthening · width fork) | [`20260621-051612_main-track-rye-rishi-strengthening.md`](20260621-051612_main-track-rye-rishi-strengthening.md), [`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md), [`../work-in-progress/20260623-033012_open-threads.md`](../work-in-progress/20260623-033012_open-threads.md), [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md) |
-| Strengthening doc + width enricher | [`20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md`](20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) → [`../tools/enrich_strengthening_docs.rye`](../tools/enrich_strengthening_docs.rye) |
+| Main track (Rye · Rishi · strengthening · width fork) | [`yonder/20260621-051612_main-track-rye-rishi-strengthening.md`](yonder/20260621-051612_main-track-rye-rishi-strengthening.md) (consumed), [`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md), [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md), [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md) |
+| Strengthening doc + width enricher | [`yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md`](yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) → [`../tools/enrich_strengthening_docs.rye`](../tools/enrich_strengthening_docs.rye) |
 | Literal `usize` ban / language fork | [`../external-research/20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md), [`../active-designing/20260621-051312_explicit-width-in-rye.md`](../active-designing/20260621-051312_explicit-width-in-rye.md), [`../external-research/20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md) |
 
 **Retired in new prompts:** `tools/parity.sh`, `enrich_strengthening_docs.py`, `align_session_logs.py`, `parity.rye` as gate target, `init.arena`, authored `ArenaAllocator`, “`usize` only at seam” as **permanent** policy (interim only — see width fork links above).
@@ -67,10 +69,10 @@ What does *not* belong here is the work itself — that lands in the research, d
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
 | `20260628-120912` | [Kernel direction, Brix, and foundations — batch brief](20260628-120912_kernel-direction-brix-and-foundations.md) | Microkernel as Caravan direction (horizon); Brix clarification; foundation layer; revitalization practice |
-| `20260621-051612` | [10023 · Main Track — Rye, Rishi, and Strengthening](20260621-051612_main-track-rye-rishi-strengthening.md) | Expanded at `044412`; reoriented `051612`. Highest-priority threads from `995` and `996` — gate trio |
-| `20260621-051612` | [10025 · Strengthening Stdlib Doc + Width Pass — Redirect](20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) | Redirect stub — Executed (`031812`–`043312`) · stub (`051612`). |
-| `20260621-051612` | [10015 · Documentation and Almanac Sync — Redirect](20260621-051612_documentation-and-almanac-sync-redirect.md) | Redirect stub — Executed (`033912`) · stub (`051612`). |
-| `20260621-051612` | [10013 · What We Mean by Seed — Redirect](20260621-051612_what-we-mean-by-seed-redirect.md) | Redirect stub — Executed (`021912`) · stub (`051612`). |
+| `20260621-051612` | [10023 · Main Track — Rye, Rishi, and Strengthening](yonder/20260621-051612_main-track-rye-rishi-strengthening.md) | Consumed — strengthening arc and width gate complete; in `yonder/` |
+| `20260621-051612` | [10025 · Strengthening Stdlib Doc + Width Pass — Redirect](yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) | Redirect stub — in `yonder/` |
+| `20260621-051612` | [10015 · Documentation and Almanac Sync — Redirect](yonder/20260621-051612_documentation-and-almanac-sync-redirect.md) | Redirect stub — in `yonder/` |
+| `20260621-051612` | [10013 · What We Mean by Seed — Redirect](yonder/20260621-051612_what-we-mean-by-seed-redirect.md) | Redirect stub — in `yonder/` |
 | `20260620-210812` | [10024 · Explicit Width Audit — `usize` to `u32` / `u64`](20260620-210812_explicit-width-audit.md) | Expanded at `210812` from the seed: TAME modeled on Tiger Style demands explicitly sized types; our  |
 | `20260620-044112` | [10022 · Tablecloth v1 — Smallest Living Store](20260620-044112_tablecloth-v1-seed.md) | Rung 4 of the Tablecloth ladder (`10018`). Expanded at `044112`: grow **Tablecloth v1** from Mantra' |
 | `20260620-044012` | [10021 · Tablecloth in the One-Value Model](20260620-044012_tablecloth-value-model.md) | Rung 3 of the Tablecloth ladder (`10018`). Expanded at `044012`: **remember** — how Tablecloth sits  |
@@ -90,5 +92,5 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260619-070612` | [10004 · Documentation, and a Drawn Surface for Rye](20260619-070612_brushstroke-and-documentation.md) | Expanded from a seed with two strands woven together: a question about documentation, and a vision f |
 | `20260619-024512` | [10003 · The Near Future — From a Proven Foundation Toward the First Living Network](20260619-024512_the-near-future.md) | Self-authored, looking forward. The cryptographic foundation our new ideas lean on is proving itself |
 | `20260618-215512` | [10002 · One Identity, Many Keys — and a Fractal Address Space](20260618-215512_unified-keys-and-address-space.md) | Taken from a request to unify Rye OS's user keys with the SSH, GPG, Sui, and Nostr keys a person alr |
-| `20260618-212012` | [10001 · A Content-Centric Messenger, From the Network In](20260618-212012_content-centric-messaging.md) | Taken from a request to design — as a TAME Rye exploration — a strengthened distillation of Urbit Am |
+| `20260618-212012` | [10001 · A Content-Centric Messenger, From the Network In](yonder/20260618-212012_content-centric-messaging.md) | Consumed prompt — networking in Aurora/Comlink; messenger + shape-casting horizon; in `yonder/` |
 | `20260618-195512` | [10000 · Encrypted Networking and the Social Layer](yonder/20260618-195512_encrypted-networking-and-social.md) | Consumed prompt — networking landed as Comlink; social is horizon; in `yonder/` |

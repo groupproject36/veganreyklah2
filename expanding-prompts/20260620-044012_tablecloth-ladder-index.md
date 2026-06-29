@@ -46,7 +46,7 @@ Run in order; each rung is one minute later on the clock.
 | `10011` Track C remember | `10021` |
 | `10017` module lens | `10020` Brix; `10022` Tablecloth v1 |
 
-**Routing:** topic index lives in [`README.md`](README.md) — Tablecloth/Brix in [`20260620-043812_tablecloth-brix-split.md`](20260620-043812_tablecloth-brix-split.md) through [`20260620-044112_tablecloth-v1-seed.md`](20260620-044112_tablecloth-v1-seed.md); main track in [`20260621-051612_main-track-rye-rishi-strengthening.md`](20260621-051612_main-track-rye-rishi-strengthening.md).
+**Routing:** topic index lives in [`README.md`](README.md) — Tablecloth/Brix in [`20260620-043812_tablecloth-brix-split.md`](20260620-043812_tablecloth-brix-split.md) through [`20260620-044112_tablecloth-v1-seed.md`](20260620-044112_tablecloth-v1-seed.md); main track in [`yonder/20260621-051612_main-track-rye-rishi-strengthening.md`](yonder/20260621-051612_main-track-rye-rishi-strengthening.md) (consumed).
 
 ## Track A — Prompt Hygiene (`044012`)
 

@@ -95,6 +95,8 @@ The distinction matters: `yonder/` is a horizon, not a graveyard. A truly finish
 
 **The active test:** a document stays one level deep while it drives present implementation; it moves to `yonder/` when it becomes future, dormant, consumed, or realized-as-code. Move by `git mv` so history stays whole, and update any reference that points at the old path.
 
+**Age is a hint, not the test.** What sends a file to `yonder/` is that it has become future, dormant, consumed, or realized-as-code — never its stamp alone. A document that is foundational to the design, or that is actively cited by other living files, stays where it is however old it reads. Relevance and inbound references outrank the date.
+
 ---
 
 ## Caretaking

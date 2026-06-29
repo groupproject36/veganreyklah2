@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-29 (TH-7 width gate closed; yonder convention; Skate next)
+**Last updated:** 2026-06-29 (TASKS swept; main-track to yonder; open-threads banner)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -53,34 +53,26 @@
   - [x] **3a — `:recall <n>`** — `recallByIndex` + shared `runInputLine`; re-runs ring entry as if typed.
   - [x] **3b — `!<n>` alias** — shorthand via `recallByIndex` before the `:` meta block.
   - [x] **3c — witness** — `tools/slc1_recall_step3.rish` green; two `RE-RAN` prints prove re-run; registered in `parity.rish`.
-- [ ] **Rishi script arguments** — see **RS-1** through **RS-3** under TAME hardening (all done).
+- [x] **Rishi script arguments** — **RS-1** through **RS-3** under TAME hardening (all done).
 - [x] **Launcher graduation** — **RS-3** under TAME hardening.
 
-### TAME hardening — next milestone (distinct from SLC-1 close)
+### TAME hardening — complete (`2026-06-29`)
 
-SLC-1 promised the four-verb loop; this milestone hardens the code beside it. Led by width-check refinement (ruling #1, already approved).
+Strengthening charter, seam-aware width, bare assert, script args, launcher graduation, and hosted width gate — **TH-0 through TH-7**, **RS-1 through RS-3**. Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and prior TH/RS logs. Hosted `width-check` blocks in parity.
 
-- [x] **TH-0 — TAME Style → TAME Guidance rename** — `git mv` living discipline docs and agent rules; living references updated; `init.arena` at std seam in rules; history (`session-logs/`, `strengthening-compiler/`, dated studies) left honest (`2026-06-29`).
-- [x] **TH-0b — dual-editor rules + aligner** — session-log one-clock rules synced; `tools/align_session_logs.rye` replaces Python; Claude/Cursor `tame-guidance` rules match supplement seam policy; `992` width baseline aligned (`2026-06-29`).
-- [x] **TH-1 — width-check refinement (ruling #1)** — seam-aware lint; sanctioned `@intCast` / `@as(usize` pass; authored `usize` still flagged; witness `tools/width_check_th1.rish` on Tally exemplar + authored fixture (`2026-06-29`).
-- [x] **TH-2 — first `tame-check` lints** — `tools/tame-check.rish` + `tools/fixtures/tame_check_scan.sh`; unqualified-assert, no `Self = @This()`, tabs/trailing whitespace; informational; witness `tools/tame_check_th2.rish` (`2026-06-29`).
-- [x] **TH-2b — Mantra assert compliance** — bare `assert` throughout `mantra/*`; import-once binding; witness `tools/tame_check_th2b.rish` gates module clean (`2026-06-29`).
-- [x] **TH-2c — hosted modules bare assert** — Tally, Caravan, Rishi, Comlink, Brushstroke `seed.rye`; import-once binding; `tame-check` flipped to hard gate; witness `tools/tame_check_th2c.rish` (`2026-06-29`).
-- [x] **TH-3 — `mantra/*` Phase 1b width** — seven sites in `diff.rye` then `main.rye`; seam policy canonical in `TAME_GUIDANCE`; witness `tools/width_check_th3.rish`; global `width-check` still RED until Rishi/Comlink (`2026-06-29`).
-- [x] **TH-4 — `.brix` dead-path mend** — `ROADMAP.md` / `TASKS.md` replace retired paths; stamp `20260629.004912`; witness `tools/width_check_th4.rish` (`2026-06-29`).
-- [x] **TH-5 — `rishi/*` width pass** — in-memory indices and counts to `u32` with seam casts; witness `tools/width_check_th5.rish`; global `width-check` still RED until Comlink (`2026-06-29`).
-- [x] **TH-6 — `comlink/hosted_wire.rye` width pass** — wire offsets and capacities to `u64` with seam casts at slice and libc boundaries; witness `tools/width_check_th6.rish`; global `width-check` still RED until Aurora (`2026-06-29`).
-- [x] **TH-7 — Aurora freestanding width (recognize, don't migrate)** — freestanding policy in `TAME_GUIDANCE`; `deciding.rye` scoped out of hosted `width-check`; gate registered in parity; kernel widths untouched (`2026-06-29`).
-
-- [x] **Rishi script arguments (RS-1)** — `args[3..]` pre-bound as `.list` of `.string`; `.len` and `[n]` on lists; `max_args` bound; witness `tools/rs1_args.rish` (`2026-06-29`).
-- [x] **Rishi script arguments (RS-2)** — `flag args "--name"` scans for exact flag token, returns following string; friendly errors; witness `tools/rs2_flag.rish` (`2026-06-29`).
-- [x] **Launcher graduation (RS-3)** — `launch-cursor.rish` reads `--appimage`/`--gpu` via `flag` and `contains`; `--extract` stays on `cursor-jail.sh`; witness `tools/rs3_launch_cursor.rish` (`2026-06-29`).
+**Horizon and optional (still open):**
 
 - [ ] **Aurora invariant notes (optional)** — say-why rationales beside `catch unreachable` in `aurora/src/seed.rye`; freestanding only; no width or assert lint.
 
 - [ ] **Mantra CRDT weave (horizon)** — merge-always-succeeds-and-converges semantics from `external-research/yonder/20260617-195312_mantra.md`; SLC-1 seed uses LCS line weave only today.
 
 - [ ] **TAME hygiene (as-you-touch)** — assertion-density backlog and `// invariant:` prefix in older code; address when each file is touched, not as a sweep.
+
+- [ ] **Content-centric Rishi messenger (horizon)** — smallest IRC-meets-Dojo CLI over sealed, content-named datagrams; from `expanding-prompts/yonder/20260618-212012_content-centric-messaging.md`; Aurora/Comlink carry the networking seeds today.
+
+- [ ] **Shape-casting for RISC-V bytecode (horizon)** — prove raw bytes match a declared type before trust; draw the shape-vs-execution seam plainly; from the same consumed prompt.
+
+- [ ] **Ownerboot sovereignty (horizon)** — owner-key-sealed boot chain inverting trust at the reset vector; from `external-research/yonder/20260617-195612_ownerboot-riscv-caravan.md`; Caravan is live, the firmware path is horizon.
 
 ### Rye OS — further rings
 - [ ] **Caravan capability table** — a small Rye struct naming what each child may do; the first true step toward the microkernel. Asserted; witnessed.

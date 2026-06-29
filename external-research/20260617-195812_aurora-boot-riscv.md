@@ -7,7 +7,7 @@
 **Last updated:** 2026-06-17
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME Style (`TAME_STYLE.md`); systems lineage honored in `20260620-014412_system.md`
-**Builds on:** `20260617-195612_ownerboot-riscv-caravan.md`, `20260617-195712_caravan-tally-networking.md`
+**Builds on:** `yonder/20260617-195612_ownerboot-riscv-caravan.md`, `20260617-195712_caravan-tally-networking.md`
 **Status:** Exploration
 
 ---
@@ -115,7 +115,7 @@ This exploration rests on primary sources, held here with thanks.
 - **The Urbit boot sequence** — the Core Academy lessons *Arvo I: The Main Sequence* and *Arvo II: The Boot Sequence*, covering the king and serf, pills (ivory, brass, solid, baby), the functional BIOS formula and the `+eden` first five events, the larval phase and breaking symmetry, metamorphosis, and the mature four-arm Arvo; together with the runtime notes on the from-source brass pill and fastboot.
 - **Joran Dirk Greef and TigerBeetle** — the priority order, safety, performance, and developer experience, irrevocably in that order yet not a zero-sum game, and the design-phase performance teaching. Honored more fully in `20260620-014412_system.md`.
 - **Rich Hickey, *The Language of the System*** (Clojure/conj 2012) — the flow model of transform, move, route, and remember; values with enduring names; the systems failure model; simple services; and program-to-program interfaces. Kept whole in `../gratitude/LanguageSystem.md` and honored in `20260620-014412_system.md`.
-- **RISC-V and ownerboot** — the RISC-V privilege relay, harts, control and status registers, and the Supervisor Binary Interface, and Adam Joseph's ownerboot, both developed in the companion piece `20260617-195612_ownerboot-riscv-caravan.md`.
+- **RISC-V and ownerboot** — the RISC-V privilege relay, harts, control and status registers, and the Supervisor Binary Interface, and Adam Joseph's ownerboot, both developed in the companion piece `yonder/20260617-195612_ownerboot-riscv-caravan.md`.
 
 ---
 
