@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-29 (open-threads archived; Skate next — Claude)
+**Last updated:** 2026-06-29 (yonder pass seven; Skate next — Claude)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -26,7 +26,7 @@
   - [x] **1e — witness** — `tools/fixtures/slc1_repl_step1.input` + `tools/slc1_repl_step1.rish` assert binding carry-forward (`let x = 7` then `say "${x}"` → `7`).
   - [x] **1f — register** — `tools/slc1_repl_step1.rish` appended to `tools/parity.rish`.
 - [x] **`init.garden` → `init.arena` harvest** — pristine `vendor/zig-toolchain` std uses `arena`; all authored `.rye` call sites migrated (`2026-06-29`). `brushstroke/wayland_seed.rye` link still needs Wayland dev headers on the host (unchanged).
-- [x] **SLC-1 acceptance** — `tools/slc1_accept.rish` green; four verbs in one session; parity 120; gate trio confirmed on metal (`2026-06-29`). Closed on the **functional promise** — type, run, version, recall. Width migration on touched files and `width-check` refinement remain the **TAME-hardening milestone** (below), not folded into SLC-1.
+- [x] **SLC-1 acceptance** — `tools/slc1_accept.rish` green; four verbs in one session; parity 120; gate trio confirmed on metal (`2026-06-29`). Closed on the **functional promise** — type, run, version, recall. TAME hardening completed separately (`2026-06-29`).
 - [x] **Cursor in ai-jail launcher** — `tools/cursor-jail.sh` + `tools/launch-cursor.rish` (tracked); `SOURCE.md` Step 6–9 and `enclosure-editors.md` updated; `squashfs-root/` and `.cursor-state/` gitignored; POSIX scaffold until Rishi script arguments graduate flag-handling (`2026-06-29`).
 
 ### Linengrow
@@ -97,7 +97,7 @@ Strengthening charter, seam-aware width, bare assert, script args, launcher grad
 - [ ] **Comlink v1** — typed, content-named, sealed delivery between identities.
 - [ ] **Brix v1** — a `.brix` course evaluating into a closure of content-addressed bricks in Tablecloth, per `active-designing/20260628-120912_brix-the-composer.md`.
 - [ ] **Unified keys** — one owner seed deriving all keys.
-- [ ] **Revitalization pass** — refresh the oldest active-designing briefs to the current direction, beginning with `active-designing/20260618-184912_recommended-architecture.md`; living docs in place, dated briefs superseded or stamped-with-provenance.
+- [ ] **Revitalization pass** — refresh the oldest active-designing briefs to the current direction; affirmed canonical files get the four-in-one touch (de-number, re-date, affirm, light freshen) rather than rename; see `ORGANIZING.md`.
 
 ### Linengrow
 - [ ] **SLC-L1 build** — verifiable receipts from keypair + Mantra log + projection. Witness: sign → append → receipt → verify, end to end.

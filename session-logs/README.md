@@ -10,7 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
-| 20260629.223815 | [yonder pass six and thin-frontend archive](20260629-223815_yonder-pass-six-thin-frontend-archive.md) | Stack-toward and unified-keys to yonder; executed WIP plans to archive. |
+| 20260629.224530 | [yonder pass seven and root cleanup](20260629-224530_yonder-pass-seven-root-cleanup.md) | Devotional social to yonder; duplicate root kernel/brix files removed. |
 | `20260629-212045` | [Affirm kept and yonder pass three](20260629-212045_affirm-kept-yonder-pass-three.md) | affirm-not-rename; ownerboot pair reunited; crosswalk to yonder. |
 | `20260629-211626` | [Yonder passes two–five — commit and push](20260629-211626_yonder-passes-commit-push.md) | `63547a0` on all four remotes. |
 | `20260629-211348` | [Yonder pass five — redirect stubs](20260629-211348_yonder-redirect-stubs.md) | three executed redirect stubs to yonder; paths fixed. |
