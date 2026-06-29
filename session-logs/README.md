@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260629-201352` | [RS-1–RS-3 and TH-6 — commit and four-remote push](20260629-201352_rs1-th6-commit-four-remote-push.md) | `92c6a37` on all four remotes; parity 131. |
 | `20260629-195640` | [TH-6 — Comlink hosted wire width](20260629-195640_th6-comlink-width.md) | u64 wire offsets; global width-check 11/12; Aurora remains. |
 | `20260629-195133` | [RS-1 through RS-3 — script args and launcher](20260629-195133_rs1-rs3-script-args-launcher.md) | args, flag helper, launch-cursor; parity 130; Comlink width next. |
 | `20260629-194323` | [RS-1 — script args pre-bound](20260629-194323_rs1-script-args.md) | args as .list of .string; .len and [n]; parity 128. |
