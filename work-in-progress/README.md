@@ -1,7 +1,7 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** 2026-06-28
+**Last updated:** 2026-06-29 (open-threads archived; TASKS + ROADMAP are the live plan)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Status:** Foundation
@@ -20,7 +20,7 @@ It is a kindness to our future selves: memory for the *work*, the way Mantra is 
 
 Dated artifacts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living foundation. The reverse-chronological index below reads newest first. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-Each stock-taking writes a new **open-threads** snapshot stamped at the time of writing — the newest snapshot is the present truth. Once a snapshot is superseded, it graduates to [`archive/`](archive/) — out of the live folder, yet kept whole as an honest record of what was open, and when. Finished scaffolding and other superseded records graduate there too.
+Each stock-taking once wrote a new **open-threads** snapshot stamped at the time of writing. Superseded snapshots graduate to [`archive/`](archive/) — out of the live folder, yet kept whole as an honest record of what was open, and when. The accreted `20260623-033012` snapshot archived `2026-06-29`; a redirect stub at the old path points to the archive. **Going forward:** open questions live in [`TASKS.md`](TASKS.md); history accretes in [`../session-logs/`](../session-logs/).
 
 The standing roadmap lives in [`ROADMAP.md`](ROADMAP.md) — living, unstamped. The granular task list lives in [`TASKS.md`](TASKS.md) — edited in place; history accretes in `../session-logs/`.
 
@@ -42,10 +42,11 @@ The discipline is simple: if reading a line aloud would make a newcomer ask "so 
 
 | Stamp | Artifact | Meaning |
 |-------|----------|---------|
+| — | [`TASKS.md`](TASKS.md) | Living granular plan — what-now |
 | — | [`ROADMAP.md`](ROADMAP.md) | Living roadmap — standing plan |
 | `20260628-044300` | [Std re-fork plan](20260628-044300_std-refork-plan.md) | **Executed** — pristine symlink; witness suite + overlay guard |
 | `20260628-044200` | [Call-site harvest](20260628-044200_call-site-harvest.md) | std surfaces seeds use; verify before assert |
-| `20260623-033012` | [Open threads](20260623-033012_open-threads.md) | Current snapshot — pre-direction; refresh next stock-taking |
+| `20260623-033012` | [Open threads — redirect](20260623-033012_open-threads.md) | Archived — full snapshot in [`archive/`](archive/) |
 | `20260621-032327` | [Strengthening width crosswalk](yonder/20260621-032327_strengthening-width-crosswalk.md) | Completed crosswalk — in `yonder/` beside strengthening kin |
 | `20260620-212126` | [usize width baseline](20260620-212126_usize-width-baseline.md) | Tiger/TAME explicit-width charter |
 | `20260620-155342` | [Style audit](yonder/20260620-155342_style-audit.md) | Stale audit record — live threads lifted to TASKS; in `yonder/` |

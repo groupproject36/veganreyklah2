@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-29 (yonder pass four; affirm de-number; Skate next — Claude)
+**Last updated:** 2026-06-29 (open-threads archived; Skate next — Claude)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -85,7 +85,7 @@ Strengthening charter, seam-aware width, bare assert, script args, launcher grad
 
 ### Ground
 - [ ] **Kernel-direction memo** — graduate the microkernel leaning in `expanding-prompts/20260628-120912_*` into its own direction memo beside `20260628-043542`, when it feels fully settled. Same pattern as thin-frontend: deliberate, then record.
-- [ ] **Open-threads hygiene** — archive the accreted "What Just Landed" stack in `20260623-033012_open-threads.md` into `../session-logs/` (history's true home); let TASKS hold open questions going forward.
+- [x] **Open-threads hygiene** — accreted `20260623-033012` snapshot archived to `work-in-progress/archive/`; redirect stub at old path; TASKS + ROADMAP are the live plan (`2026-06-29`).
 
 ---
 

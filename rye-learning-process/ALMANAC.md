@@ -24,7 +24,7 @@ Rye's first version is honest about what it is: a thin front-end over the Zig 0.
 
 The one wrinkle we met immediately: the toolchain's front-end reads only the `.zig` extension. `zig run file.rye` answers `error: unrecognized file extension`. So the `rye` command bridges — it copies the `.rye` source to an adjacent `.zig` file, hands that to the compiler, and clears the bridge away afterward so the tree stays tidy. Since `050912`, `rye build` and `rye run` also bridge every local `@import("*.rye")` dependency recursively, rewriting those imports to `.zig` for the toolchain while the repository keeps `.rye` sources only.
 
-**What we write vs what we strengthen:** programs and witness tests are `.rye`; assertions accrete in `rye/lib/std/**/*.zig` because that is the layout `--zig-lib-dir` serves. See `work-in-progress/20260623-033012_open-threads.md` (*Ongoing — Rye vocabulary*).
+**What we write vs what we strengthen:** programs and witness tests are `.rye`; assertions accrete in `rye/lib/std/**/*.zig` because that is the layout `--zig-lib-dir` serves. See `work-in-progress/archive/20260623-033012_open-threads.md` (*Ongoing — Rye vocabulary*) for the historical accretion; living plan is `TASKS.md` and `ROADMAP.md`.
 
 Since then, Rye has taken its first steps away from the toolchain: it owns its standard library, and it counts its versions in its own way. The three entries that follow record how.
 
