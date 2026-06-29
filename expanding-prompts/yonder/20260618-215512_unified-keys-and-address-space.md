@@ -29,7 +29,7 @@ To give a person **one identity** they truly own, from which every key they need
 
 ## Deliverables
 
-- `external-research/20260619-035912_unified-keys-and-address-space.md` — the unified identity, key, and address system: key unification at its heart, the fractal address space as its structure, and the networking module named; seven-part structure, TAME and active-designing lenses, critically evaluated.
+- `external-research/yonder/20260619-035912_unified-keys-and-address-space.md` — the unified identity, key, and address system: key unification at its heart, the fractal address space as its structure, and the networking module named; seven-part structure, TAME and active-designing lenses, critically evaluated.
 
 ## The Lens to Hold
 

@@ -4,6 +4,8 @@ Honest lineage for the workbench. Sorted **newest first** by stamp.
 
 | Stamp | Record | Meaning |
 |-------|--------|---------|
+| `20260628-044300` | [Std re-fork plan](20260628-044300_std-refork-plan.md) | Executed — pristine std symlink; parity selftest guard |
+| `20260628-044200` | [Call-site harvest](20260628-044200_call-site-harvest.md) | Executed — 101 std surfaces; verify-before-assert discipline |
 | `20260623-033012` | [Open threads](20260623-033012_open-threads.md) | Superseded snapshot — accreted through pass 9887; archived `2026-06-29` |
 | `20260628-023517` | [work-in-progress rename mapping](20260628-023517_work-in-progress-rename-mapping.md) | Chunk 5 one-clock reorg — this folder |
 | `20260628-014753` | [external-research rename mapping](20260628-014753_external-research-rename-mapping.md) | Chunk 3 reorg preview record |

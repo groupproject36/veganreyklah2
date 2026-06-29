@@ -1,7 +1,7 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** 2026-06-29 (open-threads archived; TASKS + ROADMAP are the live plan)
+**Last updated:** 2026-06-29 (yonder pass six; thin-frontend records archived)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Status:** Foundation
@@ -44,8 +44,6 @@ The discipline is simple: if reading a line aloud would make a newcomer ask "so 
 |-------|----------|---------|
 | — | [`TASKS.md`](TASKS.md) | Living granular plan — what-now |
 | — | [`ROADMAP.md`](ROADMAP.md) | Living roadmap — standing plan |
-| `20260628-044300` | [Std re-fork plan](20260628-044300_std-refork-plan.md) | **Executed** — pristine symlink; witness suite + overlay guard |
-| `20260628-044200` | [Call-site harvest](20260628-044200_call-site-harvest.md) | std surfaces seeds use; verify before assert |
 | `20260623-033012` | [Open threads — redirect](20260623-033012_open-threads.md) | Archived — full snapshot in [`archive/`](archive/) |
 | `20260621-032327` | [Strengthening width crosswalk](yonder/20260621-032327_strengthening-width-crosswalk.md) | Completed crosswalk — in `yonder/` beside strengthening kin |
 | `20260620-212126` | [usize width baseline](20260620-212126_usize-width-baseline.md) | Tiger/TAME explicit-width charter |

@@ -1,7 +1,7 @@
 # The External-Research Stack
 
 **Language:** EN
-**Last updated:** 2026-06-29 (yonder pass four — aurora-boot trio reunited)
+**Last updated:** 2026-06-29 (yonder pass six; thin-frontend records archived)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -61,10 +61,10 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 | `20260619-220012` | [975 · Tablecloth — A TAME-Aligned Datastore: Close Reading of the Field](20260619-220012_tablecloth-tame-datastore.md) | What would a datastore look like if it were designed in the TAME order — correctness first, performance second, joy thir |
 | `20260619-171112` | [976 · Microkernel or Monolith? — What Caravan Can Learn from seL4 and Redox, and What TAME Demands](20260619-171112_microkernel-vs-monolith-for-caravan.md) | Research |
 | `20260619-155612` | [977 · POSIX at the Door — What the OS Interface Asks of TAME, and How River and Ghostty Show the Way](20260619-155612_posix-and-tame-guidance.md) | Research |
-| `20260619-153612` | [978 · The Stack Toward a Living Desktop — Mantra, Tally, Tablecloth, Aurora, and Pond Grown for a Rishi Shell](20260619-153612_stack-toward-a-living-desktop.md) | Research synthesis and forward design |
+| `20260619-153612` | [The Stack Toward a Living Desktop](yonder/20260619-153612_stack-toward-a-living-desktop.md) | Consumed synthesis — SLC-1 landed; living successor ROADMAP SLC-2; in `yonder/` |
 | `20260619-153212` | [Where Building Met Design — a Progress Map at the Turn](yonder/20260619-153212_where-building-met-design.md) | Consumed survey — superseded by ROADMAP + TASKS; in `yonder/` |
 | `20260619-070612` | [980 · Brushstroke and the Documentation Surface — a Drawn Interface for Rye, and How the System Shows Itself](20260619-070612_brushstroke-and-the-docs-surface.md) | Two strands, woven into one rope. The first is a plain question: should we begin documenting Rye OS in earnest — Rishi's |
-| `20260619-035912` | [981 · One Identity, Many Keys — and a Fractal Address Space](20260619-035912_unified-keys-and-address-space.md) | A person today carries a fistful of keys — an SSH key to reach their machines, a GPG key to sign their work, a Sui key t |
+| `20260619-035912` | [One Identity, Many Keys — and a Fractal Address Space](yonder/20260619-035912_unified-keys-and-address-space.md) | Horizon — companion to consumed prompt in `expanding-prompts/yonder/`; in `yonder/` |
 | `20260618-212112` | [982 · A Content-Centric Messenger, From the Network In](20260618-212112_content-centric-messaging.md) | A message is a meaning meant for someone. This study designs the smallest honest way to carry one — content-named, encry |
 | `20260618-204012` | [983 · Borrow Checking, the Garden, and Correctness by Construction](20260618-204012_borrow-checking-and-correctness.md) | A question worth asking carefully: would borrowing inspiration from Rust's borrow checker contradict TAME's love of stat |
 | `20260618-195612` | [984 · A Devotional Social Layer, Kept Simple](20260618-195612_devotional-social-layer.md) | If `985` asks how a value crosses between two machines, this asks what we would build atop that for **people** — a small |

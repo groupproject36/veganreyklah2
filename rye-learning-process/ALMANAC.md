@@ -237,7 +237,7 @@ rishi/bin/rishi run tools/parity-selftest.rish
 rishi/bin/rishi run tools/additive-gate.rish   # after a rye/lib-touching commit
 ```
 
-**Thin frontend (2026-06-28):** `rye/lib/std` symlinks to `vendor/zig-toolchain/lib/std`. The old differential parity gate — baseline `RYE_LIB` vs strengthened `rye/lib` — **retired**; both arms would read the same bytes. `parity.rish` is now a **behavior regression suite**. The selftest ensures no one replaces the symlink with a copied tree without witnesses still catching behavioral drift. The strengthening chronicle (`strengthening-compiler/`) remains honest record; invariants belong at **call sites** in authored `.rye` per [`work-in-progress/20260628-044200_call-site-harvest.md`](../work-in-progress/20260628-044200_call-site-harvest.md).
+**Thin frontend (2026-06-28):** `rye/lib/std` symlinks to `vendor/zig-toolchain/lib/std`. The old differential parity gate — baseline `RYE_LIB` vs strengthened `rye/lib` — **retired**; both arms would read the same bytes. `parity.rish` is now a **behavior regression suite**. The selftest ensures no one replaces the symlink with a copied tree without witnesses still catching behavioral drift. The strengthening chronicle (`strengthening-compiler/`) remains honest record; invariants belong at **call sites** in authored `.rye` per [`work-in-progress/archive/20260628-044200_call-site-harvest.md`](../work-in-progress/archive/20260628-044200_call-site-harvest.md).
 
 ---
 

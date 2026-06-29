@@ -50,7 +50,7 @@ Correctness by construction in the kernel becomes trust by construction in the p
 | **Comlink** | Sealed datagram: shared-memory + localhost UDP | Full crypto stack |
 | **Pond** | Policy as a value (`pond.rish`) | Designed |
 
-**Strengthening arc:** complete — chronicle + lexicon at `strengthening-compiler/0000_STRENGTHENING_LEXICON.md`; call-site harvest at [`20260628-044200_call-site-harvest.md`](20260628-044200_call-site-harvest.md).
+**Strengthening arc:** complete — chronicle + lexicon at `strengthening-compiler/0000_STRENGTHENING_LEXICON.md`; call-site harvest at [`archive/20260628-044200_call-site-harvest.md`](archive/20260628-044200_call-site-harvest.md).
 
 **Gate trio:** `parity.rish` (120 witnesses — 116 `rye run` + four SLC-1), `parity-selftest.rish` (std symlink guard), `additive-gate.rish` (structural std diff — applies when `rye/lib/` changes in HEAD). All in Rishi. **Status:** parity + selftest green on metal (`2026-06-29`); additive-gate runs when std changes land.
 
@@ -123,7 +123,7 @@ Prior fork steps F0–F5 remain documented in [`active-designing/20260621-070712
 
 ### Ground (thin frontend)
 
-7. **Std re-fork** — **done** (`20260628`) — pristine symlink; see [`20260628-044300_std-refork-plan.md`](20260628-044300_std-refork-plan.md).
+7. **Std re-fork** — **done** (`20260628`) — pristine symlink; see [`archive/20260628-044300_std-refork-plan.md`](archive/20260628-044300_std-refork-plan.md).
 
 ### Study
 
