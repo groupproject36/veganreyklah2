@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260629.215013 | [affirm-kept pass three push](20260629-215013_affirm-kept-pass-three-push.md) | Four-remote push of affirm-kept and yonder pass three at `99810c3`. |
 | `20260629-212045` | [Affirm kept and yonder pass three](20260629-212045_affirm-kept-yonder-pass-three.md) | affirm-not-rename; ownerboot pair reunited; crosswalk to yonder. |
 | `20260629-211626` | [Yonder passes two–five — commit and push](20260629-211626_yonder-passes-commit-push.md) | `63547a0` on all four remotes. |
 | `20260629-211348` | [Yonder pass five — redirect stubs](20260629-211348_yonder-redirect-stubs.md) | three executed redirect stubs to yonder; paths fixed. |
