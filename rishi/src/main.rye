@@ -93,7 +93,7 @@ const Binding = struct { name: []const u8, value: Value };
 /// memory without end.
 const Env = struct {
     items: [256]Binding = undefined,
-    count: usize = 0,
+    count: u32 = 0,
 
     fn bind(self: *Env, name: []const u8, value: Value) !void {
         // invariant: count never exceeds capacity
@@ -101,7 +101,7 @@ const Env = struct {
         // invariant: a binding name is never empty
         assert(name.len > 0);
         if (self.count == self.items.len) return error.TooManyBindings;
-        self.items[self.count] = .{ .name = name, .value = value };
+        self.items[@intCast(self.count)] = .{ .name = name, .value = value };
         self.count += 1;
     }
 
@@ -111,7 +111,7 @@ const Env = struct {
         var i = self.count;
         while (i > 0) {
             i -= 1;
-            if (std.mem.eql(u8, self.items[i].name, name)) return self.items[i].value;
+            if (std.mem.eql(u8, self.items[@intCast(i)].name, name)) return self.items[@intCast(i)].value;
         }
         return null;
     }
@@ -414,7 +414,7 @@ fn runFile(init: std.process.Init, args: []const [:0]const u8) !u8 {
 /// the trouble is easy to find.
 fn interpret(allocator: std.mem.Allocator, io: std.Io, source: []const u8) u8 {
     var env = Env{};
-    var line_no: usize = 0;
+    var line_no: u32 = 0;
     var lines = std.mem.splitScalar(u8, source, '\n');
     while (lines.next()) |raw| {
         line_no += 1;
@@ -540,8 +540,8 @@ fn evalExpr(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: []c
     }
     // `<string> starts-with <prefix>` checks whether a string begins with a prefix.
     if (findWordOp(text, " starts-with ")) |idx| {
-        const haystack = try evalExpr(allocator, io, env, text[0..idx]);
-        const needle = try evalExpr(allocator, io, env, text[idx + 13 ..]);
+        const haystack = try evalExpr(allocator, io, env, text[0..@intCast(idx)]);
+        const needle = try evalExpr(allocator, io, env, text[@intCast(idx + 13)..]);
         const str = switch (haystack) {
             .string => |s| s,
             else => return error.StartsWithNeedsString,
@@ -554,8 +554,8 @@ fn evalExpr(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: []c
     }
     // `<string> ends-with <suffix>` checks whether a string ends with a suffix.
     if (findWordOp(text, " ends-with ")) |idx| {
-        const haystack = try evalExpr(allocator, io, env, text[0..idx]);
-        const needle = try evalExpr(allocator, io, env, text[idx + 11 ..]);
+        const haystack = try evalExpr(allocator, io, env, text[0..@intCast(idx)]);
+        const needle = try evalExpr(allocator, io, env, text[@intCast(idx + 11)..]);
         const str = switch (haystack) {
             .string => |s| s,
             else => return error.EndsWithNeedsString,
@@ -568,8 +568,8 @@ fn evalExpr(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: []c
     }
     // `<string> index-of <needle>` — first byte index, or -1 when absent.
     if (findWordOp(text, " index-of ")) |idx| {
-        const haystack = try evalExpr(allocator, io, env, text[0..idx]);
-        const needle = try evalExpr(allocator, io, env, text[idx + 10 ..]);
+        const haystack = try evalExpr(allocator, io, env, text[0..@intCast(idx)]);
+        const needle = try evalExpr(allocator, io, env, text[@intCast(idx + 10)..]);
         const str = switch (haystack) {
             .string => |s| s,
             else => return error.IndexOfNeedsString,
@@ -583,8 +583,8 @@ fn evalExpr(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: []c
     }
     // `<list> contains <value>` or `<string> contains <substring>` — membership test.
     if (findWordOp(text, " contains ")) |idx| {
-        const haystack = try evalExpr(allocator, io, env, text[0..idx]);
-        const needle = try evalExpr(allocator, io, env, text[idx + 10 ..]);
+        const haystack = try evalExpr(allocator, io, env, text[0..@intCast(idx)]);
+        const needle = try evalExpr(allocator, io, env, text[@intCast(idx + 10)..]);
         return switch (haystack) {
             .list => |items| {
                 for (items) |item| {
@@ -630,18 +630,18 @@ fn isIdentLetter(c: u8) bool {
 }
 
 /// True when `-` at `i` joins two letters (`index-of`, `starts-with`), not `3-5`.
-fn isWordHyphen(text: []const u8, i: usize) bool {
-    if (i == 0 or i + 1 >= text.len or text[i] != '-') return false;
-    return isIdentLetter(text[i - 1]) and isIdentLetter(text[i + 1]);
+fn isWordHyphen(text: []const u8, i: u32) bool {
+    if (i == 0 or i + 1 >= text.len or text[@intCast(i)] != '-') return false;
+    return isIdentLetter(text[@intCast(i - 1)]) and isIdentLetter(text[@intCast(i + 1)]);
 }
 
 /// Find the rightmost top-level `+` or `-` that is a binary operator — one
 /// with a non-empty, non-operator left operand. A leading `-` (negative number)
 /// is not a binary operator. Returns the index of the operator character.
-fn findLastArithAdd(text: []const u8) ?usize {
-    var result: ?usize = null;
+fn findLastArithAdd(text: []const u8) ?u32 {
+    var result: ?u32 = null;
     var in_quote = false;
-    var depth: usize = 0;
+    var depth: u32 = 0;
     for (text, 0..) |c, i| {
         if (c == '"') {
             in_quote = !in_quote;
@@ -653,14 +653,14 @@ fn findLastArithAdd(text: []const u8) ?usize {
             depth -= 1;
         } else if (depth == 0 and (c == '+' or c == '-')) {
             // Hyphens inside word operators (`index-of`) are not subtraction.
-            if (c == '-' and isWordHyphen(text, i)) continue;
+            if (c == '-' and isWordHyphen(text, @intCast(i))) continue;
             // Binary only when the trimmed left side is non-empty and ends
             // with a value token, not another operator.
             const before = std.mem.trimEnd(u8, text[0..i], " \t");
             if (before.len > 0) {
                 const last = before[before.len - 1];
                 if (last != '+' and last != '-' and last != '*' and last != '/') {
-                    result = i;
+                    result = @intCast(i);
                 }
             }
         }
@@ -669,10 +669,10 @@ fn findLastArithAdd(text: []const u8) ?usize {
 }
 
 /// Find the rightmost top-level `*` or `/`. Every occurrence is binary.
-fn findLastArithMul(text: []const u8) ?usize {
-    var result: ?usize = null;
+fn findLastArithMul(text: []const u8) ?u32 {
+    var result: ?u32 = null;
     var in_quote = false;
-    var depth: usize = 0;
+    var depth: u32 = 0;
     for (text, 0..) |c, i| {
         if (c == '"') {
             in_quote = !in_quote;
@@ -682,7 +682,7 @@ fn findLastArithMul(text: []const u8) ?usize {
         } else if ((c == ']' or c == '}' or c == ')' or c == ')') and depth > 0) {
             depth -= 1;
         } else if (depth == 0 and (c == '*' or c == '/')) {
-            result = i;
+            result = @intCast(i);
         }
     }
     return result;
@@ -693,9 +693,9 @@ fn findLastArithMul(text: []const u8) ?usize {
 /// through additive, right arm through multiplicative.
 fn evalAddSub(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: []const u8) EvalError!Value {
     if (findLastArithAdd(text)) |idx| {
-        const op = text[idx];
-        const left = try evalAddSub(allocator, io, env, text[0..idx]);
-        const right = try evalMulDiv(allocator, io, env, text[idx + 1 ..]);
+        const op = text[@intCast(idx)];
+        const left = try evalAddSub(allocator, io, env, text[0..@intCast(idx)]);
+        const right = try evalMulDiv(allocator, io, env, text[@intCast(idx + 1)..]);
         const a = switch (left) {
             .int => |x| x,
             else => return error.ArithNeedsInt,
@@ -712,9 +712,9 @@ fn evalAddSub(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: [
 /// Multiplicative layer: handles `*` and `/` with higher precedence than `+`/`-`.
 fn evalMulDiv(allocator: std.mem.Allocator, io: std.Io, env: *const Env, text: []const u8) EvalError!Value {
     if (findLastArithMul(text)) |idx| {
-        const op = text[idx];
-        const left = try evalMulDiv(allocator, io, env, text[0..idx]);
-        const right = try evalOperand(allocator, io, env, text[idx + 1 ..]);
+        const op = text[@intCast(idx)];
+        const left = try evalMulDiv(allocator, io, env, text[0..@intCast(idx)]);
+        const right = try evalOperand(allocator, io, env, text[@intCast(idx + 1)..]);
         const a = switch (left) {
             .int => |x| x,
             else => return error.ArithNeedsInt,
@@ -802,19 +802,19 @@ fn doListDir(allocator: std.mem.Allocator, io: std.Io, env: *const Env, arg: []c
     var it = dir.iterate();
     // invariant: at most 256 entries — bounded to prevent runaway iteration
     var names: [256]Value = undefined;
-    var count: usize = 0;
+    var count: u32 = 0;
     while (true) {
         const maybe_entry = it.next(io) catch return error.ListDirFailed;
         const entry = maybe_entry orelse break;
         if (count == names.len) return error.ListTooLong;
         // invariant: entry name from the OS is never empty (asserted in Dir.iterate)
         assert(entry.name.len > 0);
-        names[count] = .{ .string = allocator.dupe(u8, entry.name) catch return error.OutOfMemory };
+        names[@intCast(count)] = .{ .string = allocator.dupe(u8, entry.name) catch return error.OutOfMemory };
         count += 1;
     }
     // postcondition: count is bounded by the static array
     assert(count <= names.len);
-    return .{ .list = allocator.dupe(Value, names[0..count]) catch return error.OutOfMemory };
+    return .{ .list = allocator.dupe(Value, names[0..@intCast(count)]) catch return error.OutOfMemory };
 }
 
 /// `write-file <path-expr> <value-expr>` writes a value to a file. The first
@@ -833,8 +833,8 @@ fn doWriteFile(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: 
     // invariant: a file path is never empty
     assert(path.len > 0);
     // invariant: token iterator position is within the source
-    assert(tok.i <= rest.len);
-    const content_text = std.mem.trim(u8, rest[tok.i..], " \t");
+    assert(tok.i <= @as(u32, @intCast(rest.len)));
+    const content_text = std.mem.trim(u8, rest[@intCast(tok.i)..], " \t");
     if (content_text.len == 0) return error.WriteFileNeedsContent;
     const content_value = try evalExpr(allocator, io, env, content_text);
     // Render the value to a byte buffer.
@@ -845,7 +845,7 @@ fn doWriteFile(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: 
     // invariant: path is sentinel-terminated for the OS boundary
     const z_path = std.fmt.allocPrint(allocator, "{s}", .{path}) catch return error.OutOfMemory;
     const dir = std.Io.Dir.cwd();
-    dir.writeFile(io, .{ .sub_path = z_path, .data = sb.bytes[0..sb.len] }) catch return error.WriteFileFailed;
+    dir.writeFile(io, .{ .sub_path = z_path, .data = sb.bytes[0..@intCast(sb.len)] }) catch return error.WriteFileFailed;
 }
 
 /// `if <condition> then <statement>` — conditional execution.
@@ -855,8 +855,8 @@ fn doWriteFile(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: 
 /// the parent's environment, so a `let` inside `if` is visible afterward.
 fn doIf(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) anyerror!void {
     const then_idx = findWordOp(rest, " then ") orelse return error.IfNeedsThen;
-    const condition_text = std.mem.trim(u8, rest[0..then_idx], " \t");
-    const then_rest = std.mem.trim(u8, rest[then_idx + 6 ..], " \t");
+    const condition_text = std.mem.trim(u8, rest[0..@intCast(then_idx)], " \t");
+    const then_rest = std.mem.trim(u8, rest[@intCast(then_idx + 6)..], " \t");
 
     // invariant: condition text is non-empty
     assert(condition_text.len > 0);
@@ -869,8 +869,8 @@ fn doIf(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) a
 
     // Check for an else arm — find " else " at the top level in the then_rest.
     if (findWordOp(then_rest, " else ")) |else_idx| {
-        const then_stmt = std.mem.trim(u8, then_rest[0..else_idx], " \t");
-        const else_stmt = std.mem.trim(u8, then_rest[else_idx + 6 ..], " \t");
+        const then_stmt = std.mem.trim(u8, then_rest[0..@intCast(else_idx)], " \t");
+        const else_stmt = std.mem.trim(u8, then_rest[@intCast(else_idx + 6)..], " \t");
         if (holds) {
             try evalStatement(allocator, io, env, then_stmt);
         } else {
@@ -888,11 +888,11 @@ fn doIf(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) a
 /// element. The loop variable does not leak past the for-each.
 fn doForEach(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) anyerror!void {
     const as_idx = findWordOp(rest, " as ") orelse return error.ForEachNeedsAs;
-    const list_text = rest[0..as_idx];
-    const after_as = rest[as_idx + 4 ..];
+    const list_text = rest[0..@intCast(as_idx)];
+    const after_as = rest[@intCast(as_idx + 4)..];
     const do_idx = findWordOp(after_as, " do ") orelse return error.ForEachNeedsDo;
-    const var_name = std.mem.trim(u8, after_as[0..do_idx], " \t");
-    const body = std.mem.trim(u8, after_as[do_idx + 4 ..], " \t");
+    const var_name = std.mem.trim(u8, after_as[0..@intCast(do_idx)], " \t");
+    const body = std.mem.trim(u8, after_as[@intCast(do_idx + 4)..], " \t");
 
     // invariant: loop variable name is non-empty
     assert(var_name.len > 0);
@@ -923,16 +923,16 @@ fn doLines(allocator: std.mem.Allocator, io: std.Io, env: *const Env, arg: []con
         else => return error.LinesNeedsString,
     };
     // Count lines first, then allocate exactly.
-    var count: usize = 0;
+    var count: u32 = 0;
     var counter = std.mem.splitScalar(u8, text, '\n');
     while (counter.next() != null) count += 1;
-    const items = allocator.alloc(Value, count) catch return error.OutOfMemory;
+    const items = allocator.alloc(Value, @intCast(count)) catch return error.OutOfMemory;
     // postcondition: items has exactly count slots
     assert(items.len == count);
     var it = std.mem.splitScalar(u8, text, '\n');
-    var i: usize = 0;
+    var i: u32 = 0;
     while (it.next()) |line| {
-        items[i] = .{ .string = line };
+        items[@intCast(i)] = .{ .string = line };
         i += 1;
     }
     // postcondition: filled exactly count items
@@ -1017,28 +1017,36 @@ fn doJoin(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: []con
         return .{ .string = out };
     }
 
-    var total: usize = 0;
-    for (items, 0..) |item, i| {
+    var total: u32 = 0;
+    for (items, 0..) |item, idx| {
         const s = switch (item) {
             .string => |x| x,
             else => return error.JoinNeedsStringElements,
         };
-        total += s.len;
-        if (i + 1 < items.len) total += sep.len;
+        assert(s.len <= std.math.maxInt(u32));
+        total += @intCast(s.len);
+        if (idx + 1 < items.len) {
+            assert(sep.len <= std.math.maxInt(u32));
+            total += @intCast(sep.len);
+        }
     }
 
-    const out = allocator.alloc(u8, total) catch return error.OutOfMemory;
-    var pos: usize = 0;
-    for (items, 0..) |item, i| {
+    const out = allocator.alloc(u8, @intCast(total)) catch return error.OutOfMemory;
+    var pos: u32 = 0;
+    for (items, 0..) |item, idx| {
         const s = switch (item) {
             .string => |x| x,
             else => return error.JoinNeedsStringElements,
         };
-        std.mem.copyForwards(u8, out[pos..][0..s.len], s);
-        pos += s.len;
-        if (i + 1 < items.len) {
-            std.mem.copyForwards(u8, out[pos..][0..sep.len], sep);
-            pos += sep.len;
+        assert(s.len <= std.math.maxInt(u32));
+        const slen: u32 = @intCast(s.len);
+        std.mem.copyForwards(u8, out[@intCast(pos)..][0..@intCast(slen)], s);
+        pos += slen;
+        if (idx + 1 < items.len) {
+            assert(sep.len <= std.math.maxInt(u32));
+            const seplen: u32 = @intCast(sep.len);
+            std.mem.copyForwards(u8, out[@intCast(pos)..][0..@intCast(seplen)], sep);
+            pos += seplen;
         }
     }
     assert(pos == total);
@@ -1066,7 +1074,7 @@ fn doSplit(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: []co
     };
     if (sep.len == 0) return error.SplitEmptySeparator;
 
-    var count: usize = 0;
+    var count: u32 = 0;
     if (sep.len == 1) {
         var counter = std.mem.splitScalar(u8, text, sep[0]);
         while (counter.next() != null) count += 1;
@@ -1075,19 +1083,19 @@ fn doSplit(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: []co
         while (counter.next() != null) count += 1;
     }
 
-    const items = allocator.alloc(Value, count) catch return error.OutOfMemory;
+    const items = allocator.alloc(Value, @intCast(count)) catch return error.OutOfMemory;
     assert(items.len == count);
-    var i: usize = 0;
+    var i: u32 = 0;
     if (sep.len == 1) {
         var it = std.mem.splitScalar(u8, text, sep[0]);
         while (it.next()) |piece| {
-            items[i] = .{ .string = piece };
+            items[@intCast(i)] = .{ .string = piece };
             i += 1;
         }
     } else {
         var it = std.mem.splitSequence(u8, text, sep);
         while (it.next()) |piece| {
-            items[i] = .{ .string = piece };
+            items[@intCast(i)] = .{ .string = piece };
             i += 1;
         }
     }
@@ -1101,11 +1109,11 @@ fn doSplit(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: []co
 /// lives in a child scope, so it never leaks past the pipeline.
 fn doPipeline(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: []const u8, mode: enum { transform, filter }) EvalError!Value {
     const as_idx = findWordOp(rest, " as ") orelse return error.PipelineNeedsAs;
-    const list_text = rest[0..as_idx];
-    const tail = rest[as_idx + 4 ..];
+    const list_text = rest[0..@intCast(as_idx)];
+    const tail = rest[@intCast(as_idx + 4)..];
     const colon = findTopLevel(tail, ':') orelse return error.PipelineNeedsColon;
-    const var_name = std.mem.trim(u8, tail[0..colon], " \t");
-    const body = std.mem.trim(u8, tail[colon + 1 ..], " \t");
+    const var_name = std.mem.trim(u8, tail[0..@intCast(colon)], " \t");
+    const body = std.mem.trim(u8, tail[@intCast(colon + 1)..], " \t");
     if (var_name.len == 0) return error.PipelineNeedsName;
 
     const list_value = try evalExpr(allocator, io, env, list_text);
@@ -1115,7 +1123,7 @@ fn doPipeline(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: [
     };
 
     var results: [256]Value = undefined;
-    var count: usize = 0;
+    var count: u32 = 0;
     for (items) |item| {
         // Each element is evaluated in a child scope carrying the loop binding.
         var child = env.*;
@@ -1124,7 +1132,7 @@ fn doPipeline(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: [
         switch (mode) {
             .transform => {
                 if (count == results.len) return error.ListTooLong;
-                results[count] = value;
+                results[@intCast(count)] = value;
                 count += 1;
             },
             .filter => {
@@ -1134,13 +1142,13 @@ fn doPipeline(allocator: std.mem.Allocator, io: std.Io, env: *const Env, rest: [
                 };
                 if (holds) {
                     if (count == results.len) return error.ListTooLong;
-                    results[count] = item;
+                    results[@intCast(count)] = item;
                     count += 1;
                 }
             },
         }
     }
-    const out = try allocator.dupe(Value, results[0..count]);
+    const out = try allocator.dupe(Value, results[0..@intCast(count)]);
     return .{ .list = out };
 }
 
@@ -1152,18 +1160,18 @@ fn evalOperand(allocator: std.mem.Allocator, io: std.Io, env: *const Env, raw: [
     // A parenthesized expression `(expr)` groups its contents and recurses into
     // evalExpr, so `(2 + 3) * 4` and `assert (xs contains y)` both parse correctly.
     if (s[0] == '(') {
-        var depth2: usize = 1;
-        var j: usize = 1;
+        var depth2: u32 = 1;
+        var j: u32 = 1;
         var in_q: bool = false;
-        while (j < s.len and depth2 > 0) : (j += 1) {
-            if (s[j] == '"') in_q = !in_q;
+        while (j < @as(u32, @intCast(s.len)) and depth2 > 0) : (j += 1) {
+            if (s[@intCast(j)] == '"') in_q = !in_q;
             if (!in_q) {
-                if (s[j] == '(') depth2 += 1 else if (s[j] == ')') depth2 -= 1;
+                if (s[@intCast(j)] == '(') depth2 += 1 else if (s[@intCast(j)] == ')') depth2 -= 1;
             }
         }
         // j is now one past the closing ')'; if it equals s.len the whole
         // expression is wrapped in matching parens — recurse into the interior.
-        if (j == s.len and depth2 == 0) {
+        if (j == @as(u32, @intCast(s.len)) and depth2 == 0) {
             return evalExpr(allocator, io, env, s[1 .. s.len - 1]);
         }
     }
@@ -1205,17 +1213,17 @@ fn evalOperand(allocator: std.mem.Allocator, io: std.Io, env: *const Env, raw: [
     }
     // `base.field.field…` reads a field from a record, one step at a time.
     if (findTopLevel(s, '.')) |dot| {
-        var value = try evalOperand(allocator, io, env, s[0..dot]);
-        var rest = s[dot + 1 ..];
+        var value = try evalOperand(allocator, io, env, s[0..@intCast(dot)]);
+        var rest = s[@intCast(dot + 1)..];
         while (true) {
             const next_dot = findTopLevel(rest, '.');
-            const field = std.mem.trim(u8, if (next_dot) |nd| rest[0..nd] else rest, " \t");
+            const field = std.mem.trim(u8, if (next_dot) |nd| rest[0..@intCast(nd)] else rest, " \t");
             const fields = switch (value) {
                 .record => |r| r,
                 else => return error.NotARecord,
             };
             value = findField(fields, field) orelse return error.NoSuchField;
-            if (next_dot) |nd| rest = rest[nd + 1 ..] else break;
+            if (next_dot) |nd| rest = rest[@intCast(nd + 1)..] else break;
         }
         return value;
     }
@@ -1236,12 +1244,16 @@ fn findField(fields: []const Field, name: []const u8) ?Value {
 /// a runaway composition meets a clear edge rather than growing without end.
 const StrBuf = struct {
     bytes: [4096]u8 = undefined,
-    len: usize = 0,
+    len: u32 = 0,
 
     fn append(self: *StrBuf, text: []const u8) EvalError!void {
-        if (self.len + text.len > self.bytes.len) return error.StringTooLong;
-        @memcpy(self.bytes[self.len .. self.len + text.len], text);
-        self.len += text.len;
+        assert(text.len <= std.math.maxInt(u32));
+        const add: u32 = @intCast(text.len);
+        if (self.len + add > self.bytes.len) return error.StringTooLong;
+        const start: usize = @intCast(self.len);
+        const end: usize = @intCast(self.len + add);
+        @memcpy(self.bytes[start..end], text);
+        self.len += add;
     }
 
     /// Render a value into the buffer — the same shapes `write` speaks to the console.
@@ -1281,22 +1293,22 @@ const StrBuf = struct {
 /// string — a path, an argument, a sentence.
 fn interpolate(allocator: std.mem.Allocator, io: std.Io, env: *const Env, inner: []const u8) EvalError!Value {
     var sb = StrBuf{};
-    var i: usize = 0;
-    while (i < inner.len) {
-        if (i + 1 < inner.len and inner[i] == '$' and inner[i + 1] == '{') {
-            const close = std.mem.indexOfScalarPos(u8, inner, i + 2, '}') orelse return error.UnterminatedInterpolation;
-            const expr = std.mem.trim(u8, inner[i + 2 .. close], " \t");
+    var i: u32 = 0;
+    while (i < @as(u32, @intCast(inner.len))) {
+        if (i + 1 < @as(u32, @intCast(inner.len)) and inner[@intCast(i)] == '$' and inner[@intCast(i + 1)] == '{') {
+            const close = std.mem.indexOfScalarPos(u8, inner, @intCast(i + 2), '}') orelse return error.UnterminatedInterpolation;
+            const expr = std.mem.trim(u8, inner[@intCast(i + 2) .. close], " \t");
             try sb.appendValue(try evalOperand(allocator, io, env, expr));
-            i = close + 1;
+            i = @intCast(close + 1);
         } else {
             // Copy the literal run up to the next '$' (or the end); a lone '$' steps once.
-            const next = std.mem.indexOfScalarPos(u8, inner, i, '$') orelse inner.len;
-            const stop = if (next > i) next else i + 1;
-            try sb.append(inner[i..stop]);
+            const next = std.mem.indexOfScalarPos(u8, inner, @intCast(i), '$') orelse inner.len;
+            const stop: u32 = if (next > @as(usize, @intCast(i))) @as(u32, @intCast(next)) else i + 1;
+            try sb.append(inner[@intCast(i)..@intCast(stop)]);
             i = stop;
         }
     }
-    return .{ .string = try allocator.dupe(u8, sb.bytes[0..sb.len]) };
+    return .{ .string = try allocator.dupe(u8, sb.bytes[0..@intCast(sb.len)]) };
 }
 
 /// Parse a list literal's interior — space-separated operands, with spaces inside
@@ -1304,14 +1316,14 @@ fn interpolate(allocator: std.mem.Allocator, io: std.Io, env: *const Env, inner:
 /// meets a clear edge rather than eating memory without end.
 fn parseList(allocator: std.mem.Allocator, io: std.Io, env: *const Env, inner: []const u8) EvalError!Value {
     var buffer: [256]Value = undefined;
-    var count: usize = 0;
+    var count: u32 = 0;
     var it = TokenIter{ .text = inner };
     while (it.next()) |token| {
         if (count == buffer.len) return error.ListTooLong;
-        buffer[count] = try evalOperand(allocator, io, env, token);
+        buffer[@intCast(count)] = try evalOperand(allocator, io, env, token);
         count += 1;
     }
-    const items = try allocator.dupe(Value, buffer[0..count]);
+    const items = try allocator.dupe(Value, buffer[0..@intCast(count)]);
     return .{ .list = items };
 }
 
@@ -1319,16 +1331,16 @@ fn parseList(allocator: std.mem.Allocator, io: std.Io, env: *const Env, inner: [
 /// it holds spaces of its own.
 const TokenIter = struct {
     text: []const u8,
-    i: usize = 0,
+    i: u32 = 0,
 
     fn next(self: *TokenIter) ?[]const u8 {
-        while (self.i < self.text.len and (self.text[self.i] == ' ' or self.text[self.i] == '\t')) self.i += 1;
-        if (self.i >= self.text.len) return null;
+        while (self.i < @as(u32, @intCast(self.text.len)) and (self.text[@intCast(self.i)] == ' ' or self.text[@intCast(self.i)] == '\t')) self.i += 1;
+        if (self.i >= @as(u32, @intCast(self.text.len))) return null;
         const start = self.i;
         var in_quote = false;
-        var depth: usize = 0;
-        while (self.i < self.text.len) : (self.i += 1) {
-            const c = self.text[self.i];
+        var depth: u32 = 0;
+        while (self.i < @as(u32, @intCast(self.text.len))) : (self.i += 1) {
+            const c = self.text[@intCast(self.i)];
             if (c == '"') {
                 in_quote = !in_quote;
             } else if (in_quote) {
@@ -1341,7 +1353,7 @@ const TokenIter = struct {
                 break;
             }
         }
-        return self.text[start..self.i];
+        return self.text[@intCast(start)..@intCast(self.i)];
     }
 };
 
@@ -1350,31 +1362,31 @@ const TokenIter = struct {
 /// field count is bounded, so a runaway literal meets a clear edge.
 fn parseRecord(allocator: std.mem.Allocator, io: std.Io, env: *const Env, inner: []const u8) EvalError!Value {
     var buffer: [256]Field = undefined;
-    var count: usize = 0;
+    var count: u32 = 0;
     var it = TopLevelSplit{ .text = inner, .delim = ',' };
     while (it.next()) |field_text| {
         const ft = std.mem.trim(u8, field_text, " \t");
         if (ft.len == 0) continue; // tolerate a trailing comma or a blank field
         const colon = findTopLevel(ft, ':') orelse return error.FieldNeedsColon;
-        const name = std.mem.trim(u8, ft[0..colon], " \t");
-        const valtext = std.mem.trim(u8, ft[colon + 1 ..], " \t");
+        const name = std.mem.trim(u8, ft[0..@intCast(colon)], " \t");
+        const valtext = std.mem.trim(u8, ft[@intCast(colon + 1)..], " \t");
         if (name.len == 0) return error.FieldNeedsColon;
         if (count == buffer.len) return error.RecordTooLong;
-        buffer[count] = .{ .name = name, .value = try evalExpr(allocator, io, env, valtext) };
+        buffer[@intCast(count)] = .{ .name = name, .value = try evalExpr(allocator, io, env, valtext) };
         count += 1;
     }
-    const fields = try allocator.dupe(Field, buffer[0..count]);
+    const fields = try allocator.dupe(Field, buffer[0..@intCast(count)]);
     return .{ .record = fields };
 }
 
 /// Find a character at the top level — outside any quoted string and outside any
 /// nested `[]` or `{}` — or report its absence.
-fn findTopLevel(text: []const u8, target: u8) ?usize {
+fn findTopLevel(text: []const u8, target: u8) ?u32 {
     var in_quote = false;
-    var depth: usize = 0;
-    var i: usize = 0;
-    while (i < text.len) : (i += 1) {
-        const c = text[i];
+    var depth: u32 = 0;
+    var i: u32 = 0;
+    while (i < @as(u32, @intCast(text.len))) : (i += 1) {
+        const c = text[@intCast(i)];
         if (c == '"') {
             in_quote = !in_quote;
         } else if (in_quote) {
@@ -1395,15 +1407,15 @@ fn findTopLevel(text: []const u8, target: u8) ?usize {
 const TopLevelSplit = struct {
     text: []const u8,
     delim: u8,
-    i: usize = 0,
+    i: u32 = 0,
 
     fn next(self: *TopLevelSplit) ?[]const u8 {
-        if (self.i > self.text.len) return null;
+        if (self.i > @as(u32, @intCast(self.text.len))) return null;
         const start = self.i;
         var in_quote = false;
-        var depth: usize = 0;
-        while (self.i < self.text.len) : (self.i += 1) {
-            const c = self.text[self.i];
+        var depth: u32 = 0;
+        while (self.i < @as(u32, @intCast(self.text.len))) : (self.i += 1) {
+            const c = self.text[@intCast(self.i)];
             if (c == '"') {
                 in_quote = !in_quote;
             } else if (in_quote) {
@@ -1413,13 +1425,13 @@ const TopLevelSplit = struct {
             } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
                 depth -= 1;
             } else if (c == self.delim and depth == 0) {
-                const token = self.text[start..self.i];
+                const token = self.text[@intCast(start)..@intCast(self.i)];
                 self.i += 1;
                 return token;
             }
         }
-        const token = self.text[start..self.text.len];
-        self.i = self.text.len + 1;
+        const token = self.text[@intCast(start)..];
+        self.i = @as(u32, @intCast(self.text.len)) + 1;
         return token;
     }
 };
@@ -1429,10 +1441,10 @@ const Comparison = struct { op: enum { eq, ne }, left: []const u8, right: []cons
 /// Find a top-level `==` or `!=`, skipping anything inside a quoted string.
 fn findComparison(text: []const u8) ?Comparison {
     var in_quote = false;
-    var depth: usize = 0;
-    var i: usize = 0;
-    while (i + 1 < text.len) : (i += 1) {
-        const c = text[i];
+    var depth: u32 = 0;
+    var i: u32 = 0;
+    while (i + 1 < @as(u32, @intCast(text.len))) : (i += 1) {
+        const c = text[@intCast(i)];
         if (c == '"') {
             in_quote = !in_quote;
         } else if (in_quote) {
@@ -1441,10 +1453,10 @@ fn findComparison(text: []const u8) ?Comparison {
             depth += 1;
         } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
             depth -= 1;
-        } else if (depth == 0 and c == '=' and text[i + 1] == '=') {
-            return .{ .op = .eq, .left = text[0..i], .right = text[i + 2 ..] };
-        } else if (depth == 0 and c == '!' and text[i + 1] == '=') {
-            return .{ .op = .ne, .left = text[0..i], .right = text[i + 2 ..] };
+        } else if (depth == 0 and c == '=' and text[@intCast(i + 1)] == '=') {
+            return .{ .op = .eq, .left = text[0..@intCast(i)], .right = text[@intCast(i + 2)..] };
+        } else if (depth == 0 and c == '!' and text[@intCast(i + 1)] == '=') {
+            return .{ .op = .ne, .left = text[0..@intCast(i)], .right = text[@intCast(i + 2)..] };
         }
     }
     return null;
@@ -1504,8 +1516,8 @@ fn doAssert(allocator: std.mem.Allocator, io: std.Io, env: *const Env, arg: []co
     var condition = arg;
     var message: ?[]const u8 = null;
     if (findWordOp(arg, " else ")) |idx| {
-        condition = std.mem.trim(u8, arg[0..idx], " \t");
-        const tail = std.mem.trim(u8, arg[idx + 6 ..], " \t");
+        condition = std.mem.trim(u8, arg[0..@intCast(idx)], " \t");
+        const tail = std.mem.trim(u8, arg[@intCast(idx + 6)..], " \t");
         message = if (tail.len >= 2 and tail[0] == '"' and tail[tail.len - 1] == '"')
             tail[1 .. tail.len - 1]
         else
@@ -1524,12 +1536,12 @@ fn doAssert(allocator: std.mem.Allocator, io: std.Io, env: *const Env, arg: []co
 
 /// Find a word-operator like ` else ` or ` contains ` outside any quoted string,
 /// so the same word inside `"text"` stays part of the text.
-fn findWordOp(text: []const u8, word: []const u8) ?usize {
+fn findWordOp(text: []const u8, word: []const u8) ?u32 {
     var in_quote = false;
-    var depth: usize = 0;
-    var i: usize = 0;
-    while (i + word.len <= text.len) : (i += 1) {
-        const c = text[i];
+    var depth: u32 = 0;
+    var i: u32 = 0;
+    while (i + @as(u32, @intCast(word.len)) <= @as(u32, @intCast(text.len))) : (i += 1) {
+        const c = text[@intCast(i)];
         if (c == '"') {
             in_quote = !in_quote;
         } else if (in_quote) {
@@ -1538,7 +1550,7 @@ fn findWordOp(text: []const u8, word: []const u8) ?usize {
             depth += 1;
         } else if ((c == ']' or c == '}' or c == ')') and depth > 0) {
             depth -= 1;
-        } else if (depth == 0 and std.mem.startsWith(u8, text[i..], word)) {
+        } else if (depth == 0 and std.mem.startsWith(u8, text[@intCast(i)..], word)) {
             return i;
         }
     }

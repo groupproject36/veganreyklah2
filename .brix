@@ -9,7 +9,7 @@
 #   file     — one tracked brick/source file (multiple, in order)
 
 name veganreyklah2
-version 20260620.032012
+version 20260629.004912
 
 # Rye compiler
 file rye/src/main.rye
@@ -34,5 +34,5 @@ file mantra/src/main.rye
 file tools/parity.rish
 
 # Living documentation
-file work-in-progress/995_open_threads.md
-file work-in-progress/996_roadmap.md
+file work-in-progress/ROADMAP.md
+file work-in-progress/TASKS.md

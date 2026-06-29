@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260629-175959` | [TH-4 and TH-5 — .brix mend and Rishi width](20260629-175959_th4-brix-th5-rishi-width.md) | .brix tracks ROADMAP/TASKS; Rishi zero authored usize; parity 127; RS-1 needs Claude. |
 | `20260629-175044` | [TH-3 — Mantra width and seam policy](20260629-175044_th3-mantra-width-seam-policy.md) | Seven sites cleared; TAME_GUIDANCE seam rule; parity 125; global width-check still RED. |
 | `20260629-175044` | [Silo Technique — filed in context home](20260629-175044_silo-technique-filed.md) | Portable silo guide beside Radiant Style and REYA2. |
 | `20260629-173543` | [TH-2c — four-remote push confirmation](20260629-173543_th-2c-four-remote-push.md) | `085d3dd` on origin, github, gp36-codeberg, gp36-github. |

@@ -66,3 +66,13 @@ say "witness suite: TH-3 Mantra width…"
 let th3 = run ["rishi/bin/rishi" "run" "tools/width_check_th3.rish"]
 assert th3.ok else "TH-3 Mantra width witness failed"
 say "GREEN: TH-3 Mantra width witness passed."
+
+say "witness suite: TH-4 .brix mend…"
+let th4 = run ["rishi/bin/rishi" "run" "tools/width_check_th4.rish"]
+assert th4.ok else "TH-4 .brix mend witness failed"
+say "GREEN: TH-4 .brix mend witness passed."
+
+say "witness suite: TH-5 Rishi width…"
+let th5 = run ["rishi/bin/rishi" "run" "tools/width_check_th5.rish"]
+assert th5.ok else "TH-5 Rishi width witness failed"
+say "GREEN: TH-5 Rishi width witness passed."
