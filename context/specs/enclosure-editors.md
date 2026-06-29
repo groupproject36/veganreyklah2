@@ -146,7 +146,8 @@ Two editors, two rule surfaces, one **`context/`** home.
 
 **This repository ships both:**
 
-- `.cursor/rules/` — Reya 2, Radiant Style, session logs (for Cursor).
+- `.cursor/rules/` — Reya 2, Radiant Style, TAME Guidance, session logs (for Cursor).
+- `.claude/rules/` — same disciplines for Claude Code (Zed).
 - `CLAUDE.md` + `.claude/rules/` — the same three themes for Claude in Zed.
 
 Keep long-form guidance in `context/` (`REYA2.md`, `RADIANT_STYLE.md`, specs). Editor rule files stay thin pointers so Cursor and Zed stay aligned.

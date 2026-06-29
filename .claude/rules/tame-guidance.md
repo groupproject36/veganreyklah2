@@ -3,6 +3,8 @@
 **Canon:** `external-research/TAME_GUIDANCE.md` (voiced Tiger Style) · **Source:** `gratitude/TIGER_STYLE.md`
 **Operational supplement:** `context/TAME_GUIDANCE.md`. Apply when writing or reviewing Rye source (`.rye`), Brix descriptors (`.brix`), Bron notation (`.bron`), and Rishi scripts (`.rish`).
 
+Full checkable surface: supplement section **What We Check, and When**.
+
 ## When this rule is active
 
 - Writing or editing any `.rye` source file
@@ -13,32 +15,33 @@
 ## Core moves (root — all family languages)
 
 - State invariants **before** implementing: write `assert` calls at construction, mutation, and postcondition, each preceded by a `// invariant:` comment.
+- Import assert once per file: `const assert = std.debug.assert;` — then call bare `assert(...)`, not `std.debug.assert(...)`.
 - Bounds on everything: every allocation, collection, and pipeline names a maximum. Name the budget at construction; enforce at the edge.
 - Say why: every assertion, every named constant, every surprising design choice earns a comment that names the reason.
 - Accrete, never break: a name once given is a promise. Add beside it; do not replace it silently.
 - One value model: string, integer, bool, list, record — composed side by side, never tangled.
+- **`snake_case`** for functions, variables, and file names.
 
-## ABSOLUTE: No `usize` in Rye
+## Explicit widths (authored Rye)
 
-**`usize` is banned in Rye. No exceptions. No seam casts. No boundary patterns.**
+Tiger Style discipline: **`usize` is a boundary type, not a design type.** Read the full table and seam exemplar in `context/TAME_GUIDANCE.md`.
 
-Rye is forking from Zig. The Zig slice type `[]T` with `len: usize` is an inherited constraint we are replacing. In Rye:
+- **`u32`** — in-memory counts, indices, lengths bounded by a named constant.
+- **`u64`** — wire-persistent sizes, timestamps, cross-target quantities.
+- **`usize`** — **only** at the inherited-std seam. Assert the bound, keep arithmetic in `u32`, `@intCast` at the Zig API edge. Seam casts are correct Tiger code, not debt awaiting a fork.
+- **Never** `usize` in struct fields, function parameters, return types, or locals we publish as authored API.
+- Live lint: `tools/width-check.rish`. Growing: `tools/tame-check.rish`.
+- Charter: `expanding-prompts/20260620-210812_explicit-width-audit.md`; baseline: `work-in-progress/20260620-212126_usize-width-baseline.md`.
 
-- **`u32`** for all lengths, indices, counts, offsets bounded by a named constant
-- **`u64`** for wire-persistent sizes, timestamps, MMIO addresses, cross-target quantities
-- **Never `usize`** — not in struct fields, not in function parameters, not in return types, not in local variables, not at slice boundaries, not anywhere
-
-Where Zig's `std` currently requires `usize` (slice `.len`, `@intCast`), the Rye compiler fork (F1–F5) replaces the slice type. Until the fork lands, existing seam casts (`const start: usize = @intCast(...)`) are **technical debt to be eliminated**, not an acceptable pattern.
-
-The width-check gate (`tools/width-check.rish`) enforces this. Every authored `.rye` file must pass.
+**Compiler fork (F1–F5):** deferred **horizon** — not the active primary track. See `active-designing/20260628-043542_thin-frontend-slc-direction.md`.
 
 ## Supplement cheatsheet
 
 | Language | Key discipline |
 |----------|----------------|
-| **Rye** | `u32` bounded, `u64` wire. **Zero `usize` — absolute ban.** `std.debug.assert` at every invariant. Named errors, propagated with `try`. Short functions named with a verb. |
+| **Rye** | `u32` bounded, `u64` wire. Seam-only `usize`. Unqualified `assert`. Named errors with `try`. Short functions named with a verb. |
 | **Brix** | Composition language — declares systems. Evaluates to Bron. Interfaces with Mantra, targets Aurora + Tally. |
-| **Bron** | Data notation — plain key-value, one field per line. Parsed, not evaluated. Token-efficient. |
+| **Bron** | Data notation — plain key-value, one field per line. Parsed, not evaluated. |
 | **Rishi** | `run` always returns `{ status, out, err }`. Check `status` before trusting `out`. `assert` as a pipeline gate. `if/then/else` for conditionals. `for-each` for iteration. |
 
 ## Season memory (Rye only)

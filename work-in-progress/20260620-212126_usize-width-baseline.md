@@ -1,65 +1,71 @@
-# 992 · Width Baseline — `usize` Elimination
+# 992 · Width Baseline — explicit widths in authored Rye
 
 **Stamp:** `20260621.070712`
+**Last updated:** 2026-06-29 (aligned to `context/TAME_GUIDANCE.md` — seam policy; fork as horizon)
 **Policy:** `context/TAME_GUIDANCE.md` · `gratitude/TIGER_STYLE.md` · `active-designing/970`
-**Status:** ABSOLUTE BAN. Every `usize` in authored `.rye` is debt. The compiler fork eliminates it.
+**Status:** Living inventory. Prefer `u32`/`u64` in authored APIs; `usize` only at the inherited-std seam with assert + `@intCast`. Compiler fork (slice `len: u32`) is a **horizon** — active track is explicit widths + lint beside SLC.
 
 ---
 
 ## The Law
 
-**Rye has no `usize`. No exceptions.**
-
-`usize` is an architecture-specific type that silently changes meaning between targets. Rye is forking from Zig. The Zig slice `[]T` with `len: usize` is inherited debt, not an acceptable pattern.
+**`usize` is a boundary type, not a design type** (Tiger Style + TAME Guidance).
 
 | Width | Use |
 |-------|-----|
-| **`u32`** | All lengths, indices, counts, offsets. Four billion elements — larger than any garden. |
+| **`u32`** | In-memory counts, indices, lengths bounded by a named constant (`max_*`, garden capacity, grid dimension). |
 | **`u64`** | Wire-persistent sizes, timestamps, MMIO addresses, cross-target quantities. |
-| **`usize`** | **BANNED.** Not in struct fields, not in parameters, not in returns, not in locals, not at boundaries. |
+| **`usize`** | **Avoid** in authored Rye. **Only** at the inherited-std seam: assert `len <= maxInt(u32)` (or named bound), arithmetic in `u32`, `@intCast` for the Zig API call. Seam casts are correct Tiger code — see `tally/seed.rye` `bufLenU32`. |
 
-Where Zig's `std` currently forces `usize` (slice `.len`, `buf[i]`), the seam casts (`const x: usize = @intCast(...)`) are **technical debt** to be eliminated by the compiler fork — not an acceptable pattern to keep.
+**Never** `usize` in struct fields, public parameters, or return types we publish.
+
+**Compiler fork (F1–F5):** deferred horizon — `active-designing/20260628-043542_thin-frontend-slc-direction.md`. Authored-width migration (Phase 1b, `mantra/*` next) continues **decoupled** from any fork.
 
 ---
 
-## Current Debt
+## Current Corpus (inventory)
 
 | File | `usize` hits | Status |
 |------|-------------|--------|
-| `rishi/src/main.rye` | 37 | Debt — largest file |
+| `rishi/src/main.rye` | 37 | Migration target (`TH-5`) |
 | `brushstroke/skate_grid.rye` | 18 (seam casts) | Phase 1b done (`235812`) |
 | `caravan/chain.rye` | 2 (seam casts) | Phase 1b done (`235512`) |
-| `comlink/hosted_wire.rye` | 12 | Debt |
-| `aurora/src/deciding.rye` | 11 | Debt |
-| `aurora/src/posted.rye` | 11 | Debt |
+| `comlink/hosted_wire.rye` | 12 | Migration target |
+| `aurora/src/deciding.rye` | 11 | Migration target |
+| `aurora/src/posted.rye` | 11 | Migration target |
 | `brushstroke/wayland_seed.rye` | 0 | Phase 1b done (`235812`) |
-| `aurora/src/relay.rye` | 8 | Debt |
-| `tally/gardens.rye` | 5 (seam casts) | Debt |
-| `mantra/src/main.rye` | 5 | Debt |
-| `tally/seed.rye` | 2 (seam casts) | Debt |
-| `rye/src/main.rye` | 2 | Debt |
-| `caravan/bounded.rye` | 2 (seam casts) | Debt |
-| `caravan/twin.rye` | 2 (seam casts) | Debt |
+| `aurora/src/relay.rye` | 8 | Migration target |
+| `tally/gardens.rye` | 5 (seam casts) | Seam + migration |
+| `mantra/src/main.rye` | 5 | Migration target (`TH-3`) |
+| `tally/seed.rye` | 2 (seam casts) | Exemplar — sanctioned seam |
+| `rye/src/main.rye` | 2 | Migration target |
+| `caravan/bounded.rye` | 2 (seam casts) | Seam |
+| `caravan/twin.rye` | 2 (seam casts) | Seam |
 | `caravan/seed.rye` | 0 | Clean |
 
-**Gate:** `tools/width-check.rish` — scans all authored `.rye` for any `usize` token. Zero tolerance.
+Re-run inventory: `tools/tame_usize_audit.rye` / `width-check.rish` after each migration pass.
 
 ---
 
-## The Fork Eliminates the Debt
+## Gates
 
-The Rye compiler fork (F1–F5 in `970`) replaces Zig's slice type:
+| Gate | Role | Status |
+|------|------|--------|
+| `tools/width-check.rish` | Substring scan for `usize` in authored `.rye` | Live — **unrefined** (flags seam casts; **TH-1** refines) |
+| `tools/tame-check.rish` | Assert style, whitespace, `Self = @This()` | **TH-2** — not built yet |
+
+Ruling #1 (approved): seam-aware `width-check` so sanctioned `@intCast` / `@as(usize` pass while authored `usize` still fails.
+
+---
+
+## Fork Horizon (not the active primary track)
 
 | Step | What | Status |
 |------|------|--------|
-| **F0** | Decide: literal ban | Done |
-| **F1** | Compiler spike: Rye rejects `usize` keyword in `.rye` source | **Next** |
-| **F2** | Authored corpus: zero `usize` in all published `.rye` | Blocked on F1 |
-| **F3** | Rye-native std: `rye/lib` with `u32`/`u64` signatures | After F2 |
-| **F4** | Bridge sunset: self-hosted `rye run` without Zig | After F3 |
-| **F5** | Guest Zig: interop lane for third-party code | After F4 |
+| **F0** | Policy: explicit widths + seam discipline | **Active** — `context/TAME_GUIDANCE.md` |
+| **F1–F5** | Compiler fork: reject `usize`, native slice `len: u32`, self-host | **Horizon** — research in `active-designing/20260621-070712_the-compiler-fork.md` |
 
-The 90 parity witnesses are the specification F3 satisfies. When F3 completes, `usize` does not exist in Rye.
+The 120 parity witnesses (116 + four SLC-1) specify behavior the living desktop must keep. A fork is deliberated only from a mature whole.
 
 ---
 
@@ -69,4 +75,4 @@ The 90 parity witnesses are the specification F3 satisfies. When F3 completes, `
 
 ---
 
-*Every `usize` is debt. The fork pays it. No exceptions, no seam patterns, no boundary carve-outs.*
+*Prefer fixed widths. Assert at the seam. Grow the lint beside the work — TH-1 through TH-5 on the bench.*

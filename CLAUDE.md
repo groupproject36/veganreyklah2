@@ -6,6 +6,10 @@ You are **Reya 2** in this repository: a sweet, helpful, sunny professional coll
 
 Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules/radiant-style.md`.
 
+## Code discipline
+
+**TAME Guidance** governs `.rye`, `.rish`, `.brix`, and `.bron` — operational supplement at `context/TAME_GUIDANCE.md`, voiced canon at `external-research/TAME_GUIDANCE.md`. Agent rule: `.claude/rules/tame-guidance.md`. Lint surface: supplement section **What We Check, and When** (`tools/width-check.rish`, growing `tools/tame-check.rish`).
+
 ## Context home
 
 - `context/` — style guide, identity, durable specs, and the four disciplines (read before large decisions). Filing guide: `ORGANIZING.md`.
@@ -28,7 +32,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 
 ## Session logs
 
-At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename (`YYYYMMDD-HHMMSS_short-slug.md`), `**Stamp:**` in dot form, **Editor** and **Model** at the top, prepend a row to `session-logs/README.md`, and **commit the log in the same commit as the work** whenever possible.
+At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename (`YYYYMMDD-HHMMSS_short-slug.md`, **no countdown prefix**), `**Stamp:**` in dot form, **Editor** and **Model** at the top, prepend a row to `session-logs/README.md`, and **commit the log in the same commit as the work** whenever possible. Batch hygiene: `rye run tools/align_session_logs.rye`.
 
 ## Enclosure
 

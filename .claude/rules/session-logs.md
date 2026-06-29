@@ -4,7 +4,9 @@ At the end of **every** response — before finishing the turn — write a sessi
 
 ## Filename
 
-`YYYYMMDD-HHMMSS_short-slug.md` — hyphen stamp in the filename; dot form `YYYYMMDD.HHMMSS` in the file body when you write **Stamp:**.
+`YYYYMMDD-HHMMSS_short-slug.md` — hyphen stamp in the filename; dot form `YYYYMMDD.HHMMSS` in the file body as `**Stamp:**`.
+
+**No countdown prefix** (`99999_`, etc.) — retired. One clock only.
 
 Full naming law: `context/specs/20260627-102012_one-clock-naming-law.md`. Files sort ascending by stamp; the living index in `session-logs/README.md` reads newest first.
 
@@ -14,9 +16,12 @@ When two logs share a second, add `_short-slug` from the header (or from **Promp
 
 After each new log, prepend a newest-first row to `session-logs/README.md`: stamp, linked title, and one line of meaning drawn from the header.
 
+For a batch hygiene pass or when the index may be stale, run `rye run tools/align_session_logs.rye` — it normalizes headers and rebuilds the full README table.
+
 ## Contents
 
 - **Editor and model** at the top — which editor produced this log and which model powered it. Example: `**Editor:** Cursor · **Model:** Composer` or `**Editor:** Claude Code (Zed) · **Model:** Claude Opus 4.6`. This lets either agent identify which logs came from the other.
+- `**Stamp:**` in dot form (`YYYYMMDD.HHMMSS`) on the line after the H1.
 - The step-by-step **thinking trace** and reasoning followed during the response.
 - **Observations** about the changes, and any decisions or trade-offs taken.
 - A list of the **files** created, modified, or deleted, each with a one-line why.

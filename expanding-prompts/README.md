@@ -32,6 +32,7 @@ Dated prompts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living f
 | Parity gate | `tools/parity.rish` |
 | Additive gate | `tools/additive-gate.rish` |
 | Strengthening enricher | `tools/enrich_strengthening_docs.rye` |
+| Session log aligner | `tools/align_session_logs.rye` |
 | Width audit (planned) | `tools/width-audit.rish` ([`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md) Phase 5) |
 
 
@@ -44,7 +45,7 @@ Dated prompts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living f
 | Strengthening doc + width enricher | [`20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md`](20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) → [`../tools/enrich_strengthening_docs.rye`](../tools/enrich_strengthening_docs.rye) |
 | Literal `usize` ban / language fork | [`../external-research/20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md), [`../active-designing/20260621-051312_explicit-width-in-rye.md`](../active-designing/20260621-051312_explicit-width-in-rye.md), [`../external-research/20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md) |
 
-**Retired in new prompts:** `tools/parity.sh`, `enrich_strengthening_docs.py`, `parity.rye` as gate target, `init.arena`, authored `ArenaAllocator`, “`usize` only at seam” as **permanent** policy (interim only — see width fork links above).
+**Retired in new prompts:** `tools/parity.sh`, `enrich_strengthening_docs.py`, `align_session_logs.py`, `parity.rye` as gate target, `init.arena`, authored `ArenaAllocator`, “`usize` only at seam” as **permanent** policy (interim only — see width fork links above).
 
 **Width:** charter [`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md); baseline [`../work-in-progress/20260620-212126_usize-width-baseline.md`](../work-in-progress/20260620-212126_usize-width-baseline.md); fork research [`../external-research/20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md); design [`../active-designing/20260621-051312_explicit-width-in-rye.md`](../active-designing/20260621-051312_explicit-width-in-rye.md); interim seam [`../external-research/20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md).
 

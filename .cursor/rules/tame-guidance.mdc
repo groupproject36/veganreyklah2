@@ -9,12 +9,14 @@ alwaysApply: false
 **Canon:** `external-research/TAME_GUIDANCE.md` (voiced Tiger Style) · **Source:** `gratitude/TIGER_STYLE.md`
 **Operational supplement:** `context/TAME_GUIDANCE.md` — apply when writing or reviewing Rye (`.rye`), Brix (`.brix`), and Rishi (`.rish`).
 
+Full checkable surface: supplement section **What We Check, and When**.
+
 ## Core moves (root)
 
-- State invariants **before** implementing; `// invariant:` on every `assert`.
+- State invariants **before** implementing; `// invariant:` on every `assert`; `const assert = std.debug.assert` once per file, then bare `assert(...)`.
 - Bounds on everything; named errors; accrete never break; one value model.
 - **`snake_case`** for functions, variables, and file names (996 / Tiger Style).
-- **Explicit widths** — `u32` / `u64` in authored APIs; `usize` only at inherited slice boundaries (`context/TAME_GUIDANCE.md`, `10024`).
+- **Explicit widths** in authored APIs — see supplement Rye section.
 
 ## Explicit widths (authored Rye)
 
@@ -22,9 +24,10 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full 
 
 - **`u32`** — in-memory counts, indices, lengths bounded by a named constant (`max_*`, garden capacity, grid cols).
 - **`u64`** — wire-persistent offsets, timestamps, cross-target sizes.
-- **`usize`** — **only** at inherited slice edges (`buf.len`, `[]T` indexing, `std` APIs). Pair every `@intCast` with `assert(value <= std.math.maxInt(Target))`.
+- **`usize`** — **only** at the inherited-std seam (`buf.len`, `[]T` indexing, Zig `std` APIs). Pair every `@intCast` with `assert(value <= std.math.maxInt(Target))`. Seam casts are correct Tiger code, not debt.
 - **Never** `usize` in struct fields, public params, or return types we publish.
 - Charter: `expanding-prompts/20260620-210812_explicit-width-audit.md`; inventory: `work-in-progress/20260620-212126_usize-width-baseline.md`.
+- Live lint: `tools/width-check.rish`; growing: `tools/tame-check.rish` (unqualified-assert, no `Self = @This()`, whitespace).
 
 ## Season memory (authored Rye)
 
@@ -35,4 +38,4 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full 
 
 ## Priority
 
-Safety first, performance second, joy third.
+Safety first, performance second, joy third. Compiler fork (slice `len: u32`) is a **horizon** — see `active-designing/20260628-043542_thin-frontend-slc-direction.md`; the active track is explicit widths + lint beside SLC.
