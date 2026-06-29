@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-28 (witness suite green; SLC-1 Step 1 sealed)
+**Last updated:** 2026-06-29 (SLC-1 Step 2 sealed; witness suite green)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -17,7 +17,7 @@
 ## Now — In Flight and Immediate
 
 ### Rye OS
-- [x] **Run the witness suite on metal** — `rishi/bin/rishi run tools/parity.rish` green (116 `rye run` witnesses + SLC-1 repl); `parity-selftest.rish` green. Build with `HOME` on project disk (`/home/xy/veganreyklah2/.build-home`) — host tmpfs at `/home/xy` is full.
+- [x] **Run the witness suite on metal** — `rishi/bin/rishi run tools/parity.rish` green (116 `rye run` witnesses + SLC-1 repl + SLC-1 version); `parity-selftest.rish` green. Build with `HOME` on project disk (`/home/xy/veganreyklah2/.build-home`) — host tmpfs at `/home/xy` is full.
 - [x] **SLC-1, Step 1 — the interactive loop** — `rishi repl` (bare `rishi` or `rishi repl`), in-process evaluator, bindings carried forward line to line; `:quit` / `:q`; witness `tools/slc1_repl_step1.rish` green.
   - [x] **1a — entry points** — bare `rishi` and `rishi repl` both start the loop; `rishi run` and `rishi version` unchanged.
   - [x] **1b — type** — fixed prompt `rishi> `; stdin via `takeDelimiterInclusive('\n')`; trim `\r\n` from each line.
@@ -41,13 +41,13 @@
 ## Next — After Now Lands
 
 ### Rye OS
-- [ ] **SLC-1, Step 2 — version** — session transcript + Mantra weave; scope [`active-designing/20260629-004912_slc-1-step-2-version.md`](../active-designing/20260629-004912_slc-1-step-2-version.md); Rishi drives Mantra as a separate seed (composition, not absorption).
-  - [ ] **2a — session buffer** — ring buffer of last *N* input lines (default 50, bounded).
-  - [ ] **2b — transcript file** — append prompt, input, output, and errors to `.mantra/session.log` in cwd.
-  - [ ] **2c — `:history`** — print numbered entries from the session buffer.
-  - [ ] **2d — lazy init** — on first `:version`, ensure `.mantra/` exists (`mantra init` if needed).
-  - [ ] **2e — `:version`** — invoke `mantra add .mantra/session.log`; HEAD advances.
-  - [ ] **2f — witness** — scripted `:version` pass; assert blob exists and HEAD moved.
+- [x] **SLC-1, Step 2 — version** — session transcript + Mantra weave; scope [`active-designing/20260629-004912_slc-1-step-2-version.md`](../active-designing/20260629-004912_slc-1-step-2-version.md); Rishi drives Mantra as a separate seed (composition, not absorption).
+  - [x] **2a — session buffer** — `History` ring of last 50 input lines (bounded, TAME).
+  - [x] **2b — transcript** — in-memory `Transcript` records prompt, input, and caught errors (stdout horizon); flushed to `.mantra/session.log` on `:version`.
+  - [x] **2c — `:history`** — print numbered entries from the session buffer.
+  - [x] **2d — lazy init** — on first `:version`, ensure `.mantra/` exists (`mantra init` if needed).
+  - [x] **2e — `:version`** — invoke `mantra add .mantra/session.log`; HEAD advances.
+  - [x] **2f — witness** — `tools/slc1_version_step2.rish` green; registered in `parity.rish`.
 - [ ] **SLC-1, Step 3 — recall** — prior lines in-session; durable record is the weave from Step 2.
   - [ ] **3a — `:recall <n>`** — copy buffer entry *n* to the prompt for edit or re-run.
   - [ ] **3b — `!<n>` alias** — optional shorthand once meta-command table is stable.
