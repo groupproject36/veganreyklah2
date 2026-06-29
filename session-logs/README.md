@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260629-175044` | [Silo Technique — filed in context home](20260629-175044_silo-technique-filed.md) | Portable silo guide beside Radiant Style and REYA2. |
 | `20260629-173543` | [TH-2c — four-remote push confirmation](20260629-173543_th-2c-four-remote-push.md) | `085d3dd` on origin, github, gp36-codeberg, gp36-github. |
 | `20260629-173048` | [TH-2c — hosted bare assert; tame-check gates](20260629-173048_th-2c-hosted-bare-assert-gate.md) | Hosted modules import-once; tame-check hard gate; parity 124; pause before TH-3 width. |
 | `20260629-093012` | [TH-2b — Mantra bare assert compliance](20260629-093012_th-2b-mantra-bare-assert.md) | 38 sites renamed; module gated clean; TH-2c queued. |
