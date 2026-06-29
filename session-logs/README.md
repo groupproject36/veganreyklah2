@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| `20260629-063512` | [TH-1 four-remote push confirmation](20260629-063512_four-remote-push-confirm.md) | All four live remotes aligned at `9ee2872`. |
 | `20260629-063012` | [TH-1 commit and push](20260629-063012_th-1-commit-push.md) | Shipped `a9e36ca` to origin/main; handoff summary for Claude. |
 | `20260629-062412` | [TH-1 — seam-aware width-check lands](20260629-062412_th-1-width-check-seam.md) | Refined lint blesses `@intCast`/`@as(usize` seam casts; Tally exemplar passes; authored fixture still fails; parity witness registered. |
 | `20260629-042012` | [TH-0b ship: rules, rye aligner, width baseline](20260629-042012_th-0b-rules-aligner-baseline-ship.md) | Files |
