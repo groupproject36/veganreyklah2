@@ -1,7 +1,7 @@
 # The External-Research Stack
 
 **Language:** EN
-**Last updated:** 2026-06-28 (one-clock reorg, chunk 3)
+**Last updated:** 2026-06-29 (yonder pass four — aurora-boot trio reunited)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -72,8 +72,8 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 | `20260618-190312` | [986 · Reading Aurora and Mantra Through the Decided Design](20260618-190312_decided-design-aurora-mantra.md) | Aurora (`993`) and Mantra (`998`) were written before the active-designing stack settled its principles — Gall's Law, th |
 | `20260618-180812` | [987 · The Bounded Enclosure — How Rye, Tablecloth, Rishi, and Mantra Serve Pond, Caravan, and Tally](20260618-180812_pond-foundation.md) | Pond re-grows over the kernel's isolation primitives — and in our own world, those primitives are ours: **Caravan**, the |
 | `20260618-150112` | [989 · One Language or More? Rye, the Shell, and the Voices of an OS](20260618-150112_voices-of-an-os.md) | Exploration |
-| `20260617-201612` | [991 · Useful Utilities — What We Lean On, and What We'll Re-Grow](20260617-201612_useful-utilities.md) | Living roadmap |
-| `20260617-195812` | [993 · Aurora: A Boot Designed for RISC-V](20260617-195812_aurora-boot-riscv.md) | Exploration |
+| `20260617-201612` | [Useful Utilities — What We Lean On, and What We'll Re-Grow](yonder/20260617-201612_useful-utilities.md) | Realized-origin — re-grow inventory; live plan is ROADMAP/TASKS; in `yonder/` |
+| `20260617-195812` | [Aurora: A Boot Designed for RISC-V](yonder/20260617-195812_aurora-boot-riscv.md) | Realized-origin — Aurora boots; reunites ownerboot trio in `yonder/` |
 | `20260617-195712` | [994 · Caravan, Tally, and the Shape of Networking](yonder/20260617-195712_caravan-tally-networking.md) | Realized-origin — Caravan and Tally live; companion to ownerboot in `yonder/` |
 | `20260617-195612` | [995 · Ownerboot at the Reset Vector](yonder/20260617-195612_ownerboot-riscv-caravan.md) | Origin story — Caravan live; ownerboot sovereignty horizon; in `yonder/` |
 | `20260617-195312` | [998 · Mantra: Version Control as a Weave](yonder/20260617-195312_mantra.md) | Origin story — module live; in `yonder/` |

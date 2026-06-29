@@ -8,7 +8,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME Style (`TAME_STYLE.md`); systems lineage in `20260620-014412_system.md`
-**Reads back:** `20260617-195812_aurora-boot-riscv.md`, `20260617-195312_mantra.md`, through `../active-designing/20260618-182412_single-stranded.md`, `../active-designing/20260618-184912_growing-a-language.md`, and `../context/specs/rye-as-its-own-language.md`
+**Reads back:** `yonder/20260617-195812_aurora-boot-riscv.md`, `yonder/20260617-195312_mantra.md`, through `../active-designing/20260618-182412_single-stranded.md`, `../active-designing/20260618-184912_growing-a-language.md`, and `../context/specs/rye-as-its-own-language.md`
 
 ---
 
@@ -63,7 +63,7 @@ Neither `993` nor `998` is rewritten here — a research note is an honest recor
 
 ## Sources and Threads
 
-- **`20260617-195812_aurora-boot-riscv.md`** — Aurora, the boot in cohesion with RISC-V; the flow of named values; content-addressed stages; the owner's key.
+- **`yonder/20260617-195812_aurora-boot-riscv.md`** — Aurora, the boot in cohesion with RISC-V; the flow of named values; content-addressed stages; the owner's key.
 - **`20260617-195312_mantra.md`** — Mantra, version control as a weave; always-succeeding merges; SHA3-512 naming; conflicts that inform.
 - **The active-designing stack** — `995` (simplicity), `996` (growing a language, and Gall's Law), `997` (the architecture), `998` (the strengthening strategy), and the decision in `../context/specs/rye-as-its-own-language.md`.
 - **The strengthening-compiler** — `9998`/`9997`, where the hash Mantra names by was hardened.

@@ -3,7 +3,7 @@
 *A durable guide to where work lives, how new writing earns its place, and how the tree stays honest over time.*
 
 **Language:** EN
-**Last updated:** 2026-06-29 (yonder pass three; affirm-kept rule)
+**Last updated:** 2026-06-29 (yonder pass four; affirm de-number convention)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 
@@ -97,16 +97,19 @@ The distinction matters: `yonder/` is a horizon, not a graveyard. A truly finish
 
 **Age is a hint, not the test.** What sends a file to `yonder/` is that it has become future, dormant, consumed, or realized-as-code — never its stamp alone. A document that is foundational to the design, or that is actively cited by other living files, stays where it is however old it reads. Relevance and inbound references outrank the date.
 
-**Affirming a kept file.** Marking a file reviewed-and-kept is done in the file, not by renaming it. A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* document, where the sort cue helps and the few references are cheap to move. A *canonical reference* — one many files cite — keeps its stable name and is affirmed in place: its `Last updated` and a short affirmation line carry the signal, and its citation density already tells anyone it is load-bearing. Renaming what a hundred files depend on, to gain a sort cue nobody needed, trades a real promise for a small convenience.
+**Affirming a kept file does four small things in one touch:** strip its dead `NNN ·` number prefix (the timestamp filename is the true name now), re-date its `Last updated`, add the reviewed-and-kept line, and lightly freshen the Radiant voice where it has drifted. No rename, no reference change. Vibrancy rides on this touch and on writing Radiant by default — never on a sweeping restyle.
+
+A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* document, where the sort cue helps and the few references are cheap to move. A *canonical reference* — one many files cite — keeps its stable name and is affirmed in place: its `Last updated` and a short affirmation line carry the signal, and its citation density already tells anyone it is load-bearing. Renaming what a hundred files depend on, to gain a sort cue nobody needed, trades a real promise for a small convenience.
 
 ### Reviewed and kept (`2026-06-29`)
 
 | File | Why kept |
 |------|----------|
 | `active-designing/20260618-182412_single-stranded.md` | Foundational one-value-model brief; widely cited |
+| `active-designing/20260618-184912_growing-a-language.md` | Canonical TAME Guidance organization brief |
+| `active-designing/20260618-184912_recommended-architecture.md` | Foundational clean-room architecture brief; third of the trio |
 | `work-in-progress/20260620-212126_usize-width-baseline.md` | Canonical width inventory; cited from `TAME_GUIDANCE` |
 | `expanding-prompts/20260620-210812_explicit-width-audit.md` | Width charter; heavily cited across strengthening docs |
-| `active-designing/20260618-184912_growing-a-language.md` | Canonical TAME Guidance organization brief |
 
 ---
 

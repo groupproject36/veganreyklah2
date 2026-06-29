@@ -1,4 +1,4 @@
-# 996 · How We Grow a Language — Rishi on Rye, and One Style for the Family
+# How We Grow a Language — Rishi on Rye, and One Style for the Family
 
 *We have grown one language already, Rye, and the way we did it is a method we can reuse. This brief draws that method out plainly, applies it to Rishi — our shell, which stands on Rye the way Rye stands on its foundation — and settles how TAME Guidance is organized across a family of languages: one shared root, and a small supplement for each, created only when earned.*
 

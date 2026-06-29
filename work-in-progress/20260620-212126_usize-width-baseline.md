@@ -1,4 +1,4 @@
-# 992 · Width Baseline — explicit widths in authored Rye
+# Width Baseline — explicit widths in authored Rye
 
 **Stamp:** `20260621.070712`
 **Last updated:** 2026-06-29 (aligned to `context/TAME_GUIDANCE.md` — seam policy; fork as horizon)

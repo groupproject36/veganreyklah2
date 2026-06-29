@@ -1,13 +1,15 @@
-# 997 · The Recommended Path for the Core Names
+# The Recommended Path for the Core Names
 
 *A clean-room architecture brief for our core modules — TAME, Rye, Brix, Tablecloth, Tally, Caravan, and Aurora — reasoning the recommended design path for each from first principles. The one fixed external is RISC-V, the open instruction set our hardware world rests upon.*
 
 **Language:** EN
 **Version:** `20260618.184912` (Rye chronological stamp)
-**Last updated:** 2026-06-18
+**Last updated:** 2026-06-29
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME priority — safety, performance, then the joy of the craft
 **Status:** Active Design
+
+*Reviewed in the yonder sweep on 2026-06-29 and kept active — foundational clean-room architecture brief; third of the trio with single-stranded and growing-a-language.*
 
 ---
 

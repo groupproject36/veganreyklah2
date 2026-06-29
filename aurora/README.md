@@ -11,7 +11,7 @@
 Aurora is the dawn a machine wakes into: the boot, the first light between a cold
 processor and a living system. The fuller vision — RISC-V cohesion, a flow of
 named values, content-addressed stages, owner keys — lives in
-`../external-research/20260617-195812_aurora-boot-riscv.md`, read forward through the rethink
+`../external-research/yonder/20260617-195812_aurora-boot-riscv.md`, read forward through the rethink
 in `../external-research/20260618-190312_decided-design-aurora-mantra.md`. This folder holds
 the part that already breathes.
 
@@ -38,7 +38,7 @@ identity, packing it into a small `Machine` value; stage two receives that value
 proves an invariant of it — the base integer ISA must be present, or this code
 could not run — and speaks what it found; stage three rests. Each handoff is a
 tail call, and a value travels with it: the boot-as-flow-of-named-values idea
-(`../external-research/20260617-195812_aurora-boot-riscv.md`, `/986`) at its smallest honest
+(`../external-research/yonder/20260617-195812_aurora-boot-riscv.md`, `/986`) at its smallest honest
 size. It reads real registers (`mhartid`, `misa`), proves what it must, and hands
 off — the shape every later stage will take.
 

@@ -8,7 +8,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME Style (`TAME_STYLE.md`); active-designing principles (Gall's Law, one value model, simplicity, the gates)
-**Reads alongside:** `yonder/20260617-195612_ownerboot-riscv-caravan.md`, `yonder/20260617-195712_caravan-tally-networking.md`, `20260617-195812_aurora-boot-riscv.md`; sources honored in `../gratitude/urbit`, `../gratitude/sui`
+**Reads alongside:** `yonder/20260617-195612_ownerboot-riscv-caravan.md`, `yonder/20260617-195712_caravan-tally-networking.md`, `yonder/20260617-195812_aurora-boot-riscv.md`; sources honored in `../gratitude/urbit`, `../gratitude/sui`
 **Structure:** mission · problem · opportunity · architecture · caveats · longer horizon · conclusion
 
 ---

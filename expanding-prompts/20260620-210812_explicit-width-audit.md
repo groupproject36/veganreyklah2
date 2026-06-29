@@ -1,4 +1,4 @@
-# 10024 · Explicit Width Audit — `usize` to `u32` / `u64`
+# Explicit Width Audit — `usize` to `u32` / `u64`
 
 *Expanded at `210812` from the seed: TAME modeled on Tiger Style demands explicitly sized types; our Rye supplement still allowed `usize` for “array indices and lengths,” which contradicts the source discipline and leaves behavior variable across `riscv64` and hosted x86_64.*
 
