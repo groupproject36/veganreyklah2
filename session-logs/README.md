@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260630.020512 | [Wayland seed metal confirmation](20260630-020512_wayland-seed-metal-confirmation.md) | selftest + window exit 0 on GNOME Wayland; SLC-2a gate cleared for Claude brief. |
 | 20260630.014112 | [Lotus, REAPER, Genesis gratitude](20260630-014112_lotus-reaper-genesis-gratitude.md) | Lotus DAW named; REAPER docs parsed; Genesis and AP Mastering honored. |
 | 20260630.013652 | [architecture, Weave, names, and threads](20260630-013652_architecture-weave-names-and-threads.md) | Stack record placed; Weave, Dexter, Kumara, Bookie; gratitude; SLC-2a held. |
 | 20260629.225312 | [codify conventions and yonder pass eight](20260629-225312_codify-conventions-yonder-pass-eight.md) | Collaboration rules; pond-foundation affirmed; six to yonder; ROADMAP 132/width. |

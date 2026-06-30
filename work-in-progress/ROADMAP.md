@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260628-124512` (Linengrow track; two tracks one spine)
-**Last updated:** 2026-06-29 (conventions codified; ROADMAP witness/width hygiene)
+**Last updated:** 2026-06-30 (Wayland seed metal confirmation; witness count unchanged)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -45,8 +45,8 @@ Correctness by construction in the kernel becomes trust by construction in the p
 | **Bron** | Data notation (`.bron`) | Used by `.brix` |
 | **Mantra** | Weave + commit chain + add-all + log | 9/9 bricks wove |
 | **Rishi** | Shell: typed values, file I/O, string builtins; **`repl`** — type, run, version, recall (SLC-1 **done**) | Gate trio + four SLC-1 witnesses incl. `slc1_accept.rish` |
-| **Brushstroke** | Hosted seed + Wayland seed (one window) | Frame from values |
-| **Skate** | Text grid: 8×8 monospace on Wayland | Headless selftest |
+| **Brushstroke** | Hosted seed + Wayland seed (Skate grid on xdg toplevel) | Frame from values; compositor path confirmed on GNOME Wayland (`2026-06-30`) |
+| **Skate** | Text grid: 8×8 monospace → ARGB8888 buffer | Headless selftest GREEN; feeds Wayland seed |
 | **Comlink** | Sealed datagram: shared-memory + localhost UDP | Full crypto stack |
 | **Pond** | Policy as a value (`pond.rish`) | Designed |
 
@@ -63,7 +63,7 @@ Grow running seeds into things a person can use *as-is*. See [`gratitude/Your cu
 | Ring | What | Status |
 |------|------|--------|
 | **SLC 1** | **Rishi + Mantra shell** — hosted, scriptable REPL with versioned history in a terminal (type → run → version → recall) | **Done** (`2026-06-29`) — four verbs + `tools/slc1_accept.rish`; scope [`20260628-071012`](../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md). TAME hardening **complete** (`2026-06-29`). |
-| **SLC 2** | **Pond GUI** — same loop in Brushstroke/Skate window on x86_64 | After Skate text rendering |
+| **SLC 2** | **Pond GUI / Skate viewer (SLC-2a)** — read-only drawn terminal in a Brushstroke window; full REPL input deferred to SLC-2b | Wayland seed on metal (`2026-06-30`); scope brief with Claude next |
 | **Compose** | Comlink device wire → capability table → Comlink v1 → Brix v1 → Tablecloth → Forge | Horizon 2 |
 
 **Authored width migration** — **complete and blocking in parity** (TH-3 through TH-7; hosted `width-check`). Remaining authored surfaces migrate as-you-touch beside SLC-2; not a pending milestone.

@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-30
+**Last updated:** 2026-06-30 (Wayland seed metal confirmation)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -19,7 +19,7 @@
 ## Now — In Flight and Immediate
 
 ### Rye OS
-- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — read-only window: Brushstroke renders a named value (Mantra doc or live Rishi transcript) through Skate, redrawn on change; input still from the terminal. *Waits on: confirming `wayland_seed.rye` shows a window on GNOME Wayland; Claude SLC-2a scope brief after that gate.*
+- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — read-only window: Brushstroke renders a named value (Mantra doc or live Rishi transcript) through Skate, redrawn on change; input still from the terminal. *Wayland seed confirmed on metal* (`2026-06-30`: `brushstroke-wayland-seed` selftest 1125 lit pixels GREEN; window mode exit 0 on GNOME Wayland / `wayland-0`). **Next: Claude SLC-2a scope brief**, then bench.
 - [ ] **Caravan capability table** — a small Rye struct naming what each child may do; the first true step toward the microkernel. Asserted; witnessed.
 
 ### Linengrow
