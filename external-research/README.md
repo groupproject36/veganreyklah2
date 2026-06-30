@@ -1,7 +1,7 @@
 # The External-Research Stack
 
 **Language:** EN
-**Last updated:** 2026-06-29 (yonder pass eight; pond-foundation affirmed)
+**Last updated:** 2026-06-30 (three Brushstroke foundation essays)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -41,6 +41,9 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260630-030312` | [The interface as a fold](20260630-030312_the-interface-as-a-fold.md) | Immediate-mode as one copy from log to frame; Brushstroke philosophy |
+| `20260630-030312` | [After Victor — immediate contact](20260630-030312_after-victor-immediate-contact.md) | Designing drawn surfaces after Bret Victor; Hickey, Gall, hot loop |
+| `20260630-030312` | [The hot loop as the forge](20260630-030312_the-hot-loop-as-the-forge.md) | Genesis → Zig; discipline for Brushstroke redraw and Lotus audio |
 | *(living)* | [TAME Guidance](TAME_GUIDANCE.md) | Living — voiced TAME style canon (philosophy and full why) |
 | `20260622-232912` | [964 · seL4 and Redox Through the TAME Rye Lens — Can We Improve Upon Them?](20260622-232912_sel4-redox-through-tame-rye.md) | Research |
 | `20260621-070712` | [965 · The Rye Compiler Fork — How a Language Becomes Its Own](20260621-070712_rye-compiler-fork.md) | Research |

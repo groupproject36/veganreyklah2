@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260628-124512` (Linengrow track; two tracks one spine)
-**Last updated:** 2026-06-30 (Wayland seed metal confirmation; witness count unchanged)
+**Last updated:** 2026-06-30 (SLC-2a Ring 1; three research essays; 133 witnesses)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -36,7 +36,7 @@ Correctness by construction in the kernel becomes trust by construction in the p
 
 | Module | Seed | Witnesses |
 |--------|------|-----------|
-| **Rye** | Thin frontend; `rye/lib/std` → vendor symlink | 132 witness regression suite |
+| **Rye** | Thin frontend; `rye/lib/std` → vendor symlink | **133** witness regression suite |
 | **Aurora** | Six-stage relay + deciding stage on RISC-V | Freestanding |
 | **Caravan** | seed → bounded → twin → chain | Hosted, asserted |
 | **Tally** | seed + named gardens (blob/diff/frame) | 15 invariants |
@@ -52,7 +52,7 @@ Correctness by construction in the kernel becomes trust by construction in the p
 
 **Strengthening arc:** complete — chronicle + lexicon at `strengthening-compiler/0000_STRENGTHENING_LEXICON.md`; call-site harvest at [`archive/20260628-044200_call-site-harvest.md`](archive/20260628-044200_call-site-harvest.md).
 
-**Gate trio:** `parity.rish` (**132 witnesses** — `rye run` regression suite + SLC-1 + hosted `width-check`), `parity-selftest.rish` (std symlink guard), `additive-gate.rish` (structural std diff — applies when `rye/lib/` changes in HEAD). All in Rishi. **Status:** parity + selftest green on metal (`2026-06-29`); additive-gate runs when std changes land.
+**Gate trio:** `parity.rish` (**133 witnesses** — `rye run` regression suite + SLC-1 + SLC-2a Ring 1 + hosted `width-check`), `parity-selftest.rish` (std symlink guard), `additive-gate.rish` (structural std diff — applies when `rye/lib/` changes in HEAD). All in Rishi. **Status:** parity + selftest green on metal (`2026-06-30`); additive-gate runs when std changes land.
 
 ---
 
@@ -63,7 +63,7 @@ Grow running seeds into things a person can use *as-is*. See [`gratitude/Your cu
 | Ring | What | Status |
 |------|------|--------|
 | **SLC 1** | **Rishi + Mantra shell** — hosted, scriptable REPL with versioned history in a terminal (type → run → version → recall) | **Done** (`2026-06-29`) — four verbs + `tools/slc1_accept.rish`; scope [`20260628-071012`](../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md). TAME hardening **complete** (`2026-06-29`). |
-| **SLC 2** | **Pond GUI / Skate viewer (SLC-2a)** — read-only drawn terminal in a Brushstroke window; full REPL input deferred to SLC-2b | Wayland seed on metal (`2026-06-30`); scope brief with Claude next |
+| **SLC 2** | **Pond GUI / Skate viewer (SLC-2a)** — read-only drawn terminal; Ring 1 value-driven viewer **landed**; Ring 2 redraw next | Scope brief [`20260630-030312`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md); Ring 1 witness GREEN |
 | **Compose** | Comlink device wire → capability table → Comlink v1 → Brix v1 → Tablecloth → Forge | Horizon 2 |
 
 **Authored width migration** — **complete and blocking in parity** (TH-3 through TH-7; hosted `width-check`). Remaining authored surfaces migrate as-you-touch beside SLC-2; not a pending milestone.

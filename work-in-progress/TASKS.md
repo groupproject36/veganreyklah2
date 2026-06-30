@@ -19,7 +19,7 @@
 ## Now — In Flight and Immediate
 
 ### Rye OS
-- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — read-only window: Brushstroke renders a named value (Mantra doc or live Rishi transcript) through Skate, redrawn on change; input still from the terminal. *Wayland seed confirmed on metal* (`2026-06-30`: `brushstroke-wayland-seed` selftest 1125 lit pixels GREEN; window mode exit 0 on GNOME Wayland / `wayland-0`). **Next: Claude SLC-2a scope brief**, then bench.
+- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — scope: [`active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md). **Ring 1 landed** (`2026-06-30`): value as explicit `[]const Line` input; arbitrary-value witness GREEN (157 vs 1125 lit pixels); parity **133** witnesses. **Next: Ring 2 — redraw on change** *(confirm witness shape with Claude before bench)*. Ring 3 mirrors live Rishi session.
 - [ ] **Caravan capability table** — a small Rye struct naming what each child may do; the first true step toward the microkernel. Asserted; witnessed.
 
 ### Linengrow
@@ -34,7 +34,7 @@
 
 ### TAME hardening — complete (`2026-06-29`)
 
-Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and prior TH/RS logs. Hosted `width-check` blocks in parity (132 witnesses).
+Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and prior TH/RS logs. Hosted `width-check` blocks in parity (**133** witnesses after SLC-2a Ring 1).
 
 **Horizon and optional (still open):**
 
@@ -101,7 +101,7 @@ Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and p
 - **Dexter / Kumara as modules** — names given; whether each earns a full module home is open.
 - **Two-backend seam** — Wayland SHM to Mutter now (hosted); framebuffer-to-QEMU sovereign sibling named, not built. *(Pending Kaeden nod.)*
 - **Weave** — adopted in lexicon and substrate doc; pending formal blessing.
-- **Research reservations (Claude to author)** — immediate-mode / anti-retained-tree fold over the log; Bret Victor framework design; Kelley hot-loop study (Genesis → Zig arc) — each one line in `external-research/`, no empty stubs yet.
+- **Research essays (authored, living)** — [`external-research/20260630-030312_the-interface-as-a-fold.md`](../external-research/20260630-030312_the-interface-as-a-fold.md); [`external-research/20260630-030312_after-victor-immediate-contact.md`](../external-research/20260630-030312_after-victor-immediate-contact.md); [`external-research/20260630-030312_the-hot-loop-as-the-forge.md`](../external-research/20260630-030312_the-hot-loop-as-the-forge.md).
 - **Lotus** — DAW direction adopted in `active-designing/20260630-014012_lotus-the-daw.md`; REAPER docs and AP Mastering design in `gratitude/`; bench waits for SLC-2a.
 - **Kernel direction** — is the microkernel leaning settled enough to graduate into a direction memo, or does it want more deliberation first?
 - **Linengrow's home** — does Linengrow stay a folder in this repo, or graduate to its own repo (`xwb122m/linengrow-*`) once its first ring runs?

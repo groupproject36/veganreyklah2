@@ -13,6 +13,7 @@
 //!     -femit-bin=brushstroke/bin/brushstroke-wayland-seed
 //!   brushstroke/bin/brushstroke-wayland-seed          # Wayland window
 //!   brushstroke/bin/brushstroke-wayland-seed selftest # headless grid proof
+//!   brushstroke/bin/brushstroke-wayland-seed arbitrary # SLC-2a Ring 1 witness
 //!
 //! Requires a running Wayland compositor (`WAYLAND_DISPLAY`) for the default mode.
 
@@ -84,6 +85,31 @@ const Frame = struct {
         return grid;
     }
 };
+
+fn defaultLines(garden: std.mem.Allocator) ![]Line {
+    const lines = try garden.alloc(Line, 3);
+    lines[0] = .{ .text = "Skate grid seed" };
+    lines[1] = .{ .text = "monospace cells from values" };
+    lines[2] = .{ .text = wayland_seed_version };
+    return lines;
+}
+
+fn arbitraryWitnessLines(garden: std.mem.Allocator) ![]Line {
+    const lines = try garden.alloc(Line, 2);
+    lines[0] = .{ .text = "rye" };
+    lines[1] = .{ .text = "lotus" };
+    return lines;
+}
+
+fn rasterLitForLines(garden: std.mem.Allocator, lines: []const Line) !u32 {
+    const frame = Frame.init(lines);
+    var grid = try frame.toGrid(garden);
+    const stride: u32 = @as(u32, @intCast(window_width)) * 4;
+    const size: u32 = stride * @as(u32, @intCast(window_height));
+    const pixels = try garden.alloc(u8, @intCast(size));
+    grid.rasterize(pixels, stride, window_width, window_height, skate_bg, skate_fg);
+    return grid.litPixelCount(pixels, stride, window_width, window_height, skate_bg);
+}
 
 const App = struct {
     display: Display,
@@ -317,28 +343,46 @@ const App = struct {
     }
 };
 
-fn runSelftest(garden: std.mem.Allocator, io: std.Io) !u8 {
-    const lines = try garden.alloc(Line, 3);
-    lines[0] = .{ .text = "Skate grid seed" };
-    lines[1] = .{ .text = "monospace cells from values" };
-    lines[2] = .{ .text = wayland_seed_version };
-
+fn presentValue(garden: std.mem.Allocator, lines: []const Line) !App {
     const frame = Frame.init(lines);
-    var grid = try frame.toGrid(garden);
+    const grid = try frame.toGrid(garden);
+    return App{
+        .display = try Display.connect(),
+        .frame = frame,
+        .grid = grid,
+    };
+}
+
+fn runSelftest(garden: std.mem.Allocator, io: std.Io) !u8 {
+    const lines = try defaultLines(garden);
+    const grid = try Frame.init(lines).toGrid(garden);
     std.debug.assert(grid.cols == grid_cols);
     std.debug.assert(grid.rows == grid_rows);
 
-    const stride: u32 = @as(u32, @intCast(window_width)) * 4;
-    const size: u32 = stride * @as(u32, @intCast(window_height));
-    const pixels = try garden.alloc(u8, @intCast(size));
-    grid.rasterize(pixels, stride, window_width, window_height, skate_bg, skate_fg);
-
-    const lit = grid.litPixelCount(pixels, stride, window_width, window_height, skate_bg);
+    const lit = try rasterLitForLines(garden, lines);
     std.debug.assert(lit > 200);
 
     var buf: [64]u8 = undefined;
     const lit_msg = try std.fmt.bufPrint(&buf, "skate grid selftest: {d} lit pixels — GREEN\n", .{lit});
     try std.Io.File.stdout().writeStreamingAll(io, lit_msg);
+    return 0;
+}
+
+fn runArbitraryWitness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    const seed_lines = try defaultLines(garden);
+    const distinct_lines = try arbitraryWitnessLines(garden);
+    const seed_lit = try rasterLitForLines(garden, seed_lines);
+    const distinct_lit = try rasterLitForLines(garden, distinct_lines);
+    std.debug.assert(distinct_lit > 100);
+    std.debug.assert(distinct_lit != seed_lit);
+
+    var buf: [96]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &buf,
+        "viewer arbitrary value: {d} lit pixels (default {d}) — GREEN\n",
+        .{ distinct_lit, seed_lit },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
     return 0;
 }
 
@@ -349,20 +393,12 @@ pub fn main(init: std.process.Init) !u8 {
     if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
         return runSelftest(garden, io);
     }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "arbitrary")) {
+        return runArbitraryWitness(garden, io);
+    }
 
-    const lines = try garden.alloc(Line, 3);
-    lines[0] = .{ .text = "Skate grid seed" };
-    lines[1] = .{ .text = "monospace cells from values" };
-    lines[2] = .{ .text = wayland_seed_version };
-
-    const frame = Frame.init(lines);
-    const grid = try frame.toGrid(garden);
-
-    var app = App{
-        .display = try Display.connect(),
-        .frame = frame,
-        .grid = grid,
-    };
+    const lines = try defaultLines(garden);
+    var app = try presentValue(garden, lines);
     defer app.display.disconnect();
 
     std.debug.assert(app.frame.lines.len == 3);
