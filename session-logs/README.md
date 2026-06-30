@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260630.053012 | [Tally and Brushstroke seeds in parity](20260630-053012_foundation-seeds-parity.md) | Foundation floor witnessed; parity 138. |
 | 20260630.051812 | [Caravan seeds in parity](20260630-051812_caravan-seeds-parity.md) | seed→chain supervisors witnessed; parity 137. |
 | 20260630.050512 | [Caravan capabilities + Comlink witness](20260630-050512_caravan-capabilities-comlink-witness.md) | Saved capability table; hosted wire in parity at 136. |
 | 20260630.045831 | [Yes saved; Caravan capability table](20260630-045831_yes-saved-caravan-capabilities.md) | Ring 2/yonder recap in TASKS; capabilities.rye; parity 135. |

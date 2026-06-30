@@ -67,6 +67,11 @@ let comlink_hw = run ["rishi/bin/rishi" "run" "tools/comlink_hosted_wire.rish"]
 assert comlink_hw.ok else "Comlink hosted wire witness failed"
 say "GREEN: Comlink hosted wire witness passed."
 
+say "witness suite: Tally and Brushstroke foundation seeds…"
+let foundation = run ["rishi/bin/rishi" "run" "tools/foundation_seeds.rish"]
+assert foundation.ok else "foundation seeds witness failed"
+say "GREEN: Tally and Brushstroke foundation seeds witness passed."
+
 say "witness suite: TH-1 width-check seam…"
 let th1 = run ["rishi/bin/rishi" "run" "tools/width_check_th1.rish"]
 assert th1.ok else "TH-1 width-check seam witness failed"

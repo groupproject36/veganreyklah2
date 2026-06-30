@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-30 (Caravan capabilities; Comlink hosted-wire witness)
+**Last updated:** 2026-06-30 (foundation seeds in parity; 138 witnesses)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -12,7 +12,7 @@
 
 **Tracks:** **Rye OS** grows the system. **Linengrow** grows the first whole built on it. **Ground** is the shared discipline beneath both.
 
-**Landed through 2026-06-30** (detail in `../session-logs/`): SLC-2a Rings 1–2 (`5b3a5a4`); yonder pass nine; Caravan path (`seed`→`capabilities` + parity seeds witness); Comlink hosted wire (`dc26396`, parity **137**); prior: SLC-1; TAME hardening **TH-0–TH-7** and **RS-1–RS-3**.
+**Landed through 2026-06-30** (detail in `../session-logs/`): SLC-2a Rings 1–2 (`5b3a5a4`); yonder pass nine; Caravan path + Comlink hosted wire (`dc26396`→`8d720c6`); Tally/Brushstroke foundation seeds in parity (**138**); prior: SLC-1; TAME hardening.
 
 ---
 
@@ -33,7 +33,7 @@
 
 ### TAME hardening — complete (`2026-06-29`)
 
-Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and prior TH/RS logs. Hosted `width-check` blocks in parity (**137** witnesses).
+Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and prior TH/RS logs. Hosted `width-check` blocks in parity (**138** witnesses).
 
 **Horizon and optional (still open):**
 
