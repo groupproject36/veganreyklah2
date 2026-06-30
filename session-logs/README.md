@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260630.013652 | [architecture, Weave, names, and threads](20260630-013652_architecture-weave-names-and-threads.md) | Stack record placed; Weave, Dexter, Kumara, Bookie; gratitude; SLC-2a held. |
 | 20260629.225312 | [codify conventions and yonder pass eight](20260629-225312_codify-conventions-yonder-pass-eight.md) | Collaboration rules; pond-foundation affirmed; six to yonder; ROADMAP 132/width. |
 | 20260629.225245 | [TASKS sweep and root cleanup](20260629-225245_tasks-sweep-root-cleanup.md) | Pruned completed blocks; removed root duplicate markdown. |
 | `20260629-212045` | [Affirm kept and yonder pass three](20260629-212045_affirm-kept-yonder-pass-three.md) | affirm-not-rename; ownerboot pair reunited; crosswalk to yonder. |

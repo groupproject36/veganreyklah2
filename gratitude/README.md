@@ -1,7 +1,7 @@
 # Gratitude
 
 **Language:** EN
-**Last updated:** 2026-06-28
+**Last updated:** 2026-06-30
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -64,6 +64,9 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
 
 - **`dvui/`** — David Vanderson's DVUI, an immediate-mode GUI toolkit for Zig: an interface redrawn from values every frame, with a backend abstraction that decouples drawing from platform, and — the part we study most — a **Web backend** that compiles to `wasm32-freestanding` and renders through WebGL with a small JavaScript bridge, so a whole GUI runs in the browser. Its essences — immediate mode, and one interface drawn to many backends — seed **Brushstroke**, our own TAME Rye drawn surface, explored in `../external-research/20260619-070612_brushstroke-and-the-docs-surface.md`. Cloned shallow (depth 1, rev `134905d`), MIT.
   - Source: <https://github.com/david-vanderson/dvui>
+- **`wayland.md`** — **libwayland-client**, MIT (Expat), quoted in the note. The host-seam display library the **hosted** Brushstroke build links on the development machine — never a dependency of Rye OS proper on bare metal. Clean room: study and run; never copy source into our modules.
+- **`river.md`** — Isaac Freund's **River** compositor, GPLv3, held at clean-room distance. Lodestar for the eventual Rye-native compositor; we learn from public design, never link or copy source.
+- **`genesis-daw.md`** — Andrew Kelley's digital audio workstation — the hot loop that birthed Zig. Inspiration only; honors bound-the-loop discipline kin to TAME and Aurora.
 
 ---
 

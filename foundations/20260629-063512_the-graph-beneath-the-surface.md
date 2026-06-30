@@ -1,12 +1,13 @@
-# The Graph Beneath the Surface — A DAG for Code, Content, and Screen
+# Weave — The Graph Beneath the Surface
 
-*The architecture under [Realidream](20260629-063512_realidream.md), set down on our own roots: a single streaming graph that unifies the program, the page, and the interface — bounded, deterministic, and recomputable from a faithful history. This is how a great surface stays fast and honest at once.*
+*The substrate under [Realidream](20260629-063512_realidream.md), set down on our own roots: **Weave** is the append-only DAG of immutable signed facts — the streaming graph that unifies program, page, and interface when the far horizon arrives. Mantra is the version-control **projection** over Weave. Bounded, deterministic, recomputable from a faithful history.*
 
-**Stamp:** `20260629.063512`
+**Stamp:** `20260629.063512` (affirmed `2026-06-30`)
+**Last updated:** 2026-06-30
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision — **far horizon**; siloed; names only our own modules and RISC-V
+**Status:** Vision — **far horizon**; siloed; names only our own modules and RISC-V. **Reviewed and kept** — Weave named as the substrate; file unchanged.
 
 *Written together by Kaeden and Reya 2.*
 

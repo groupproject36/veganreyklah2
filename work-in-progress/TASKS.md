@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-29 (TASKS swept; Skate next — Claude)
+**Last updated:** 2026-06-30 (architecture round; Weave, Dexter, Kumara, Bookie)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -19,7 +19,7 @@
 ## Now — In Flight and Immediate
 
 ### Rye OS
-- [ ] **Skate text rendering** — text on screen; unlocks SLC-2. *Scope and acceptance need a Claude ruling before bench work.*
+- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — read-only window: Brushstroke renders a named value (Mantra doc or live Rishi transcript) through Skate, redrawn on change; input still from the terminal. *Waits on: confirming `wayland_seed.rye` shows a window on GNOME Wayland; Claude SLC-2a scope brief after that gate.*
 - [ ] **Caravan capability table** — a small Rye struct naming what each child may do; the first true step toward the microkernel. Asserted; witnessed.
 
 ### Linengrow
@@ -95,6 +95,13 @@ Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and p
 
 ## Open Questions
 
+- **Bron** — proposed; role beside Brix still open. Brix describes *what a system is made of*; the `.bron` notation brief exists — what does Bron describe alongside it? *(Open ruling for Kaeden.)*
+- **Tablecloth** — proposed layout or structured-view layer; named, not yet shaped.
+- **`.brush`** — surface-description extension for the day Brushstroke becomes a small language; horizon only.
+- **Dexter / Kumara as modules** — names given; whether each earns a full module home is open.
+- **Two-backend seam** — Wayland SHM to Mutter now (hosted); framebuffer-to-QEMU sovereign sibling named, not built. *(Pending Kaeden nod.)*
+- **Weave** — adopted in lexicon and substrate doc; pending formal blessing.
+- **Research reservations (Claude to author)** — immediate-mode / anti-retained-tree fold over the log; Bret Victor framework design; Kelley hot-loop / Genesis DAW — each one line in `external-research/`, no empty stubs yet.
 - **Kernel direction** — is the microkernel leaning settled enough to graduate into a direction memo, or does it want more deliberation first?
 - **Linengrow's home** — does Linengrow stay a folder in this repo, or graduate to its own repo (`xwb122m/linengrow-*`) once its first ring runs?
 - **SLC-L1 and Sui** — confirm the first Linengrow ring uses pure foundations (keypair + log + projection) with no Sui, settlement deferred to SLC-L3. (Recommended: yes.)

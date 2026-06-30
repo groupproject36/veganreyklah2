@@ -1,7 +1,7 @@
 # The Active-Designing Stack
 
 **Language:** EN
-**Last updated:** 2026-06-29
+**Last updated:** 2026-06-30
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -19,7 +19,7 @@ This file, `README.md`, is the foundation stone. It rests at the bottom of the s
 
 One rule governs everything here, and it is the reason this folder stands apart: **active-designing names only what is ours, and one fixed external.**
 
-The names we may use are our own chosen modules — **TAME, Aurora, Rye, Brix, Tablecloth, Tally, Caravan, Mantra, Pond, Rishi, Comlink, Brushstroke**, and any future names we coin — together with **RISC-V**, the open instruction set we build upon and treat as solid ground. No other project, product, language, or person is named here. Not the systems that inspired us, not the tools we admire, not even the languages our work descends from. Those belong elsewhere.
+The names we may use are our own chosen modules — **TAME, Aurora, Rye, Brix, Tablecloth, Tally, Caravan, Weave, Mantra, Pond, Rishi, Comlink, Brushstroke, Dexter, Kumara, Bookie**, and any future names we coin — together with **RISC-V**, the open instruction set we build upon and treat as solid ground. No other project, product, language, or person is named here. Not the systems that inspired us, not the tools we admire, not even the languages our work descends from. Those belong elsewhere.
 
 This is silo as a kindness to clarity. Outside ideas enter only as **concepts**, stripped of their origin and weighed on their own merits — a region of memory, a content-addressed store, a supervision tree, a lawful combinator. By refusing the borrowed name, we force ourselves to understand the idea well enough to restate it plainly, and we keep our design space free of any genealogy that might quietly smuggle in assumptions we never chose. What grows here grows on its own roots.
 
@@ -47,6 +47,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260630-001812` | [The stack and the surface](20260630-001812_the-stack-and-the-surface.md) | Acyclic module order; Weave as substrate; Brushstroke draws values; Dexter/Kumara/Bookie named; SLC-2a the live rung |
 | `20260629-004912` | [SLC-1 Step 2 · Version](20260629-004912_slc-1-step-2-version.md) | Hammock scope: session ring + transcript; `:history` and `:version`; Rishi drives Mantra by composition |
 | `20260628-120912` | [Brix — the composer and the system around it](20260628-120912_brix-the-composer.md) | sixos mapping: Brix composes; bond overrides; Tablecloth holds; Mantra weaves; Comlink seals; Caravan supervises |
 | `20260628-071012` | [SLC-1 · Rishi-and-Mantra hosted shell](20260628-071012_slc-1-rishi-mantra-shell.md) | Hammock scope: four verbs (type, run, version, recall); history in `.mantra/`; terminal-complete first ring |

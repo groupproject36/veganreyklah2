@@ -1,7 +1,7 @@
 # Foundations
 
 **Language:** EN
-**Last updated:** 2026-06-29 (horizon stack filed)
+**Last updated:** 2026-06-30 (horizon stack filed)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -28,7 +28,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 **The far horizon** — four visions that compose one layered stack the project grows toward, distinct from the active rings (SLC-1 done; TAME hardening now). Read top to bottom: surface → graph → hardware → model. Gall's Law holds — complex systems grow from working simple ones; these name aspiration, not near-term build order.
 
 - `20260629-063512_realidream.md` — the unified editor-and-browser surface over a single streaming graph: read the living web and write the living program in one place, bounded and deterministic, owned by the person before it.
-- `20260629-063512_the-graph-beneath-the-surface.md` — the streaming DAG under Realidream: program, page, and screen as one graph, on Tally (bounds), Mantra (history), Tablecloth (fold) — fast because little redraws, honest because the history is a chain of signed facts.
+- `20260629-063512_the-graph-beneath-the-surface.md` — **Weave**: the streaming DAG substrate under Realidream (program, page, screen as one graph); Mantra is the projection over Weave — on Tally (bounds), Tablecloth (fold) — fast because little redraws, honest because the history is a chain of signed facts.
 - `20260629-063512_the-wafer-and-the-sovereign-coin.md` — wafer-scale compute that keeps memory beside the cores, greener and faster for it, framed as sovereign-scale public infrastructure built from real resources.
 - `20260629-063512_lantern-lattice-anvil.md` — the open model layer: Anvil the forge, Lattice the serving fabric, Lantern the honest meter — open weights, hosted serving as the product, every token counted in plain sight.
 

@@ -1,7 +1,7 @@
 # Context Home
 
 **Language:** EN
-**Last updated:** 2026-06-29
+**Last updated:** 2026-06-30
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -20,7 +20,9 @@ Everything here lives inside the persistent project directory, so it survives ev
 - **`CIVIC_STYLE.md`** — how we design public benefit. Name the outcome you want, name what the reward measures, keep the two aligned — the civic companion to TAME, Radiant, and SLC.
 - **`REYA2.md`** — the identity note. Who Reya 2 is, how she works, and the larger why behind the project.
 - **`SILO_TECHNIQUE.md`** — the siloing technique: how an outside idea becomes an owned, understood concept in our own voice, with gratitude kept apart and honored. Portable, and meant to travel beside the voice guide and the identity note.
-- **`specs/`** — plain-English radiant specs. Each one records a decision in prose a reader can follow start to finish. Kebab-case filenames (`inherited-names.md`, …); landmark style guides live at the `context/` root. **`20260629-031512_slc1-ring-closed-handoff.md`** — continuity letter after SLC-1 seals; start here after a reset.
+- **`LEXICON.md`** — module names and one-line meanings; Weave, Dexter, Kumara, Bookie, and the open horizons.
+
+- **`specs/`** — plain-English radiant specs. Each one records a decision in prose a reader can follow start to finish. Kebab-case filenames (`inherited-names.md`, …); landmark style guides live at the `context/` root. **`20260629-031512_slc1-ring-closed-handoff.md`** — continuity letter after SLC-1 seals; start here after a reset. **`20260630-004512_module-name-provenance.md`** — Dexter, Kumara, Bookie naming reasons.
 
 Hand new sessions and collaborators the **voice guide**, the **identity note**, and the **silo guide** together by default — the three context documents that travel as one set.
 
@@ -48,6 +50,7 @@ When a chat or a file stops serving the project, name it gently and let it go. P
     CIVIC_STYLE.md
     REYA2.md
     SILO_TECHNIQUE.md
+    LEXICON.md
     specs/
   foundations/    <- why beneath the work: briefs, essays, weave, civic visions
   linengrow/      <- civic-application track on the Rye OS spine
