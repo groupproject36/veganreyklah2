@@ -1,16 +1,39 @@
-# Genesis — the digital audio workstation that birthed Zig
+# Genesis — Andrew Kelley's digital audio workstation
 
-**License:** Inspiration only — not a dependency  
-**Role for us:** Andrew Kelley's DAW hot loop is why **Zig exists**: a performance-critical path where Go's GC skipped audio, C++ memory bugs burned weeks, and Rust's rules cost a month on font rendering — so he built a language with explicit control, no hidden allocation, and joy in the craft.
+**License:** **GPL-3.0** (see upstream `LICENSE` in `andrewrk/genesis`) — **gitlink / clean-room only**; we never copy Genesis source into **Lotus** or any Rye module.
 
-**Clean room:** We honor the discipline — bound the loop, surprise it with no allocation, prove invariants at the seam — and we study bare-metal kin (clashos, HellOS) as kin to Aurora. We copy nothing from Genesis into our modules.
+**Sources:**
+
+- Project: <https://github.com/andrewrk/genesis> (Genesis Digital Audio Workstation)
+- Site: <http://genesisdaw.org/>
+- Kelley intro to Zig: <https://andrewkelley.me/post/intro-to-zig.html>
+
+**Role for us:** Genesis is why **Zig exists**. Kelley paused Genesis to build a language that could hold the hot loop — live performance where audio must never skip, hardware control without opaque third-party libraries, and craft without GC pauses or month-long Rust font fights.
+
+**Clean room:** We honor Genesis for the **discipline**, not as code to import. Study public posts and design goals; hold the GPL repository at gitlink distance if cloned.
 
 ---
 
-## What we carry forward
+## What Genesis aimed at
 
-- **No C++ dependencies, no exceptions** in the performance path — only Zig and C where necessary.
-- **The hot loop must never skip** — the same instinct as TAME: safety first, performance where the design lives, craft as joy.
-- **Bare-metal Zig is possible** — Aurora and Rye OS on RISC-V share that horizon.
+From the upstream README:
 
-Kelley's public writing and talks on the DAW-to-Zig arc are the study surface; this note is gratitude, not a gitlink.
+- Cross-platform DAW with peer-to-peer multiplayer editing
+- Complete plugin safety
+- Built-in community sharing plugins, projects, and samples
+- Open source music creation — collaborative, global, free
+
+## What we carry into Lotus
+
+- **Bound the hot loop** — no surprise allocation; prove invariants at the audio seam
+- **Invent when control demands it** — libsoundio-style ownership of the stack
+- **No C++ dependencies in the performance path** — only Zig and C where necessary
+- **Bare-metal kin** — Aurora and RISC-V share the same horizon as a sovereign studio
+
+Kelley's CoRecursive interview and blog are the primary study surface alongside this note. **Lotus** is our own DAW name; Genesis stays in gratitude as the forge that birthed the language we build with.
+
+---
+
+## GPL-3.0 — study boundary
+
+Genesis is copyleft. We study concepts and public writing; we do not link Genesis into Rye binaries we ship. Full license text lives in the upstream repository.

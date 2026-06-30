@@ -75,7 +75,7 @@ The second is the **sovereign backend**, which draws into a framebuffer that Rye
 
 The discipline is to grow the hosted backend first, because it nearly runs, and to **name** the sovereign backend now without building it, so the host is honestly a backend rather than quietly a dependency. The sovereign backend waits for the kernel's own display path to earn it. An emulator is simply the vehicle that lets the sovereign backend exist the day it is wanted.
 
-We keep gratitude close here. The libraries we link on the host are honored in `gratitude/` with their licenses pinned exactly. The compositor written in our own systems language, which we admire and learn from, we hold at clean-room distance: we study its shape and never copy its source, and its copyleft is the reason we are careful. The music studio that gave our systems language its very reason to exist — born of a hot loop that must never skip — is honored too, for its discipline is ours: bound the loop, surprise it with no allocation, and let the craft be a joy.
+Weave (Kelley's **Genesis** DAW) holds gratitude for why the language exists. **Lotus** is what we build on our own roots — see `active-designing/20260630-014012_lotus-the-daw.md`.
 
 ## The Names, Now Given — and Those Still Open
 

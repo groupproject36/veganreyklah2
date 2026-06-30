@@ -66,7 +66,9 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
   - Source: <https://github.com/david-vanderson/dvui>
 - **`wayland.md`** — **libwayland-client**, MIT (Expat), quoted in the note. The host-seam display library the **hosted** Brushstroke build links on the development machine — never a dependency of Rye OS proper on bare metal. Clean room: study and run; never copy source into our modules.
 - **`river.md`** — Isaac Freund's **River** compositor, GPLv3, held at clean-room distance. Lodestar for the eventual Rye-native compositor; we learn from public design, never link or copy source.
-- **`genesis-daw.md`** — Andrew Kelley's digital audio workstation — the hot loop that birthed Zig. Inspiration only; honors bound-the-loop discipline kin to TAME and Aurora.
+- **`genesis-daw.md`** — Andrew Kelley's **Genesis** DAW (GPL-3, gitlink distance) — the hot loop that birthed Zig; honored in `../gratitude/genesis-daw.md`; **Lotus** is our own studio name.
+- **`reaper.md`** + **`reaper/docs/`** — Cockos REAPER public web documentation (proprietary; study copies parsed 2026-06-30). Workflow lodestar for **Lotus**. Refresh: `tools/fetch_gratitude_web.sh reaper`.
+- **`ap-mastering.md`** — Alain Paul / AP Mastering plugin design (Curvature, Versatile Compressor, etc.) — surface craft inspiration for Lotus plugin faces; public pages and YouTube only.
 
 ---
 

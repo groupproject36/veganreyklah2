@@ -47,6 +47,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260630-014012` | [Lotus — the DAW](20260630-014012_lotus-the-daw.md) | Our studio: REAPER workflow shape, AP Mastering surface craft, Genesis hot-loop discipline; horizon after SLC-2a |
 | `20260630-001812` | [The stack and the surface](20260630-001812_the-stack-and-the-surface.md) | Acyclic module order; Weave as substrate; Brushstroke draws values; Dexter/Kumara/Bookie named; SLC-2a the live rung |
 | `20260629-004912` | [SLC-1 Step 2 · Version](20260629-004912_slc-1-step-2-version.md) | Hammock scope: session ring + transcript; `:history` and `:version`; Rishi drives Mantra by composition |
 | `20260628-120912` | [Brix — the composer and the system around it](20260628-120912_brix-the-composer.md) | sixos mapping: Brix composes; bond overrides; Tablecloth holds; Mantra weaves; Comlink seals; Caravan supervises |

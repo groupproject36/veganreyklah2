@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-30 (architecture round; Weave, Dexter, Kumara, Bookie)
+**Last updated:** 2026-06-30
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -101,7 +101,8 @@ Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and p
 - **Dexter / Kumara as modules** — names given; whether each earns a full module home is open.
 - **Two-backend seam** — Wayland SHM to Mutter now (hosted); framebuffer-to-QEMU sovereign sibling named, not built. *(Pending Kaeden nod.)*
 - **Weave** — adopted in lexicon and substrate doc; pending formal blessing.
-- **Research reservations (Claude to author)** — immediate-mode / anti-retained-tree fold over the log; Bret Victor framework design; Kelley hot-loop / Genesis DAW — each one line in `external-research/`, no empty stubs yet.
+- **Research reservations (Claude to author)** — immediate-mode / anti-retained-tree fold over the log; Bret Victor framework design; Kelley hot-loop study (Genesis → Zig arc) — each one line in `external-research/`, no empty stubs yet.
+- **Lotus** — DAW direction adopted in `active-designing/20260630-014012_lotus-the-daw.md`; REAPER docs and AP Mastering design in `gratitude/`; bench waits for SLC-2a.
 - **Kernel direction** — is the microkernel leaning settled enough to graduate into a direction memo, or does it want more deliberation first?
 - **Linengrow's home** — does Linengrow stay a folder in this repo, or graduate to its own repo (`xwb122m/linengrow-*`) once its first ring runs?
 - **SLC-L1 and Sui** — confirm the first Linengrow ring uses pure foundations (keypair + log + projection) with no Sui, settlement deferred to SLC-L3. (Recommended: yes.)
