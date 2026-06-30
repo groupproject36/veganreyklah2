@@ -52,6 +52,16 @@ let slc2r2 = run ["rishi/bin/rishi" "run" "tools/slc2a_ring2_redraw.rish"]
 assert slc2r2.ok else "SLC-2a Ring 2 redraw witness failed"
 say "GREEN: SLC-2a Ring 2 redraw witness passed."
 
+say "witness suite: Caravan capability table…"
+let caravan_caps = run ["rishi/bin/rishi" "run" "tools/caravan_capabilities.rish"]
+assert caravan_caps.ok else "Caravan capability table witness failed"
+say "GREEN: Caravan capability table witness passed."
+
+say "witness suite: Comlink hosted wire…"
+let comlink_hw = run ["rishi/bin/rishi" "run" "tools/comlink_hosted_wire.rish"]
+assert comlink_hw.ok else "Comlink hosted wire witness failed"
+say "GREEN: Comlink hosted wire witness passed."
+
 say "witness suite: TH-1 width-check seam…"
 let th1 = run ["rishi/bin/rishi" "run" "tools/width_check_th1.rish"]
 assert th1.ok else "TH-1 width-check seam witness failed"

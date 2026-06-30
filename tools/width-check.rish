@@ -11,4 +11,4 @@
 #
 # Usage: rishi run tools/width-check.rish
 
-let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "mantra/src/diff.rye" "mantra/src/main.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/hosted_wire.rye"]
+let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/capabilities.rye" "mantra/src/diff.rye" "mantra/src/main.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/hosted_wire.rye"]

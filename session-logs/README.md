@@ -10,6 +10,8 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260630.050512 | [Caravan capabilities + Comlink witness](20260630-050512_caravan-capabilities-comlink-witness.md) | Saved capability table; hosted wire in parity at 136. |
+| 20260630.045831 | [Yes saved; Caravan capability table](20260630-045831_yes-saved-caravan-capabilities.md) | Ring 2/yonder recap in TASKS; capabilities.rye; parity 135. |
 | 20260630.041131 | [SLC-2a Ring 2 — redraw on change](20260630-041131_slc-2a-ring-2-redraw.md) | setFrame + FNV signature witness; parity 134 GREEN. |
 | 20260630.041131 | [Yonder pass nine Part B — affirmations](20260630-041131_yonder-pass-nine-part-b.md) | reviewed-kept on ten canonical briefs; README titles de-numbered. |
 | 20260630.040900 | [Yonder pass nine Part A — file moves](20260630-040900_yonder-pass-nine-part-a.md) | 24 git mv + 2 root prompts; README and inbound path fixes. |

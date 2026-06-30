@@ -21,7 +21,7 @@ scan() {
 
 for f in \
   tally/seed.rye tally/gardens.rye \
-  caravan/seed.rye caravan/bounded.rye caravan/twin.rye caravan/chain.rye \
+  caravan/seed.rye caravan/bounded.rye caravan/twin.rye caravan/chain.rye caravan/capabilities.rye \
   mantra/src/main.rye mantra/src/store.rye mantra/src/weave.rye mantra/src/diff.rye \
   rishi/src/main.rye brushstroke/seed.rye comlink/hosted_wire.rye \
   aurora/src/deciding.rye aurora/src/seed.rye

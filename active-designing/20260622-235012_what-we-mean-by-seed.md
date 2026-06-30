@@ -75,6 +75,7 @@ caravan/seed.rye      →  one parent, one child, restart on fall
 caravan/bounded.rye   →  seed + Tally garden in the child
 caravan/twin.rye      →  two children, separate gardens
 caravan/chain.rye     →  wake → prove, ordered chain-loading
+caravan/capabilities.rye → bounded table naming what each child may do
 ```
 
 ```
@@ -112,7 +113,7 @@ The seed file stays. Later rings import its discipline or inline its types hones
 | **Skate** | `skate_grid.rye` + `font8x8_data.rye` on `wayland_seed.rye` | Monospace text grid on Wayland seed | Running (`10023` Track A) |
 | **Scribble / Lantern / Lattice** | — | Horizon modules (`978`) | Siloed design only |
 
-Horizon seeds still to plant: **virtio-net device wire**, **Caravan capability table**, **Forge HTTP seed** (`982`).
+Horizon seeds still to plant: **virtio-net device wire**, **Forge HTTP seed** (`982`). **Caravan capability table** landed (`caravan/capabilities.rye`, `2026-06-30`).
 
 ---
 

@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-06-30 (SLC-2a Ring 2; yonder pass nine)
+**Last updated:** 2026-06-30 (Caravan capabilities; Comlink hosted-wire witness)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -12,15 +12,14 @@
 
 **Tracks:** **Rye OS** grows the system. **Linengrow** grows the first whole built on it. **Ground** is the shared discipline beneath both.
 
-**Landed through 2026-06-29** (detail in `../session-logs/`): SLC-1 complete (type, run, version, recall + acceptance); TAME hardening **TH-0–TH-7** and **RS-1–RS-3**; cursor ai-jail launcher; witness suite on metal; `init.garden` harvest; Linengrow vision infused; Grokipedia sweep; foundations merge; open-threads archived.
+**Landed through 2026-06-30** (detail in `../session-logs/`): SLC-2a Rings 1–2 (`5b3a5a4`); yonder pass nine; Caravan capability table; Comlink hosted-wire parity witness (**136**); prior: SLC-1; TAME hardening **TH-0–TH-7** and **RS-1–RS-3**.
 
 ---
 
 ## Now — In Flight and Immediate
 
 ### Rye OS
-- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — scope: [`active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md). **Ring 1 landed** (`2026-06-30`): value as explicit input; arbitrary-value witness GREEN. **Ring 2 landed** (`2026-06-30`): `setFrame` + FNV content-signature redraw witness GREEN; `redraw` metal mode A→B; parity **134** witnesses. **Next: Ring 3 — mirror live Rishi session** *(check in with Claude for wiring before bench)*.
-- [ ] **Caravan capability table** — a small Rye struct naming what each child may do; the first true step toward the microkernel. Asserted; witnessed.
+- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — scope: [`active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md). **Rings 1–2 landed** (`2026-06-30`, commit `5b3a5a4`). **Ring 3 next — mirror live Rishi session** *(check in with Claude for wiring before bench)*.
 
 ### Linengrow
 - [ ] **SLC-L1 scope note** — the hammock spec: the transaction fact, the keypair that signs it, the append to the log, the receipt as a pure fold, the verification. Draw the edge of complete; name what is out (settlement, the market).
@@ -34,7 +33,7 @@
 
 ### TAME hardening — complete (`2026-06-29`)
 
-Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and prior TH/RS logs. Hosted `width-check` blocks in parity (**133** witnesses after SLC-2a Ring 1).
+Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and prior TH/RS logs. Hosted `width-check` blocks in parity (**136** witnesses).
 
 **Horizon and optional (still open):**
 
@@ -58,7 +57,7 @@ Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and p
 
 ### Rye OS
 - [ ] **SLC-2 — Pond GUI** — the Rishi+Mantra loop in a Brushstroke/Skate window on x86_64. Simple, lovable, complete at a small scope.
-- [ ] **Comlink device wire** — a sealed datagram over virtio-net between two QEMU guests.
+- [ ] **Comlink device wire** — sealed datagram over virtio-net between two QEMU guests. **Hosted wire** (`comlink/hosted_wire.rye`) now in parity at **136** (selftest + localhost demo); **Track A** virtio-net bring-up remains.
 - [ ] **Comlink v1** — typed, content-named, sealed delivery between identities.
 - [ ] **Brix v1** — a `.brix` course evaluating into a closure of content-addressed bricks in Tablecloth, per `active-designing/20260628-120912_brix-the-composer.md`.
 - [ ] **Unified keys** — one owner seed deriving all keys.

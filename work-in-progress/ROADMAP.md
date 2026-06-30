@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260628-124512` (Linengrow track; two tracks one spine)
-**Last updated:** 2026-06-30 (SLC-2a Ring 2; yonder pass nine; 134 witnesses)
+**Last updated:** 2026-06-30 (Caravan capabilities; Comlink hosted-wire witness; 136 witnesses)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -36,9 +36,9 @@ Correctness by construction in the kernel becomes trust by construction in the p
 
 | Module | Seed | Witnesses |
 |--------|------|-----------|
-| **Rye** | Thin frontend; `rye/lib/std` → vendor symlink | **134** witness regression suite |
+| **Rye** | Thin frontend; `rye/lib/std` → vendor symlink | **136** witness regression suite |
 | **Aurora** | Six-stage relay + deciding stage on RISC-V | Freestanding |
-| **Caravan** | seed → bounded → twin → chain | Hosted, asserted |
+| **Caravan** | seed → bounded → twin → chain → **capabilities** | Hosted, asserted |
 | **Tally** | seed + named gardens (blob/diff/frame) | 15 invariants |
 | **Brix** | `.brix` descriptor, 10 tracked bricks | Read by Mantra |
 | **Tablecloth** | General-purpose database + object storage | Designed (future) |
@@ -47,12 +47,12 @@ Correctness by construction in the kernel becomes trust by construction in the p
 | **Rishi** | Shell: typed values, file I/O, string builtins; **`repl`** — type, run, version, recall (SLC-1 **done**) | Gate trio + four SLC-1 witnesses incl. `slc1_accept.rish` |
 | **Brushstroke** | Hosted seed + Wayland seed (Skate grid on xdg toplevel) | Frame from values; compositor path confirmed on GNOME Wayland (`2026-06-30`) |
 | **Skate** | Text grid: 8×8 monospace → ARGB8888 buffer | Headless selftest GREEN; feeds Wayland seed |
-| **Comlink** | Sealed datagram: shared-memory + localhost UDP | Full crypto stack |
+| **Comlink** | Sealed datagram: shared-memory + localhost UDP | Full crypto stack; hosted wire in parity (**136**) |
 | **Pond** | Policy as a value (`pond.rish`) | Designed |
 
 **Strengthening arc:** complete — chronicle + lexicon at `strengthening-compiler/0000_STRENGTHENING_LEXICON.md`; call-site harvest at [`archive/20260628-044200_call-site-harvest.md`](archive/20260628-044200_call-site-harvest.md).
 
-**Gate trio:** `parity.rish` (**134 witnesses** — regression suite + SLC-1 + SLC-2a Rings 1–2 + hosted `width-check`), `parity-selftest.rish` (std symlink guard), `additive-gate.rish` (structural std diff — applies when `rye/lib/` changes in HEAD). All in Rishi. **Status:** parity + selftest green on metal (`2026-06-30`); additive-gate runs when std changes land.
+**Gate trio:** `parity.rish` (**136 witnesses** — regression suite + SLC-1 + SLC-2a Rings 1–2 + Caravan capabilities + Comlink hosted wire + hosted `width-check`), `parity-selftest.rish` (std symlink guard), `additive-gate.rish` (structural std diff — applies when `rye/lib/` changes in HEAD). All in Rishi. **Status:** parity + selftest green on metal (`2026-06-30`); additive-gate runs when std changes land.
 
 ---
 
@@ -63,8 +63,8 @@ Grow running seeds into things a person can use *as-is*. See [`gratitude/Your cu
 | Ring | What | Status |
 |------|------|--------|
 | **SLC 1** | **Rishi + Mantra shell** — hosted, scriptable REPL with versioned history in a terminal (type → run → version → recall) | **Done** (`2026-06-29`) — four verbs + `tools/slc1_accept.rish`; scope [`20260628-071012`](../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md). TAME hardening **complete** (`2026-06-29`). |
-| **SLC 2** | **Pond GUI / Skate viewer (SLC-2a)** — Rings 1–2 **landed** (value input + redraw); Ring 3 session mirror next | Scope [`20260630-030312`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md); parity **134** |
-| **Compose** | Comlink device wire → capability table → Comlink v1 → Brix v1 → Tablecloth → Forge | Horizon 2 |
+| **SLC 2** | **Pond GUI / Skate viewer (SLC-2a)** — Rings 1–2 **landed**; Ring 3 session mirror next | Scope [`20260630-030312`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md); parity **136** |
+| **Compose** | Comlink device wire → ~~capability table~~ **landed** → Comlink v1 → Brix v1 → Tablecloth → Forge | Horizon 2; capability table `2026-06-30` |
 
 **Authored width migration** — **complete and blocking in parity** (TH-3 through TH-7; hosted `width-check`). Remaining authored surfaces migrate as-you-touch beside SLC-2; not a pending milestone.
 
@@ -115,8 +115,8 @@ Prior fork steps F0–F5 remain documented in [`active-designing/20260621-070712
 
 **SLC-1 is done** on its functional promise (`2026-06-29`). **TAME hardening is complete** (`2026-06-29`) — TH-0–TH-7, RS-1–RS-3, hosted `width-check` blocking in parity (132 witnesses). The bench turns to the next product ring.
 
-1. **Skate text rendering** — text on screen; unlocks SLC-2 (Pond GUI). *Scope and acceptance need a Claude ruling before bench work.*
-2. **Caravan capability table** — small Rye struct naming what each child may do; first step toward the microkernel.
+1. **SLC-2a Ring 3** — mirror live Rishi session in the Skate viewer. *Check in with Claude for witness shape and SLC-1 loop wiring before bench.*
+2. ~~**Caravan capability table**~~ — **landed** (`2026-06-30`): `caravan/capabilities.rye`; witness in parity at **135**.
 3. **Comlink device wire** — sealed datagram over virtio-net between two QEMU guests.
 4. **Rishi builtins** — trim improvements still open (optional, as-you-touch).
 
