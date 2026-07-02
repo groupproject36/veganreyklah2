@@ -11,6 +11,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const print = std.debug.print;
 
 const caravan_capabilities_version = "20260630.042012";
 
@@ -184,7 +185,7 @@ fn demoTable() !CapabilityTable {
 
 fn runSelfTest() u8 {
     const table = demoTable() catch {
-        std.debug.print("capabilities: demo table build failed\n", .{});
+        print("capabilities: demo table build failed\n", .{});
         return 1;
     };
 
@@ -210,8 +211,8 @@ fn runSelfTest() u8 {
     // Unknown child is denied by absence of a slot.
     assert(!table.allows("unknown", "/usr", right_read));
 
-    std.debug.print("capabilities: version {s}\n", .{caravan_capabilities_version});
-    std.debug.print("capabilities: {d} children, boundaries asserted — GREEN.\n", .{table.child_count});
+    print("capabilities: version {s}\n", .{caravan_capabilities_version});
+    print("capabilities: {d} children, boundaries asserted — GREEN.\n", .{table.child_count});
     return 0;
 }
 

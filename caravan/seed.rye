@@ -20,6 +20,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const print = std.debug.print;
 
 /// Caravan seed version — stamped chronologically.
 const caravan_seed_version = "20260619.224512";
@@ -71,7 +72,7 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
     assert(args.len >= 1);
     const self_path = args[0];
 
-    std.debug.print("caravan seed: supervisor alive. planned failures: {d}, max restarts: {d}\n", .{
+    print("caravan seed: supervisor alive. planned failures: {d}, max restarts: {d}\n", .{
         planned_failures, max_restarts,
     });
 
@@ -93,7 +94,7 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
         argv[2] = child_code;
 
         var child = std.process.spawn(io, .{ .argv = argv }) catch |err| {
-            std.debug.print("caravan seed: could not start child ({s})\n", .{@errorName(err)});
+            print("caravan seed: could not start child ({s})\n", .{@errorName(err)});
             return 1;
         };
 
@@ -105,18 +106,18 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
 
         if (code == 0) {
             // Child exited cleanly — supervision succeeded.
-            std.debug.print("caravan seed: child exited cleanly after {d} restart(s).\n", .{restarts});
+            print("caravan seed: child exited cleanly after {d} restart(s).\n", .{restarts});
             break;
         }
 
         // Child fell. Restart.
         restarts += 1;
-        std.debug.print("caravan seed: child fell (code {d}), restart {d}/{d}\n", .{
+        print("caravan seed: child fell (code {d}), restart {d}/{d}\n", .{
             code, restarts, max_restarts,
         });
 
         if (restarts >= max_restarts) {
-            std.debug.print("caravan seed: restart limit reached — giving up.\n", .{});
+            print("caravan seed: restart limit reached — giving up.\n", .{});
             return 1;
         }
     }
@@ -131,7 +132,7 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
     // postcondition: we did not exceed the restart limit
     assert(restarts < max_restarts);
 
-    std.debug.print(
+    print(
         "caravan seed: {d} assertion(s) confirmed. supervision loop proven GREEN.\n",
         .{planned_failures + 2}, // planned_failures restarts + 2 postconditions
     );

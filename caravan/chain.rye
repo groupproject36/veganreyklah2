@@ -14,6 +14,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const print = std.debug.print;
 
 const caravan_chain_version = "20260622.235512";
 
@@ -96,10 +97,10 @@ fn runStageChild(stage: Stage, should_fail: bool) u8 {
     switch (stage) {
         .wake => {
             if (should_fail) {
-                std.debug.print("caravan chain: wake fell (intended)\n", .{});
+                print("caravan chain: wake fell (intended)\n", .{});
                 return 1;
             }
-            std.debug.print("caravan chain: wake ready\n", .{});
+            print("caravan chain: wake ready\n", .{});
             return 0;
         },
         .prove => {
@@ -108,7 +109,7 @@ fn runStageChild(stage: Stage, should_fail: bool) u8 {
             assert(region.remaining() == prove_budget);
 
             const work = region.alloc(48) catch {
-                std.debug.print("caravan chain: prove allocation failed\n", .{});
+                print("caravan chain: prove allocation failed\n", .{});
                 return 1;
             };
             assert(work.len == 48);
@@ -116,20 +117,20 @@ fn runStageChild(stage: Stage, should_fail: bool) u8 {
             if (should_fail) {
                 const too_much = region.remaining() + 1;
                 _ = region.alloc(too_much) catch {
-                    std.debug.print("caravan chain: prove exceeded garden (intended)\n", .{});
+                    print("caravan chain: prove exceeded garden (intended)\n", .{});
                     return 1;
                 };
             }
 
             const rest = region.alloc(region.remaining()) catch {
-                std.debug.print("caravan chain: prove edge allocation failed\n", .{});
+                print("caravan chain: prove edge allocation failed\n", .{});
                 return 1;
             };
             assert(rest.len == prove_budget - 48);
             region.clear();
             assert(region.remaining() == prove_budget);
 
-            std.debug.print("caravan chain: prove held. garden {d} bytes cleared.\n", .{prove_budget});
+            print("caravan chain: prove held. garden {d} bytes cleared.\n", .{prove_budget});
             return 0;
         },
     }
@@ -139,8 +140,8 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
     assert(args.len >= 1);
     const self_path = args[0];
 
-    std.debug.print("caravan chain: supervisor alive. version {s}\n", .{caravan_chain_version});
-    std.debug.print("caravan chain: stages wake → prove (chain-loading)\n", .{});
+    print("caravan chain: supervisor alive. version {s}\n", .{caravan_chain_version});
+    print("caravan chain: stages wake → prove (chain-loading)\n", .{});
 
     var total_restarts: u32 = 0;
     var stage_index: u32 = 0;
@@ -149,15 +150,15 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
         assert(stage_index < chain.len);
         const restarts = try superviseStage(allocator, io, self_path, stage, plannedFailures(stage));
         total_restarts += restarts;
-        std.debug.print("caravan chain: stage {s} green after {d} restart(s).\n", .{ @tagName(stage), restarts });
+        print("caravan chain: stage {s} green after {d} restart(s).\n", .{ @tagName(stage), restarts });
         stage_index += 1;
     }
 
     assert(total_restarts == planned_failures_wake + planned_failures_prove);
-    std.debug.print("caravan chain: chain complete. {d} stage(s), {d} total restart(s).\n", .{
+    print("caravan chain: chain complete. {d} stage(s), {d} total restart(s).\n", .{
         chain.len, total_restarts,
     });
-    std.debug.print("caravan chain: startup sequence proven. chain-loading grows.\n", .{});
+    print("caravan chain: startup sequence proven. chain-loading grows.\n", .{});
     return 0;
 }
 
@@ -184,7 +185,7 @@ fn superviseStage(
         argv[3] = child_arg;
 
         var proc = std.process.spawn(io, .{ .argv = argv }) catch |err| {
-            std.debug.print("caravan chain: could not start stage {s} ({s})\n", .{ tag, @errorName(err) });
+            print("caravan chain: could not start stage {s} ({s})\n", .{ tag, @errorName(err) });
             return error.SpawnFailed;
         };
 
@@ -200,12 +201,12 @@ fn superviseStage(
         }
 
         restarts += 1;
-        std.debug.print("caravan chain: stage {s} fell (code {d}), restart {d}/{d}\n", .{
+        print("caravan chain: stage {s} fell (code {d}), restart {d}/{d}\n", .{
             tag, code, restarts, max_restarts_per_stage,
         });
 
         if (restarts >= max_restarts_per_stage) {
-            std.debug.print("caravan chain: stage {s} restart limit reached.\n", .{tag});
+            print("caravan chain: stage {s} restart limit reached.\n", .{tag});
             return error.RestartLimit;
         }
     }

@@ -22,6 +22,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const print = std.debug.print;
 
 const caravan_bounded_version = "20260621.015712";
 
@@ -116,7 +117,7 @@ fn runBoundedChild(should_fail: bool) u8 {
 
     // Allocate within the budget — 64 bytes, well within 256.
     const work_slice = garden.alloc(64) catch {
-        std.debug.print("bounded child: allocation failed unexpectedly\n", .{});
+        print("bounded child: allocation failed unexpectedly\n", .{});
         return 1;
     };
 
@@ -133,7 +134,7 @@ fn runBoundedChild(should_fail: bool) u8 {
         // This simulates a child that crashes from overallocation.
         const too_much = garden.remaining() + 1;
         _ = garden.alloc(too_much) catch {
-            std.debug.print("bounded child: exceeded garden (intended failure)\n", .{});
+            print("bounded child: exceeded garden (intended failure)\n", .{});
             return 1;
         };
         // unreachable if the garden bound holds — which it does
@@ -141,7 +142,7 @@ fn runBoundedChild(should_fail: bool) u8 {
 
     // Allocate the rest of the budget — fill to the edge.
     const rest = garden.alloc(garden.remaining()) catch {
-        std.debug.print("bounded child: edge allocation failed\n", .{});
+        print("bounded child: edge allocation failed\n", .{});
         return 1;
     };
     // postcondition: garden is exactly full
@@ -153,7 +154,7 @@ fn runBoundedChild(should_fail: bool) u8 {
     // postcondition: garden is fully available again
     assert(garden.remaining() == child_budget);
 
-    std.debug.print("bounded child: garden held. budget {d}, used {d}, cleared.\n", .{
+    print("bounded child: garden held. budget {d}, used {d}, cleared.\n", .{
         child_budget, child_budget,
     });
     return 0;
@@ -168,7 +169,7 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
     assert(args.len >= 1);
     const self_path = args[0];
 
-    std.debug.print("caravan bounded: supervisor alive. budget {d} bytes, planned failures: {d}\n", .{
+    print("caravan bounded: supervisor alive. budget {d} bytes, planned failures: {d}\n", .{
         child_budget, planned_failures,
     });
 
@@ -188,7 +189,7 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
         argv[2] = child_arg;
 
         var child = std.process.spawn(io, .{ .argv = argv }) catch |err| {
-            std.debug.print("caravan bounded: could not start child ({s})\n", .{@errorName(err)});
+            print("caravan bounded: could not start child ({s})\n", .{@errorName(err)});
             return 1;
         };
 
@@ -199,17 +200,17 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
         };
 
         if (code == 0) {
-            std.debug.print("caravan bounded: child exited cleanly after {d} restart(s).\n", .{restarts});
+            print("caravan bounded: child exited cleanly after {d} restart(s).\n", .{restarts});
             break;
         }
 
         restarts += 1;
-        std.debug.print("caravan bounded: child fell (code {d}), restart {d}/{d}\n", .{
+        print("caravan bounded: child fell (code {d}), restart {d}/{d}\n", .{
             code, restarts, max_restarts,
         });
 
         if (restarts >= max_restarts) {
-            std.debug.print("caravan bounded: restart limit reached.\n", .{});
+            print("caravan bounded: restart limit reached.\n", .{});
             return 1;
         }
     }
@@ -220,6 +221,6 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
     assert(restarts < max_restarts);
 
     const total_assertions: u32 = planned_failures + 2 + 7; // supervisor + child garden assertions
-    std.debug.print("caravan bounded: {d} assertion(s) confirmed. supervision + bounded memory proven GREEN.\n", .{total_assertions});
+    print("caravan bounded: {d} assertion(s) confirmed. supervision + bounded memory proven GREEN.\n", .{total_assertions});
     return 0;
 }

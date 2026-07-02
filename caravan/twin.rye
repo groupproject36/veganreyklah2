@@ -15,6 +15,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const print = std.debug.print;
 
 const caravan_twin_version = "20260621.020512";
 
@@ -102,7 +103,7 @@ fn runBoundedChild(child: ChildId, should_fail: bool) u8 {
     assert(region.remaining() == budget);
 
     const work = region.alloc(32) catch {
-        std.debug.print("twin child {s}: allocation failed unexpectedly\n", .{@tagName(child)});
+        print("twin child {s}: allocation failed unexpectedly\n", .{@tagName(child)});
         return 1;
     };
     assert(work.len == 32);
@@ -113,13 +114,13 @@ fn runBoundedChild(child: ChildId, should_fail: bool) u8 {
     if (should_fail) {
         const too_much = region.remaining() + 1;
         _ = region.alloc(too_much) catch {
-            std.debug.print("twin child {s}: exceeded garden (intended failure)\n", .{@tagName(child)});
+            print("twin child {s}: exceeded garden (intended failure)\n", .{@tagName(child)});
             return 1;
         };
     }
 
     const rest = region.alloc(region.remaining()) catch {
-        std.debug.print("twin child {s}: edge allocation failed\n", .{@tagName(child)});
+        print("twin child {s}: edge allocation failed\n", .{@tagName(child)});
         return 1;
     };
     assert(region.remaining() == 0);
@@ -128,7 +129,7 @@ fn runBoundedChild(child: ChildId, should_fail: bool) u8 {
     region.clear();
     assert(region.remaining() == budget);
 
-    std.debug.print("twin child {s}: garden held. budget {d}, cleared.\n", .{ @tagName(child), budget });
+    print("twin child {s}: garden held. budget {d}, cleared.\n", .{ @tagName(child), budget });
     return 0;
 }
 
@@ -136,8 +137,8 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
     assert(args.len >= 1);
     const self_path = args[0];
 
-    std.debug.print("caravan twin: supervisor alive. version {s}\n", .{caravan_twin_version});
-    std.debug.print("caravan twin: child A budget {d}, child B budget {d}\n", .{ child_a_budget, child_b_budget });
+    print("caravan twin: supervisor alive. version {s}\n", .{caravan_twin_version});
+    print("caravan twin: child A budget {d}, child B budget {d}\n", .{ child_a_budget, child_b_budget });
 
     const restarts_a = try superviseChild(allocator, io, self_path, .a, planned_failures_a);
     const restarts_b = try superviseChild(allocator, io, self_path, .b, planned_failures_b);
@@ -145,8 +146,8 @@ fn runSupervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]con
     assert(restarts_a == planned_failures_a);
     assert(restarts_b == planned_failures_b);
 
-    std.debug.print("caravan twin: both children green. A restarts {d}, B restarts {d}.\n", .{ restarts_a, restarts_b });
-    std.debug.print("caravan twin: separate gardens proven. supervision tree grows.\n", .{});
+    print("caravan twin: both children green. A restarts {d}, B restarts {d}.\n", .{ restarts_a, restarts_b });
+    print("caravan twin: separate gardens proven. supervision tree grows.\n", .{});
     return 0;
 }
 
@@ -173,7 +174,7 @@ fn superviseChild(
         argv[3] = child_arg;
 
         var proc = std.process.spawn(io, .{ .argv = argv }) catch |err| {
-            std.debug.print("caravan twin: could not start child {s} ({s})\n", .{ tag, @errorName(err) });
+            print("caravan twin: could not start child {s} ({s})\n", .{ tag, @errorName(err) });
             return error.SpawnFailed;
         };
 
@@ -184,17 +185,17 @@ fn superviseChild(
         };
 
         if (code == 0) {
-            std.debug.print("caravan twin: child {s} exited cleanly after {d} restart(s).\n", .{ tag, restarts });
+            print("caravan twin: child {s} exited cleanly after {d} restart(s).\n", .{ tag, restarts });
             break;
         }
 
         restarts += 1;
-        std.debug.print("caravan twin: child {s} fell (code {d}), restart {d}/{d}\n", .{
+        print("caravan twin: child {s} fell (code {d}), restart {d}/{d}\n", .{
             tag, code, restarts, max_restarts_per_child,
         });
 
         if (restarts >= max_restarts_per_child) {
-            std.debug.print("caravan twin: child {s} restart limit reached.\n", .{tag});
+            print("caravan twin: child {s} restart limit reached.\n", .{tag});
             return error.RestartLimit;
         }
     }
