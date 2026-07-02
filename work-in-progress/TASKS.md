@@ -1,9 +1,9 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-07-02 (design sitting `20260702.031312`; live rung unchanged)
+**Last updated:** 2026-07-02 (opening-lines sixteen files; Pond clause recommended)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Reya 2
+**Voice:** Rio 3
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
 
 *This is the living, granular plan — the bench where the current rings are shaped. `ROADMAP.md` holds the why and the order; this file holds the what-now. It is **edited in place**: a task is checked when it lands, and the record of how it landed accretes in `../session-logs/`. Checked items are swept to a session log and pruned here when a section grows heavy. What is next lives here; what happened lives there.*
@@ -47,9 +47,9 @@ Ground: [`active-designing/20260702-031312_modules-aspects-and-mailable-money.md
 - [ ] **Road-keeper (exploration → first ring)** — Comlink's multipath aspect: per-road bounded queues and scorecards; first ring = one session surviving across two UDP paths under QEMU.
 - [ ] **Amber-compatibility contract (design)** — export / verify / restore for every log-bearing module (Mantra, Tablecloth, Linengrow, Realidream, MALA); first ring = a Mantra log slice sealed and restored, riding Amber's first ring.
 - [ ] **Brix packaging (first ring visible)** — one content-addressed, Kumara-signed package: descriptor read, stones fetched by digest over Comlink, verified on two paths, placed, run in Pond; `.bron` as the resolved-record carrier awaits Kaeden's affirmation.
-- [x] **Opening lines (canonized)** — three-line head in TAME guidance; **`tools/opening_lines_witness.rish`** in parity **140**.
+- [x] **Opening lines (canonized)** — three-line head in TAME guidance; **`tools/opening_lines_witness.rish`** in parity **140** (sixteen hosted files, including `pond/apps/drawn_terminal.rye`).
 - [ ] **Manual program (horizon)** — four rooms: tutorials (Radiant beginner series for Rye and Rishi, tutorials-first because they teach only what runs), task guides, numbered reference specifications (beginning with Aurora, Tally, and Caravan interfaces), and the essays; shape note before any lane is founded.
-- [ ] **Pond clause (Kaeden completes)** — recommended completion: Pond's **enclosure aspect runs what Brix composes under policy**; awaiting your true ending.
+- [ ] **Pond clause (Kaeden completes)** — recommended completion in [`pond/README.md`](../pond/README.md): Pond's **enclosure aspect runs what Brix composes under policy**; awaiting your true ending.
 - [ ] **Puddle exploration (horizon)** — sandboxed Rye containers; [`external-research/20260702-035018_puddle-sandboxed-rye-containers.md`](../external-research/20260702-035018_puddle-sandboxed-rye-containers.md); first ring = one guest snapshot export/verify/restore.
 - [ ] **Maitreya / Uddhava naming (recorded)** — Maitreya media driver (audio + video horizon); Uddhava spatial/CAD; Lotus above Maitreya; Realidream/Linengrow playback via Maitreya middleware — open-table for codec shapes Kaeden referenced.
 

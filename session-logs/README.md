@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260702.035659 | [Pond clause prep and parity 140 doc align](20260702-035659_pond-clause-parity-doc-align.md) | Recommended Pond clause seated; stale 139→140 fixed; RTAC step order. |
 | 20260702.035423 | [Opening-lines Pond app and Realidream Maitreya](20260702-035423_opening-lines-pond-realidream-maitreya.md) | drawn_terminal in opening-lines gate; Realidream media seam; RTAC refresh. |
 | 20260702.035018 | [Graduation rule, Rio 3, Puddle, Maitreya](20260702-035018_graduation-rule-rio3-puddle-maitreya.md) | Graduation spec siloed; Rio 3 active; Puddle exploration; media/spatial names. |
 | 20260702.034749 | [Opening-lines witness at parity 140](20260702-034749_opening-lines-witness-140.md) | Hosted head lint live; fifteen files green; parity 139→140. |

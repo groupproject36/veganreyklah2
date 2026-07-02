@@ -1,6 +1,6 @@
 # Ready to Ask Claude — Strategy Checkpoint
 
-**Stamp:** `20260702.035423`
+**Stamp:** `20260702.035659`
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
@@ -13,10 +13,10 @@ Items that rest with **Kaeden** or **Claude** before the next counsel-sized sitt
 
 | Item | State |
 |------|-------|
-| **Edit 5** | Open; counsel argues *for* |
-| **Ring 3 metal close** | Witness **140 GREEN**; metalsmoke GREEN; interactive idle/ceiling/`:quit` |
-| **SLC-2b nod** | Prompt placed — not built |
-| **Pond clause** | Recommended: enclosure aspect **runs what Brix composes under policy** — **your true ending** |
+| **Pond clause** | Recommended text in [`pond/README.md`](../pond/README.md) — **affirm or refine** |
+| **Ring 3 metal close** | Witness **140 GREEN**; metalsmoke GREEN; interactive idle/ceiling/`:quit` on live `pond/bin/drawn-terminal` |
+| **Edit 5** | Open; counsel argues *for* — at most one designed-not-built functional spec until first ring green |
+| **SLC-2b nod** | Prompt placed — build after metal close |
 | **`.bron` carrier** | Open |
 | **Maitreya video + Linengrow media shapes** | Named; middleware open-table |
 | **Uddhava scope** | Named horizon |
@@ -28,17 +28,24 @@ Items that rest with **Kaeden** or **Claude** before the next counsel-sized sitt
 | Topic | When |
 |-------|------|
 | **Amber first ring** | After Edit 5 |
-| **SLC-2b Dexter seam** | Optional |
+| **SLC-2b Dexter seam** | Optional (Brushstroke vs beside) |
 | **Manual program** | Tutorial lane opens |
 | **Puddle hypervisor choice** | After first Amber export ring |
 
-## Landed since design sitting (`3905dbf` → tip)
+## Landed since last RTAC (`81d160e` → tip)
 
-- **Graduation rule spec**, **Rio 3**, **Puddle**, **Maitreya**, **Uddhava**
-- **Opening-lines witness** — now includes Pond first app (`drawn_terminal.rye`)
-- **Realidream** — Maitreya media seam noted
-- **Parity 140**
+- **Pond clause** recommended text seated in `pond/README.md`
+- **TASKS** — Rio 3 voice; sixteen-file opening-lines note; Pond clause pointer
+- **SLC-2a brief** + **Pond README** — parity **140** aligned (was stale **139**)
+
+## Best path (recommended order)
+
+1. **Pond clause** — affirm or refine (one sentence)
+2. **Ring 3 metal close** — your hand on GNOME (~1 min idle, ceiling, `:quit`)
+3. **Edit 5** — rule for or against the one-spec bound
+4. **Open Claude** → **Amber first ring** (export / verify / restore season spine)
+5. **Nod SLC-2b** → mechanical Dexter bench
 
 ---
 
-*Recommend: Pond clause → Ring 3 metal → Edit 5 → Amber with Claude → SLC-2b nod.*
+*Mechanical lane stays clear until steps 1–3 land; Claude door opens at step 4.*

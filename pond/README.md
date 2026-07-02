@@ -8,6 +8,8 @@
 
 Pond holds **applications** that compose Rye OS modules above the kernel and compositor — the first ring where isolation policy meets a running whole a person can use. The `apps/` floor keeps enclosure code and application code apart.
 
+**Enclosure horizon (Pond clause — Kaeden completes):** Pond's enclosure aspect **runs what Brix composes under policy**. This is the recommended completion; your true ending may refine the wording.
+
 **First application:** [`apps/drawn_terminal.rye`](apps/drawn_terminal.rye) — SLC-2a Ring 3, the drawn terminal (Rishi session mirrored in a Brushstroke/Skate window).
 
 Policy-as-value horizon: `rishi/examples/pond.rish` and `external-research/20260618-180812_pond-foundation.md`.
@@ -41,7 +43,7 @@ rye/bin/rye build pond/apps/drawn_terminal.rye brushstroke/xdg-shell-protocol.c 
 
 | Mode | Command | Purpose |
 |------|---------|---------|
-| **Witness** | `pond/bin/drawn-terminal sessiontest` | Headless Ring 3 witness (golden lines, signatures, ceiling row) — in parity **139** |
+| **Witness** | `pond/bin/drawn-terminal sessiontest` | Headless Ring 3 witness (golden lines, signatures, ceiling row) — in parity **140** |
 | **Metalsmoke** | `pond/bin/drawn-terminal metalsmoke` | Automated Wayland slice — [`tools/slc2a_ring3_metal.rish`](../tools/slc2a_ring3_metal.rish) |
 | **Live** | `pond/bin/drawn-terminal` | Interactive mirror on GNOME Wayland + stdin (keyboard-from-window: SLC-2b) |
 
