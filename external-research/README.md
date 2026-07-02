@@ -41,6 +41,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260702-031312` | [Settlement, consensus, and many roads](20260702-031312_settlement-consensus-and-many-roads.md) | Sui and Mysticeti read plainly; proven ground under Linengrow; multipath lineage behind the road-keeper |
 | `20260702-014112` | [Comlink beyond DNS and sockets](20260702-014112_comlink-beyond-dns-and-sockets.md) | Names via signed claims and the 21e8 market lens; the QUIC-family stream lane; post-quantum accretion for Comlink and Amber |
 | `20260701-213412` | [Deep archive and sovereign host blueprint](20260701-213412_deep-archive-and-sovereign-host-blueprint.md) | Verified storage, validation, and ecological compute memo |
 | `20260630-030312` | [The interface as a fold](20260630-030312_the-interface-as-a-fold.md) | Immediate-mode as one copy from log to frame; Brushstroke philosophy |

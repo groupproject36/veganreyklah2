@@ -1,7 +1,7 @@
 # The Active-Designing Stack
 
 **Language:** EN
-**Last updated:** 2026-06-30
+**Last updated:** 2026-07-02 (design sitting companion)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -47,7 +47,8 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
-| `20260630-030312` | [SLC-2a — the drawn terminal](20260630-030312_slc-2a-the-drawn-terminal.md) | Three-ring scope: value-driven viewer, redraw on change, live session mirror; Ring 1 landed |
+| `20260702-031312` | [Modules, aspects, and mailable money](20260702-031312_modules-aspects-and-mailable-money.md) | Module/aspect vocabulary and graduation rule; Weave's trigger; MALA M0–M4; Mycelium and road-keeper; Amber contract; Brix packaging through Pond; opening lines; manual's four rooms |
+| `20260630-030312` | [SLC-2a — the drawn terminal](20260630-030312_slc-2a-the-drawn-terminal.md) | Three-ring scope: value-driven viewer, redraw on change, live session mirror; Rings 1–3 witness landed |
 | `20260630-014012` | [Lotus — the DAW](20260630-014012_lotus-the-daw.md) | Our studio: REAPER workflow shape, AP Mastering surface craft, Genesis hot-loop discipline; horizon after SLC-2a |
 | `20260630-001812` | [The stack and the surface](20260630-001812_the-stack-and-the-surface.md) | Acyclic module order; Weave as substrate; Brushstroke draws values; Dexter/Kumara/Bookie named; SLC-2a the live rung |
 | `20260629-004912` | [SLC-1 Step 2 · Version](20260629-004912_slc-1-step-2-version.md) | Hammock scope: session ring + transcript; `:history` and `:version`; Rishi drives Mantra by composition |

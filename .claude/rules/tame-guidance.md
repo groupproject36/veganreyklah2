@@ -17,6 +17,7 @@ Full checkable surface: supplement section **What We Check, and When**.
 - State invariants **before** implementing: write `assert` calls at construction, mutation, and postcondition, each preceded by a `// invariant:` comment.
 - Import assert once per file: `const assert = std.debug.assert;` — then call bare `assert(...)`, not `std.debug.assert(...)`.
 - Import print once per file in hosted `.rye`: `const print = std.debug.print;` — then bare `print(...)`; as-you-touch, no tame-check gate yet.
+- **Opening lines:** every hosted `.rye` file opens with `const std`, `const assert`, `const print` — canonical head per design sitting `20260702.031312`.
 - Bounds on everything: every allocation, collection, and pipeline names a maximum. Name the budget at construction; enforce at the edge.
 - Say why: every assertion, every named constant, every surprising design choice earns a comment that names the reason.
 - Accrete, never break: a name once given is a promise. Add beside it; do not replace it silently.

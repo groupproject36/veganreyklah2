@@ -1,12 +1,20 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-02 (Amber seated; Lotus, REAPER gratitude, Genesis clarified)
+**Last updated:** 2026-07-02 (design sitting `20260702.031312`; MALA and Mycelium named)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
 
-Living vocabulary for the Rye OS family. Each name teaches its function. Provenance for the three names given on 2026-06-30 lives in `specs/20260630-004512_module-name-provenance.md`.
+Living vocabulary for the Rye OS family. Each name teaches its function. Provenance for the three names given on 2026-06-30 lives in `specs/20260630-004512_module-name-provenance.md`. Module, aspect, and the graduation rule: [`../active-designing/20260702-031312_modules-aspects-and-mailable-money.md`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md).
+
+## Pattern — module and aspect
+
+| Term | One line |
+|------|----------|
+| **Module** | A named home — its own directory, invariants, budgets, witnesses |
+| **Aspect** | A named capability inside a module's boundary, sharing the host's budget, owning no directory of its own |
+| **Graduation** | An aspect becomes a module when its **second consumer** arrives from outside its host |
 
 ## Core stack
 
@@ -15,7 +23,7 @@ Living vocabulary for the Rye OS family. Each name teaches its function. Provena
 | **Aurora** | The boot — dawn on open hardware |
 | **Tally** | Memory in bounded gardens |
 | **Caravan** | Supervision and capabilities |
-| **Weave** | The append-only DAG of immutable signed facts — the substrate beneath Mantra and Comlink |
+| **Weave** | The append-only DAG of immutable signed facts — substrate beneath Mantra and Comlink; **aspect of Mantra** today at `mantra/src/weave.rye` |
 | **Mantra** | Version-control projection over Weave |
 | **Comlink** | Transport of sealed facts over Weave |
 | **Brushstroke** | The drawn surface — values to pixels, immediate-mode |
@@ -41,6 +49,8 @@ Living vocabulary for the Rye OS family. Each name teaches its function. Provena
 
 | Name | Status |
 |------|--------|
+| **MALA** | Named (`2026-07-02`) — mailable money: issuer-signed token facts on the log, balance as a fold; ladder M0–M4 in [`active-designing/20260702-031312_modules-aspects-and-mailable-money.md`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md); first ring after Edit 5 and Amber |
+| **Mycelium** | Named (`2026-07-02`) — Comlink's ordering aspect for the many-issuer horizon: leaderless agreement on a DAG of signed messages; gated at MALA M4, never before |
 | **Bron** | Proposed — composing companion beside Brix; role open for Kaeden |
 | **Tablecloth** | Named — layout or structured-view layer; horizon |
 | **`.brush`** | Surface-description extension when Brushstroke earns a small language |

@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-07-02 (TAME print alias ruled; RTAC `20260702.025012`)
+**Last updated:** 2026-07-02 (design sitting `20260702.031312`; live rung unchanged)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -34,6 +34,22 @@
 ---
 
 ## Next — Horizons and Optional
+
+### Modules, money, and the manual — horizons (`2026-07-02`)
+
+Ground: [`active-designing/20260702-031312_modules-aspects-and-mailable-money.md`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · named companion: [`external-research/20260702-031312_settlement-consensus-and-many-roads.md`](../external-research/20260702-031312_settlement-consensus-and-many-roads.md).
+
+- [x] **Module/aspect vocabulary** — definitions and graduation rule in the design sitting and [`context/LEXICON.md`](../context/LEXICON.md) pattern section.
+- [ ] **Weave graduation trigger (recorded)** — the day Comlink serves named data straight from Weave, `mantra/src/weave.rye` graduates to `weave/` and Mantra imports it like everyone else.
+- [ ] **MALA M0 (design ring)** — token-fact shapes and witnesses on paper; opens after the Edit 5 ruling and Amber's first ring, in that order; ladder M0–M4 in the memo.
+- [ ] **Digital land = M3 (design only)** — plots as name-claim facts with extent in Realidream's graph, deeds bound to Kumara holders, traded in MALA; ordinary internet and dock-wire alike.
+- [ ] **Mycelium gate (recorded)** — the ordering aspect opens at M4's many-issuer season, never before.
+- [ ] **Road-keeper (exploration → first ring)** — Comlink's multipath aspect: per-road bounded queues and scorecards; first ring = one session surviving across two UDP paths under QEMU.
+- [ ] **Amber-compatibility contract (design)** — export / verify / restore for every log-bearing module (Mantra, Tablecloth, Linengrow, Realidream, MALA); first ring = a Mantra log slice sealed and restored, riding Amber's first ring.
+- [ ] **Brix packaging (first ring visible)** — one content-addressed, Kumara-signed package: descriptor read, stones fetched by digest over Comlink, verified on two paths, placed, run in Pond; `.bron` as the resolved-record carrier awaits Kaeden's affirmation.
+- [x] **Opening lines (canonized)** — the three-line head (`std` / bare `assert` / bare `print`) recorded in TAME guidance; tutorial one's first lesson; gentle textual check on the horizon.
+- [ ] **Manual program (horizon)** — four rooms: tutorials (Radiant beginner series for Rye and Rishi, tutorials-first because they teach only what runs), task guides, numbered reference specifications (beginning with Aurora, Tally, and Caravan interfaces), and the essays; shape note before any lane is founded.
+- [ ] **Pond clause (Kaeden completes)** — *"Pond be the module which has an aspect which becomes the solution for the aspect that we need to —"* Recommended completion: **run what Brix composes under policy** — Pond's **enclosure aspect** as packaging's runtime target; awaiting your true ending.
 
 ### Comlink and the long run — horizons (`2026-07-02`)
 
@@ -121,7 +137,7 @@ Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and p
 - **`.brush`** — surface-description extension for the day Brushstroke becomes a small language; horizon only.
 - **Dexter / Kumara as modules** — names given; whether each earns a full module home is open.
 - **Two-backend seam** — Wayland SHM to Mutter now (hosted); framebuffer-to-QEMU sovereign sibling named, not built. *(Pending Kaeden nod.)*
-- **Weave** — adopted in lexicon and substrate doc; pending formal blessing.
+- **Weave** — aspect of Mantra today (`mantra/src/weave.rye`); graduation trigger recorded in [`20260702-031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md).
 - **Research essays (authored, living)** — [`external-research/20260630-030312_the-interface-as-a-fold.md`](../external-research/20260630-030312_the-interface-as-a-fold.md); [`external-research/20260630-030312_after-victor-immediate-contact.md`](../external-research/20260630-030312_after-victor-immediate-contact.md); [`external-research/20260630-030312_the-hot-loop-as-the-forge.md`](../external-research/20260630-030312_the-hot-loop-as-the-forge.md).
 - **Lotus** — DAW direction adopted in `active-designing/20260630-014012_lotus-the-daw.md`; REAPER docs and AP Mastering design in `gratitude/`; bench waits for SLC-2a.
 - **Kernel-direction brief held** — `expanding-prompts/20260628-120912_kernel-direction-brix-and-foundations.md` stays one level deep pending the kernel-direction memo (live Now task).

@@ -174,6 +174,18 @@ return buf[start .. start + @as(usize, @intCast(n))];
 
 For everything else, follow the Zig style guide as filtered through **996** (line length, braces, `zig fmt`, and the rest).
 
+### The opening lines
+
+Every hosted `.rye` file that speaks or checks begins with the same three lines — the canonical head, tutorial one's first breath:
+
+```zig
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+```
+
+A one-line prelude was weighed and set aside: Rye removed the namespace-splat long ago, so a single import would force qualified calls and collide with bare `assert` (gated by tidy) and bare `print` (ruled this week). A prelude file would spend the same three lines plus an indirection. **Canonize these three** until the shared head outgrows four names — the day indirection starts paying rent. A gentle textual check for the canonical head waits on the horizon beside `tame-check`.
+
 ### Assertions as first-class design
 
 `assert(cond)` is not a debugging tool; it is the design written down where the machine can check it. Import it unqualified once per file — `const assert = std.debug.assert;` — and call it bare, the way TigerBeetle does throughout. Assertions detect programmer errors, which are unexpected; the correct response to corrupt code is to crash, and so an assertion downgrades a catastrophic correctness bug into a loud, findable liveness bug.
