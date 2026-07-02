@@ -69,6 +69,10 @@ const Line = struct {
     text: []const u8,
 };
 
+pub const SkateLine = Line;
+pub const viewer_grid_rows = grid_rows;
+pub const viewer_max_lines = max_lines;
+
 const Frame = struct {
     lines: []const Line,
 
@@ -133,6 +137,10 @@ fn signatureFromGrid(garden: std.mem.Allocator, grid: *const skate.Grid) !u64 {
 fn signatureFromLines(garden: std.mem.Allocator, lines: []const Line) !u64 {
     var grid = try Frame.init(lines).toGrid(garden);
     return signatureFromGrid(garden, &grid);
+}
+
+pub fn contentSignature(garden: std.mem.Allocator, lines: []const Line) !u64 {
+    return signatureFromLines(garden, lines);
 }
 
 fn redrawLinesA(garden: std.mem.Allocator) ![]Line {
@@ -340,7 +348,7 @@ const App = struct {
         try self.display.flush();
     }
 
-    fn dispatchOnce(self: *App, timeout_ms: i32) !void {
+    pub fn dispatchOnce(self: *App, timeout_ms: i32) !void {
         _ = c.wl_display_flush(self.display.handle);
         if (c.wl_display_prepare_read(self.display.handle) != 0) {
             if (c.wl_display_dispatch_pending(self.display.handle) < 0) return error.WaylandDispatchFailed;
@@ -373,13 +381,13 @@ const App = struct {
         try self.waitForFrame();
     }
 
-    fn setFrame(self: *App, new_lines: []const Line) !void {
+    pub fn setFrame(self: *App, new_lines: []const Line) !void {
         self.frame = Frame.init(new_lines);
         self.grid = try self.frame.toGrid(self.garden);
         try self.presentCurrentFrame();
     }
 
-    fn prepareSurface(self: *App) !void {
+    pub fn prepareSurface(self: *App) !void {
         try self.bindGlobals();
         try self.createSurface();
         try self.display.roundtrip();
@@ -389,6 +397,14 @@ const App = struct {
             try self.dispatchOnce(50);
         }
         std.debug.assert(self.configured);
+    }
+
+    pub fn disconnect(self: *App) void {
+        self.display.disconnect();
+    }
+
+    pub fn displayFd(self: *const App) posix.fd_t {
+        return c.wl_display_get_fd(self.display.handle);
     }
 
     fn run(self: *App) !void {
@@ -453,6 +469,12 @@ fn presentValue(garden: std.mem.Allocator, lines: []const Line) !App {
         .grid = grid,
         .garden = garden,
     };
+}
+
+pub const SurfaceApp = App;
+
+pub fn openSurface(garden: std.mem.Allocator, lines: []const Line) !App {
+    return presentValue(garden, lines);
 }
 
 fn runSelftest(garden: std.mem.Allocator, io: std.Io) !u8 {

@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-07-02 (wire hardening; Rishi Ring 3 Edit 1; live rung still Ring 3 app)
+**Last updated:** 2026-07-02 (SLC-2a Ring 3 witness at 139; Pond first app; RTAC checkpoint)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -19,7 +19,7 @@
 ## Now — In Flight and Immediate
 
 ### Rye OS
-- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — scope: [`active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md). **Rings 1–2 landed** (`5b3a5a4`). **Ring 3 Edit 1 landed** — `runOneInput`, `sessionLines`, `Transcript.full`, pub session types. **Edits 2–6** — bench prompt [`20260701-231512_cursor-slc-2a-ring-three.md`](../expanding-prompts/20260701-231512_cursor-slc-2a-ring-three.md) *(confirm `pond/apps/drawn_terminal.rye` placement with Kaeden before writing the app)*.
+- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — scope: [`active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md). **Rings 1–2 landed** (`5b3a5a4`). **Ring 3 witness landed** — `pond/apps/drawn_terminal.rye`, `tools/slc2a_ring3_session.rish`, parity **139**. **Ring 3 metal** — run `pond/bin/drawn-terminal` on GNOME Wayland: live mirror, idle pong, ceiling status row, clean exit.
 
 ### Linengrow
 - [ ] **SLC-L1 scope note** — the hammock spec: the transaction fact, the keypair that signs it, the append to the log, the receipt as a pure fold, the verification. Draw the edge of complete; name what is out (settlement, the market).

@@ -1,0 +1,203 @@
+//! pond/apps/drawn_terminal.rye — SLC-2a Ring 3: the drawn terminal.
+//!
+//! Composes Rishi's live session (runOneInput + sessionLines) with Brushstroke's
+//! Skate surface. Display events are serviced between commands; keyboard input
+//! from the window stays deferred to SLC-2b (Dexter's genesis).
+//!
+//! Build (from repo root):
+//!   mkdir -p pond/bin
+//!   export RYE_ZIG="$PWD/vendor/zig-toolchain/zig"
+//!   rye/bin/rye build pond/apps/drawn_terminal.rye brushstroke/xdg-shell-protocol.c \
+//!     -Ibrushstroke -lc -lwayland-client -lrt \
+//!     -femit-bin=pond/bin/drawn-terminal
+//!
+//!   pond/bin/drawn-terminal              # live mirror (Wayland + stdin)
+//!   pond/bin/drawn-terminal sessiontest    # headless Ring 3 witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const posix = std.posix;
+const c = std.c;
+
+const rishi = @import("rishi/main.rye");
+const surface = @import("brushstroke/wayland_seed.rye");
+
+const drawn_terminal_version = "20260702.021845";
+
+const status_max_len: u32 = 80;
+const status_full_text = "transcript full — earlier lines still ran; :quit to close";
+const poll_timeout_ms: i32 = 50;
+const fill_line_count: u32 = 200;
+const fill_say_width: u32 = 400;
+
+fn boundStatus(garden: std.mem.Allocator, text: []const u8) ![]const u8 {
+    if (text.len <= status_max_len) return text;
+    return try garden.dupe(u8, text[0..status_max_len]);
+}
+
+fn composeFrameLines(
+    garden: std.mem.Allocator,
+    transcript: *const rishi.Transcript,
+    status: []const u8,
+) ![]surface.SkateLine {
+    const body_rows = surface.viewer_max_lines - 1;
+    assert(body_rows > 0);
+    const session = try rishi.sessionLines(transcript, garden, body_rows);
+    defer garden.free(session);
+    const status_line = try boundStatus(garden, status);
+    const total: u32 = @intCast(session.len + 1);
+    assert(total <= surface.viewer_max_lines);
+    const lines = try garden.alloc(surface.SkateLine, total);
+    var i: u32 = 0;
+    while (i < session.len) : (i += 1) {
+        lines[i] = .{ .text = session[i] };
+    }
+    lines[session.len] = .{ .text = status_line };
+    return lines;
+}
+
+fn linesEqual(expected: []const []const u8, actual: []const surface.SkateLine) bool {
+    if (expected.len != actual.len) return false;
+    var i: u32 = 0;
+    while (i < expected.len) : (i += 1) {
+        if (!std.mem.eql(u8, expected[i], actual[i].text)) return false;
+    }
+    return true;
+}
+
+fn runSessionWitness(garden: std.mem.Allocator, io: std.Io, init: std.process.Init) !u8 {
+    var env = rishi.Env{};
+    var history = rishi.History{};
+    var transcript = rishi.Transcript{};
+    var store_ready = false;
+
+    const script = [_][]const u8{ "let ring3 = 1", "let ring3b = 2", ":recall 1" };
+    var sig_1: u64 = 0;
+    var sig_2: u64 = 0;
+    var sig_final: u64 = 0;
+
+    for (script, 0..) |line, idx| {
+        _ = try rishi.runOneInput(garden, io, init, &env, &history, &transcript, &store_ready, line);
+        const frame_lines = try composeFrameLines(garden, &transcript, "");
+        defer garden.free(frame_lines);
+        const sig = try surface.contentSignature(garden, frame_lines);
+        if (idx == 0) sig_1 = sig;
+        if (idx == 1) sig_2 = sig;
+        sig_final = sig;
+    }
+
+    assert(sig_1 != sig_2);
+
+    const golden = [_][]const u8{
+        "rishi> let ring3 = 1",
+        "rishi> let ring3b = 2",
+        "rishi> :recall 1",
+        "rishi> let ring3 = 1",
+        "",
+        "",
+    };
+    const final_lines = try composeFrameLines(garden, &transcript, "");
+    defer garden.free(final_lines);
+    assert(linesEqual(&golden, final_lines));
+    const sig_golden = try surface.contentSignature(garden, final_lines);
+    assert(sig_final == sig_golden);
+
+    const pre_full_lines = try composeFrameLines(garden, &transcript, "");
+    defer garden.free(pre_full_lines);
+    const sig_pre_full = try surface.contentSignature(garden, pre_full_lines);
+
+    var fill: u32 = 0;
+    var pad_buf: [fill_say_width + 16]u8 = undefined;
+    @memset(pad_buf[0..fill_say_width], 'p');
+    const pad_payload = pad_buf[0..fill_say_width];
+    while (!transcript.full and fill < fill_line_count) : (fill += 1) {
+        var line_buf: [fill_say_width + 32]u8 = undefined;
+        const pad_line = try std.fmt.bufPrint(&line_buf, "say \"{s}\"", .{pad_payload});
+        _ = try rishi.runOneInput(garden, io, init, &env, &history, &transcript, &store_ready, pad_line);
+    }
+    assert(transcript.full);
+
+    const full_lines = try composeFrameLines(garden, &transcript, status_full_text);
+    defer garden.free(full_lines);
+    const sig_full = try surface.contentSignature(garden, full_lines);
+    assert(sig_full != sig_pre_full);
+    assert(std.mem.eql(u8, full_lines[full_lines.len - 1].text, status_full_text));
+
+    var out: [160]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &out,
+        "drawn terminal session witness: sig_1={x} sig_2={x} sig_final={x} ceiling={x} — GREEN\n",
+        .{ sig_1, sig_2, sig_final, sig_full },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
+fn pollStdinAndDisplay(app: *surface.SurfaceApp, stdin_fd: posix.fd_t) !enum { stdin_ready, display_ready, timeout } {
+    const display_fd = app.displayFd();
+    var fds = [_]posix.pollfd{
+        .{ .fd = display_fd, .events = posix.POLL.IN, .revents = 0 },
+        .{ .fd = stdin_fd, .events = posix.POLL.IN, .revents = 0 },
+    };
+    const ready = posix.poll(&fds, poll_timeout_ms) catch 0;
+    if (ready == 0) return .timeout;
+    if ((fds[1].revents & posix.POLL.IN) != 0) return .stdin_ready;
+    if ((fds[0].revents & posix.POLL.IN) != 0) return .display_ready;
+    return .timeout;
+}
+
+fn runLive(garden: std.mem.Allocator, io: std.Io, init: std.process.Init) !u8 {
+    var env = rishi.Env{};
+    var history = rishi.History{};
+    var transcript = rishi.Transcript{};
+    var store_ready = false;
+
+    const boot_lines = try garden.alloc(surface.SkateLine, 1);
+    boot_lines[0] = .{ .text = "drawn terminal — type at the shell; the window mirrors the session" };
+
+    var app = try surface.openSurface(garden, boot_lines);
+    defer app.disconnect();
+    try app.prepareSurface();
+    try app.setFrame(boot_lines);
+
+    const stdin_fd: posix.fd_t = posix.STDIN_FILENO;
+    var stdin_buffer: [4096]u8 = undefined;
+    var file_reader = std.Io.File.Reader.initStreaming(std.Io.File.stdin(), io, &stdin_buffer);
+    const reader = &file_reader.interface;
+
+    while (true) {
+        const ready = try pollStdinAndDisplay(&app, stdin_fd);
+        switch (ready) {
+            .display_ready => try app.dispatchOnce(0),
+            .timeout => try app.dispatchOnce(0),
+            .stdin_ready => {},
+        }
+
+        if (ready != .stdin_ready) continue;
+
+        std.debug.print("rishi> ", .{});
+        const raw_line = reader.takeDelimiterInclusive('\n') catch |err| switch (err) {
+            error.EndOfStream => return 0,
+            else => return 1,
+        };
+        const line = std.mem.trim(u8, raw_line, " \t\r\n");
+        if (line.len == 0) continue;
+
+        const signal = try rishi.runOneInput(garden, io, init, &env, &history, &transcript, &store_ready, line);
+        const status = if (transcript.full) status_full_text else "";
+        const frame_lines = try composeFrameLines(garden, &transcript, status);
+        defer garden.free(frame_lines);
+        try app.setFrame(frame_lines);
+        if (signal == .quit) return 0;
+    }
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "sessiontest")) {
+        return runSessionWitness(garden, io, init);
+    }
+    return runLive(garden, io, init);
+}

@@ -52,6 +52,11 @@ let slc2r2 = run ["rishi/bin/rishi" "run" "tools/slc2a_ring2_redraw.rish"]
 assert slc2r2.ok else "SLC-2a Ring 2 redraw witness failed"
 say "GREEN: SLC-2a Ring 2 redraw witness passed."
 
+say "witness suite: SLC-2a Ring 3 session mirror…"
+let slc2r3 = run ["rishi/bin/rishi" "run" "tools/slc2a_ring3_session.rish"]
+assert slc2r3.ok else "SLC-2a Ring 3 session mirror witness failed"
+say "GREEN: SLC-2a Ring 3 session mirror witness passed."
+
 say "witness suite: Caravan capability table…"
 let caravan_caps = run ["rishi/bin/rishi" "run" "tools/caravan_capabilities.rish"]
 assert caravan_caps.ok else "Caravan capability table witness failed"

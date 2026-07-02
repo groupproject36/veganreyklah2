@@ -1,0 +1,18 @@
+# tools/slc2a_ring3_session.rish — SLC-2a Ring 3: scripted session mirror witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/slc2a_ring3_session.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/drawn-terminal"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/drawn_terminal.rye brushstroke/xdg-shell-protocol.c -Ibrushstroke -lc -lwayland-client -lrt -femit-bin=${bin}"]
+
+assert build.ok else "drawn_terminal build failed for Ring 3 witness"
+
+let session = run ["sh" "-c" "${bin} sessiontest 2>&1"]
+assert session.ok else "drawn terminal sessiontest exited non-zero"
+assert session.out contains "session witness" else "Ring 3 witness missing expected output"
+assert session.out contains "GREEN" else "drawn terminal session witness not GREEN"
+
+say "GREEN: SLC-2a Ring 3 session mirror witness passed."

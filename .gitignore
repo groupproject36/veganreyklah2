@@ -35,6 +35,7 @@
 !/brushstroke/
 !/comlink/
 !/mantra/
+!/pond/
 !/expanding-prompts/
 !/session-logs/
 !/.cursor/
@@ -98,3 +99,4 @@ __pycache__/
 /gratitude/s6/
 /gratitude/skalibs/
 /gratitude/zon/
+/pond/bin/

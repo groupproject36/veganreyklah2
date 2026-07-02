@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260702.022845 | [SLC-2a Ring 3 witness and Pond first app](20260702-022845_slc-2a-ring-3-witness.md) | drawn_terminal sessiontest; parity 139; RTAC checkpoint. |
 | 20260702.021845 | [Wire hardening and Rishi Ring 3 Edit 1](20260702-021845_wire-hardening-rishi-edit1.md) | Comlink nonce + fixture keys; Rishi session surface extracted; parity 138. |
 | 20260702.014112 | [Horizons of the long run](20260702-014112_horizons-of-the-long-run.md) | Comlink exploration + counsel; eleven TASKS horizons; live rung unchanged. |
 | 20260702.012845 | [Commits, pushes, and full summary](20260702-012845_commits-push-full-summary.md) | Confirmed `6e5e831` on four remotes; arc recap. |
