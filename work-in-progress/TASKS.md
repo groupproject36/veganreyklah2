@@ -115,7 +115,7 @@ Record: `session-logs/20260629-204910_th7-width-gate-yonder-convention.md` and p
 - **TASKS naming** — keep `TASKS.md`, or rename to the warmer `WORKBENCH.md`?
 - **OCuLink companion memo** — blueprint [`20260701-213412`](../external-research/20260701-213412_deep-archive-and-sovereign-host-blueprint.md) awaits the server-workstation research memo; bridge into `external-research/` when Kaeden supplies it.
 - **Designed-not-built spec bound (Edit 5)** — pending Kaeden ruling: at most one functional spec in designed-not-built flight until its first ring runs green.
-- **Birth-chart craft** — siloed library at [`foundations/alice-silos/`](../foundations/alice-silos/); template and sample at `20260701-232912_*`; computation at [`tools/cast_a_chart.py`](../tools/cast_a_chart.py).
+- **Birth-chart craft** — siloed library, templates, sample reading, and caster at [`classical-vedic-astrology/`](../classical-vedic-astrology/README.md) (`studies/`, `20260701-232912_*`, `cast_a_chart.py`).
 
 ---
 

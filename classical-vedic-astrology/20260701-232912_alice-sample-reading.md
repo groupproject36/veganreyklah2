@@ -7,7 +7,7 @@
 **System:** Classical hybrid — tropical zodiac signs for dignity · sidereal nakshatras (Lahiri) · whole-sign houses
 **Stamp:** `20260701.232912`
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md)), gentle register
-**Verified:** every placement below was recomputed with the Swiss Ephemeris in Moshier mode under the Lahiri ayanamsa ([`tools/cast_a_chart.py`](../tools/cast_a_chart.py)), and each sign, star, pada, and house agrees with the original casting to within one arc-minute
+**Verified:** every placement below was recomputed with the Swiss Ephemeris in Moshier mode under the Lahiri ayanamsa ([`cast_a_chart.py`](cast_a_chart.py)), and each sign, star, pada, and house agrees with the original casting to within one arc-minute
 
 *Written together by Kaeden and Reya 2; siloed and verified by the outside reading (Fable 5) at Kaeden's direction.*
 

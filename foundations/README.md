@@ -1,7 +1,7 @@
 # Foundations
 
 **Language:** EN
-**Last updated:** 2026-07-02 (Alice silos; deep-archive blueprint)
+**Last updated:** 2026-07-02 (classical-vedic-astrology lane graduated; deep-archive blueprint)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -44,7 +44,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 **The weave** — `20260628-140812_the-roots-beneath-the-work.md` reads the seven together and connects each to the part of the system it grounds.
 
-**Birth-chart readings (Alice silos)** — a siloed astrology study library (`alice-silos/`, nineteen numbered studies), a composable reading template, a sample reading with placeholder name, HTML wheel template, and `tools/cast_a_chart.py` for dual-zodiac casting. Gratitude for teachers lives inside each silo; the person's true name stays apart.
+**Birth-chart readings** — graduated to their own lane on `2026-07-02`: the siloed study library, the reading templates, the sample reading, and the caster now live whole in [`classical-vedic-astrology/`](../classical-vedic-astrology/README.md).
 
 The gratitude syntheses that seed the briefs — `DevotionAndCreativeFreedom.md`, `PathWithHeart.md` — live in `../gratitude/`, beside the sources they thank.
 

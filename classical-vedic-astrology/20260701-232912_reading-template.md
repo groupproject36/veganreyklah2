@@ -4,7 +4,7 @@
 
 **Stamp:** `20260701.232912`
 **Style:** Radiant (see `RADIANT_STYLE.md`), gentle register throughout
-**Companions:** `../../tools/cast_a_chart.py` (the computation), the numbered study silos in [`alice-silos/`](alice-silos/) (`00`–`18` and those yet to come), [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md)
+**Companions:** [`cast_a_chart.py`](cast_a_chart.py) (the computation), the numbered study silos in [`studies/`](studies/) (`00`–`18` and those yet to come), [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md)
 
 *Written together by Kaeden and Reya 2; shaped into a template with the outside reading (Fable 5) at Kaeden's direction.*
 
@@ -14,7 +14,7 @@
 
 **First, receive the birth moment verbatim.** Date, clock time, time zone, and birthplace come from the person and are honored exactly as given — the one-clock rule of the whole project, applied to a life.
 
-**Second, cast the sky twice.** Edit the constants at the top of `tools/cast_a_chart.py` and run it: tropical signs for dignity, sidereal Lahiri longitudes for nakshatra and pada, whole-sign houses rising from the ascendant. Then cast the same moment with one independent tool and compare, placement by placement. Two oracles that agree make a chart worth writing about; the writing begins only when they do.
+**Second, cast the sky twice.** Edit the constants at the top of `cast_a_chart.py` and run it: tropical signs for dignity, sidereal Lahiri longitudes for nakshatra and pada, whole-sign houses rising from the ascendant. Then cast the same moment with one independent tool and compare, placement by placement. Two oracles that agree make a chart worth writing about; the writing begins only when they do.
 
 **Third, compose from the silos.** Each placement points at one or more numbered studies. The silo carries the depth; the reading carries the person. Weave, rather than paste — the studies are understanding to draw on, never text to copy.
 

@@ -11,7 +11,7 @@ import swisseph as swe
 YEAR, MONTH, DAY = 2004, 8, 7
 LOCAL_H, LOCAL_M = 13, 11          # 1:11 PM, Indian Standard Time
 TZ_OFFSET = 5.5                     # IST stands 5h30m ahead of UT
-LAT, LON = 23.0333, 72.5833         # Ahmedabad, India (23°02'N 72°35'E)
+LAT, LON = 23.0333, 72.5833         # the birthplace, held as coordinates (23°02'N 72°35'E)
 
 swe.set_sid_mode(swe.SIDM_LAHIRI)   # the Lahiri ayanamsa for the stars
 FLAGS = swe.FLG_MOSEPH | swe.FLG_SPEED
