@@ -1,6 +1,6 @@
 # Ready to Ask Claude — Strategy Checkpoint
 
-**Stamp:** `20260702.035659`
+**Stamp:** `20260702.035920`
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
@@ -14,8 +14,8 @@ Items that rest with **Kaeden** or **Claude** before the next counsel-sized sitt
 | Item | State |
 |------|-------|
 | **Pond clause** | Recommended text in [`pond/README.md`](../pond/README.md) — **affirm or refine** |
-| **Ring 3 metal close** | Witness **140 GREEN**; metalsmoke GREEN; interactive idle/ceiling/`:quit` on live `pond/bin/drawn-terminal` |
-| **Edit 5** | Open; counsel argues *for* — at most one designed-not-built functional spec until first ring green |
+| **Ring 3 metal close** | Five-step checklist in Pond README; witness + metalsmoke **GREEN** |
+| **Edit 5** | Ready-to-apply bundle [`20260702-edit5-ready-to-apply.md`](20260702-edit5-ready-to-apply.md); witness draft **GREEN** (1 spec: Amber); **not in parity** until you rule *for* |
 | **SLC-2b nod** | Prompt placed — build after metal close |
 | **`.bron` carrier** | Open |
 | **Maitreya video + Linengrow media shapes** | Named; middleware open-table |
@@ -32,20 +32,20 @@ Items that rest with **Kaeden** or **Claude** before the next counsel-sized sitt
 | **Manual program** | Tutorial lane opens |
 | **Puddle hypervisor choice** | After first Amber export ring |
 
-## Landed since last RTAC (`81d160e` → tip)
+## Landed since last RTAC (`f117868` → tip)
 
-- **Pond clause** recommended text seated in `pond/README.md`
-- **TASKS** — Rio 3 voice; sixteen-file opening-lines note; Pond clause pointer
-- **SLC-2a brief** + **Pond README** — parity **140** aligned (was stale **139**)
+- **Edit 5 prep** — scan + witness draft; apply bundle documented
+- **Metal close checklist** — numbered steps in `pond/README.md`
+- **ROADMAP** — Rio 3 voice
 
 ## Best path (recommended order)
 
 1. **Pond clause** — affirm or refine (one sentence)
-2. **Ring 3 metal close** — your hand on GNOME (~1 min idle, ceiling, `:quit`)
-3. **Edit 5** — rule for or against the one-spec bound
-4. **Open Claude** → **Amber first ring** (export / verify / restore season spine)
-5. **Nod SLC-2b** → mechanical Dexter bench
+2. **Ring 3 metal close** — five-step checklist on GNOME
+3. **Edit 5** — rule *for* (one line + wire witness → parity **141**) or *against*
+4. **Open Claude** → **Amber first ring**
+5. **Nod SLC-2b** → Dexter bench
 
 ---
 
-*Mechanical lane stays clear until steps 1–3 land; Claude door opens at step 4.*
+*Steps 1–3 are quick Kaeden hands; Claude opens at step 4.*

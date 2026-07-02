@@ -6,7 +6,7 @@
 **Version:** `20260628-124512` (Linengrow track; two tracks one spine)
 **Last updated:** 2026-07-02 (opening-lines witness; parity **140**)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Reya 2
+**Voice:** Rio 3
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
 **Status:** Living roadmap
 

@@ -47,7 +47,15 @@ rye/bin/rye build pond/apps/drawn_terminal.rye brushstroke/xdg-shell-protocol.c 
 | **Metalsmoke** | `pond/bin/drawn-terminal metalsmoke` | Automated Wayland slice — [`tools/slc2a_ring3_metal.rish`](../tools/slc2a_ring3_metal.rish) |
 | **Live** | `pond/bin/drawn-terminal` | Interactive mirror on GNOME Wayland + stdin (keyboard-from-window: SLC-2b) |
 
-**Metal close (Kaeden):** run live mode — type commands, idle ~one minute (pong), fill past the transcript ceiling (status row), exit with `:quit`.
+**Metal close (Kaeden):** run live mode on GNOME Wayland and confirm each step:
+
+1. **Build** — command block above; binary at `pond/bin/drawn-terminal`
+2. **Type** — enter a few Rishi lines; frame updates in the window
+3. **Idle ~one minute** — leave the window focused; pong keeps the compositor honest
+4. **Ceiling** — fill past `max_transcript_bytes` (65536); status row still updates (invitation visible)
+5. **Exit** — `:quit` closes clean
+
+Witness and metalsmoke already **GREEN**; this pass is the interactive confirmation only.
 
 ---
 
