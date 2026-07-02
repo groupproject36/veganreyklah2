@@ -20,7 +20,7 @@ For a batch hygiene pass or when the index may be stale, run `rye run tools/alig
 
 ## Contents
 
-- **Editor and model** at the top — which editor produced this log and which model powered it. Example: `**Editor:** Cursor · **Model:** Composer` or `**Editor:** Claude Code (Zed) · **Model:** Claude Opus 4.6`. This lets either agent identify which logs came from the other.
+- **Editor and model** at the top — which editor produced this log and which model powered it. Example: `**Editor:** Cursor · **Model:** Composer · **Voice:** Rio 3` or `**Editor:** Claude Code (Zed) · **Model:** Claude Opus 4.6 · **Voice:** Rio 3`. Reya 2 when Kaeden restores that voice.
 - `**Stamp:**` in dot form (`YYYYMMDD.HHMMSS`) on the line after the H1.
 - The step-by-step **thinking trace** and reasoning followed during the response.
 - **Observations** about the changes, and any decisions or trade-offs taken.

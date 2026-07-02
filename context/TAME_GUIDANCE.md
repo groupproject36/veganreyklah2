@@ -363,7 +363,7 @@ These are the machine-checkable rules — the lint surface. The discipline is th
 |------|-------|
 | **No authored `usize` in published `.rye`** (seam casts blessed) | `tools/width-check.rish` (live, TH-1) |
 | **Unqualified assert** | `tools/tame-check.rish` (live gate, TH-2c) |
-| **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/opening_lines_witness.rish` (live gate, parity **140**) |
+| **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/opening_lines_witness.rish` (live gate, parity **140** — hosted corpus + `pond/apps/drawn_terminal.rye`) |
 | **No `Self = @This()`** | `tools/tame-check.rish` (gate) |
 | **No tabs, no trailing whitespace** | `tools/tame-check.rish` (gate) |
 | **Line length ≤ 100 columns** | flag lines past 100, allowing a URL or a multiline-string result that itself fits |

@@ -1,6 +1,6 @@
 # Ready to Ask Claude — Strategy Checkpoint
 
-**Stamp:** `20260702.035018`
+**Stamp:** `20260702.035423`
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
@@ -18,8 +18,8 @@ Items that rest with **Kaeden** or **Claude** before the next counsel-sized sitt
 | **SLC-2b nod** | Prompt placed — not built |
 | **Pond clause** | Recommended: enclosure aspect **runs what Brix composes under policy** — **your true ending** |
 | **`.bron` carrier** | Open |
-| **Maitreya video + Linengrow media shapes** | Named; middleware open-table (screenshot reference not in bundle — await shapes) |
-| **Uddhava scope** | Named horizon — 3D/CAD/Unity-shaped |
+| **Maitreya video + Linengrow media shapes** | Named; middleware open-table |
+| **Uddhava scope** | Named horizon |
 | **Puddle** | Exploration filed — no implementation |
 | **Rio 3 vs Reya 2** | **Rio 3 active** until you restore Reya 2 |
 
@@ -32,13 +32,12 @@ Items that rest with **Kaeden** or **Claude** before the next counsel-sized sitt
 | **Manual program** | Tutorial lane opens |
 | **Puddle hypervisor choice** | After first Amber export ring |
 
-## Landed this turn (`ef594bb` → tip)
+## Landed since design sitting (`3905dbf` → tip)
 
-- **Graduation rule** — [`context/specs/20260702-035018_graduation-rule.md`](../context/specs/20260702-035018_graduation-rule.md)
-- **Rio 3** — `context/RIO3.md`, `.cursor/rules/rio3.mdc`, Claude `rio3.md`
-- **Puddle exploration** — external-research memo
-- **Maitreya, Uddhava** — lexicon + Lotus brief
-- **Parity 140** — opening-lines witness (prior turn)
+- **Graduation rule spec**, **Rio 3**, **Puddle**, **Maitreya**, **Uddhava**
+- **Opening-lines witness** — now includes Pond first app (`drawn_terminal.rye`)
+- **Realidream** — Maitreya media seam noted
+- **Parity 140**
 
 ---
 
