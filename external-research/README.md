@@ -1,7 +1,7 @@
 # The External-Research Stack
 
 **Language:** EN
-**Last updated:** 2026-07-02 (deep-archive blueprint)
+**Last updated:** 2026-07-02 (Comlink long-run exploration)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -41,6 +41,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260702-014112` | [Comlink beyond DNS and sockets](20260702-014112_comlink-beyond-dns-and-sockets.md) | Names via signed claims and the 21e8 market lens; the QUIC-family stream lane; post-quantum accretion for Comlink and Amber |
 | `20260701-213412` | [Deep archive and sovereign host blueprint](20260701-213412_deep-archive-and-sovereign-host-blueprint.md) | Verified storage, validation, and ecological compute memo |
 | `20260630-030312` | [The interface as a fold](20260630-030312_the-interface-as-a-fold.md) | Immediate-mode as one copy from log to frame; Brushstroke philosophy |
 | `20260630-030312` | [After Victor — immediate contact](20260630-030312_after-victor-immediate-contact.md) | Designing drawn surfaces after Bret Victor; Hickey, Gall, hot loop |

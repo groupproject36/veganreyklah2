@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260702.014112 | [Horizons of the long run](20260702-014112_horizons-of-the-long-run.md) | Comlink exploration + counsel; eleven TASKS horizons; live rung unchanged. |
 | 20260702.012845 | [Commits, pushes, and full summary](20260702-012845_commits-push-full-summary.md) | Confirmed `6e5e831` on four remotes; arc recap. |
 | 20260702.010412 | [Classical-vedic-astrology lane founded](20260702-010412_classical-vedic-astrology-lane.md) | Studies graduated; privacy by consent verified; caster siloed. |
 | 20260702.005200 | [Alice library and Amber docs round](20260702-005200_alice-amber-docs-round.md) | Silos filed; Amber seated; Ring 3 prompt placed, not built. |

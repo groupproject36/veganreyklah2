@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-07-02 (Alice birth-chart library; Amber and deep-archive docs round)
+**Last updated:** 2026-07-02 (Comlink long-run horizons captured; counsel memo; live rung unchanged)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -34,6 +34,22 @@
 ---
 
 ## Next — Horizons and Optional
+
+### Comlink and the long run — horizons (`2026-07-02`)
+
+Ground: [`external-research/20260702-014112_comlink-beyond-dns-and-sockets.md`](../external-research/20260702-014112_comlink-beyond-dns-and-sockets.md) · counsel: [`20260702-014112_horizons-and-blind-spots.md`](20260702-014112_horizons-and-blind-spots.md).
+
+- [ ] **Wire hardening (precedes any real peer)** — hosted wire graduates its witness scaffolding: unique nonce per message, real keypairs in place of deterministic ones.
+- [ ] **Algorithm tags (accretion)** — every signed record carries its algorithm field, so eras verify side by side on one log forever.
+- [ ] **Hybrid key agreement (horizon)** — X25519 joined with ML-KEM-768 on the wire; harvest-now-decrypt-later answered.
+- [ ] **Dual signatures for the long dark (horizon)** — Amber adds SLH-DSA beside Ed25519 through the OpenPGP seam as its tooling settles.
+- [ ] **The stream lane (exploration → first ring)** — bounded, drop-late encrypted datagrams beside the fact lane; WebTransport at the browser seam; relay shape at the front door; codecs stay host seams.
+- [ ] **Names without DNS (design only)** — name-claim fact shape, petnames above, Linengrow settlement as the market; no code before Kumara signs.
+- [ ] **Setu ruling (Kaeden)** — the USB-C dock-wire lane's name; candidate proposed for the lexicon's open table; first ring = one Comlink datagram over CDC-NCM, host to QEMU guest.
+- [ ] **Mantrapod module map (Kaeden affirms)** — the pod's module-by-module plan as tabled in the counsel memo.
+- [ ] **Two-oracle sky gate (optional)** — a `.rish` witness around `cast_a_chart.py` asserting agreement against a hand-pinned golden chart.
+- [ ] **Intakes awaiting Kaeden's hand** — the mathematics writings (silo together, then weigh against TAME's goals); the Cerebras and wafer-memory silos (held for the inference season).
+- [ ] **Recovery rehearsal (after Amber's first ring)** — restore a directory from a cold drive and recover from a revoked sandbox key, so recovery is a witnessed fact.
 
 ### TAME hardening — complete (`2026-06-29`)
 
