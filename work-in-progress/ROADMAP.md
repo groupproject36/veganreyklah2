@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260628-124512` (Linengrow track; two tracks one spine)
-**Last updated:** 2026-07-02 (Ring 3 metalsmoke; SLC-2b prompt placed; 139 witnesses)
+**Last updated:** 2026-07-02 (opening-lines witness; parity **140**)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -36,7 +36,7 @@ Correctness by construction in the kernel becomes trust by construction in the p
 
 | Module | Seed | Witnesses |
 |--------|------|-----------|
-| **Rye** | Thin frontend; `rye/lib/std` → vendor symlink | **139** witness regression suite |
+| **Rye** | Thin frontend; `rye/lib/std` → vendor symlink | **140** witness regression suite |
 | **Aurora** | Six-stage relay + deciding stage on RISC-V | Freestanding |
 | **Caravan** | seed → bounded → twin → chain → **capabilities** | Hosted, asserted; seeds + capabilities in parity |
 | **Tally** | seed + named gardens (blob/diff/frame) | 15 invariants; seed + gardens in parity |
@@ -48,11 +48,11 @@ Correctness by construction in the kernel becomes trust by construction in the p
 | **Brushstroke** | Hosted seed + Wayland seed (Skate grid on xdg toplevel) | Frame from values; seed + grid raster in parity |
 | **Skate** | Text grid: 8×8 monospace → ARGB8888 buffer | Headless selftest GREEN; feeds Wayland seed |
 | **Comlink** | Sealed datagram: shared-memory + localhost UDP | Full crypto stack; hosted wire in parity (**136**) |
-| **Pond** | First app: [`pond/apps/drawn_terminal.rye`](../pond/apps/drawn_terminal.rye) (Skate viewer) | **First ring** — witness at parity **139**; metalsmoke on Wayland |
+| **Pond** | First app: [`pond/apps/drawn_terminal.rye`](../pond/apps/drawn_terminal.rye) (Skate viewer) | **First ring** — witness at parity **140**; metalsmoke on Wayland |
 
 **Strengthening arc:** complete — chronicle + lexicon at `strengthening-compiler/0000_STRENGTHENING_LEXICON.md`; call-site harvest at [`archive/20260628-044200_call-site-harvest.md`](archive/20260628-044200_call-site-harvest.md).
 
-**Gate trio:** `parity.rish` (**139 witnesses** — regression suite + SLC-1 + SLC-2a + Caravan + Comlink + Tally/Brushstroke seeds + hosted `width-check`), `parity-selftest.rish` (std symlink guard), `additive-gate.rish` (structural std diff — applies when `rye/lib/` changes in HEAD). All in Rishi. **Status:** parity + selftest green on metal (`2026-07-02`); additive-gate runs when std changes land.
+**Gate trio:** `parity.rish` (**140 witnesses** — regression suite + SLC-1 + SLC-2a + Caravan + Comlink + Tally/Brushstroke seeds + hosted `width-check`), `parity-selftest.rish` (std symlink guard), `additive-gate.rish` (structural std diff — applies when `rye/lib/` changes in HEAD). All in Rishi. **Status:** parity + selftest green on metal (`2026-07-02`); additive-gate runs when std changes land.
 
 ---
 
@@ -63,7 +63,7 @@ Grow running seeds into things a person can use *as-is*. See [`gratitude/Your cu
 | Ring | What | Status |
 |------|------|--------|
 | **SLC 1** | **Rishi + Mantra shell** — hosted, scriptable REPL with versioned history in a terminal (type → run → version → recall) | **Done** (`2026-06-29`) — four verbs + `tools/slc1_accept.rish`; scope [`20260628-071012`](../active-designing/20260628-071012_slc-1-rishi-mantra-shell.md). TAME hardening **complete** (`2026-06-29`). |
-| **SLC 2** | **Pond GUI / Skate viewer (SLC-2a)** — Rings 1–3 witness **landed**; **metalsmoke GREEN**; interactive metal close next; **SLC-2b placed** | Scope [`20260630-030312`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md); parity **139** |
+| **SLC 2** | **Pond GUI / Skate viewer (SLC-2a)** — Rings 1–3 witness **landed**; **metalsmoke GREEN**; interactive metal close next; **SLC-2b placed** | Scope [`20260630-030312`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md); parity **140** |
 | **Compose** | Comlink device wire → ~~capability table~~ **landed** → Comlink v1 → Brix v1 → Tablecloth → Forge | Horizon 2; capability table `2026-06-30` |
 
 **Authored width migration** — **complete and blocking in parity** (TH-3 through TH-7; hosted `width-check`). Remaining authored surfaces migrate as-you-touch beside SLC-2; not a pending milestone.

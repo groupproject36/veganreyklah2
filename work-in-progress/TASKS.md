@@ -19,7 +19,7 @@
 ## Now — In Flight and Immediate
 
 ### Rye OS
-- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — scope: [`active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md). **Rings 1–3 witness landed** — parity **139**; **metalsmoke GREEN** ([`tools/slc2a_ring3_metal.rish`](../tools/slc2a_ring3_metal.rish)). **Ring 3 metal close (Kaeden)** — interactive idle, ceiling, `:quit` on `pond/bin/drawn-terminal`. **SLC-2b placed** — [`20260702-030112_cursor-slc-2b-keyboard-from-window.md`](../expanding-prompts/20260702-030112_cursor-slc-2b-keyboard-from-window.md), awaits nod.
+- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — scope: [`active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md). **Rings 1–3 witness landed** — parity **140**; **metalsmoke GREEN** ([`tools/slc2a_ring3_metal.rish`](../tools/slc2a_ring3_metal.rish)). **Ring 3 metal close (Kaeden)** — interactive idle, ceiling, `:quit` on `pond/bin/drawn-terminal`. **SLC-2b placed** — [`20260702-030112_cursor-slc-2b-keyboard-from-window.md`](../expanding-prompts/20260702-030112_cursor-slc-2b-keyboard-from-window.md), awaits nod.
 
 ### Linengrow
 - [ ] **SLC-L1 scope note** — the hammock spec: the transaction fact, the keypair that signs it, the append to the log, the receipt as a pure fold, the verification. Draw the edge of complete; name what is out (settlement, the market).
@@ -47,7 +47,7 @@ Ground: [`active-designing/20260702-031312_modules-aspects-and-mailable-money.md
 - [ ] **Road-keeper (exploration → first ring)** — Comlink's multipath aspect: per-road bounded queues and scorecards; first ring = one session surviving across two UDP paths under QEMU.
 - [ ] **Amber-compatibility contract (design)** — export / verify / restore for every log-bearing module (Mantra, Tablecloth, Linengrow, Realidream, MALA); first ring = a Mantra log slice sealed and restored, riding Amber's first ring.
 - [ ] **Brix packaging (first ring visible)** — one content-addressed, Kumara-signed package: descriptor read, stones fetched by digest over Comlink, verified on two paths, placed, run in Pond; `.bron` as the resolved-record carrier awaits Kaeden's affirmation.
-- [x] **Opening lines (canonized)** — the three-line head (`std` / bare `assert` / bare `print`) recorded in TAME guidance; tutorial one's first lesson; gentle textual check on the horizon.
+- [x] **Opening lines (canonized)** — three-line head in TAME guidance; **`tools/opening_lines_witness.rish`** in parity **140**.
 - [ ] **Manual program (horizon)** — four rooms: tutorials (Radiant beginner series for Rye and Rishi, tutorials-first because they teach only what runs), task guides, numbered reference specifications (beginning with Aurora, Tally, and Caravan interfaces), and the essays; shape note before any lane is founded.
 - [ ] **Pond clause (Kaeden completes)** — *"Pond be the module which has an aspect which becomes the solution for the aspect that we need to —"* Recommended completion: **run what Brix composes under policy** — Pond's **enclosure aspect** as packaging's runtime target; awaiting your true ending.
 

@@ -10,6 +10,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260702.034749 | [Opening-lines witness at parity 140](20260702-034749_opening-lines-witness-140.md) | Hosted head lint live; fifteen files green; parity 139→140. |
 | 20260702.034052 | [Hosted corpus opening lines migration](20260702-034052_hosted-opening-lines.md) | Tally, Brushstroke, Mantra, Rishi on canonical three-line head; parity 139 green. |
 | 20260702.031312 | [Design sitting — modules, aspects, MALA](20260702-031312_design-sitting-modules-mala.md) | Claude Fable 5 sitting landed; lexicon, TASKS, opening lines canon. |
 | 20260702.031014 | [Commits, pushes, and arc summary handoff](20260702-031014_commits-pushes-summary.md) | Four remotes at d66a368; full arc summary for Kaeden. |
