@@ -29,7 +29,7 @@ Items that rest with **Kaeden** or **Claude** before the next counsel-sized sitt
 | **Post-quantum accretion order** | When production CSPRNG / ML-KEM ring opens |
 | **Virtio-net Track A** | Optional when Comlink device wire bench resumes |
 
-## Landed since last checkpoint (`0175eb7` → `f39a561`)
+## Landed since last checkpoint (`0175eb7` → `d66a368`)
 
 - **Ring 3 metalsmoke** — `tools/slc2a_ring3_metal.rish` **GREEN**
 - **SLC-2b bench prompt placed** (not executed)
