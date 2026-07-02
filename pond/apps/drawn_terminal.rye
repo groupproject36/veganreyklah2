@@ -192,12 +192,41 @@ fn runLive(garden: std.mem.Allocator, io: std.Io, init: std.process.Init) !u8 {
     }
 }
 
+fn runMetalSmoke(garden: std.mem.Allocator, io: std.Io, init: std.process.Init) !u8 {
+    var env = rishi.Env{};
+    var history = rishi.History{};
+    var transcript = rishi.Transcript{};
+    var store_ready = false;
+
+    _ = try rishi.runOneInput(garden, io, init, &env, &history, &transcript, &store_ready, "let smoke = 1");
+    _ = try rishi.runOneInput(garden, io, init, &env, &history, &transcript, &store_ready, "say \"metal\"");
+
+    const frame_lines = try composeFrameLines(garden, &transcript, "");
+    defer garden.free(frame_lines);
+
+    var app = try surface.openSurface(garden, frame_lines);
+    defer app.disconnect();
+    try app.prepareSurface();
+    try app.setFrame(frame_lines);
+
+    var beat: u32 = 0;
+    while (beat < 8) : (beat += 1) {
+        try app.dispatchOnce(50);
+    }
+
+    try std.Io.File.stdout().writeStreamingAll(io, "drawn terminal metalsmoke: session mirrored on Wayland — GREEN\n");
+    return 0;
+}
+
 pub fn main(init: std.process.Init) !u8 {
     const garden = init.arena.allocator();
     const io = init.io;
     const args = try init.minimal.args.toSlice(garden);
     if (args.len >= 2 and std.mem.eql(u8, args[1], "sessiontest")) {
         return runSessionWitness(garden, io, init);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "metalsmoke")) {
+        return runMetalSmoke(garden, io, init);
     }
     return runLive(garden, io, init);
 }

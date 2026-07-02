@@ -68,7 +68,8 @@ What does *not* belong here is the work itself — that lands in the research, d
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
-| `20260701-231512` | [SLC-2a Ring 3 — mirror live session](20260701-231512_cursor-slc-2a-ring-three.md) | Active bench — drawn terminal + Pond app; awaits Kaeden placement nod |
+| `20260702-030112` | [SLC-2b — keyboard from the window](20260702-030112_cursor-slc-2b-keyboard-from-window.md) | Placed — Dexter genesis; awaits Kaeden nod after Ring 3 metal close |
+| `20260701-231512` | [SLC-2a Ring 3 — mirror live session](20260701-231512_cursor-slc-2a-ring-three.md) | Witness landed at parity 139; metalsmoke on Wayland |
 | `20260701-221512` | [Amber and deep archive docs round](yonder/20260701-221512_cursor-amber-and-deep-archive.md) | Consumed — blueprint, Amber spec, rulings; in `yonder/` |
 | `20260628-120912` | [Kernel direction, Brix, and foundations — batch brief](20260628-120912_kernel-direction-brix-and-foundations.md) | Microkernel as Caravan direction (horizon); Brix clarification; foundation layer; revitalization practice |
 | `20260621-051612` | [10023 · Main Track — Rye, Rishi, and Strengthening](yonder/20260621-051612_main-track-rye-rishi-strengthening.md) | Consumed — strengthening arc and width gate complete; in `yonder/` |

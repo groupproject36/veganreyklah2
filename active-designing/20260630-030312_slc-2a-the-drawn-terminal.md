@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260630.030312`
-**Last updated:** 2026-06-30
+**Last updated:** 2026-07-02
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** SLC (Simple, Lovable, Complete); Gall's Law; TAME; immediate-mode, one copy of the truth
 **Companions:** `the-stack-and-the-surface` (the layering), the SLC-1 brief (the four-verb shell), `pond-foundation` (the enclosure); design philosophy in [`../external-research/20260630-030312_after-victor-immediate-contact.md`](../external-research/20260630-030312_after-victor-immediate-contact.md) and [`../external-research/20260630-030312_the-interface-as-a-fold.md`](../external-research/20260630-030312_the-interface-as-a-fold.md)
@@ -17,7 +17,7 @@
 
 The hosted seed presents one frame and exits, and the whole path is already in the code. A value of text lines becomes a `Frame`; the `Frame` folds into a Skate `Grid` through `toGrid`; the grid rasterizes to an ARGB8888 buffer through `rasterize`; and `commitFrame` lands that buffer on a Wayland surface. Confirmed on GNOME Wayland: the window draws and exits clean with "skate grid drawn," the headless selftest counts 1125 lit pixels, and parity holds at **134** green.
 
-**Ring 1 landed** (`2026-06-30`): value as explicit `[]const Line` input; arbitrary-value witness GREEN. **Ring 2 landed** (`2026-06-30`): `setFrame` re-folds and re-presents; FNV content-signature witness GREEN (A→B→A); `redraw` metal mode confirmed. **Ring 3 next**: mirror live Rishi session *(check in with Claude before bench)*.
+**Ring 1 landed** (`2026-06-30`): value as explicit `[]const Line` input; arbitrary-value witness GREEN. **Ring 2 landed** (`2026-06-30`): `setFrame` re-folds and re-presents; FNV content-signature witness GREEN (A→B→A); `redraw` metal mode confirmed. **Ring 3 witness landed** (`2026-07-02`): live session mirrored headlessly; parity **139**; `pond/apps/drawn_terminal.rye`; `metalsmoke` for automated Wayland slice — interactive idle/ceiling on GNOME still manual. **Ring 3 metal close** — Kaeden confirms on GNOME. **SLC-2b next** — Dexter; bench prompt [`20260702-030112_cursor-slc-2b-keyboard-from-window.md`](../expanding-prompts/20260702-030112_cursor-slc-2b-keyboard-from-window.md) placed, not built.
 
 The value-to-frame fold already lives in `Frame`, `Line`, and `toGrid`. So SLC-2a does not invent a new path. It grows the proven one in two places: the frame becomes *current* instead of *single*, and the value becomes the *live Rishi session*.
 

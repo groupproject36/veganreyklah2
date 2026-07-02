@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-07-02 (SLC-2a Ring 3 witness at 139; Pond first app; RTAC checkpoint)
+**Last updated:** 2026-07-02 (Ring 3 metalsmoke; SLC-2b prompt placed; RTAC refreshed)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME — safety, performance, joy; SLC; Gall's Law
@@ -19,7 +19,7 @@
 ## Now — In Flight and Immediate
 
 ### Rye OS
-- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — scope: [`active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md). **Rings 1–2 landed** (`5b3a5a4`). **Ring 3 witness landed** — `pond/apps/drawn_terminal.rye`, `tools/slc2a_ring3_session.rish`, parity **139**. **Ring 3 metal** — run `pond/bin/drawn-terminal` on GNOME Wayland: live mirror, idle pong, ceiling status row, clean exit.
+- [ ] **SLC-2a — the Skate viewer (drawn terminal)** — scope: [`active-designing/20260630-030312_slc-2a-the-drawn-terminal.md`](../active-designing/20260630-030312_slc-2a-the-drawn-terminal.md). **Rings 1–3 witness landed** — parity **139**; **metalsmoke GREEN** ([`tools/slc2a_ring3_metal.rish`](../tools/slc2a_ring3_metal.rish)). **Ring 3 metal close (Kaeden)** — interactive idle, ceiling, `:quit` on `pond/bin/drawn-terminal`. **SLC-2b placed** — [`20260702-030112_cursor-slc-2b-keyboard-from-window.md`](../expanding-prompts/20260702-030112_cursor-slc-2b-keyboard-from-window.md), awaits nod.
 
 ### Linengrow
 - [ ] **SLC-L1 scope note** — the hammock spec: the transaction fact, the keypair that signs it, the append to the log, the receipt as a pure fold, the verification. Draw the edge of complete; name what is out (settlement, the market).

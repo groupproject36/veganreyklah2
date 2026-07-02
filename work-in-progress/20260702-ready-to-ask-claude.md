@@ -1,6 +1,6 @@
 # Ready to Ask Claude — Strategy Checkpoint
 
-**Stamp:** `20260702.022845`
+**Stamp:** `20260702.030112`
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
@@ -16,24 +16,24 @@ Items that rest with **Kaeden** or **Claude** before the next counsel-sized sitt
 | **Setu** — USB-C dock-wire name for Comlink lexicon | Proposed, not seated |
 | **Mantrapod module map** | Tabled in counsel memo; awaits affirm |
 | **OCuLink companion memo** | Awaits supply; bridge into deep-archive blueprint |
-| **SLC-2a Ring 3 metal** | Headless witness **139 GREEN**; GNOME Wayland live mirror awaits your idle/pong/ceiling check on `pond/bin/drawn-terminal` |
+| **SLC-2a Ring 3 metal close** | Witness **139 GREEN**; **metalsmoke GREEN** on Wayland (`tools/slc2a_ring3_metal.rish`). **Your hand:** interactive idle one minute, ceiling fill, `:quit` on `pond/bin/drawn-terminal` |
+| **SLC-2b placement nod** | Bench prompt placed at `expanding-prompts/20260702-030112_cursor-slc-2b-keyboard-from-window.md` — not built |
 
 ## Claude — strategy (when Kaeden opens the door)
 
 | Topic | When |
 |-------|------|
-| **Amber first ring** | After Edit 5 ruled; season spine per bench prompt |
-| **Post-quantum accretion order** | When production CSPRNG / ML-KEM ring opens on Comlink |
+| **Amber first ring** | After Edit 5 ruled; season spine per Ring 3 bench |
+| **SLC-2b module seam** | Optional if Dexter earns home beside vs within Brushstroke |
+| **Post-quantum accretion order** | When production CSPRNG / ML-KEM ring opens |
 | **Virtio-net Track A** | Optional when Comlink device wire bench resumes |
-| **Ring 3 witness shape** | Only if golden or ceiling phase shifts unexpectedly — **not needed tonight** |
 
-## Landed since last checkpoint (`654c455`)
+## Landed since last checkpoint (`0175eb7`)
 
-- Wire hardening on hosted wire
-- Rishi Ring 3 Edit 1 (`runOneInput`, `sessionLines`, `Transcript.full`)
-- **Pond founded** — `pond/apps/drawn_terminal.rye` (symlink compile layout under `pond/apps/`)
-- **Ring 3 headless witness** — parity **138 → 139**
+- **Ring 3 metalsmoke** — Wayland surface mirrors scripted session; pong window serviced
+- **SLC-2b bench prompt placed** (not executed)
+- **SLC-2a brief** refreshed — Rings 1–3 witness status, parity 139
 
 ---
 
-*Recommend: rule Edit 5, affirm Setu if it pleases you, run metal on the drawn terminal when Wayland is at hand — then Amber's first ring as the coming season's spine.*
+*Recommend: close Ring 3 metal interactively when it pleases you → rule Edit 5 → nod SLC-2b → mechanical bench without Claude unless the Dexter seam shifts.*
