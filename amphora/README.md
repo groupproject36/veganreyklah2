@@ -11,8 +11,8 @@
 |-----|------|
 | **1 (landed)** | Manifest entry parse (wreck rule) + vessel `.bron` fields (format · stamp · shoulder · parent · cargo) |
 | **2 (landed)** | Pour Amber ring-1 season into vessel; carry to far dock; cold scrub + restore; 3-2-1 fixture scale |
-| **3 (landed)** | Comlink hosted fetch-by-digest for vessel cargo (ports **38494**/**38495**); cold scrub on arrival |
+| **3 (landed)** | Comlink hosted fetch-by-digest for vessel cargo (ports **38494**/**38495**); device-wire virtio lab (**15571**/**15572**) |
 
 **Ground:** [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md) · study [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md)
 
-**Witnesses:** `tools/amphora_lap1.rish` · `tools/amphora_lap2.rish` · `tools/amphora_lap3.rish` · elder path `tools/crossing_manifest_seed.rish` (delegates here)
+**Witnesses:** `tools/amphora_lap1.rish` · `tools/amphora_lap2.rish` · `tools/amphora_lap3.rish` · `tools/amphora_device_wire.rish` · elder path `tools/crossing_manifest_seed.rish` (delegates here)
