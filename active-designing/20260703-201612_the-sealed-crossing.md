@@ -5,7 +5,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME · SLC
 **Register:** active-designing — siloed; names only our own modules (foundations graduation on Kaeden's word)
 **Candidate:** Amphora (lap 1 seated at `amphora/` · `20260710.143500`)
-**Status:** Landed — checkable-room; Amphora laps 1–3 seated at `amphora/` (lap 1 `20260710.143500`; lap 2 `20260710.143726`; lap 3 Comlink fetch hosted `20260710.144309` + device wire `20260710.144833`); vessel duty has a module home; kitchen twin remains the plain reading.
+**Status:** Landed — checkable-room; Amphora laps 1–3 + Kumara vessel stamp seated at `amphora/` (lap 1 `20260710.143500`; lap 2 `20260710.143726`; lap 3 Comlink fetch hosted `20260710.144309` + device wire `20260710.144833`; stamp `20260710.145843`); vessel duty has a module home; kitchen twin remains the plain reading.
 **Last updated:** 2026-07-10
 **Companions:** kitchen twin [`../external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md) · crossing metal plainly [`../external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md) · study [`../external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md)
 

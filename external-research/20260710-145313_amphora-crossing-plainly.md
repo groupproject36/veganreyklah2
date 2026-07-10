@@ -35,6 +35,7 @@ Realidream's forge view folds that poured bundle onto a Skate frame — cellar f
 | **2** | `20260710.143726` | `tools/amphora_lap2.rish` | Pour · carry · cold scrub · 3-2-1 fixture · tamper refused |
 | **3 hosted** | `20260710.144309` | `tools/amphora_lap3.rish` | Fetch-by-digest on **38494**/**38495**; scrub on arrival |
 | **3 device** | `20260710.144833` | `tools/amphora_device_wire.rish` | Same wire bytes over virtio **15571**/**15572** |
+| **Stamp (landed)** | `20260710.145843` | `tools/amphora_vessel_stamp.rish` | Kumara `stamp_sig`; pour + scrub verify |
 | **Forge pour** | `20260710.145313` | `tools/realidream_forge_view.rish` | Live pour → Skate frame (parity **221** path deepened) |
 
 ---
@@ -68,10 +69,11 @@ GPL gratitude projects (SixOS, River, Damus, …) stay gitlink-or-docs-only per 
 ## Horizons (Named, Not Opened Here)
 
 - Amber **encryption seal** on the vessel file itself  
-- **Kumara** signature field on `vessel.bron`  
 - Large-resin **chunking** beyond one datagram  
 - Pond **customs** policy at receipt  
 - Commerce delivery of purchased work  
+
+**Landed since this page:** Kumara `stamp_sig` on `vessel.bron` (`20260710.145843`, parity **227**).
 
 ---
 

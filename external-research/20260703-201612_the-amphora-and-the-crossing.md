@@ -6,7 +6,7 @@
 **Category:** External research — a missing piece named, a candidate proposed
 **Candidate:** Amphora (seated at `amphora/` — laps 1–3 Landed)
 **Companion to:** `20260703-201612_the-sealed-crossing.md` (the silo) · `20260703-200712_a-move-for-rye.md`
-**Status:** Research for understanding — **Landed** through lap 3; kitchen twin [`20260710-002952_sealed-crossing-plainly.md`](20260710-002952_sealed-crossing-plainly.md) · crossing metal plainly [`20260710-145313_amphora-crossing-plainly.md`](20260710-145313_amphora-crossing-plainly.md). Horizons: vessel encryption seal, Kumara vessel stamp.
+**Status:** Research for understanding — **Landed** through lap 3 + Kumara vessel stamp; kitchen twin [`20260710-002952_sealed-crossing-plainly.md`](20260710-002952_sealed-crossing-plainly.md) · crossing metal plainly [`20260710-145313_amphora-crossing-plainly.md`](20260710-145313_amphora-crossing-plainly.md). Horizon: vessel encryption seal.
 **Last updated:** 2026-07-10
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
@@ -56,6 +56,7 @@ Its growth, three SLC laps, each witness-first. **Lap one — the packet formali
 | 2 pour/scrub | `143726` | `tools/amphora_lap2.rish` | **224** |
 | 3 hosted fetch | `144309` | `tools/amphora_lap3.rish` | **225** |
 | 3 device wire | `144833` | `tools/amphora_device_wire.rish` | **226** |
+| Stamp (Kumara) | `145843` | `tools/amphora_vessel_stamp.rish` | **227** |
 | Forge live pour | `145313` | `tools/realidream_forge_view.rish` | **221** path |
 
 Module home: [`amphora/README.md`](../amphora/README.md). Crossing metal plainly: [`20260710-145313_amphora-crossing-plainly.md`](20260710-145313_amphora-crossing-plainly.md).

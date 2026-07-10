@@ -39,7 +39,7 @@ Ancient amphorae were standardized shapes with painted shoulders and maker stamp
 |------|-----|
 | **Vessel** | One file, whole |
 | **Seal** | Encryption under Amber's cellar law (horizon — plaintext vessel fields today) |
-| **Stamp** | Kumara signature — nothing leaves unsigned (horizon on vessel; Comlink seal wraps the wire) |
+| **Stamp** | Kumara signature — `stamp_sig` on canonical vessel body (**landed** `20260710.145843`); chrono `stamp` stays the one-clock field |
 | **Manifest** | Each enclosed thing: type-mark + digest (working / forever tiers per resins law) |
 | **Parent mark** | Lineage hash — today's zip-comment convention made a field |
 | **Shoulder line** | Plain human label readable without opening |

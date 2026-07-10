@@ -1,7 +1,10 @@
-//! amphora/vessel_core.rye — Amphora lap 1: sealed vessel fields + cargo count.
+//! amphora/vessel_core.rye — Amphora vessel: parse, Kumara stamp_sig, verify.
 //!
 //!   rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core
 //!   amphora/bin/vessel-core selftest
+//!   amphora/bin/vessel-core parse <path>
+//!   amphora/bin/vessel-core sign <path>
+//!   amphora/bin/vessel-core verify <path>
 //!
 //! Scope: [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md)
 
@@ -9,16 +12,23 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const me = @import("manifest_entry.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
 
-pub const amphora_vessel_version = "20260710.143500";
-pub const max_vessel_len: u32 = 2048;
+pub const amphora_vessel_version = "20260710.145843";
+pub const max_vessel_len: u32 = 4096;
 pub const max_cargo: u32 = 16;
+pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
+
+/// Witness seed for Amphora vessel stamps — distinct from kumara 0x42 / batch 0x60.
+const vessel_stamp_seed: [kumara.seed_length]u8 = .{0x62} ** kumara.seed_length;
 
 pub const VesselFields = struct {
     format: []const u8,
     stamp: []const u8,
     shoulder: []const u8,
     parent: []const u8,
+    stamp_sig: []const u8,
     cargo_count: u32,
 };
 
@@ -26,11 +36,100 @@ fn trim_line(line: []const u8) []const u8 {
     return std.mem.trim(u8, line, " \t\r\n");
 }
 
+fn is_lower_hex(c: u8) bool {
+    return (c >= '0' and c <= '9') or (c >= 'a' and c <= 'f');
+}
+
+fn write_hex(bytes: []const u8, out: []u8) void {
+    assert(out.len >= bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable;
+    }
+}
+
+fn decode_hex_lower(hex: []const u8, out: []u8) error{BadHex}!void {
+    if (hex.len != out.len * 2) return error.BadHex;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        const hi = hex[i * 2];
+        const lo = hex[i * 2 + 1];
+        if (!is_lower_hex(hi) or !is_lower_hex(lo)) return error.BadHex;
+        const hv: u8 = if (hi <= '9') hi - '0' else hi - 'a' + 10;
+        const lv: u8 = if (lo <= '9') lo - '0' else lo - 'a' + 10;
+        out[i] = (hv << 4) | lv;
+    }
+}
+
+pub fn vessel_keypair() kumara.KeyPair {
+    return kumara.keypair_from_seed(&vessel_stamp_seed);
+}
+
+/// Build canonical bytes: format · stamp · shoulder · parent · cargo lines (file order).
+/// Skips comments, blanks, and stamp_sig.
+pub fn write_canonical(text: []const u8, out: []u8) error{InvalidVessel, Overflow}!u32 {
+    var format: ?[]const u8 = null;
+    var stamp: ?[]const u8 = null;
+    var shoulder: ?[]const u8 = null;
+    var parent: ?[]const u8 = null;
+    var cargo_lines: [max_cargo][]const u8 = undefined;
+    var cargo_count: u32 = 0;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0 or line[0] == '#') continue;
+        if (std.mem.startsWith(u8, line, "stamp_sig ")) continue;
+        if (std.mem.startsWith(u8, line, "cargo ")) {
+            const rest = line["cargo ".len..];
+            _ = me.parse_manifest_line(rest) catch return error.InvalidVessel;
+            if (cargo_count >= max_cargo) return error.Overflow;
+            cargo_lines[cargo_count] = line;
+            cargo_count += 1;
+            continue;
+        }
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidVessel;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidVessel;
+        if (std.mem.eql(u8, key, "format")) format = value else if (std.mem.eql(u8, key, "stamp")) stamp = value else if (std.mem.eql(u8, key, "shoulder")) shoulder = value else if (std.mem.eql(u8, key, "parent")) {
+            if (value.len != me.digest_hex_len) return error.InvalidVessel;
+            parent = value;
+        } else return error.InvalidVessel;
+    }
+    if (format == null or stamp == null or shoulder == null or parent == null) return error.InvalidVessel;
+    if (cargo_count == 0) return error.InvalidVessel;
+
+    var off: u32 = 0;
+    const parts = [_][]const u8{
+        "format ", format.?, "\n",
+        "stamp ", stamp.?, "\n",
+        "shoulder ", shoulder.?, "\n",
+        "parent ", parent.?, "\n",
+    };
+    for (parts) |p| {
+        if (off + p.len > out.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[off..][0..p.len], p);
+        off += @intCast(p.len);
+    }
+    var i: u32 = 0;
+    while (i < cargo_count) : (i += 1) {
+        const c = cargo_lines[i];
+        if (off + c.len + 1 > out.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[off..][0..c.len], c);
+        off += @intCast(c.len);
+        out[off] = '\n';
+        off += 1;
+    }
+    return off;
+}
+
 pub fn parse_vessel(text: []const u8, out: *VesselFields) error{InvalidVessel}!void {
     var format_set = false;
     var stamp_set = false;
     var shoulder_set = false;
     var parent_set = false;
+    var stamp_sig_set = false;
     var cargo_count: u32 = 0;
 
     var lines = std.mem.splitScalar(u8, text, '\n');
@@ -62,13 +161,90 @@ pub fn parse_vessel(text: []const u8, out: *VesselFields) error{InvalidVessel}!v
             if (value.len != me.digest_hex_len) return error.InvalidVessel;
             out.parent = value;
             parent_set = true;
+        } else if (std.mem.eql(u8, key, "stamp_sig")) {
+            if (value.len != stamp_sig_hex_len) return error.InvalidVessel;
+            var i: u32 = 0;
+            while (i < value.len) : (i += 1) {
+                if (!is_lower_hex(value[i])) return error.InvalidVessel;
+            }
+            out.stamp_sig = value;
+            stamp_sig_set = true;
         } else {
             return error.InvalidVessel;
         }
     }
-    if (!format_set or !stamp_set or !shoulder_set or !parent_set) return error.InvalidVessel;
+    if (!format_set or !stamp_set or !shoulder_set or !parent_set or !stamp_sig_set) return error.InvalidVessel;
     if (cargo_count == 0) return error.InvalidVessel;
     out.cargo_count = cargo_count;
+}
+
+pub fn verify_vessel_stamp(text: []const u8) error{InvalidVessel, VerifyFailed, Overflow, BadHex}!void {
+    var fields: VesselFields = undefined;
+    try parse_vessel(text, &fields);
+    var canonical: [max_vessel_len]u8 = undefined;
+    const canon_len = try write_canonical(text, &canonical);
+    var sig_bytes: [kumara.signature_length]u8 = undefined;
+    try decode_hex_lower(fields.stamp_sig, &sig_bytes);
+    const kp = vessel_keypair();
+    try kumara.verify_bytes(canonical[0..canon_len], &sig_bytes, kp.public_key);
+}
+
+fn strip_stamp_sig(text: []const u8, out: []u8) error{Overflow}!u32 {
+    var off: u32 = 0;
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (std.mem.startsWith(u8, line, "stamp_sig ")) continue;
+        if (off + raw.len + 1 > out.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[off..][0..raw.len], raw);
+        off += @intCast(raw.len);
+        out[off] = '\n';
+        off += 1;
+    }
+    return off;
+}
+
+fn run_sign_file(io: std.Io, path: []const u8) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = try cwd.readFile(io, path, &buf);
+    var body: [max_vessel_len]u8 = undefined;
+    const body_len = try strip_stamp_sig(text, &body);
+    var canonical: [max_vessel_len]u8 = undefined;
+    const canon_len = try write_canonical(body[0..body_len], &canonical);
+    const kp = vessel_keypair();
+    const sig = kumara.sign(canonical[0..canon_len], kp, null);
+    const sig_bytes = sig.toBytes();
+    var sig_hex: [stamp_sig_hex_len]u8 = undefined;
+    write_hex(&sig_bytes, &sig_hex);
+
+    var out: [max_vessel_len]u8 = undefined;
+    if (body_len + 11 + stamp_sig_hex_len + 1 > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..body_len], body[0..body_len]);
+    var off = body_len;
+    const prefix = "stamp_sig ";
+    tally_copy.copy_disjoint(u8, out[off..][0..prefix.len], prefix);
+    off += @intCast(prefix.len);
+    tally_copy.copy_disjoint(u8, out[off..][0..stamp_sig_hex_len], &sig_hex);
+    off += stamp_sig_hex_len;
+    out[off] = '\n';
+    off += 1;
+
+    try cwd.writeFile(io, .{ .sub_path = path, .data = out[0..off] });
+    try verify_vessel_stamp(out[0..off]);
+    print("amphora: vessel signed stamp_sig={s}\n", .{sig_hex[0..16]});
+    print("GREEN: Amphora vessel — Kumara stamp_sig written.\n", .{});
+    return 0;
+}
+
+fn run_verify_file(io: std.Io, path: []const u8) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = try cwd.readFile(io, path, &buf);
+    try verify_vessel_stamp(text);
+    print("amphora: vessel stamp_sig verified\n", .{});
+    print("GREEN: Amphora vessel — Kumara stamp ok.\n", .{});
+    return 0;
 }
 
 fn run_parse_file(io: std.Io, path: []const u8) !u8 {
@@ -77,7 +253,7 @@ fn run_parse_file(io: std.Io, path: []const u8) !u8 {
     const text = try cwd.readFile(io, path, &buf);
     var fields: VesselFields = undefined;
     try parse_vessel(text, &fields);
-    print("amphora: vessel parse format={s} stamp={s} shoulder={s} cargo={d}\n", .{
+    print("amphora: vessel parse format={s} stamp={s} shoulder={s} cargo={d} stamped\n", .{
         fields.format,
         fields.stamp,
         fields.shoulder,
@@ -97,7 +273,19 @@ fn run_selftest(io: std.Io) !u8 {
     assert(std.mem.eql(u8, fields.stamp, "20260710.143500"));
     assert(std.mem.eql(u8, fields.shoulder, "amber-ring1-season"));
     assert(fields.parent.len == me.digest_hex_len);
+    assert(fields.stamp_sig.len == stamp_sig_hex_len);
     assert(fields.cargo_count == 2);
+    try verify_vessel_stamp(text);
+
+    // Unwelcome: tampered cargo refuses verify.
+    var bad: [max_vessel_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, bad[0..text.len], text);
+    if (std.mem.indexOf(u8, bad[0..text.len], "hello.txt")) |idx| {
+        bad[idx] = 'H';
+    }
+    if (verify_vessel_stamp(bad[0..text.len])) |_| {
+        return error.UnwelcomePassed;
+    } else |_| {}
 
     if (parse_vessel("# empty\n", &fields)) |_| return error.UnwelcomePassed else |_| {}
     if (parse_vessel("format amphora-v1\nstamp x\nshoulder y\nparent short\ncargo plain-bytes ab name\n", &fields)) |_| {
@@ -105,7 +293,7 @@ fn run_selftest(io: std.Io) !u8 {
     } else |_| {}
 
     print("amphora: vessel version {s}\n", .{amphora_vessel_version});
-    print("GREEN: Amphora vessel — parse cargo, refuse wreck.\n", .{});
+    print("GREEN: Amphora vessel — parse, Kumara stamp, refuse wreck.\n", .{});
     return 0;
 }
 
@@ -114,6 +302,12 @@ pub fn main(init: std.process.Init) !u8 {
     const args = try init.minimal.args.toSlice(garden);
     if (args.len >= 3 and std.mem.eql(u8, args[1], "parse")) {
         return run_parse_file(init.io, args[2]);
+    }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "sign")) {
+        return run_sign_file(init.io, args[2]);
+    }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "verify")) {
+        return run_verify_file(init.io, args[2]);
     }
     return run_selftest(init.io);
 }

@@ -591,6 +591,11 @@ let amphora_dw = run ["rishi/bin/rishi" "run" "tools/amphora_device_wire.rish"]
 assert amphora_dw.ok else "Amphora device wire witness failed"
 say "GREEN: Amphora device wire witness passed."
 
+say "witness suite: Amphora vessel stamp (Kumara stamp_sig)…"
+let amphora_stamp = run ["rishi/bin/rishi" "run" "tools/amphora_vessel_stamp.rish"]
+assert amphora_stamp.ok else "Amphora vessel stamp witness failed"
+say "GREEN: Amphora vessel stamp witness passed."
+
 say "witness suite: Realidream forge query view (Tablecloth forge hits → Skate)…"
 let forge_query = run ["rishi/bin/rishi" "run" "tools/realidream_forge_query_view.rish"]
 assert forge_query.ok else "Realidream forge query view witness failed"

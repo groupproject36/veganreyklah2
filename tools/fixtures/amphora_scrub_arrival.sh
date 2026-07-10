@@ -26,6 +26,8 @@ if ! test -x "$vessel_bin"; then
     "$ROOT/rye/bin/rye" build "$ROOT/amphora/vessel_core.rye" -femit-bin="$vessel_bin"
 fi
 "$vessel_bin" parse "$VESSEL" >/dev/null
+"$vessel_bin" verify "$VESSEL" >/dev/null
+echo "STAMP ok Kumara stamp_sig verified"
 
 sh "$ROOT/tools/fixtures/amber_ring1_verify.sh" "$BUNDLE"
 
