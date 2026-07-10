@@ -576,6 +576,11 @@ let amphora = run ["rishi/bin/rishi" "run" "tools/amphora_lap1.rish"]
 assert amphora.ok else "Amphora lap 1 witness failed"
 say "GREEN: Amphora lap 1 witness passed."
 
+say "witness suite: Amphora lap 2 (pour Amber season → far scrub)…"
+let amphora2 = run ["rishi/bin/rishi" "run" "tools/amphora_lap2.rish"]
+assert amphora2.ok else "Amphora lap 2 witness failed"
+say "GREEN: Amphora lap 2 witness passed."
+
 say "witness suite: Realidream forge query view (Tablecloth forge hits → Skate)…"
 let forge_query = run ["rishi/bin/rishi" "run" "tools/realidream_forge_query_view.rish"]
 assert forge_query.ok else "Realidream forge query view witness failed"
