@@ -1,0 +1,145 @@
+//! amphora/vessel_fetch_wire.rye — Amphora lap 3: fetch one resin by digest over one sealed datagram.
+//!
+//! Request names a SHA3-256 hex digest; response carries matching bytes.
+//! Verified twice: digest check on encode (source) and on decode (fetcher).
+//!
+//!   rye build amphora/vessel_fetch_wire.rye -femit-bin=amphora/bin/vessel-fetch-wire
+//!   amphora/bin/vessel-fetch-wire selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_copy = @import("tally_copy.rye");
+
+pub const vessel_fetch_wire_version = "20260710.144309";
+
+const kind_request: u8 = 0x31;
+const kind_response: u8 = 0x32;
+
+pub const digest_hex_len: u32 = 64;
+pub const max_resin_bytes: u32 = 256;
+pub const max_wire_payload: u32 = 340;
+
+pub const WireError = error{
+    BadKind,
+    Overflow,
+    Truncated,
+    DigestMismatch,
+};
+
+pub const FetchRequest = struct {
+    digest_hex: [digest_hex_len]u8,
+};
+
+pub const FetchResponse = struct {
+    digest_hex: [digest_hex_len]u8,
+    bytes_len: u32,
+    bytes: [max_resin_bytes]u8,
+};
+
+fn digest_hex_of(content: []const u8, out: *[digest_hex_len]u8) void {
+    var digest: [32]u8 = undefined;
+    std.crypto.hash.sha3.Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+pub fn verify_resin(claimed_digest_hex: []const u8, bytes: []const u8) WireError!void {
+    if (claimed_digest_hex.len != digest_hex_len) return error.DigestMismatch;
+    var recomputed: [digest_hex_len]u8 = undefined;
+    digest_hex_of(bytes, &recomputed);
+    if (!std.mem.eql(u8, recomputed[0..], claimed_digest_hex)) return error.DigestMismatch;
+}
+
+pub fn encode_request(req: FetchRequest, out: []u8) WireError!u32 {
+    if (out.len < 1 + digest_hex_len) return error.Overflow;
+    out[0] = kind_request;
+    tally_copy.copy_disjoint(u8, out[1..][0..digest_hex_len], req.digest_hex[0..]);
+    return 1 + digest_hex_len;
+}
+
+pub fn decode_request(payload: []const u8, out: *FetchRequest) WireError!void {
+    if (payload.len < 1 + digest_hex_len or payload[0] != kind_request) return error.BadKind;
+    tally_copy.copy_disjoint(u8, out.digest_hex[0..], payload[1..][0..digest_hex_len]);
+}
+
+pub fn encode_response(resp: *const FetchResponse, out: []u8) WireError!u32 {
+    if (resp.bytes_len > max_resin_bytes) return error.Overflow;
+    try verify_resin(resp.digest_hex[0..], resp.bytes[0..resp.bytes_len]);
+    const need: u32 = 1 + digest_hex_len + 2 + resp.bytes_len;
+    if (out.len < need or need > max_wire_payload) return error.Overflow;
+    var off: u32 = 0;
+    out[off] = kind_response;
+    off += 1;
+    tally_copy.copy_disjoint(u8, out[off..][0..digest_hex_len], resp.digest_hex[0..]);
+    off += digest_hex_len;
+    std.mem.writeInt(u16, out[off..][0..2], @intCast(resp.bytes_len), .little);
+    off += 2;
+    if (resp.bytes_len > 0) {
+        tally_copy.copy_disjoint(u8, out[off..][0..resp.bytes_len], resp.bytes[0..resp.bytes_len]);
+        off += resp.bytes_len;
+    }
+    assert(off == need);
+    return off;
+}
+
+pub fn decode_response(payload: []const u8, out: *FetchResponse) WireError!void {
+    if (payload.len < 1 + digest_hex_len + 2 or payload[0] != kind_response) return error.BadKind;
+    var off: u32 = 1;
+    tally_copy.copy_disjoint(u8, out.digest_hex[0..], payload[off..][0..digest_hex_len]);
+    off += digest_hex_len;
+    const bytes_len: u32 = std.mem.readInt(u16, payload[off..][0..2], .little);
+    off += 2;
+    if (bytes_len > max_resin_bytes) return error.Overflow;
+    if (off + bytes_len > payload.len) return error.Truncated;
+    out.bytes_len = bytes_len;
+    if (bytes_len > 0) {
+        tally_copy.copy_disjoint(u8, out.bytes[0..bytes_len], payload[off..][0..bytes_len]);
+    }
+    try verify_resin(out.digest_hex[0..], out.bytes[0..out.bytes_len]);
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    const hello = "amber ring one — small text fixture\n";
+    var digest: [digest_hex_len]u8 = undefined;
+    digest_hex_of(hello, &digest);
+
+    var req: FetchRequest = .{ .digest_hex = undefined };
+    tally_copy.copy_disjoint(u8, req.digest_hex[0..], digest[0..]);
+    var req_buf: [max_wire_payload]u8 = undefined;
+    const req_len = try encode_request(req, &req_buf);
+    var decoded_req: FetchRequest = undefined;
+    try decode_request(req_buf[0..req_len], &decoded_req);
+    assert(std.mem.eql(u8, decoded_req.digest_hex[0..], digest[0..]));
+
+    var resp: FetchResponse = .{
+        .digest_hex = undefined,
+        .bytes_len = @intCast(hello.len),
+        .bytes = undefined,
+    };
+    tally_copy.copy_disjoint(u8, resp.digest_hex[0..], digest[0..]);
+    tally_copy.copy_disjoint(u8, resp.bytes[0..hello.len], hello);
+    var resp_buf: [max_wire_payload]u8 = undefined;
+    const resp_len = try encode_response(&resp, &resp_buf);
+    var decoded: FetchResponse = undefined;
+    try decode_response(resp_buf[0..resp_len], &decoded);
+    assert(decoded.bytes_len == hello.len);
+    assert(std.mem.eql(u8, decoded.bytes[0..decoded.bytes_len], hello));
+
+    // Unwelcome: tampered bytes refuse whole.
+    var bad = resp_buf;
+    bad[resp_len - 1] ^= 0xff;
+    if (decode_response(bad[0..resp_len], &decoded)) |_| {
+        return error.DigestMismatch;
+    } else |_| {}
+
+    print("amphora: vessel_fetch_wire version {s}\n", .{vessel_fetch_wire_version});
+    print("GREEN: Amphora vessel fetch wire — digest request/response, tamper refused.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init.io);
+}

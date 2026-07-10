@@ -5,7 +5,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME · SLC
 **Register:** active-designing — siloed; names only our own modules (foundations graduation on Kaeden's word)
 **Candidate:** Amphora (lap 1 seated at `amphora/` · `20260710.143500`)
-**Status:** Landed — checkable-room; Amphora lap 1 seated at `amphora/` (`20260710.143500`); lap 2 pour + cold scrub fixture GREEN (`20260710.143726`); vessel duty has a module home; kitchen twin remains the plain reading.
+**Status:** Landed — checkable-room; Amphora laps 1–3 seated at `amphora/` (lap 1 `20260710.143500`; lap 2 `20260710.143726`; lap 3 Comlink fetch `20260710.144309`); vessel duty has a module home; kitchen twin remains the plain reading.
 **Last updated:** 2026-07-10
 **Companions:** kitchen twin [`../external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md) · study [`../external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md)
 
@@ -27,7 +27,7 @@ Four vows govern every crossing. The vessel is **media-agnostic**: it never asks
 
 ## The Laps
 
-Growth comes in three laps, each simple, lovable, and complete at its own size, each opened by a witness. Lap one: the loop's nightly packet becomes a true vessel — manifest, stamp, and parent mark living in the format itself — and the recursion prompts shed a paragraph, because the vessel now carries its own law; the loop is the first and grateful user. Lap two: an Amber season poured into a vessel and carried to a second dock or a far node, the scrub run cold on arrival, completing three copies, two media, one far away — **landed at fixture scale** `20260710.143726` (`tools/amphora_lap2.rish`). Lap three: the crossing over Comlink — fetch by digest between peers, verified twice — feeding packaging's flow and, when its season opens, the delivery of purchased work.
+Growth comes in three laps, each simple, lovable, and complete at its own size, each opened by a witness. Lap one: the loop's nightly packet becomes a true vessel — manifest, stamp, and parent mark living in the format itself — and the recursion prompts shed a paragraph, because the vessel now carries its own law; the loop is the first and grateful user. Lap two: an Amber season poured into a vessel and carried to a second dock or a far node, the scrub run cold on arrival, completing three copies, two media, one far away — **landed at fixture scale** `20260710.143726` (`tools/amphora_lap2.rish`). Lap three: the crossing over Comlink — fetch by digest between peers, verified twice — **landed hosted** `20260710.144309` (`tools/amphora_lap3.rish`, ports **38494**/**38495**); device-wire virtio remains a later stretch.
 
 ## The Seams
 
