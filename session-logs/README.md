@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260710.144202 | [Keep going — Amphora gates](20260710-144202_keep-going-amphora-gates.md) | Lap 1–2 + forge query landed; parity **224** tip |
 | 20260710.143726 | [Amphora lap 2 pour/scrub](20260710-143726_amphora-lap2-pour-scrub.md) | Pour Amber season → far cold scrub; 3-2-1; parity **224** |
 | 20260710.143500 | [Amphora lap 1 + forge query](20260710-143500_amphora-lap1-forge-query.md) | Module seated; forge query view; parity **222**–**223** |
 | 20260710.143000 | [Realidream forge view](20260710-143000_realidream-forge-view.md) | Amber cellar → Skate; Amphora proposed; parity **221** |
