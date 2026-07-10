@@ -570,3 +570,13 @@ say "witness suite: Realidream forge view (Amber cellar → Skate)…"
 let forge_view = run ["rishi/bin/rishi" "run" "tools/realidream_forge_view.rish"]
 assert forge_view.ok else "Realidream forge view witness failed"
 say "GREEN: Realidream forge view witness passed."
+
+say "witness suite: Amphora lap 1 (manifest entry + vessel)…"
+let amphora = run ["rishi/bin/rishi" "run" "tools/amphora_lap1.rish"]
+assert amphora.ok else "Amphora lap 1 witness failed"
+say "GREEN: Amphora lap 1 witness passed."
+
+say "witness suite: Realidream forge query view (Tablecloth forge hits → Skate)…"
+let forge_query = run ["rishi/bin/rishi" "run" "tools/realidream_forge_query_view.rish"]
+assert forge_query.ok else "Realidream forge query view witness failed"
+say "GREEN: Realidream forge query view witness passed."

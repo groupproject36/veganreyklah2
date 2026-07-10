@@ -1,7 +1,7 @@
-# realidream_forge_view.rish — Realidream forge view: Amber manifest + resins → Skate.
+# realidream_forge_view.rish — Realidream forge view: Amber cellar + Amphora vessel → Skate.
 #
-# Folds a pinned Amber ring-1 Tilak manifest through SLC-2a drawn terminal.
-# Amphora named as proposed vessel sibling; no Dexter graduation.
+# Folds a pinned Amber ring-1 Tilak manifest and Amphora lap-1 vessel through SLC-2a.
+# Thin view — no Dexter graduation.
 # Run from the repository root:
 #   rishi/bin/rishi run tools/realidream_forge_view.rish
 
@@ -16,6 +16,6 @@ let forge = run ["sh" "-c" "${bin} forgeviewtest 2>&1"]
 assert forge.ok else "drawn terminal forgeviewtest exited non-zero"
 assert forge.out contains "forge view" else "forge view witness missing expected output"
 assert forge.out contains "GREEN" else "Realidream forge view witness not GREEN"
-assert forge.out contains "lines=7" else "forge view missing seven-line frame"
+assert forge.out contains "lines=8" else "forge view missing eight-line frame"
 
-say "GREEN: Realidream forge view — Amber cellar manifest composes a Skate frame."
+say "GREEN: Realidream forge view — Amber cellar + Amphora vessel compose a Skate frame."

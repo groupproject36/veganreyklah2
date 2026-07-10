@@ -45,6 +45,7 @@
 !/mantra/
 !/pond/
 !/amber/
+!/amphora/
 !/expanding-prompts/
 !/session-logs/
 !/.cursor/
@@ -119,3 +120,4 @@ __pycache__/
 /gratitude/skalibs/
 /gratitude/zon/
 /pond/bin/
+/amphora/bin/

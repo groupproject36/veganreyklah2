@@ -1,0 +1,98 @@
+//! amphora/vessel_core.rye — Amphora lap 1: sealed vessel fields + cargo count.
+//!
+//!   rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core
+//!   amphora/bin/vessel-core selftest
+//!
+//! Scope: [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const me = @import("manifest_entry.rye");
+
+pub const amphora_vessel_version = "20260710.143500";
+pub const max_vessel_len: u32 = 2048;
+pub const max_cargo: u32 = 16;
+
+pub const VesselFields = struct {
+    format: []const u8,
+    stamp: []const u8,
+    shoulder: []const u8,
+    parent: []const u8,
+    cargo_count: u32,
+};
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+pub fn parse_vessel(text: []const u8, out: *VesselFields) error{InvalidVessel}!void {
+    var format_set = false;
+    var stamp_set = false;
+    var shoulder_set = false;
+    var parent_set = false;
+    var cargo_count: u32 = 0;
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0) continue;
+        if (line[0] == '#') continue;
+        if (std.mem.startsWith(u8, line, "cargo ")) {
+            const rest = line["cargo ".len..];
+            _ = me.parse_manifest_line(rest) catch return error.InvalidVessel;
+            if (cargo_count >= max_cargo) return error.InvalidVessel;
+            cargo_count += 1;
+            continue;
+        }
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidVessel;
+        const key = line[0..space];
+        const value = trim_line(line[space + 1 ..]);
+        if (value.len == 0) return error.InvalidVessel;
+        if (std.mem.eql(u8, key, "format")) {
+            out.format = value;
+            format_set = true;
+        } else if (std.mem.eql(u8, key, "stamp")) {
+            out.stamp = value;
+            stamp_set = true;
+        } else if (std.mem.eql(u8, key, "shoulder")) {
+            out.shoulder = value;
+            shoulder_set = true;
+        } else if (std.mem.eql(u8, key, "parent")) {
+            if (value.len != me.digest_hex_len) return error.InvalidVessel;
+            out.parent = value;
+            parent_set = true;
+        } else {
+            return error.InvalidVessel;
+        }
+    }
+    if (!format_set or !stamp_set or !shoulder_set or !parent_set) return error.InvalidVessel;
+    if (cargo_count == 0) return error.InvalidVessel;
+    out.cargo_count = cargo_count;
+}
+
+fn run_selftest(io: std.Io) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = try cwd.readFile(io, "tools/fixtures/amphora_vessel_lap1.bron", &buf);
+    var fields: VesselFields = undefined;
+    try parse_vessel(text, &fields);
+    assert(std.mem.eql(u8, fields.format, "amphora-v1"));
+    assert(std.mem.eql(u8, fields.stamp, "20260710.143500"));
+    assert(std.mem.eql(u8, fields.shoulder, "amber-ring1-season"));
+    assert(fields.parent.len == me.digest_hex_len);
+    assert(fields.cargo_count == 2);
+
+    if (parse_vessel("# empty\n", &fields)) |_| return error.UnwelcomePassed else |_| {}
+    if (parse_vessel("format amphora-v1\nstamp x\nshoulder y\nparent short\ncargo plain-bytes ab name\n", &fields)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| {}
+
+    print("amphora: vessel version {s}\n", .{amphora_vessel_version});
+    print("GREEN: Amphora vessel — parse cargo, refuse wreck.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init.io);
+}

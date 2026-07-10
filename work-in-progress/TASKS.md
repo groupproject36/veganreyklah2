@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-07-10 (Realidream forge view `143000`; parity **221**)
+**Last updated:** 2026-07-10 (Amphora lap 1 + forge query `143500`; parity **223**)
 
 - [x] **Realidream thin-view exception (`021112` → re-scoped `202427`)** — chain-read removed `152612`; renders **local** MALA mint + WOV exit-bundle fixtures through SLC-2a drawn terminal (`thinviewtest`); no new input, no Pond policy, no Dexter graduation; `tools/realidream_thin_view.rish`; parity **202**; prompt [`202427`](../expanding-prompts/20260709-202427_realidream-thin-view-local-facts.md)
 
@@ -63,7 +63,7 @@
 
 ## Next bench (counsel [`222812`](../counsel/20260707-222812_claude-counsel-open-questions-final-pass.md) → [`015312`](../counsel/20260708-015312_claude-counsel-kumara-open-asks-cluster.md) · Realidream [`021912`](../counsel/20260708-021912_claude-counsel-realidream-zig016-brix.md))
 
-**Direction:** Open Questions closed on paper. **Kumara arc complete** — ratchet **0**. **MALA/WOV path realigned** `152612`. **MALA M1–M2b landed**; **SLC-L4 Sigma + W0 landed**; **WOV lap 1 + pin + seam A + dual D1 landed**; **Realidream thin view landed**; **Greencandy laps 1–3 + Linengrow sight view landed**; **Inference stack laps 0–1 + Scribble lap 1 landed**; **Tablecloth query wire landed** `140500`; **Realidream query view landed** `141200`; **Realidream forge view landed** `143000`; **kitchen-twin shelf** (shipping + custody + thin-edge spine); **universal foundations affirmed**. Parity **221**.
+**Direction:** Open Questions closed on paper. **Kumara arc complete** — ratchet **0**. **MALA/WOV path realigned** `152612`. **MALA M1–M2b landed**; **SLC-L4 Sigma + W0 landed**; **WOV lap 1 + pin + seam A + dual D1 landed**; **Realidream thin view landed**; **Greencandy laps 1–3 + Linengrow sight view landed**; **Inference stack laps 0–1 + Scribble lap 1 landed**; **Tablecloth query wire landed** `140500`; **Realidream query view landed** `141200`; **Realidream forge view landed** `143000`; **Amphora lap 1 + forge query landed** `143500`; **kitchen-twin shelf** (shipping + custody + thin-edge spine); **universal foundations affirmed**. Parity **223**.
 
 | Priority | Item | Status | Notes |
 |----------|------|--------|-------|
@@ -87,7 +87,7 @@
 | **18** | **Settlement seat plainly** | **Landed** | Jul 6–7 dossier kitchen twin + supersession notes [`001249`](../external-research/20260710-001249_settlement-seat-plainly.md); external rail retired `152612` |
 | **19** | **Metalsmoke plainly + affirm** | **Landed** | Kitchen twin [`002017`](../external-research/20260710-002017_metalsmoke-plainly.md); silo **Reviewed and kept**; audit-rule stale line cleared; LEXICON row |
 | **20** | **Amber seasons + first-lap plainly** | **Landed** | Custody twin [`002422`](../external-research/20260710-002422_amber-seasons-plainly.md); shipping phrase [`002544`](../external-research/20260710-002544_first-lap-goes-green-plainly.md); Season LEXICON ask cleared |
-| **21** | **Sealed crossing plainly** | **Landed** | Amphora kitchen twin [`002952`](../external-research/20260710-002952_sealed-crossing-plainly.md); Status stays **Proposed**; no module seat |
+| **21** | **Sealed crossing plainly** | **Landed** | Kitchen twin [`002952`](../external-research/20260710-002952_sealed-crossing-plainly.md); Amphora lap 1 seated `143500` (parity **222**) |
 | **22** | **Greencandy lap 1** | **Landed** | Chart · journal · fold · unwelcome; `greencandy/`; parity **207**; hammock [`125953`](../active-designing/20260710-125953_greencandy-hammock.md) |
 | **23** | **Greencandy books view** | **Landed** | Trial balance → Skate via `booksviewtest`; parity **208**; prompt [`125953`](../expanding-prompts/20260710-125953_greencandy-lap1-books-view.md) |
 | **24** | **Greencandy root + lap 2** | **Landed** | Own folder; P&L · BS · exception queue; parity **209**; [`131212`](../active-designing/20260710-131212_greencandy-lap2-reports.md) |
@@ -98,6 +98,8 @@
 | **29** | **Tablecloth query wire** | **Landed** | Comlink hosted filter (not GraphQL); parity **219**; hammock [`140500`](../active-designing/20260710-140500_comlink-view-filter-not-graphql.md) |
 | **30** | **Realidream query view** | **Landed** | query-wire hits → Skate `queryviewtest`; parity **220**; thin-view exception family |
 | **31** | **Realidream forge view** | **Landed** | Amber manifest + resins → Skate `forgeviewtest`; Amphora proposed; parity **221** |
+| **32** | **Amphora lap 1** | **Landed** | Module home `amphora/`; manifest entry + vessel; parity **222**; gate opened `143500` |
+| **33** | **Forge query view** | **Landed** | Tablecloth-shaped forge hits → Skate; parity **223** |
 | — | **Realidream lane** | Horizon opened | Visual Track in ROADMAP; full viewer still held; thin view + books view are Skate folds |
 | — | Two-backend seam | **Affirmed: wait** | Kaeden `174500`; sovereign framebuffer when Aurora needs a screen |
 | — | Agent-writing paste | Awaiting paste | — |
@@ -365,7 +367,7 @@ Ground: [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](..
 - [x] **Pottery seat (Kaeden)** — value-object tier; `.pott` working extension; greenware · kiln · glaze aspect family (`20260703.203712 UDT`, *for*).
 - [x] **Amphora seat (Kaeden)** — crossing-vessel vocabulary; companion silo [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md) (`20260703.203712 UDT`, *for*).
 - [x] **Type-mark word (Kaeden)** — **Tilak** seated; **absorb / express / tend** triad affirmed (`20260703.203712 UDT`, *for*).
-- [x] **Crossing manifest seed (witness)** — [`work-in-progress/20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) parses `<mark> <sha3-256-hex> <name>`; `tools/crossing_manifest_seed.rish` at parity **151** (`20260704.020800`); module home still on Kaeden word.
+- [x] **Crossing manifest seed (witness)** — graduated to [`amphora/manifest_entry.rye`](../amphora/manifest_entry.rye); elder `tools/crossing_manifest_seed.rish` delegates; Amphora lap 1 + vessel at parity **222** (`20260710.143500`).
 - [x] **Bron mark triad (concept adopted)** — every notation type carries its conversions in, out, and its operations; arm names **absorb / express / tend** seated as Tilak duties (`20260702.211312`; affirmed `20260703.203712 UDT`).
 - [x] **Comlink address triple (concept adopted)** — named data resolves by *Kumara identity / lane / stamp*; design note when the naming lap opens (`20260702.211312`).
 

@@ -4,8 +4,8 @@
 **Stamp:** `20260703.201612 UDT` (Kaeden's clock)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME · SLC
 **Register:** active-designing — siloed; names only our own modules (foundations graduation on Kaeden's word)
-**Candidate:** Amphora (parked in RTAC; seat on Kaeden's word)
-**Status:** Proposed — vessel duty designed; module home waits Kaeden's word. Kitchen twin seated; Amphora not graduated.
+**Candidate:** Amphora (lap 1 seated at `amphora/` · `20260710.143500`)
+**Status:** Landed — checkable-room; Amphora lap 1 seated at `amphora/` (`20260710.143500`); vessel duty has a module home; kitchen twin remains the plain reading.
 **Last updated:** 2026-07-10
 **Companions:** kitchen twin [`../external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md) · study [`../external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md)
 

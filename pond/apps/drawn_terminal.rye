@@ -18,7 +18,8 @@
 //!   pond/bin/drawn-terminal sightviewtest  # Linengrow sight — carriage + books on one Skate frame
 //!   pond/bin/drawn-terminal assistviewtest # Inference assist — corpus + lantern + books fold
 //!   pond/bin/drawn-terminal queryviewtest  # Realidream query view — Tablecloth query-wire hits
-//!   pond/bin/drawn-terminal forgeviewtest  # Realidream forge view — Amber manifest + resins
+//!   pond/bin/drawn-terminal forgeviewtest  # Realidream forge view — Amber manifest + Amphora vessel
+//!   pond/bin/drawn-terminal forgequeryviewtest # Forge Tablecloth-query hits → Skate
 //!   pond/bin/drawn-terminal metalsmoke     # Wayland metal smoke (needs WAYLAND_DISPLAY)
 
 const std = @import("std");
@@ -32,7 +33,7 @@ const surface = @import("brushstroke/wayland_seed.rye");
 const window_input = @import("window_input.rye");
 const tally_parse_int = @import("rishi/parse_int.rye");
 
-const drawn_terminal_version = "20260710.143000";
+const drawn_terminal_version = "20260710.143500";
 
 const status_max_len: u32 = 80;
 const thin_view_max_lines: u32 = 5;
@@ -40,7 +41,8 @@ const books_view_max_lines: u32 = 8;
 const sight_view_max_lines: u32 = 8;
 const assist_view_max_lines: u32 = 8;
 const query_view_max_lines: u32 = 6;
-const forge_view_max_lines: u32 = 7;
+const forge_view_max_lines: u32 = 8;
+const forge_query_view_max_lines: u32 = 6;
 const mala_mint_fixture = "tools/fixtures/mala_m1_mint.bron";
 const wov_bundle_fixture = "tools/fixtures/wov_exit_bundle_v1.bron";
 const greencandy_journal_fixture = "greencandy/fixtures/journal.bron";
@@ -48,6 +50,8 @@ const anvil_corpus_fixture = "anvil/fixtures/rye_corpus.bron";
 const lantern_completion_fixture = "lantern/fixtures/completion.bron";
 const tablecloth_query_hits_fixture = "tools/fixtures/tablecloth_query_hits.bron";
 const forge_amber_manifest_fixture = "tools/fixtures/forge_amber_manifest.bron";
+const amphora_vessel_fixture = "tools/fixtures/amphora_vessel_lap1.bron";
+const forge_query_hits_fixture = "tools/fixtures/forge_query_hits.bron";
 const status_full_text = "transcript full — earlier lines still ran; :quit to close";
 const poll_timeout_ms: i32 = 50;
 const fill_line_count: u32 = 200;
@@ -579,8 +583,7 @@ fn run_query_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream forge view — fold Amber cellar manifest (resins + Tilak entries) into Skate.
-/// Amphora stays proposed as the vessel sibling; no Dexter graduation.
+/// Realidream forge view — Amber cellar + Amphora vessel (lap 1 seated) into Skate.
 fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -597,9 +600,8 @@ fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Sk
         const line = std.mem.trim(u8, raw, " \t\r\n");
         if (!std.mem.startsWith(u8, line, "entry ")) continue;
         entry_count += 1;
-        // entry plain-bytes <digest> <name>
         var parts = std.mem.tokenizeScalar(u8, line, ' ');
-        _ = parts.next(); // entry
+        _ = parts.next();
         const tilak = parts.next() orelse return error.BadForgeFixture;
         const digest = parts.next() orelse return error.BadForgeFixture;
         const name = parts.next() orelse return error.BadForgeFixture;
@@ -610,6 +612,20 @@ fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Sk
     if (entry_count != 4) return error.BadForgeFixture;
     const digest = hello_digest orelse return error.BadForgeFixture;
 
+    var vessel_buf: [1024]u8 = undefined;
+    const vessel_text = try cwd.readFile(io, amphora_vessel_fixture, &vessel_buf);
+    const shoulder = field_value(vessel_text, "shoulder") orelse return error.BadVesselFixture;
+    const cargo_count_text = blk: {
+        var count: u32 = 0;
+        var vlines = std.mem.splitScalar(u8, vessel_text, '\n');
+        while (vlines.next()) |vraw| {
+            const vline = std.mem.trim(u8, vraw, " \t\r\n");
+            if (std.mem.startsWith(u8, vline, "cargo ")) count += 1;
+        }
+        break :blk count;
+    };
+    if (cargo_count_text != 2) return error.BadVesselFixture;
+
     const lines = try garden.alloc(surface.SkateLine, forge_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "realidream forge view") };
     lines[1] = .{ .text = try garden.dupe(u8, "cellar amber") };
@@ -617,7 +633,8 @@ fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Sk
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "stamp {s}", .{stamp}) };
     lines[4] = .{ .text = try std.fmt.allocPrint(garden, "resins {d}", .{entry_count}) };
     lines[5] = .{ .text = try std.fmt.allocPrint(garden, "resin hello.txt {s}", .{digest[0..12]}) };
-    lines[6] = .{ .text = try garden.dupe(u8, "vessel amphora proposed") };
+    lines[6] = .{ .text = try std.fmt.allocPrint(garden, "vessel amphora lap1 cargo {d}", .{cargo_count_text}) };
+    lines[7] = .{ .text = try std.fmt.allocPrint(garden, "shoulder {s}", .{shoulder}) };
     return lines;
 }
 
@@ -643,7 +660,8 @@ fn run_forge_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
         "stamp 20260710.143000",
         "resins 4",
         "resin hello.txt cd416bd6cae8",
-        "vessel amphora proposed",
+        "vessel amphora lap1 cargo 2",
+        "shoulder amber-ring1-season",
     };
     assert(lines_equal(&golden, frame));
 
@@ -657,6 +675,74 @@ fn run_forge_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     const msg = try std.fmt.bufPrint(
         &out,
         "drawn terminal forge view: sig={x} lines={d} — GREEN\n",
+        .{ sig, frame.len },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
+/// Realidream forge query view — Tablecloth-query hit shape for Amber/Amphora forge facts.
+fn compose_forge_query_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    const text = try cwd.readFile(io, forge_query_hits_fixture, &buf);
+
+    const tilak = field_value(text, "filter_tilak") orelse return error.BadForgeQueryFixture;
+    const hit_count_text = field_value(text, "hit_count") orelse return error.BadForgeQueryFixture;
+    const hit_count = tally_parse_int.parse_int(u32, hit_count_text, .{}) catch return error.BadForgeQueryFixture;
+    if (hit_count != 2) return error.BadForgeQueryFixture;
+
+    var hit_lines: [2][]const u8 = undefined;
+    var hit_i: u32 = 0;
+    var lines_iter = std.mem.splitScalar(u8, text, '\n');
+    while (lines_iter.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r\n");
+        if (!std.mem.startsWith(u8, line, "hit ")) continue;
+        if (hit_i >= 2) return error.BadForgeQueryFixture;
+        hit_lines[hit_i] = line["hit ".len..];
+        hit_i += 1;
+    }
+    if (hit_i != 2) return error.BadForgeQueryFixture;
+
+    const lines = try garden.alloc(surface.SkateLine, forge_query_view_max_lines);
+    lines[0] = .{ .text = try garden.dupe(u8, "realidream forge query") };
+    lines[1] = .{ .text = try std.fmt.allocPrint(garden, "filter tilak {s}", .{tilak}) };
+    lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{hit_count}) };
+    lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{hit_lines[0]}) };
+    lines[4] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{hit_lines[1]}) };
+    lines[5] = .{ .text = try garden.dupe(u8, "forge query fold green") };
+    return lines;
+}
+
+fn run_forge_query_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    const empty = try garden.alloc(surface.SkateLine, 1);
+    empty[0] = .{ .text = "" };
+    const sig_empty = try surface.content_signature(garden, empty);
+
+    const frame = try compose_forge_query_view_lines(garden, io);
+    defer {
+        var i: u32 = 0;
+        while (i < frame.len) : (i += 1) garden.free(frame[i].text);
+        garden.free(frame);
+    }
+    assert(frame.len == forge_query_view_max_lines);
+    const sig = try surface.content_signature(garden, frame);
+    assert(sig != sig_empty);
+
+    const golden = [_][]const u8{
+        "realidream forge query",
+        "filter tilak amber-manifest",
+        "hits 2",
+        "hit peerForge amber 1 manifest.bron",
+        "hit peerForge amphora 1 vessel.bron",
+        "forge query fold green",
+    };
+    assert(lines_equal(&golden, frame));
+
+    var out: [160]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &out,
+        "drawn terminal forge query view: sig={x} lines={d} — GREEN\n",
         .{ sig, frame.len },
     );
     try std.Io.File.stdout().writeStreamingAll(io, msg);
@@ -1017,6 +1103,9 @@ pub fn main(init: std.process.Init) !u8 {
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "forgeviewtest")) {
         return run_forge_view_witness(garden, io);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "forgequeryviewtest")) {
+        return run_forge_query_view_witness(garden, io);
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "keyboardtest")) {
         return run_keyboard_witness(garden, io, init);
