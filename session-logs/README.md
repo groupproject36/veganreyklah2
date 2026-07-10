@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260710.135500 | [Pull main — latest HEAD](20260710-135500_pull-main-head.md) | Fast-forward 66 commits; tip `f755f04` |
 | 20260710.135200 | [Commit push — Greencandy + inference](20260710-135200_commit-push-greencandy-inference.md) | gitignore allowlist; parity **218** shipped |
 | 20260710.134800 | [Scribble lap 1 — snippets](20260710-134800_scribble-lap1-snippets.md) | rye_fence extract; parity **218** |
 | 20260710.134200 | [Inference lap 1 — query + add](20260710-134200_inference-lap1-query-add.md) | Anvil corpus filter **216**; Lattice add **217** |
