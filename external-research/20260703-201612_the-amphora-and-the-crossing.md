@@ -4,9 +4,9 @@
 **Stamp:** `20260703.201612 UDT` (Kaeden's clock)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME · SLC
 **Category:** External research — a missing piece named, a candidate proposed
-**Candidate:** Amphora (parked in RTAC; the seat, and the re-park from the value-object table, are Kaeden's alone)
+**Candidate:** Amphora (seated at `amphora/` — laps 1–3 Landed)
 **Companion to:** `20260703-201612_the-sealed-crossing.md` (the silo) · `20260703-200712_a-move-for-rye.md`
-**Status:** Research for understanding — Proposed candidate; kitchen twin [`20260710-002952_sealed-crossing-plainly.md`](20260710-002952_sealed-crossing-plainly.md). Seat stays Kaeden's.
+**Status:** Research for understanding — **Landed** through lap 3; kitchen twin [`20260710-002952_sealed-crossing-plainly.md`](20260710-002952_sealed-crossing-plainly.md) · crossing metal plainly [`20260710-145313_amphora-crossing-plainly.md`](20260710-145313_amphora-crossing-plainly.md). Horizons: vessel encryption seal, Kumara vessel stamp.
 **Last updated:** 2026-07-10
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
@@ -48,6 +48,18 @@ Its vows, four. **Media-agnostic by design**: an amphora never asks whether it t
 
 Its growth, three SLC laps, each witness-first. **Lap one — the packet formalized:** the bench loop's nightly zip becomes a true amphora, manifest and stamp and parent mark in the format itself, and the loop stops re-teaching its packet rules in every prompt because the vessel now carries the law. Simple, lovable, complete on day one — and this loop is the first, gratefully dogfooding user. **Lap two — the offsite pour:** an Amber season poured into an amphora and carried to a second dock or a far node, scrub run cold on arrival, completing three-two-one at last. **Lap three — the Comlink crossing:** fetch-by-digest between peers, verified twice, feeding packaging's flow and, in season, commerce's deliveries.
 
+### Landed witnesses (`20260710`)
+
+| Lap | Stamp | Witness | Parity |
+|-----|-------|---------|--------|
+| 1 parse | `143500` | `tools/amphora_lap1.rish` | **222** |
+| 2 pour/scrub | `143726` | `tools/amphora_lap2.rish` | **224** |
+| 3 hosted fetch | `144309` | `tools/amphora_lap3.rish` | **225** |
+| 3 device wire | `144833` | `tools/amphora_device_wire.rish` | **226** |
+| Forge live pour | `145313` | `tools/realidream_forge_view.rish` | **221** path |
+
+Module home: [`amphora/README.md`](../amphora/README.md). Crossing metal plainly: [`20260710-145313_amphora-crossing-plainly.md`](20260710-145313_amphora-crossing-plainly.md).
+
 ## The Seams, Kept Clean
 
 Bron, as proposed, is the letter — one resolved record. **Amphora is vessel software** — the crate that may carry many letters. MALA is the coin that may ride inside. Comlink is the sea. Kumara is the stamp. **Amber is cellar software** — the cellar the vessel leaves and returns to. Granary, if it seats, is the market floor where amphorae change hands. And Pond is the customs house: policy applied at receipt, before anything is placed or run. No duty overlaps; each name keeps its own room.
@@ -56,7 +68,7 @@ One honesty for the ear: *Amber* and *Amphora* share a first syllable and a pres
 
 ## A Note on Counsel
 
-This survey counsels; it seats nothing. Amphora currently parks in the value-object table, and this writing proposes re-parking it for the container duty — a move only Kaeden's word can make, with Pottery continuing to lead the object table either way.
+This survey began as counsel and now records a seated module. Amphora lives at `amphora/`; Pottery continues to lead the object table. Horizons named in the crossing plainly note remain open.
 
 ## Gratitude
 

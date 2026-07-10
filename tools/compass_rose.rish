@@ -36,8 +36,8 @@ let p = run ["sh" "-c" "test -f external-research/20260709-200022_pedersen-and-s
 assert p.ok else "plain stories missing"
 assert p.out contains "STORIES_OK" else "stories check failed"
 
-say "compass rose: sealed crossing Proposed + kitchen twin…"
-let sc = run ["sh" "-c" "test -f active-designing/20260703-201612_the-sealed-crossing.md && test -f external-research/20260710-002952_sealed-crossing-plainly.md && grep -q 'Proposed' active-designing/20260703-201612_the-sealed-crossing.md && grep -q 'Amphora not graduated' active-designing/20260703-201612_the-sealed-crossing.md && echo CROSS_OK"]
+say "compass rose: sealed crossing Landed + kitchen twins…"
+let sc = run ["sh" "-c" "test -f active-designing/20260703-201612_the-sealed-crossing.md && test -f external-research/20260710-002952_sealed-crossing-plainly.md && test -f external-research/20260710-145313_amphora-crossing-plainly.md && test -d amphora && grep -q 'Landed' active-designing/20260703-201612_the-sealed-crossing.md && grep -q 'Landed' external-research/20260710-002952_sealed-crossing-plainly.md && echo CROSS_OK"]
 assert sc.ok else "sealed crossing pair missing"
 assert sc.out contains "CROSS_OK" else "sealed crossing status drift"
 

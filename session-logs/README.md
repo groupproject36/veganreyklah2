@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260710.145313 | [Amphora forge pour + docs](20260710-145313_amphora-forge-pour-docs.md) | Live pour → Skate; crossing plainly + references |
 | 20260710.144833 | [Amphora device wire](20260710-144833_amphora-device-wire.md) | Virtio vessel fetch 15571/15572; parity **226** |
 | 20260710.144309 | [Amphora lap 3 Comlink fetch](20260710-144309_amphora-lap3-comlink-fetch.md) | Hosted fetch-by-digest; parity **225** |
 | 20260710.144202 | [Keep going — Amphora gates](20260710-144202_keep-going-amphora-gates.md) | Lap 1–2 + forge query landed; parity **224** tip |

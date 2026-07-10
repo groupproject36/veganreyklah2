@@ -87,7 +87,7 @@
 | **18** | **Settlement seat plainly** | **Landed** | Jul 6–7 dossier kitchen twin + supersession notes [`001249`](../external-research/20260710-001249_settlement-seat-plainly.md); external rail retired `152612` |
 | **19** | **Metalsmoke plainly + affirm** | **Landed** | Kitchen twin [`002017`](../external-research/20260710-002017_metalsmoke-plainly.md); silo **Reviewed and kept**; audit-rule stale line cleared; LEXICON row |
 | **20** | **Amber seasons + first-lap plainly** | **Landed** | Custody twin [`002422`](../external-research/20260710-002422_amber-seasons-plainly.md); shipping phrase [`002544`](../external-research/20260710-002544_first-lap-goes-green-plainly.md); Season LEXICON ask cleared |
-| **21** | **Sealed crossing plainly** | **Landed** | Kitchen twin [`002952`](../external-research/20260710-002952_sealed-crossing-plainly.md); Amphora lap 1 seated `143500` (parity **222**) |
+| **21** | **Sealed crossing plainly** | **Landed** | Kitchen twin [`002952`](../external-research/20260710-002952_sealed-crossing-plainly.md) affirmed Landed; crossing metal plainly [`145313`](../external-research/20260710-145313_amphora-crossing-plainly.md); Amphora laps 1–3 |
 | **22** | **Greencandy lap 1** | **Landed** | Chart · journal · fold · unwelcome; `greencandy/`; parity **207**; hammock [`125953`](../active-designing/20260710-125953_greencandy-hammock.md) |
 | **23** | **Greencandy books view** | **Landed** | Trial balance → Skate via `booksviewtest`; parity **208**; prompt [`125953`](../expanding-prompts/20260710-125953_greencandy-lap1-books-view.md) |
 | **24** | **Greencandy root + lap 2** | **Landed** | Own folder; P&L · BS · exception queue; parity **209**; [`131212`](../active-designing/20260710-131212_greencandy-lap2-reports.md) |
@@ -97,7 +97,7 @@
 | **28** | **Scribble lap 1** | **Landed** | `extract_rye_snippets` from session fixture; parity **218**; stamp `134800` |
 | **29** | **Tablecloth query wire** | **Landed** | Comlink hosted filter (not GraphQL); parity **219**; hammock [`140500`](../active-designing/20260710-140500_comlink-view-filter-not-graphql.md) |
 | **30** | **Realidream query view** | **Landed** | query-wire hits → Skate `queryviewtest`; parity **220**; thin-view exception family |
-| **31** | **Realidream forge view** | **Landed** | Amber manifest + resins → Skate `forgeviewtest`; Amphora proposed; parity **221** |
+| **31** | **Realidream forge view** | **Landed** | Live Amphora pour → Skate `forgeviewtest` (`145313`); parity **221** path |
 | **32** | **Amphora lap 1** | **Landed** | Module home `amphora/`; manifest entry + vessel; parity **222**; gate opened `143500` |
 | **33** | **Forge query view** | **Landed** | Tablecloth-shaped forge hits → Skate; parity **223** |
 | **34** | **Amphora lap 2** | **Landed** | Pour Amber season → carry far → cold scrub; 3-2-1 fixture; parity **224** |
@@ -150,7 +150,7 @@
 - [x] **Settlement seat plainly** — kitchen twin [`001249`](../external-research/20260710-001249_settlement-seat-plainly.md); dated supersession on `002612`/`005512`/`222500`; Prior-bench SLC-L3 row marked superseded; compass rose asserts; parity **206** (`20260710.001249`)
 - [x] **Metalsmoke plainly + affirm** — kitchen twin [`002017`](../external-research/20260710-002017_metalsmoke-plainly.md); silo + happy-zone foundations affirmed; "awaiting ratification" cleared (audit rule `191312`); LEXICON **Metalsmoke**; parity **206** (`20260710.002017`)
 - [x] **Amber seasons + first-lap plainly** — kitchen twins [`002422`](../external-research/20260710-002422_amber-seasons-plainly.md) · [`002544`](../external-research/20260710-002544_first-lap-goes-green-plainly.md); seasons silo **Reviewed and kept** (LEXICON Season ask closed); first-lap essay affirmed; Lap/Green/Season plainly links; parity **206** (`20260710.002544`)
-- [x] **Sealed crossing plainly** — kitchen twin [`002952`](../external-research/20260710-002952_sealed-crossing-plainly.md); silo + Amphora study companion links; Status remains **Proposed** (no Amphora seat); LEXICON Amphora plainly; parity **206** (`20260710.002952`)
+- [x] **Sealed crossing plainly** — kitchen twin [`002952`](../external-research/20260710-002952_sealed-crossing-plainly.md) affirmed **Landed** `145313`; crossing metal plainly [`145313`](../external-research/20260710-145313_amphora-crossing-plainly.md); Amphora module seated; parity path through **226**
 - [x] **Greencandy lap 1** — chart (cash/revenue/expense/equity), journal parse, trial-balance fold, unwelcome paths; now at `greencandy/`; `tools/greencandy_lap1.rish`; parity **207** (`20260710.125953`)
 - [x] **Greencandy books view** — journal fixture → six Skate lines via `drawn-terminal booksviewtest`; `tools/greencandy_books_view.rish`; parity **208** (`20260710.125953`)
 - [x] **Greencandy root + lap 2** — own `greencandy/` home; P&L · balance sheet · exception queue; `tools/greencandy_lap2.rish`; parity **209** (`20260710.131212`)

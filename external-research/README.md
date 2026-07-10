@@ -48,7 +48,8 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 | `20260710.133500` | [Local forge on Minisforum metal](20260710-133500_local-forge-minisforum-inference.md) | Visionary: Lattice · Lantern · Scribble · Anvil; lap 0 landed **215** |
 | `20260710.131956` | [Seen books and the living desktop — long horizon](20260710-131956_seen-books-living-desktop-horizon.md) | Visionary: carriage · books · sight; Greencandy + Visual Track + Rye OS |
 | `20260710.125953` | [Greencandy — Kick/Digits clean-room](20260710-125953_greencandy-kick-digits-clean-room.md) | Public-docs concepts → our chart/journal/fold vocabulary; no code copy |
-| `20260710.002952` | [Sealed crossing — said plainly](20260710-002952_sealed-crossing-plainly.md) | Amphora vessel duty; six parts · four vows · three laps; still Proposed |
+| `20260710.145313` | [Amphora crossing — said plainly](20260710-145313_amphora-crossing-plainly.md) | Pour · scrub · fetch · virtio; public concepts → our words; Landed metal |
+| `20260710.002952` | [Sealed crossing — said plainly](20260710-002952_sealed-crossing-plainly.md) | Amphora vessel duty; six parts · four vows · three laps; **Landed** through lap 3 |
 | `20260710.002544` | [First lap goes green — said plainly](20260710-002544_first-lap-goes-green-plainly.md) | Lap · green · Edit 5; layers of proof; shipping phrase whole |
 | `20260710.002422` | [Amber seasons — said plainly](20260710-002422_amber-seasons-plainly.md) | Custody as bounded interval; seal · scrub · restore; cellar sleeps between |
 | `20260710.002017` | [Metalsmoke — said plainly](20260710-002017_metalsmoke-plainly.md) | Thin edge's few honest checks; three marks; audit rule already ratified |
@@ -80,7 +81,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 | `20260704.020800` | [One word, one gate](../context/specs/20260704-020800_one-word-one-gate.md) | Gate · witness · toll vocabulary ratified (canon in `context/specs/`) |
 | `20260704-002912` | [Gates, arms, and the Urbit lineage](20260704-002912_gates-arms-and-the-urbit-lineage.md) | Three gate families vs Hoon homonyms; Tilak triad vs grab/grow/grad; Zig function+struct sufficient — no Urbit gate/arm in Rye |
 | `20260704.030600` | [Itinerary and the crossing manifest](20260704-030600_itinerary-and-the-crossing-manifest.md) | Itinerary primer + crossing_manifest_seed — canonical |
-| `20260703-201612` | [The Amphora and the crossing](20260703-201612_the-amphora-and-the-crossing.md) | **Vessel software** — sealed traveling container; shoulder line, parent mark, manifest; cellar's sibling |
+| `20260703-201612` | [The Amphora and the crossing](20260703-201612_the-amphora-and-the-crossing.md) | **Vessel software** — sealed traveling container; Landed witnesses table; cellar's sibling |
 | `20260703-200712` | [Mysticeti's blocks and the object path](20260703-200712_mysticetis-blocks-and-the-object-path.md) | Blocks in layers; owned vs shared sorting; object-path treasure for Pottery ladder |
 | `20260703-200712` | [A Move for Rye](20260703-200712_a-move-for-rye.md) | Value-object question; Pottery leads RTAC table; fixed verbs law today |
 | `20260703-200712` | [Compute commerce on the network](20260703-200712_compute-commerce-on-the-network.md) | Compute market as seated-module choreography |

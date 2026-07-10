@@ -18,7 +18,7 @@
 //!   pond/bin/drawn-terminal sightviewtest  # Linengrow sight — carriage + books on one Skate frame
 //!   pond/bin/drawn-terminal assistviewtest # Inference assist — corpus + lantern + books fold
 //!   pond/bin/drawn-terminal queryviewtest  # Realidream query view — Tablecloth query-wire hits
-//!   pond/bin/drawn-terminal forgeviewtest  # Realidream forge view — Amber manifest + Amphora vessel
+//!   pond/bin/drawn-terminal forgeviewtest  # Realidream forge view — live Amphora pour → Skate
 //!   pond/bin/drawn-terminal forgequeryviewtest # Forge Tablecloth-query hits → Skate
 //!   pond/bin/drawn-terminal metalsmoke     # Wayland metal smoke (needs WAYLAND_DISPLAY)
 
@@ -33,7 +33,7 @@ const surface = @import("brushstroke/wayland_seed.rye");
 const window_input = @import("window_input.rye");
 const tally_parse_int = @import("rishi/parse_int.rye");
 
-const drawn_terminal_version = "20260710.143500";
+const drawn_terminal_version = "20260710.145313";
 
 const status_max_len: u32 = 80;
 const thin_view_max_lines: u32 = 5;
@@ -49,8 +49,8 @@ const greencandy_journal_fixture = "greencandy/fixtures/journal.bron";
 const anvil_corpus_fixture = "anvil/fixtures/rye_corpus.bron";
 const lantern_completion_fixture = "lantern/fixtures/completion.bron";
 const tablecloth_query_hits_fixture = "tools/fixtures/tablecloth_query_hits.bron";
-const forge_amber_manifest_fixture = "tools/fixtures/forge_amber_manifest.bron";
-const amphora_vessel_fixture = "tools/fixtures/amphora_vessel_lap1.bron";
+const forge_amber_manifest_fixture = "tools/fixtures/.forge_view_bundle/manifest.bron";
+const amphora_vessel_fixture = "tools/fixtures/.forge_view_bundle/vessel.bron";
 const forge_query_hits_fixture = "tools/fixtures/forge_query_hits.bron";
 const status_full_text = "transcript full — earlier lines still ran; :quit to close";
 const poll_timeout_ms: i32 = 50;
@@ -583,7 +583,8 @@ fn run_query_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream forge view — Amber cellar + Amphora vessel (lap 1 seated) into Skate.
+/// Realidream forge view — Amber cellar + Amphora vessel from a live pour bundle.
+/// Witness runs tools/fixtures/forge_view_pour.sh before forgeviewtest.
 fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -609,7 +610,7 @@ fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Sk
         if (digest.len != 64) return error.BadForgeFixture;
         if (std.mem.eql(u8, name, "hello.txt")) hello_digest = digest;
     }
-    if (entry_count != 4) return error.BadForgeFixture;
+    if (entry_count != 2) return error.BadForgeFixture;
     const digest = hello_digest orelse return error.BadForgeFixture;
 
     var vessel_buf: [1024]u8 = undefined;
@@ -633,7 +634,7 @@ fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Sk
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "stamp {s}", .{stamp}) };
     lines[4] = .{ .text = try std.fmt.allocPrint(garden, "resins {d}", .{entry_count}) };
     lines[5] = .{ .text = try std.fmt.allocPrint(garden, "resin hello.txt {s}", .{digest[0..12]}) };
-    lines[6] = .{ .text = try std.fmt.allocPrint(garden, "vessel amphora lap1 cargo {d}", .{cargo_count_text}) };
+    lines[6] = .{ .text = try std.fmt.allocPrint(garden, "vessel amphora poured cargo {d}", .{cargo_count_text}) };
     lines[7] = .{ .text = try std.fmt.allocPrint(garden, "shoulder {s}", .{shoulder}) };
     return lines;
 }
@@ -657,10 +658,10 @@ fn run_forge_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
         "realidream forge view",
         "cellar amber",
         "format amber-ring1-v2-tilak",
-        "stamp 20260710.143000",
-        "resins 4",
+        "stamp 20260710.145313",
+        "resins 2",
         "resin hello.txt cd416bd6cae8",
-        "vessel amphora lap1 cargo 2",
+        "vessel amphora poured cargo 2",
         "shoulder amber-ring1-season",
     };
     assert(lines_equal(&golden, frame));
