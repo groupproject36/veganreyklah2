@@ -1,9 +1,9 @@
 # Lantern — Local Inference in Pond
 
 **Language:** EN
-**Last updated:** 2026-07-10 (lap 29 presence_penalty · n `224805`; parity **374**/**378** — Inference lap 1 close)
+**Last updated:** 2026-07-11 (RW-5 contract `005028`; tips **420**/**421**)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Checkable-room module — laps 0–29 green (through presence_penalty · n pins)
+**Status:** Checkable-room module — laps 0–33 green; RW-5 mirrored pair landed
 
 ---
 
@@ -77,5 +77,7 @@ Lantern serves bounded request/response inference inside Pond. Each lap deepens 
 | [`fixtures/completion_frequency_penalty.bron`](fixtures/completion_frequency_penalty.bron) | Lap 27 frequency_penalty pin |
 | [`fixtures/completion_presence_penalty.bron`](fixtures/completion_presence_penalty.bron) | Lap 28 presence_penalty pin |
 | [`fixtures/completion_n.bron`](fixtures/completion_n.bron) | Lap 29 n pin |
+
+**RW-5** (`20260711.005028`) — mirrored pair with Drawn Terminal at `complete_fixture`: collaboration tip **420** (`tools/rw5_lantern_collab.rish`), contract tip **421** (`tools/rw5_lantern_contract.rish` · `lantern rw5contracttest`). Contract on paper: [`../work-in-progress/20260711-005028_rw5-mirrored-pair-contract.md`](../work-in-progress/20260711-005028_rw5-mirrored-pair-contract.md).
 
 *May every completion honor its budget. May length stops stay honest. May only listed models speak. May seed, top_p, err_stop, stop_sequence, prompt, max_tokens, text, temperature, TopPMismatch, err_stop, length_stop, stopped_reason, and stream pins keep the fixture path deterministic.*

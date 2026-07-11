@@ -1562,3 +1562,13 @@ say "witness suite: Commerce steward demo (list → settle → Greencandy receip
 let commerce_steward = run ["rishi/bin/rishi" "run" "tools/commerce_steward_demo.rish"]
 assert commerce_steward.ok else "Commerce steward demo witness failed"
 say "GREEN: Commerce steward demo witness passed."
+
+say "witness suite: RW-5 Lantern collaboration (Drawn Terminal asks complete_fixture)…"
+let rw5_collab = run ["rishi/bin/rishi" "run" "tools/rw5_lantern_collab.rish"]
+assert rw5_collab.ok else "RW-5 Lantern collaboration witness failed"
+say "GREEN: RW-5 Lantern collaboration witness passed."
+
+say "witness suite: RW-5 Lantern contract (six welcome/unwelcome probes)…"
+let rw5_contract = run ["rishi/bin/rishi" "run" "tools/rw5_lantern_contract.rish"]
+assert rw5_contract.ok else "RW-5 Lantern contract witness failed"
+say "GREEN: RW-5 Lantern contract witness passed."

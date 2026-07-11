@@ -14,6 +14,7 @@
 //!   pond/bin/drawn-terminal sessiontest  # headless Lap 3 witness
 //!   pond/bin/drawn-terminal keyboardtest # headless SLC-2b witness
 //!   pond/bin/drawn-terminal rw2collabtest  # headless RW-2 app collaboration witness
+//!   pond/bin/drawn-terminal rw5collabtest  # headless RW-5 Lantern collaboration (parity tip 420)
 //!   pond/bin/drawn-terminal thinviewtest   # Realidream thin view — local MALA/WOV fixtures
 //!   pond/bin/drawn-terminal booksviewtest  # Greencandy books view — trial balance + P&L + BS
 //!   pond/bin/drawn-terminal sightviewtest  # Linengrow sight — carriage + books on one Skate frame
@@ -101,8 +102,9 @@ const kumara = @import("mandi/kumara.rye");
 const anvil = @import("anvil/anvil_core.rye");
 const scribble = @import("scribble/scribble_core.rye");
 const greencandy = @import("greencandy/greencandy_core.rye");
+const lc = @import("lantern/lantern_core.rye");
 
-const drawn_terminal_version = "20260710.182502";
+const drawn_terminal_version = "20260711.005028";
 
 const status_max_len: u32 = 80;
 const thin_view_max_lines: u32 = 5;
@@ -4623,6 +4625,120 @@ fn run_rw2_collaboration_witness(garden: std.mem.Allocator, io: std.Io, init: st
     return 0;
 }
 
+/// RW-5 collaboration — drawn terminal asks Lantern via complete_fixture (fixture stub).
+fn run_rw5_collaboration_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    _ = garden;
+    const cwd = std.Io.Dir.cwd();
+    var buf: [1024]u8 = undefined;
+    var refused: u32 = 0;
+
+    // Welcome: base completion.
+    {
+        const text = try cwd.readFile(io, lantern_completion_fixture, &buf);
+        const req = lc.Request{
+            .model_hash = "sha3-256-rye-forge-lap0",
+            .prompt = "init.garden for args",
+            .max_tokens = 64,
+        };
+        const resp = try lc.complete_fixture(req, text);
+        assert(resp.tokens_in == 24);
+        assert(resp.tokens_out == 12);
+        assert(resp.stopped_reason == .eos);
+        try std.Io.File.stdout().writeStreamingAll(io, "rw5: completion welcome tokens 24/12 eos\n");
+    }
+
+    // Welcome: echo pin.
+    {
+        const text = try cwd.readFile(io, lantern_echo_fixture, &buf);
+        const req = lc.Request{
+            .model_hash = "sha3-256-rye-forge-lap0",
+            .prompt = "echo",
+            .max_tokens = 64,
+            .echo = true,
+        };
+        const resp = try lc.complete_fixture(req, text);
+        assert(resp.stopped_reason == .eos);
+        try std.Io.File.stdout().writeStreamingAll(io, "rw5: echo pin welcome echo=1\n");
+    }
+
+    // Welcome: user pin.
+    {
+        const text = try cwd.readFile(io, lantern_user_fixture, &buf);
+        const req = lc.Request{
+            .model_hash = "sha3-256-rye-forge-lap0",
+            .prompt = "user",
+            .max_tokens = 64,
+            .user = "steward-rio",
+        };
+        const resp = try lc.complete_fixture(req, text);
+        assert(resp.stopped_reason == .eos);
+        try std.Io.File.stdout().writeStreamingAll(io, "rw5: user pin welcome user=steward-rio\n");
+    }
+
+    // Unwelcome: model mismatch.
+    {
+        const text = try cwd.readFile(io, lantern_completion_fixture, &buf);
+        const req = lc.Request{
+            .model_hash = "wrong-hash",
+            .prompt = "x",
+            .max_tokens = 8,
+        };
+        if (lc.complete_fixture(req, text)) |_| {
+            return error.ModelMismatchAccepted;
+        } else |err| {
+            assert(err == error.ModelMismatch);
+        }
+        refused += 1;
+        try std.Io.File.stdout().writeStreamingAll(io, "rw5: model mismatch survived\n");
+    }
+
+    // Unwelcome: echo mismatch.
+    {
+        const text = try cwd.readFile(io, lantern_echo_fixture, &buf);
+        const req = lc.Request{
+            .model_hash = "sha3-256-rye-forge-lap0",
+            .prompt = "echo",
+            .max_tokens = 64,
+            .echo = false,
+        };
+        if (lc.complete_fixture(req, text)) |_| {
+            return error.EchoMismatchAccepted;
+        } else |err| {
+            assert(err == error.EchoMismatch);
+        }
+        refused += 1;
+        try std.Io.File.stdout().writeStreamingAll(io, "rw5: echo mismatch survived\n");
+    }
+
+    // Unwelcome: user mismatch.
+    {
+        const text = try cwd.readFile(io, lantern_user_fixture, &buf);
+        const req = lc.Request{
+            .model_hash = "sha3-256-rye-forge-lap0",
+            .prompt = "user",
+            .max_tokens = 64,
+            .user = "other",
+        };
+        if (lc.complete_fixture(req, text)) |_| {
+            return error.UserMismatchAccepted;
+        } else |err| {
+            assert(err == error.UserMismatch);
+        }
+        refused += 1;
+        try std.Io.File.stdout().writeStreamingAll(io, "rw5: user mismatch survived\n");
+    }
+
+    assert(refused == 3);
+    var out: [160]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &out,
+        "drawn terminal rw5 collaboration: tokens=24/12 echo=1 user=steward-rio refused={d} — GREEN\n",
+        .{refused},
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
 fn run_keyboard_witness(garden: std.mem.Allocator, io: std.Io, init: std.process.Init) !u8 {
     var env = rishi.Env{};
     var history = rishi.History{};
@@ -4847,6 +4963,9 @@ pub fn main(init: std.process.Init) !u8 {
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "rw2collabtest")) {
         return run_rw2_collaboration_witness(garden, io, init);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "rw5collabtest")) {
+        return run_rw5_collaboration_witness(garden, io);
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "thinviewtest")) {
         return run_thin_view_witness(garden, io);

@@ -1,7 +1,8 @@
-//! lantern/lantern.rye — Lantern lap 33 selftest (echo · user pins).
+//! lantern/lantern.rye — Lantern lap 33 selftest (echo · user pins) + RW-5 contract.
 //!
 //!   rye build lantern/lantern.rye -femit-bin=lantern/bin/lantern
 //!   lantern/bin/lantern selftest
+//!   lantern/bin/lantern rw5contracttest  # RW-5 six-probe contract (parity tip 421)
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -9,7 +10,7 @@ const print = std.debug.print;
 const Dir = std.Io.Dir;
 const lc = @import("lantern_core.rye");
 
-const lantern_version = "20260710.232158";
+const lantern_version = "20260711.005028";
 pub const fixture_path = "lantern/fixtures/completion.bron";
 pub const length_fixture_path = "lantern/fixtures/completion_length.bron";
 pub const allow_fixture_path = "lantern/fixtures/allowed_models.bron";
@@ -1095,6 +1096,18 @@ fn unwelcome_bad_user() !void {
 
 
 
+/// RW-5 contract — six welcome / unwelcome probes on the mirrored pair surface.
+fn run_rw5_contract_test(io: std.Io) !u8 {
+    try welcome_complete(io);
+    try welcome_echo_pin(io);
+    try welcome_user_pin(io);
+    try unwelcome_model_mismatch(io);
+    try unwelcome_echo_mismatch(io);
+    try unwelcome_user_mismatch(io);
+    print("lantern rw5 contract: 6/6 GREEN\n", .{});
+    return 0;
+}
+
 pub fn main(init: std.process.Init) !u8 {
     const garden = init.arena.allocator();
     const io = init.io;
@@ -1165,6 +1178,9 @@ pub fn main(init: std.process.Init) !u8 {
         print("lantern lap33: version {s} — GREEN\n", .{lantern_version});
         return 0;
     }
-    print("usage: lantern selftest\n", .{});
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "rw5contracttest")) {
+        return run_rw5_contract_test(io);
+    }
+    print("usage: lantern selftest|rw5contracttest\n", .{});
     return 1;
 }

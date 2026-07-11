@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260710.001249` (settlement-seat plainly + supersession; parity **206**)
-**Last updated:** 2026-07-11 (commerce steward demo `004652`; parity **419**)
+**Last updated:** 2026-07-11 (RW-5 Lantern pair `005028`; parity **421**)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -176,7 +176,7 @@ Essay: [`external-research/20260710-133500_local-forge-minisforum-inference.md`]
 | **Steep** | Peer file sharing — sealed content-addressed pieces; TAME Rye alternative spirit to BitTorrent; named `210433` — [`hammock`](../active-designing/20260710-210433_steep-peer-file-sharing-name.md); first lap not opened |
 | **Language fork** | Self-hosted compiler, Rye-native `std` — revisited from a **mature whole** when RISC-V-first genuinely demands it ([`20260628-043542` direction](../active-designing/20260628-043542_thin-frontend-slc-direction.md)) |
 | **Whole machine** | Aurora on RISC-V, full desktop, Brushstroke web-portable, Rye OS on open silicon |
-| **Inference stack** | **Lap 1 closed** tip **378**; Anvil **386**; Greencandy lap 4 **394**; fixture deepen **410**; glass composition tip **418** (`234004`); next rung **2** ROCm (horizon) |
+| **Inference stack** | **Lap 1 closed** tip **378**; Anvil **386**; Greencandy lap 4 **394**; fixture deepen **410**; glass composition tip **418** (`234004`); RW-5 tips **420**/**421** (`005028`); next rung **2** ROCm (horizon) |
 
 Prior fork steps F0–F5 remain documented in [`active-designing/yonder/20260621-070712_the-compiler-fork.md`](../active-designing/yonder/20260621-070712_the-compiler-fork.md) as **research**, not the active build order.
 
@@ -214,6 +214,7 @@ Prior fork steps F0–F5 remain documented in [`active-designing/yonder/20260621
 | RW-2 mirrored pair — app↔Brushstroke seam | Cursor | **150** ✅ |
 | Happy-zone second pass — Inference Track | Cursor | audit `001225` ✅; next season **RW-5** |
 | Commerce steward demo — list → settle → Greencandy | Cursor | **419** ✅; live TB still Rest-until |
+| RW-5 mirrored pair — Drawn Terminal ↔ Lantern | Cursor | **420**/**421** ✅; contract `005028` |
 | Vocabulary ground — TWO_ROOMS seat · canonical gloss · doorway witness | Cursor | **153** ✅ |
 
 **Season (`20260705.203144`):** **Linengrow-via-Comlink** — ground first, then **Comlink device wire** (Rye spine step that unlocks SLC-L2 sealed delivery). Zip **47** seals the astrology silo bench (`e8d1919`).

@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-07-11 (commerce steward demo `004652`; parity **419**)
+**Last updated:** 2026-07-11 (RW-5 Lantern pair `005028`; parity **421**)
 
 - [x] **Realidream thin-view exception (`021112` → re-scoped `202427`)** — chain-read removed `152612`; renders **local** MALA mint + WOV exit-bundle fixtures through SLC-2a drawn terminal (`thinviewtest`); no new input, no Pond policy, no Dexter graduation; `tools/realidream_thin_view.rish`; parity **202**; prompt [`202427`](../expanding-prompts/20260709-202427_realidream-thin-view-local-facts.md)
 
@@ -301,6 +301,8 @@
 | **232** | **Assist view lap 17 — user on glass** | **Landed** | user pin on lantern band; parity **417**; stamp `234004` |
 | **233** | **Assist sight lap 15 — user — glass composition close** | **Landed** | user on carriage; tip **418**; stamp `234004` |
 | **234** | **Commerce steward demo — list → settle → Greencandy receipt** | **Landed** | In-process livelihood loop; tip **419**; stamp `004652`; live TB stays Rest-until |
+| **235** | **RW-5 collaboration — Drawn Terminal asks Lantern** | **Landed** | `complete_fixture` welcome/unwelcome; tip **420**; stamp `005028` |
+| **236** | **RW-5 contract — Lantern six-probe** | **Landed** | welcome complete/echo/user + three refuses; tip **421**; stamp `005028` |
 | — | **Rest bench (commerce)** | **Parked** | Live TB — wait for brief; Rest-until (W1/seam B) unchanged |
 | — | **Realidream lane** | Horizon opened | Visual Track in ROADMAP; full viewer still held; thin view + books view are Skate folds |
 | — | Two-backend seam | **Affirmed: wait** | Kaeden `174500`; sovereign framebuffer when Aurora needs a screen |
@@ -603,7 +605,7 @@ Ground: [`20260702-180812_testing-audit-first-pass.md`](20260702-180812_testing-
 - [x] **RW-4 SLC failure-path witness** — `tools/rw4_slc_failure_paths.rish` pins unknown meta-command, bad `:recall`, doomed `run`, and unknown CLI; wired in parity **142** (`20260702.183500`).
 - [x] **Standing audit rule (Kaeden ratifies)** — every new seam ships its mirrored collaboration/contract pair; integrated checks live only on the thin edge; one pair per season, RW-1 (**147**), RW-2 (**150**) landed (`20260703.191312 UDT`, *for*).
 - [x] **Happy-zone second pass (Inference)** — census tip **211**–**418**; suite still happy-zone shaped; mirror gap named; next season **RW-5** Drawn Terminal ↔ Lantern; audit [`20260711-001225_testing-audit-second-pass-inference.md`](20260711-001225_testing-audit-second-pass-inference.md) (`20260711.001225`).
-- [ ] **RW-5 contract on paper** — Drawn Terminal ↔ Lantern fixture collaboration/contract mirror; one-pair-per-season; opens on Kaeden's word after second pass.
+- [x] **RW-5 contract on paper** — Drawn Terminal ↔ Lantern fixture collaboration/contract mirror; tips **420**/**421**; contract [`20260711-005028_rw5-mirrored-pair-contract.md`](20260711-005028_rw5-mirrored-pair-contract.md) (`20260711.005028`).
 - [x] **Versioning rule (Kaeden ratifies)** — authored surfaces carry chronological stamps only; the backend's semver and the inherited parser stay named seams ([`20260702-184312_versioning-audit.md`](20260702-184312_versioning-audit.md)); **chrono sweep** wired in parity **148** (`20260703.203212 UDT`, Cursor metal) (`20260703.191312 UDT`, *for*).
 - [x] **Rishi framework growth (witness-first, in need order)** — **conditional** `tools/rish_conditional_witness.rish` (`20260702.205630`); **env** `tools/rish_env_witness.rish` (`20260702.210201`); **file I/O** `tools/rish_file_io_witness.rish` (`20260702.210435`); **exit vocabulary** `tools/rish_exit_codes_witness.rish` (`20260702.210650`); all unwired from parity — Edit 5 landed at **143** (`20260703.032812`).
 - [x] **Manual next rooms — Rishi tutorial one** — [`manual/tutorials/first-witness.md`](../manual/tutorials/first-witness.md); reference at chronological stamp `20260702.184312`, parity **142** (`20260702.184312` grain round).

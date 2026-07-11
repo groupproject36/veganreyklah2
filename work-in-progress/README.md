@@ -1,7 +1,7 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** 2026-07-11 (happy-zone second pass · workbench index)
+**Last updated:** 2026-07-11 (RW-5 Lantern pair · workbench index)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Foundation
@@ -42,6 +42,7 @@ The discipline is simple: if reading a line aloud would make a newcomer ask "so 
 
 | Stamp | Artifact | Meaning |
 |-------|----------|---------|
+| `20260711.005028` | [RW-5 mirrored pair contract](20260711-005028_rw5-mirrored-pair-contract.md) | Tips **420**/**421** — Drawn Terminal ↔ Lantern fixture |
 | `20260711.004652` | [Commerce citizen steward demo hammock](../active-designing/20260711-004652_commerce-citizen-steward-demo-hammock.md) | Tip **419** — list → settle → Greencandy; live TB held |
 | `20260711.001225` | [Testing audit — second pass (Inference)](20260711-001225_testing-audit-second-pass-inference.md) | Happy-zone census tip **418**; RW-5 next season |
 | `20260710.220706` | [SLC and inference progress](20260710-220706_slc-and-inference-progress.md) | How tip **354** serves the SLCs; track snapshot; Rest-until / horizon |
