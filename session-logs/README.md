@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260711.002705 | [What is the RW-5 contract?](20260711-002705_rw5-contract-explain.md) | Named Drawn Terminal ↔ Lantern; paper not written yet |
 | 20260711.001331 | [Full session summary — climbs, counsel, audit, commits](20260711-001331_full-session-summary-commits.md) | Tips **379**–**418**; PRs **#85**–**#93**; HEAD tip **418** |
 | 20260711.001302 | [Happy-zone second pass — Inference Track](20260711-001302_happy-zone-second-pass.md) | Audit `001225`; suite still shaped; next **RW-5** |
 | 20260710.235856 | [Counsel — should we audit the happy-zone foundation?](20260710-235856_happy-zone-audit-counsel.md) | Yes: light second-pass on Inference seams; tip **418** |
