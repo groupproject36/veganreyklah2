@@ -1592,3 +1592,8 @@ say "witness suite: Granary steward sight (weave livelihood + books on Skate)…
 let granary_steward_sight = run ["rishi/bin/rishi" "run" "tools/granary_steward_sight_view.rish"]
 assert granary_steward_sight.ok else "Granary steward sight witness failed"
 say "GREEN: Granary steward sight witness passed."
+
+say "witness suite: Open Asks view (closed ask loop on Skate)…"
+let open_asks_view = run ["rishi/bin/rishi" "run" "tools/open_asks_view.rish"]
+assert open_asks_view.ok else "Open Asks view witness failed"
+say "GREEN: Open Asks view witness passed."

@@ -1034,11 +1034,12 @@ fn run_selftest_unwelcome_bad_ref(
 }
 
 fn run_selftest(io: std.Io) !u8 {
+    const state = try run_welcome_fold(io);
+    assert(state.completed);
+    assert(state.stipend == 100);
+
     const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
     const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
-    const poster_pk = poster_kp.public_key;
-    const applicant_pk = applicant_kp.public_key;
-
     var poster_hex: [64]u8 = undefined;
     var applicant_hex: [64]u8 = undefined;
     pubkey_hex(poster_kp, &poster_hex);
@@ -1055,12 +1056,7 @@ fn run_selftest(io: std.Io) !u8 {
         &log,
         &log_len,
     );
-
-    const state = try fold_log(log[0..log_len], poster_pk, applicant_pk);
-    assert(state.completed);
-    assert(state.stipend == welcome.stipend);
-
-    try run_selftest_unwelcome_bad_ref(applicant_kp, poster_pk, applicant_pk, applicant_hex[0..64], .{
+    try run_selftest_unwelcome_bad_ref(applicant_kp, poster_kp.public_key, applicant_kp.public_key, applicant_hex[0..64], .{
         .req_sig = welcome.req_sig,
         .canonical_req = welcome.canonical_req,
         .req_len = welcome.req_len,
@@ -1070,6 +1066,32 @@ fn run_selftest(io: std.Io) !u8 {
     print("oal1: version {s}\n", .{oa1_version});
     print("GREEN: OA-L1 closed ask loop — post, apply, accept, complete, verify.\n", .{});
     return 0;
+}
+
+/// Public welcome fold for Skate views — OA-L1 closed loop in-process.
+pub fn run_welcome_fold(io: std.Io) !FoldState {
+    const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
+    var poster_hex: [64]u8 = undefined;
+    var applicant_hex: [64]u8 = undefined;
+    pubkey_hex(poster_kp, &poster_hex);
+    pubkey_hex(applicant_kp, &applicant_hex);
+
+    var log: [max_log_len]u8 = undefined;
+    var log_len: u32 = 0;
+    const welcome = try append_oa1_welcome_log(
+        io,
+        poster_kp,
+        applicant_kp,
+        poster_hex[0..64],
+        applicant_hex[0..64],
+        &log,
+        &log_len,
+    );
+    const state = try fold_log(log[0..log_len], poster_kp.public_key, applicant_kp.public_key);
+    assert(state.completed);
+    assert(state.stipend == welcome.stipend);
+    return state;
 }
 
 const EscrowKeys = struct {
