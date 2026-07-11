@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260711.005719 | [Counsel — how Rye OS could help Cursor SpaceXAI](20260711-005719_rye-os-helps-cursor-spacexai.md) | Enclosure · witnesses · local inference · agent commerce · Realidream |
 | 20260711.005519 | [RW-5 Lantern mirrored pair — tips 420 / 421](20260711-005519_rw5-lantern-pair.md) | Drawn Terminal asks complete_fixture; six-probe contract GREEN |
 | 20260711.004928 | [Commerce steward demo — tip 419](20260711-004928_commerce-steward-demo.md) | List → settle → Greencandy; livelihood loop in-process |
 | 20260711.004217 | [Blind spots counsel — important, lucrative, dharmic](20260711-004217_blind-spots-counsel.md) | Commerce citizen brief beats climb-from-418; RW-5 next bench |
