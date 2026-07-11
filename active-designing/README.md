@@ -47,6 +47,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260711.015106` | [Open Asks escrow view — Nyasa on Skate](20260711-015106_open-asks-escrow-view-hammock.md) | Tip **427** — hold/release civic glass |
 | `20260711.014454` | [Open Asks view — closed ask loop on Skate](20260711-014454_open-asks-view-hammock.md) | Tip **426** — OA-L1 fold on glass |
 | `20260711.014304` | [Granary steward sight — weave + books on one frame](20260711-014304_granary-steward-sight-hammock.md) | Tip **425** — second-roof mirror of Mandi sight |
 | `20260711.012451` | [Granary weave steward — second roof on Skate](20260711-012451_granary-steward-composition-hammock.md) | Tip **424** — list → settle → Greencandy for weaves |

@@ -1166,7 +1166,8 @@ pub fn write_escrow_payment_canonical(
     return try rc.write_canonical_fact(fields, out);
 }
 
-fn run_escrow_selftest(io: std.Io) !u8 {
+/// Public escrow welcome fold for Skate views — OA-L3 hold then release in-process.
+pub fn run_escrow_welcome_fold(io: std.Io) !FoldState {
     const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
     const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
     const escrow_kp = kumara.keypair_from_seed(&escrow_seed);
@@ -1196,7 +1197,6 @@ fn run_escrow_selftest(io: std.Io) !u8 {
     request_ref_hex(canonical_req[0..req_len], &ref_hex);
     const stipend_text = req_fields.stipend;
 
-    // Welcome path: post, apply, accept, hold, release.
     var log: [max_log_len]u8 = undefined;
     var log_len: u32 = 0;
     try build_accepted_prefix(keys, req_fields, ref_hex[0..ref_hex_len], &log, &log_len);
@@ -1209,7 +1209,43 @@ fn run_escrow_selftest(io: std.Io) !u8 {
     assert(state.completed);
     assert(state.escrow_balance == 0);
     assert(state.stipend == 100);
+    return state;
+}
+
+fn run_escrow_selftest(io: std.Io) !u8 {
+    const state = try run_escrow_welcome_fold(io);
+    assert(state.held);
+    assert(state.released);
+    assert(state.completed);
+    assert(state.escrow_balance == 0);
+    assert(state.stipend == 100);
     print("oal3: hold then release folded — escrow closes at {d}, stipend {d}\n", .{ state.escrow_balance, state.stipend });
+
+    const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
+    const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
+    const escrow_kp = kumara.keypair_from_seed(&escrow_seed);
+    var keys: EscrowKeys = .{
+        .poster = poster_kp,
+        .applicant = applicant_kp,
+        .escrow = escrow_kp,
+        .poster_hex = undefined,
+        .applicant_hex = undefined,
+        .escrow_hex = undefined,
+    };
+    hex_of_key(poster_kp.public_key, &keys.poster_hex);
+    hex_of_key(applicant_kp.public_key, &keys.applicant_hex);
+    hex_of_key(escrow_kp.public_key, &keys.escrow_hex);
+
+    const cwd = Dir.cwd();
+    var fixture_buf: [max_oa_fact]u8 = undefined;
+    const fixture_read = try cwd.readFile(io, "tools/fixtures/open_asks_request.bron", &fixture_buf);
+    var req_fields: RequestFields = undefined;
+    try parse_request_fields(fixture_read, &req_fields);
+    var canonical_req: [max_oa_fact]u8 = undefined;
+    const req_len = try write_canonical_request(req_fields, &canonical_req);
+    var ref_hex: [ref_hex_len]u8 = undefined;
+    request_ref_hex(canonical_req[0..req_len], &ref_hex);
+    const stipend_text = req_fields.stipend;
 
     // Unwelcome path 1 — release with no prior hold.
     {

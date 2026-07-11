@@ -83,6 +83,7 @@
 //!   pond/bin/drawn-terminal granarystewardtest # Granary steward — list → settle → Greencandy (tip 424)
 //!   pond/bin/drawn-terminal granarystewardsighttest # Granary steward sight — weave + books (tip 425)
 //!   pond/bin/drawn-terminal openasksviewtest # Open Asks — closed ask loop on Skate (tip 426)
+//!   pond/bin/drawn-terminal openasksescrowviewtest # Open Asks escrow — hold/release on Skate (tip 427)
 //!   pond/bin/drawn-terminal metalsmoke     # Wayland metal smoke (needs WAYLAND_DISPLAY)
 
 const std = @import("std");
@@ -181,6 +182,7 @@ const granary_settle_view_max_lines: u32 = 6;
 const granary_steward_view_max_lines: u32 = 8;
 const granary_steward_sight_view_max_lines: u32 = 8;
 const open_asks_view_max_lines: u32 = 8;
+const open_asks_escrow_view_max_lines: u32 = 8;
 const mala_mint_fixture = "tools/fixtures/mala_m1_mint.bron";
 const wov_bundle_fixture = "tools/fixtures/wov_exit_bundle_v1.bron";
 const greencandy_journal_fixture = "greencandy/fixtures/journal.bron";
@@ -5079,6 +5081,69 @@ fn run_open_asks_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
+/// Open Asks escrow view — OA-L3 hold then release on one Skate frame.
+fn compose_open_asks_escrow_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
+    const state = try open_asks.run_escrow_welcome_fold(io);
+    assert(state.posted);
+    assert(state.applied);
+    assert(state.accepted);
+    assert(state.held);
+    assert(state.released);
+    assert(state.completed);
+    assert(state.stipend == 100);
+    assert(state.escrow_balance == 0);
+    assert(state.request_ref_len == open_asks.ref_hex_len);
+    assert(std.mem.eql(u8, state.request_ref[0..state.request_ref_len], open_asks.witness_request_ref));
+
+    const lines = try garden.alloc(surface.SkateLine, open_asks_escrow_view_max_lines);
+    lines[0] = .{ .text = try garden.dupe(u8, "open asks escrow view") };
+    lines[1] = .{ .text = try garden.dupe(u8, "posted animator for researcher interview visuals") };
+    lines[2] = .{ .text = try std.fmt.allocPrint(garden, "request_ref {s}", .{state.request_ref[0..12]}) };
+    lines[3] = .{ .text = try garden.dupe(u8, "applied · accepted · held · released") };
+    lines[4] = .{ .text = try std.fmt.allocPrint(garden, "stipend {d}", .{state.stipend}) };
+    lines[5] = .{ .text = try garden.dupe(u8, "nyasa hold then release") };
+    lines[6] = .{ .text = try std.fmt.allocPrint(garden, "escrow balance {d}", .{state.escrow_balance}) };
+    lines[7] = .{ .text = try garden.dupe(u8, "fold green") };
+    return lines;
+}
+
+fn run_open_asks_escrow_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    const empty = try garden.alloc(surface.SkateLine, 1);
+    empty[0] = .{ .text = "" };
+    const sig_empty = try surface.content_signature(garden, empty);
+
+    const frame = try compose_open_asks_escrow_view_lines(garden, io);
+    defer {
+        var i: u32 = 0;
+        while (i < frame.len) : (i += 1) garden.free(frame[i].text);
+        garden.free(frame);
+    }
+    assert(frame.len == open_asks_escrow_view_max_lines);
+    const sig = try surface.content_signature(garden, frame);
+    assert(sig != sig_empty);
+
+    const golden = [_][]const u8{
+        "open asks escrow view",
+        "posted animator for researcher interview visuals",
+        "request_ref 9cdb9aafd767",
+        "applied · accepted · held · released",
+        "stipend 100",
+        "nyasa hold then release",
+        "escrow balance 0",
+        "fold green",
+    };
+    assert(lines_equal(&golden, frame));
+
+    var out: [260]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &out,
+        "drawn terminal open asks escrow view: ref=9cdb9aaf stipend=100 held=1 released=1 completed=1 escrow=0 sig={x} lines={d} — GREEN\n",
+        .{ sig, frame.len },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
 fn run_session_witness(garden: std.mem.Allocator, io: std.Io, init: std.process.Init) !u8 {
     var env = rishi.Env{};
     var history = rishi.History{};
@@ -5736,6 +5801,9 @@ pub fn main(init: std.process.Init) !u8 {
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "openasksviewtest")) {
         return run_open_asks_view_witness(garden, io);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "openasksescrowviewtest")) {
+        return run_open_asks_escrow_view_witness(garden, io);
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "keyboardtest")) {
         return run_keyboard_witness(garden, io, init);

@@ -1,7 +1,7 @@
 # Tasks — The Granular Plan
 
 **Language:** EN
-**Last updated:** 2026-07-11 (Open Asks view `014454`; parity **426**)
+**Last updated:** 2026-07-11 (Open Asks escrow view `015106`; parity **427**)
 
 - [x] **Realidream thin-view exception (`021112` → re-scoped `202427`)** — chain-read removed `152612`; renders **local** MALA mint + WOV exit-bundle fixtures through SLC-2a drawn terminal (`thinviewtest`); no new input, no Pond policy, no Dexter graduation; `tools/realidream_thin_view.rish`; parity **202**; prompt [`202427`](../expanding-prompts/20260709-202427_realidream-thin-view-local-facts.md)
 
@@ -308,6 +308,7 @@
 | **239** | **Granary weave steward — list → settle → Greencandy** | **Landed** | second roof on Skate; cash **900**; tip **424**; stamp `012451` |
 | **240** | **Granary steward sight — weave + books on one frame** | **Landed** | pnl **900** · journal 3; tip **425**; stamp `014304` |
 | **241** | **Open Asks view — closed ask loop on Skate** | **Landed** | OA-L1 fold on glass; stipend **100**; tip **426**; stamp `014454` |
+| **242** | **Open Asks escrow view — Nyasa hold/release on Skate** | **Landed** | OA-L3 fold on glass; escrow **0**; tip **427**; stamp `015106` |
 | — | **Rest bench (commerce)** | **Parked** | Live TB — wait for brief; Rest-until (W1/seam B) unchanged |
 | — | **Realidream lane** | Horizon opened | Visual Track in ROADMAP; full viewer still held; thin view + books view are Skate folds |
 | — | Two-backend seam | **Affirmed: wait** | Kaeden `174500`; sovereign framebuffer when Aurora needs a screen |

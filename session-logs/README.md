@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260711.015439 | [Open Asks escrow view + compass hygiene — tip 427](20260711-015439_open-asks-escrow-view.md) | Nyasa hold/release on Skate; LEXICON · ROADMAP tip hygiene |
 | 20260711.015030 | [Open Asks view — tip 426](20260711-015030_open-asks-view.md) | OA-L1 closed ask loop on Skate; stipend 100 |
 | 20260711.014419 | [Granary steward sight — tip 425](20260711-014419_granary-steward-sight.md) | Weave + books on one frame; two-roof view+sight arc closed |
 | 20260711.012552 | [Granary weave steward composition — tip 424](20260711-012552_granary-steward-composition.md) | Second roof livelihood on Skate; cash 900 weave-sale |
