@@ -1572,3 +1572,8 @@ say "witness suite: RW-5 Lantern contract (six welcome/unwelcome probes)…"
 let rw5_contract = run ["rishi/bin/rishi" "run" "tools/rw5_lantern_contract.rish"]
 assert rw5_contract.ok else "RW-5 Lantern contract witness failed"
 say "GREEN: RW-5 Lantern contract witness passed."
+
+say "witness suite: Commerce steward view (list → settle → Greencandy on Skate)…"
+let commerce_steward_view = run ["rishi/bin/rishi" "run" "tools/commerce_steward_view.rish"]
+assert commerce_steward_view.ok else "Commerce steward view witness failed"
+say "GREEN: Commerce steward view witness passed."

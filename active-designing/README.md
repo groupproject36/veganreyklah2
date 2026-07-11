@@ -47,6 +47,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260711.010030` | [Steward composition — livelihood on one Skate frame](20260711-010030_steward-composition-glass-hammock.md) | Tip **422** — list → settle → Greencandy on glass |
 | `20260710.133500` | [Inference stack — lap 0 hammock](20260710-133500_inference-stack-lap0-hammock.md) | Lattice · Scribble · Lantern · Anvil · assist view; parity **215** |
 | `20260710.132548` | [Greencandy — lap 3 sight view](20260710-132548_greencandy-lap3-sight-view.md) | Carriage + books on one Skate frame; parity **210** |
 | `20260710.131212` | [Greencandy — lap 2 reports](20260710-131212_greencandy-lap2-reports.md) | Own root; P&L · BS · exception queue; parity **209** |

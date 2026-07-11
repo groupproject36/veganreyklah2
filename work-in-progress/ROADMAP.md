@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260710.001249` (settlement-seat plainly + supersession; parity **206**)
-**Last updated:** 2026-07-11 (RW-5 Lantern pair `005028`; parity **421**)
+**Last updated:** 2026-07-11 (steward composition glass `010030`; parity **422**)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -215,6 +215,7 @@ Prior fork steps F0–F5 remain documented in [`active-designing/yonder/20260621
 | Happy-zone second pass — Inference Track | Cursor | audit `001225` ✅; next season **RW-5** |
 | Commerce steward demo — list → settle → Greencandy | Cursor | **419** ✅; live TB still Rest-until |
 | RW-5 mirrored pair — Drawn Terminal ↔ Lantern | Cursor | **420**/**421** ✅; contract `005028` |
+| Steward composition — list → settle → Greencandy on Skate | Cursor | **422** ✅; hammock `010030` |
 | Vocabulary ground — TWO_ROOMS seat · canonical gloss · doorway witness | Cursor | **153** ✅ |
 
 **Season (`20260705.203144`):** **Linengrow-via-Comlink** — ground first, then **Comlink device wire** (Rye spine step that unlocks SLC-L2 sealed delivery). Zip **47** seals the astrology silo bench (`e8d1919`).
