@@ -1577,3 +1577,8 @@ say "witness suite: Commerce steward view (list → settle → Greencandy on Ska
 let commerce_steward_view = run ["rishi/bin/rishi" "run" "tools/commerce_steward_view.rish"]
 assert commerce_steward_view.ok else "Commerce steward view witness failed"
 say "GREEN: Commerce steward view witness passed."
+
+say "witness suite: Commerce steward sight (livelihood + books on Skate)…"
+let commerce_steward_sight = run ["rishi/bin/rishi" "run" "tools/commerce_steward_sight_view.rish"]
+assert commerce_steward_sight.ok else "Commerce steward sight witness failed"
+say "GREEN: Commerce steward sight witness passed."
