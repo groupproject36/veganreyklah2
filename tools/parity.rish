@@ -1587,3 +1587,8 @@ say "witness suite: Granary steward view (weave list → settle → Greencandy o
 let granary_steward = run ["rishi/bin/rishi" "run" "tools/granary_steward_view.rish"]
 assert granary_steward.ok else "Granary steward view witness failed"
 say "GREEN: Granary steward view witness passed."
+
+say "witness suite: Granary steward sight (weave livelihood + books on Skate)…"
+let granary_steward_sight = run ["rishi/bin/rishi" "run" "tools/granary_steward_sight_view.rish"]
+assert granary_steward_sight.ok else "Granary steward sight witness failed"
+say "GREEN: Granary steward sight witness passed."

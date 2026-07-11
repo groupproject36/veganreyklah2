@@ -47,6 +47,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260711.014304` | [Granary steward sight — weave + books on one frame](20260711-014304_granary-steward-sight-hammock.md) | Tip **425** — second-roof mirror of Mandi sight |
 | `20260711.012451` | [Granary weave steward — second roof on Skate](20260711-012451_granary-steward-composition-hammock.md) | Tip **424** — list → settle → Greencandy for weaves |
 | `20260711.011254` | [Steward sight — livelihood + books on one frame](20260711-011254_steward-sight-composition-hammock.md) | Tip **423** — same journal fold on Skate |
 | `20260711.010030` | [Steward composition — livelihood on one Skate frame](20260711-010030_steward-composition-glass-hammock.md) | Tip **422** — list → settle → Greencandy on glass |

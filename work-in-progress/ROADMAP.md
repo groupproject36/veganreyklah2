@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Version:** `20260710.001249` (settlement-seat plainly + supersession; parity **206**)
-**Last updated:** 2026-07-11 (Granary steward composition `012451`; parity **424**)
+**Last updated:** 2026-07-11 (Granary steward sight `014304`; parity **425**)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -218,6 +218,7 @@ Prior fork steps F0–F5 remain documented in [`active-designing/yonder/20260621
 | Steward composition — list → settle → Greencandy on Skate | Cursor | **422** ✅; hammock `010030` |
 | Steward sight — livelihood + books on one Skate frame | Cursor | **423** ✅; hammock `011254` |
 | Granary weave steward — list → settle → Greencandy on Skate | Cursor | **424** ✅; hammock `012451` |
+| Granary steward sight — weave + books on one Skate frame | Cursor | **425** ✅; hammock `014304` |
 | Vocabulary ground — TWO_ROOMS seat · canonical gloss · doorway witness | Cursor | **153** ✅ |
 
 **Season (`20260705.203144`):** **Linengrow-via-Comlink** — ground first, then **Comlink device wire** (Rye spine step that unlocks SLC-L2 sealed delivery). Zip **47** seals the astrology silo bench (`e8d1919`).

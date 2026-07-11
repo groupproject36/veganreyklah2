@@ -1,7 +1,7 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** 2026-07-11 (Granary steward composition · workbench index)
+**Last updated:** 2026-07-11 (Granary steward sight · workbench index)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Foundation
@@ -42,6 +42,7 @@ The discipline is simple: if reading a line aloud would make a newcomer ask "so 
 
 | Stamp | Artifact | Meaning |
 |-------|----------|---------|
+| `20260711.014304` | [Granary steward sight hammock](../active-designing/20260711-014304_granary-steward-sight-hammock.md) | Tip **425** — weave livelihood + books on one frame |
 | `20260711.012451` | [Granary weave steward hammock](../active-designing/20260711-012451_granary-steward-composition-hammock.md) | Tip **424** — second roof livelihood on Skate |
 | `20260711.011254` | [Steward sight composition hammock](../active-designing/20260711-011254_steward-sight-composition-hammock.md) | Tip **423** — livelihood + books on one Skate frame |
 | `20260711.010030` | [Steward composition glass hammock](../active-designing/20260711-010030_steward-composition-glass-hammock.md) | Tip **422** — livelihood loop on one Skate frame |

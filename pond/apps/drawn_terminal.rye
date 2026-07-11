@@ -81,6 +81,7 @@
 //!   pond/bin/drawn-terminal stewardsighttest # Steward sight — livelihood + books on one frame (tip 423)
 //!   pond/bin/drawn-terminal settlevie       # Granary settle view — weave settle → Skate
 //!   pond/bin/drawn-terminal granarystewardtest # Granary steward — list → settle → Greencandy (tip 424)
+//!   pond/bin/drawn-terminal granarystewardsighttest # Granary steward sight — weave + books (tip 425)
 //!   pond/bin/drawn-terminal metalsmoke     # Wayland metal smoke (needs WAYLAND_DISPLAY)
 
 const std = @import("std");
@@ -176,6 +177,7 @@ const steward_view_max_lines: u32 = 8;
 const steward_sight_view_max_lines: u32 = 8;
 const granary_settle_view_max_lines: u32 = 6;
 const granary_steward_view_max_lines: u32 = 8;
+const granary_steward_sight_view_max_lines: u32 = 8;
 const mala_mint_fixture = "tools/fixtures/mala_m1_mint.bron";
 const wov_bundle_fixture = "tools/fixtures/wov_exit_bundle_v1.bron";
 const greencandy_journal_fixture = "greencandy/fixtures/journal.bron";
@@ -4773,8 +4775,15 @@ const granary_steward_sale_entry =
     \\
 ;
 
-/// Granary weave steward — list → settle → Greencandy receipt on one Skate frame.
-fn compose_granary_steward_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
+const GranaryStewardFold = struct {
+    listing_receipt: [exchange.digest_hex_len]u8,
+    cash: i64,
+    pnl_net: i64,
+    journal_count: u32,
+};
+
+/// Shared weave settle + Greencandy fold for Granary steward view and sight.
+fn run_granary_steward_fold() !GranaryStewardFold {
     var store = granary.ResinStore.empty();
     const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in mala.\n");
     var fact: [granary.max_fact_len]u8 = undefined;
@@ -4872,14 +4881,27 @@ fn compose_granary_steward_view_lines(garden: std.mem.Allocator) ![]surface.Skat
     if (tb.conservation() != 0) return error.BadJournal;
     const cash = tb.nets[@intFromEnum(greencandy.Account.cash)];
     if (cash != 900) return error.BadJournal;
+    const pl = greencandy.fold_income_statement(tb);
+    if (pl.net_income != 900) return error.BadJournal;
 
+    return .{
+        .listing_receipt = listing_receipt,
+        .cash = cash,
+        .pnl_net = pl.net_income,
+        .journal_count = count,
+    };
+}
+
+/// Granary weave steward — list → settle → Greencandy receipt on one Skate frame.
+fn compose_granary_steward_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
+    const fold = try run_granary_steward_fold();
     const lines = try garden.alloc(surface.SkateLine, granary_steward_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "granary steward view") };
     lines[1] = .{ .text = try garden.dupe(u8, "listed 100 mala") };
-    lines[2] = .{ .text = try std.fmt.allocPrint(garden, "listing {s}", .{listing_receipt[0..12]}) };
+    lines[2] = .{ .text = try std.fmt.allocPrint(garden, "listing {s}", .{fold.listing_receipt[0..12]}) };
     lines[3] = .{ .text = try garden.dupe(u8, "settled") };
     lines[4] = .{ .text = try garden.dupe(u8, "receipt granary:weave-sale") };
-    lines[5] = .{ .text = try std.fmt.allocPrint(garden, "cash {d}", .{cash}) };
+    lines[5] = .{ .text = try std.fmt.allocPrint(garden, "cash {d}", .{fold.cash}) };
     lines[6] = .{ .text = try garden.dupe(u8, "conservation 0") };
     lines[7] = .{ .text = try garden.dupe(u8, "fold green") };
     return lines;
@@ -4931,6 +4953,63 @@ fn run_granary_steward_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     const msg = try std.fmt.bufPrint(
         &out,
         "drawn terminal granary steward view: listed=100 settled=1 cash=900 conservation=0 memo=granary:weave-sale sig={x} lines={d} — GREEN\n",
+        .{ sig, frame.len },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
+/// Granary steward sight — weave livelihood + books fold from the same journal.
+fn compose_granary_steward_sight_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
+    const fold = try run_granary_steward_fold();
+    const lines = try garden.alloc(surface.SkateLine, granary_steward_sight_view_max_lines);
+    lines[0] = .{ .text = try garden.dupe(u8, "granary steward sight") };
+    lines[1] = .{ .text = try garden.dupe(u8, "listed 100 mala") };
+    lines[2] = .{ .text = try std.fmt.allocPrint(garden, "listing {s}", .{fold.listing_receipt[0..12]}) };
+    lines[3] = .{ .text = try garden.dupe(u8, "settled · receipt granary:weave-sale") };
+    lines[4] = .{ .text = try std.fmt.allocPrint(garden, "cash {d} · conservation 0 · pnl {d}", .{ fold.cash, fold.pnl_net }) };
+    lines[5] = .{ .text = try std.fmt.allocPrint(garden, "journal entries {d}", .{fold.journal_count}) };
+    lines[6] = .{ .text = try std.fmt.allocPrint(garden, "chart {s} {s} {s} {s}", .{
+        greencandy.Account.cash.name(),
+        greencandy.Account.revenue.name(),
+        greencandy.Account.expense.name(),
+        greencandy.Account.equity.name(),
+    }) };
+    lines[7] = .{ .text = try garden.dupe(u8, "sight fold green") };
+    return lines;
+}
+
+fn run_granary_steward_sight_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
+    const empty = try garden.alloc(surface.SkateLine, 1);
+    empty[0] = .{ .text = "" };
+    const sig_empty = try surface.content_signature(garden, empty);
+
+    const frame = try compose_granary_steward_sight_view_lines(garden);
+    defer {
+        var i: u32 = 0;
+        while (i < frame.len) : (i += 1) garden.free(frame[i].text);
+        garden.free(frame);
+    }
+    assert(frame.len == granary_steward_sight_view_max_lines);
+    const sig = try surface.content_signature(garden, frame);
+    assert(sig != sig_empty);
+
+    const golden = [_][]const u8{
+        "granary steward sight",
+        "listed 100 mala",
+        "listing 1c8546c14e86",
+        "settled · receipt granary:weave-sale",
+        "cash 900 · conservation 0 · pnl 900",
+        "journal entries 3",
+        "chart cash revenue expense equity",
+        "sight fold green",
+    };
+    assert(lines_equal(&golden, frame));
+
+    var out: [260]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &out,
+        "drawn terminal granary steward sight: listed=100 settled=1 cash=900 conservation=0 pnl=900 journal=3 memo=granary:weave-sale sig={x} lines={d} — GREEN\n",
         .{ sig, frame.len },
     );
     try std.Io.File.stdout().writeStreamingAll(io, msg);
@@ -5588,6 +5667,9 @@ pub fn main(init: std.process.Init) !u8 {
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "granarystewardtest")) {
         return run_granary_steward_view_witness(garden, io);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "granarystewardsighttest")) {
+        return run_granary_steward_sight_view_witness(garden, io);
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "keyboardtest")) {
         return run_keyboard_witness(garden, io, init);
