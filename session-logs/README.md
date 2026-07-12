@@ -12,6 +12,7 @@ Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../cont
 
 | Stamp | Log | Meaning |
 |-------|-----|---------|
+| 20260712.040333 | [Commit and push session log](20260712-040333_commit-push-session-log.md) | Shipped pull-check session log; draft PR #114 |
 | 20260712.040312 | [Pull latest changes](20260712-040312_pull-latest-changes.md) | `git pull origin main` — already up to date on `main` |
 | 20260711.061200 | [Consumer-surface protection — published-set gate](20260711-061200_consumer-surface-protection-gate.md) | Digest ≠ capability; Granary wire GREEN; Steep note parked |
 | 20260711.055821 | [Seat WOV TB seam retirement](20260711-055821_seat-wov-tb-seam-retirement.md) | Kaeden approved `055112`; pure-Rye WOV kept; TB dated record |
